@@ -2,6 +2,8 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\SourceFetcher\Parser\UbParser;
+use AppBundle\SourceFetcher\Query\UbCOQuery;
 use AppBundle\SourceFetcher\Query\UbNO2Query;
 use AppBundle\SourceFetcher\Query\UbO3Query;
 use AppBundle\SourceFetcher\Query\UbPm10Query;
@@ -24,6 +26,7 @@ class FetchCommand extends ContainerAwareCommand
             ->addOption('so2')
             ->addOption('no2')
             ->addOption('o3')
+            ->addOption('co')
             ->addArgument('dateTime', InputArgument::OPTIONAL);
         ;
     }
@@ -50,6 +53,10 @@ class FetchCommand extends ContainerAwareCommand
 
         if ($input->getOption('o3')) {
             $this->fetchO3($dateTime);
+        }
+
+        if ($input->getOption('co')) {
+            $this->fetchCO($dateTime);
         }
 
     }
@@ -81,6 +88,18 @@ class FetchCommand extends ContainerAwareCommand
     protected function fetchO3(\DateTime $dateTime)
     {
         $query = new UbO3Query($dateTime);
+
+        $sourceFetcher = new SourceFetcher();
+
+        $response = $sourceFetcher->query($query);
+
+        $parser = new UbParser();
+        var_dump($parser->parse($response));
+    }
+
+    protected function fetchCO(\DateTime $dateTime)
+    {
+        $query = new UbCOQuery($dateTime);
 
         $sourceFetcher = new SourceFetcher();
         $sourceFetcher->query($query);
