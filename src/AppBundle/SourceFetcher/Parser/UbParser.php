@@ -28,25 +28,33 @@ class UbParser
 
             $parts = explode(';', $line);
 
+            if (count($parts) == 0) {
+                continue;
+            }
+
+            $dataValue = new Value();
+
             try {
+                $station = $parts[self::STATION];
                 $dateTime = \DateTime::createFromFormat(self::DATETIME_FORMAT, $parts[self::DATETIME]);
-            } catch (\Exception $e) {
+                $value = $parts[self::VALUE];
 
-            }
+                if (!$station || !$dateTime || !$value) {
+                    continue;
+                }
 
-            $value = new Value();
-
-            try {
-                $value
-                    ->setStation($parts[self::STATION])
+                $dataValue
+                    ->setStation($station)
                     ->setDateTime($dateTime)
-                    ->setValue($parts[self::VALUE])
+                    ->setValue($value)
                 ;
+
+                echo $line;
             } catch (\Exception $e) {
 
             }
 
-            $valueList[] = $value;
+            $valueList[] = $dataValue;
         }
 
         return $valueList;

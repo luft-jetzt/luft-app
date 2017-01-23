@@ -94,7 +94,9 @@ class FetchCommand extends ContainerAwareCommand
         $response = $sourceFetcher->query($query);
 
         $parser = new UbParser();
-        var_dump($parser->parse($response));
+        $tmpValueList = $parser->parse($response);
+
+        var_dump($tmpValueList);
     }
 
     protected function fetchCO(\DateTime $dateTime)
