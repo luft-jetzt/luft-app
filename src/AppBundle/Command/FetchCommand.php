@@ -61,31 +61,27 @@ class FetchCommand extends ContainerAwareCommand
         if ($input->getOption('co')) {
             $this->fetchCO($dateTime);
         }
-
     }
 
     protected function fetchPM10(\DateTime $dateTime)
     {
         $query = new UbPM10Query($dateTime);
 
-        $sourceFetcher = new SourceFetcher();
-        $sourceFetcher->query($query);
+        $this->fetch($query, Data::POLLUTANT_PM10);
     }
 
     protected function fetchSO2(\DateTime $dateTime)
     {
         $query = new UbSO2Query($dateTime);
 
-        $sourceFetcher = new SourceFetcher();
-        $sourceFetcher->query($query);
+        $this->fetch($query, Data::POLLUTANT_SO2);
     }
 
     protected function fetchNO2(\DateTime $dateTime)
     {
         $query = new UbNO2Query($dateTime);
 
-        $sourceFetcher = new SourceFetcher();
-        $sourceFetcher->query($query);
+        $this->fetch($query, Data::POLLUTANT_NO2);
     }
 
     protected function fetchO3(\DateTime $dateTime)
@@ -99,8 +95,7 @@ class FetchCommand extends ContainerAwareCommand
     {
         $query = new UbCOQuery($dateTime);
 
-        $sourceFetcher = new SourceFetcher();
-        $sourceFetcher->query($query);
+        $this->fetch($query, Data::POLLUTANT_CO);
     }
 
     protected function fetch(AbstractQuery $query, string $pollutant)
