@@ -14,6 +14,8 @@ use AppBundle\SourceFetcher\Query\UbPM10Query;
 use AppBundle\SourceFetcher\Query\UbSO2Query;
 use AppBundle\SourceFetcher\SourceFetcher;
 use Curl\Curl;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -37,12 +39,13 @@ class StationCommand extends ContainerAwareCommand
         $limitData = json_decode($curl->response);
         $stationList = $limitData->stations_idx;
 
+        /** @var EntityManager $em */
         $em = $this->getContainer()->get('doctrine')->getManager();
 
         foreach ($stationList as $stationData) {
             $station = $this->createStation($stationData);
 
-            $em->persist($station);
+            $em->merge($station);
         }
 
         $em->flush();
@@ -62,4 +65,20 @@ class StationCommand extends ContainerAwareCommand
 
         return $station;
     }
+
+    protected function getExistingStations(): array
+    {
+        $stations = $this->getContainer()->get('doctrine')->getRepository('AppBundle:Station')->findAll();
+
+        $stationList = [];
+
+        /** @var Station $station */
+        foreach ($stations as $station) {
+            $stationList[$station->getStationCode()] = $station;
+        }
+
+        return $stationList;
+    }
+
+
 }
