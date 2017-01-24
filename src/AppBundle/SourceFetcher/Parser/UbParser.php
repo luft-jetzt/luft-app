@@ -28,7 +28,7 @@ class UbParser
 
             $parts = explode(';', $line);
 
-            if (count($parts) == 0) {
+            if (count($parts) <= 1) {
                 continue;
             }
 
