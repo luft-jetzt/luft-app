@@ -3,11 +3,14 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
-* @ORM\Entity()
-* @ORM\Table(name="station")
-*/
+ * @ORM\Entity()
+ * @ORM\Table(name="station")
+ * @UniqueEntity("stationCode")
+ */
 class Station
 {
     /**
@@ -18,7 +21,7 @@ class Station
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=12, nullable=false)
+     * @ORM\Column(type="string", length=12, nullable=false, unique=true)
      */
     protected $stationCode;
 
