@@ -5,6 +5,7 @@ namespace AppBundle\Command;
 use AppBundle\Entity\Data;
 use AppBundle\SourceFetcher\Parser\UbParser;
 use AppBundle\SourceFetcher\Persister\Persister;
+use AppBundle\SourceFetcher\Query\AbstractQuery;
 use AppBundle\SourceFetcher\Query\UbCOQuery;
 use AppBundle\SourceFetcher\Query\UbNO2Query;
 use AppBundle\SourceFetcher\Query\UbO3Query;
@@ -91,15 +92,7 @@ class FetchCommand extends ContainerAwareCommand
     {
         $query = new UbO3Query($dateTime);
 
-        $sourceFetcher = new SourceFetcher();
-
-        $response = $sourceFetcher->query($query);
-
-        $parser = new UbParser();
-        $tmpValueList = $parser->parse($response, Data::POLLUTANT_O3);
-
-        $persister = new Persister($this->getContainer()->get('doctrine'));
-        $persister->persistValues($tmpValueList);
+        $this->fetch($query, Data::POLLUTANT_O3);
     }
 
     protected function fetchCO(\DateTime $dateTime)
@@ -108,5 +101,18 @@ class FetchCommand extends ContainerAwareCommand
 
         $sourceFetcher = new SourceFetcher();
         $sourceFetcher->query($query);
+    }
+
+    protected function fetch(AbstractQuery $query, string $pollutant)
+    {
+        $sourceFetcher = new SourceFetcher();
+
+        $response = $sourceFetcher->query($query);
+
+        $parser = new UbParser();
+        $tmpValueList = $parser->parse($response, $pollutant);
+
+        $persister = new Persister($this->getContainer()->get('doctrine'));
+        $persister->persistValues($tmpValueList);
     }
 }
