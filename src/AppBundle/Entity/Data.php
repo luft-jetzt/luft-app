@@ -10,6 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Data
 {
+    const POLLUTANT_PM10 = 1;
+    const POLLUTANT_O3 = 2;
+    const POLLUTANT_NO2 = 3;
+    const POLLUTANT_SO2 = 4;
+    const POLLUTANT_CO = 5;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -32,6 +38,11 @@ class Data
      * @ORM\Column(type="float", nullable=false)
      */
     protected $value;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=false)
+     */
+    protected $pollutant;
 
     public function getId(): int
     {
@@ -70,6 +81,18 @@ class Data
     public function setValue(float $value): Data
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    public function getPollutant(): int
+    {
+        return $this->pollutant;
+    }
+
+    public function setPollutant(int $pollutant): Data
+    {
+        $this->pollutant = $pollutant;
 
         return $this;
     }
