@@ -3,6 +3,7 @@
 namespace AppBundle\Command;
 
 use AppBundle\SourceFetcher\Parser\UbParser;
+use AppBundle\SourceFetcher\Persister\Persister;
 use AppBundle\SourceFetcher\Query\UbCOQuery;
 use AppBundle\SourceFetcher\Query\UbNO2Query;
 use AppBundle\SourceFetcher\Query\UbO3Query;
@@ -96,7 +97,8 @@ class FetchCommand extends ContainerAwareCommand
         $parser = new UbParser();
         $tmpValueList = $parser->parse($response);
 
-        var_dump($tmpValueList);
+        $persister = new Persister($this->getContainer()->get('doctrine'));
+        $persister->persistValues($tmpValueList);
     }
 
     protected function fetchCO(\DateTime $dateTime)
