@@ -17,6 +17,8 @@ class Persister
     {
         $this->doctrine = $doctrine;
         $this->entityManager = $doctrine->getManager();
+
+        $this->fetchStationList();
     }
 
     public function persistValues(array $values): Persister
@@ -32,7 +34,7 @@ class Persister
             ;
 
             if ($this->stationExists($value->getStation())) {
-                $value->setStation($this->getStationByCode($value->getStation()));
+                $data->setStation($this->getStationByCode($value->getStation()));
             }
 
             $this->entityManager->persist($data);
