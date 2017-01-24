@@ -9,7 +9,7 @@ use AppBundle\SourceFetcher\Query\AbstractQuery;
 use AppBundle\SourceFetcher\Query\UbCOQuery;
 use AppBundle\SourceFetcher\Query\UbNO2Query;
 use AppBundle\SourceFetcher\Query\UbO3Query;
-use AppBundle\SourceFetcher\Query\UbPm10Query;
+use AppBundle\SourceFetcher\Query\UbPM10Query;
 use AppBundle\SourceFetcher\Query\UbSO2Query;
 use AppBundle\SourceFetcher\SourceFetcher;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
