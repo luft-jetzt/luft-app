@@ -7,6 +7,7 @@ class Value
     protected $station;
     protected $dateTime;
     protected $value;
+    protected $pollutant;
 
     public function __construct()
     {
@@ -49,5 +50,16 @@ class Value
         return $this;
     }
 
+    public function getPollutant(): int
+    {
+        return $this->pollutant;
+    }
+
+    public function setPollutant(int $pollutant): Value
+    {
+        $this->pollutant = $pollutant;
+
+        return $this;
+    }
 
 }

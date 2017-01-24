@@ -2,6 +2,7 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Entity\Data;
 use AppBundle\SourceFetcher\Parser\UbParser;
 use AppBundle\SourceFetcher\Persister\Persister;
 use AppBundle\SourceFetcher\Query\UbCOQuery;
@@ -95,7 +96,7 @@ class FetchCommand extends ContainerAwareCommand
         $response = $sourceFetcher->query($query);
 
         $parser = new UbParser();
-        $tmpValueList = $parser->parse($response);
+        $tmpValueList = $parser->parse($response, Data::POLLUTANT_O3);
 
         $persister = new Persister($this->getContainer()->get('doctrine'));
         $persister->persistValues($tmpValueList);

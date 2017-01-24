@@ -27,7 +27,9 @@ class Persister
 
             $data
                 ->setDateTime($value->getDateTime())
-                ->setValue($value->getValue());
+                ->setValue($value->getValue())
+                ->setPollutant($value->getPollutant())
+            ;
 
             if ($this->stationExists($value->getStation())) {
                 $value->setStation($this->getStationByCode($value->getStation()));

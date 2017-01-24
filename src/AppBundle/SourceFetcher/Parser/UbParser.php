@@ -16,7 +16,7 @@ class UbParser
 
     }
 
-    public function parse(string $string): array
+    public function parse(string $string, string $pollutant): array
     {
         $lines = explode(PHP_EOL, $string);
         $valueList = [];
@@ -46,6 +46,7 @@ class UbParser
                 $dataValue
                     ->setStation($station)
                     ->setDateTime($dateTime)
+                    ->setPollutant($pollutant)
                     ->setValue($value)
                 ;
 
