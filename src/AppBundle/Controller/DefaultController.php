@@ -26,6 +26,12 @@ class DefaultController extends Controller
             $longitude
         );
 
+        $stations = $this->findNearestStations($coord);
+
+        foreach ($stations as $station) {
+            echo $station->getName();
+        }
+
         return $this->render(
             'AppBundle:Default:index.html.twig',
             [
@@ -34,8 +40,41 @@ class DefaultController extends Controller
         );
     }
 
-    protected function findNearestStation(string $pollutant, Coord $coord)
+    protected function findNearestStations(Coord $coord): array
     {
+        $finder = $this->container->get('fos_elastica.finder.air.station');
 
+        $geoFilter = new \Elastica\Filter\GeoDistance(
+            'pin',
+            [
+                'lat' => $coord->getLatitude(),
+                'lon' => $coord->getLongitude()
+            ],
+            '10km'
+        );
+
+        $filteredQuery = new \Elastica\Query\Filtered(new \Elastica\Query\MatchAll(), $geoFilter);
+
+        $query = new \Elastica\Query($filteredQuery);
+
+        $query->setSize(15);
+        $query->setSort(
+            [
+                '_geo_distance' =>
+                    [
+                        'pin' =>
+                            [
+                                $coord->getLatitude(),
+                                $coord->getLongitude()
+                            ],
+                        'order' => 'desc',
+                        'unit' => 'km'
+                    ]
+            ]
+        );
+
+        $results = $finder->find($query);
+
+        return $results;
     }
 }
