@@ -27,43 +27,24 @@ class StationCommand extends ContainerAwareCommand
     {
         $this
             ->setName('luft:station')
-            ->setDescription('')
-        ;
+            ->setDescription('');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $curl = new Curl();
-        $curl->get('https://www.umweltbundesamt.de/js/uaq/data/stations/limits');
-
-        $limitData = json_decode($curl->response);
-        $stationList = $limitData->stations_idx;
+        $existingStationList = $this->getExistingStations();
+        $newStationData = $this->fetchStationList();
 
         /** @var EntityManager $em */
         $em = $this->getContainer()->get('doctrine')->getManager();
 
-        foreach ($stationList as $stationData) {
+        foreach ($newStationData as $stationData) {
             $station = $this->createStation($stationData);
 
             $em->merge($station);
         }
 
         $em->flush();
-    }
-
-    protected function createStation(array $stationData): Station
-    {
-        $station = new Station();
-
-        $station
-            ->setTitle($stationData[1])
-            ->setStationCode($stationData[0])
-            ->setStateCode($stationData[2])
-            ->setLatitude($stationData[4])
-            ->setLongitude($stationData[5])
-        ;
-
-        return $station;
     }
 
     protected function getExistingStations(): array
@@ -80,5 +61,40 @@ class StationCommand extends ContainerAwareCommand
         return $stationList;
     }
 
+    protected function fetchStationList(): array
+    {
+        $curl = new Curl();
+        $curl->get('https://www.umweltbundesamt.de/js/uaq/data/stations/limits');
 
+        $limitData = json_decode($curl->response);
+        $stationList = $limitData->stations_idx;
+
+        return $stationList;
+    }
+
+    public function mergeStation(Station $station, $stationData): Station
+    {
+        $station
+            ->setTitle($stationData[1])
+            ->setStationCode($stationData[0])
+            ->setStateCode($stationData[2])
+            ->setLatitude($stationData[4])
+            ->setLongitude($stationData[5]);
+
+        return $station;
+    }
+
+    protected function createStation(array $stationData): Station
+    {
+        $station = new Station();
+
+        $this->mergeStation($station, $stationData);
+
+        return $station;
+    }
+
+    protected function stationExists(string $stationCode, array $stationData): bool
+    {
+        return array_key_exists($stationCode, $stationData);
+    }
 }
