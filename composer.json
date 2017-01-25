@@ -29,7 +29,8 @@
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "^2.0",
         "curl/curl": "^1.6",
-        "calderacc/geobasic": "^0.1.0"
+        "calderacc/geobasic": "^0.1.0",
+        "friendsofsymfony/elastica-bundle": "^3.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
