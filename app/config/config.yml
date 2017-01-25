@@ -79,8 +79,7 @@ fos_elastica:
             types:
                 station:
                     mappings:
-                        latitude: ~
-                        longitude: ~
+                        pin: { type: geo_point }
                     persistence:
                         driver: orm
                         model: AppBundle\Entity\Station

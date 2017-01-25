@@ -109,4 +109,9 @@ class Station
 
         return $this;
     }
+
+    public function getPin(): string
+    {
+        return $this->latitude . ',' . $this->longitude;
+    }
 }
