@@ -78,8 +78,8 @@ class StationCommand extends ContainerAwareCommand
             ->setTitle($stationData[1])
             ->setStationCode($stationData[0])
             ->setStateCode($stationData[2])
-            ->setLatitude($stationData[4])
-            ->setLongitude($stationData[5]);
+            ->setLatitude($stationData[5])
+            ->setLongitude($stationData[4]);
 
         return $station;
     }
