@@ -68,3 +68,22 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+fos_elastica:
+    clients:
+        default: { host: localhost, port: 9200 }
+    indexes:
+        air:
+            client: default
+            finder: ~
+            types:
+                station:
+                    mappings:
+                        latitude: ~
+                        longitude: ~
+                    persistence:
+                        driver: orm
+                        model: AppBundle\Entity\Station
+                        provider: ~
+                        listener: ~
+                        finder: ~
