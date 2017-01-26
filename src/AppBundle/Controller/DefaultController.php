@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Data;
 use AppBundle\Entity\Station;
+use AppBundle\Repository\DataRepository;
 use Caldera\GeoBasic\Coord\Coord;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -82,16 +83,52 @@ class DefaultController extends Controller
         return $results;
     }
 
-    public function getDataListFromStationList(array $stationList): array
+    protected function getDataListFromStationList(array $stationList): array
     {
+        /** @var DataRepository $repository */
+        $repository = $this->getDoctrine()->getRepository('AppBundle:Data');
+
         $dataList = [];
 
         foreach ($stationList as $station) {
-            /** @var Data $data */
-            $data = $this->getDoctrine()->getRepository('AppBundle:Data')->findOneByStation($station);
+            if (!array_key_exists(Data::POLLUTANT_PM10, $dataList)) {
+                $data = $repository->findLatestDataForStationAndPollutant($station, Data::POLLUTANT_PM10);
 
-            if (!array_key_exists($data->getPollutant(), $dataList)) {
-                $dataList[$data->getPollutant()] = $data;
+                if ($data) {
+                    $dataList[Data::POLLUTANT_PM10] = $data;
+                }
+            }
+
+            if (!array_key_exists(Data::POLLUTANT_NO2, $dataList)) {
+                $data = $repository->findLatestDataForStationAndPollutant($station, Data::POLLUTANT_NO2);
+
+                if ($data) {
+                    $dataList[Data::POLLUTANT_NO2] = $data;
+                }
+            }
+
+            if (!array_key_exists(Data::POLLUTANT_O3, $dataList)) {
+                $data = $repository->findLatestDataForStationAndPollutant($station, Data::POLLUTANT_O3);
+
+                if ($data) {
+                    $dataList[Data::POLLUTANT_O3] = $data;
+                }
+            }
+
+            if (!array_key_exists(Data::POLLUTANT_SO2, $dataList)) {
+                $data = $repository->findLatestDataForStationAndPollutant($station, Data::POLLUTANT_SO2);
+
+                if ($data) {
+                    $dataList[Data::POLLUTANT_SO2] = $data;
+                }
+            }
+
+            if (!array_key_exists(Data::POLLUTANT_CO, $dataList)) {
+                $data = $repository->findLatestDataForStationAndPollutant($station, Data::POLLUTANT_CO);
+
+                if ($data) {
+                    $dataList[Data::POLLUTANT_CO] = $data;
+                }
             }
         }
 
