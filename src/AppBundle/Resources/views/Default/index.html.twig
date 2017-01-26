@@ -1,76 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
 
-        <title>Luft</title>
+    <title>Luft</title>
 
-        <link rel="stylesheet" href="{{ asset('bundles/app/css/air.css') }}" />
-    </head>
-    <body>
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 offset-xl-1">
-                    <div class="card card-inverse card-success text-center">
-                        <div class="card-block text-xs-center">
-                            <h4 class="card-title">
-                                32 µg/m<sup>3</sup>
-                            </h4>
-                            <p class="card-text">Feinstaub</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
-                    <div class="card card-inverse card-success text-center">
-                        <div class="card-block text-xs-center">
-                            <h4 class="card-title">
-                                0.4 mg/m<sup>3</sup>
-                            </h4>
-                            <p class="card-text">Kohlenmonoxid</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
-                    <div class="card card-inverse card-warning text-center">
-                        <div class="card-block text-xs-center">
-                            <h4 class="card-title">
-                                46 µg/m<sup>3</sup>
-                            </h4>
-                            <p class="card-text">Ozon</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
-                    <div class="card card-inverse card-danger text-center">
-                        <div class="card-block text-xs-center">
-                            <h4 class="card-title">
-                                2 µg/m<sup>3</sup>
-                            </h4>
-                            <p class="card-text">Schwefeldioxid</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
-                    <div class="card card-inverse card-warning text-center">
-                        <div class="card-block text-xs-center">
-                            <h4 class="card-title">
-                                5 µg/m<sup>3</sup>
-                            </h4>
-                            <p class="card-text">Stickstoffdioxid</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <script src="{{ asset('bundles/app/js/jquery/jquery-3.1.1.min.js') }}"></script>
-        <script src="{{ asset('bundles/app/js/bootstrap/bootstrap.min.js') }}"></script>
-    </body>
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/air.css') }}" />
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        {% for data in dataList %}
+            {% include 'AppBundle:Default:_box.html.twig' with {'data': data} %}
+        {% endfor %}
+    </div>
+</div>
+<script src="{{ asset('bundles/app/js/jquery/jquery-3.1.1.min.js') }}"></script>
+<script src="{{ asset('bundles/app/js/bootstrap/bootstrap.min.js') }}"></script>
+</body>
 </html>
