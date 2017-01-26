@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Data;
+use AppBundle\Entity\Station;
 use Caldera\GeoBasic\Coord\Coord;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -26,12 +28,14 @@ class DefaultController extends Controller
             $longitude
         );
 
-        $stations = $this->findNearestStations($coord);
+        $stationList = $this->findNearestStations($coord);
 
-        foreach ($stations as $station) {
-            echo $station->getName();
+        $dataList = $this->getDataListFromStationList($stationList);
+
+        foreach ($dataList as $data) {
+            echo $data->getValue();
+            echo $data->getStation()->getTitle();
         }
-
         return $this->render(
             'AppBundle:Default:index.html.twig',
             [
@@ -67,7 +71,7 @@ class DefaultController extends Controller
                                 $coord->getLatitude(),
                                 $coord->getLongitude()
                             ],
-                        'order' => 'desc',
+                        'order' => 'asc',
                         'unit' => 'km'
                     ]
             ]
@@ -76,5 +80,21 @@ class DefaultController extends Controller
         $results = $finder->find($query);
 
         return $results;
+    }
+
+    public function getDataListFromStationList(array $stationList): array
+    {
+        $dataList = [];
+
+        foreach ($stationList as $station) {
+            /** @var Data $data */
+            $data = $this->getDoctrine()->getRepository('AppBundle:Data')->findOneByStation($station);
+
+            if (!array_key_exists($data->getPollutant(), $dataList)) {
+                $dataList[$data->getPollutant()] = $data;
+            }
+        }
+
+        return $dataList;
     }
 }
