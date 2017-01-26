@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Data;
+use AppBundle\Entity\Station;
 use AppBundle\Pollution\Pollutant\Pollutant;
 use AppBundle\Repository\DataRepository;
 use Caldera\GeoBasic\Coord\Coord;
@@ -32,10 +34,6 @@ class DefaultController extends Controller
 
         $dataList = $this->getDataListFromStationList($stationList);
 
-        foreach ($dataList as $data) {
-            echo $data->getValue();
-            echo $data->getStation()->getTitle();
-        }
         return $this->render(
             'AppBundle:Default:index.html.twig',
             [
@@ -84,53 +82,34 @@ class DefaultController extends Controller
 
     protected function getDataListFromStationList(array $stationList): array
     {
-        /** @var DataRepository $repository */
-        $repository = $this->getDoctrine()->getRepository('AppBundle:Data');
-
-        $dataList = [];
+        $dataList = [
+            Pollutant::POLLUTANT_PM10 => null,
+            Pollutant::POLLUTANT_O3 => null,
+            Pollutant::POLLUTANT_NO2 => null,
+            Pollutant::POLLUTANT_SO2 => null,
+            Pollutant::POLLUTANT_CO => null,
+        ];
 
         foreach ($stationList as $station) {
-            if (!array_key_exists(Pollutant::POLLUTANT_PM10, $dataList)) {
-                $data = $repository->findLatestDataForStationAndPollutant($station, Pollutant::POLLUTANT_PM10);
+            foreach ($dataList as $pollutant => $data) {
+                if (!$data) {
+                    $data = $this->checkStationData($station, $pollutant);
 
-                if ($data) {
-                    $dataList[Pollutant::POLLUTANT_PM10] = $data;
-                }
-            }
-
-            if (!array_key_exists(Pollutant::POLLUTANT_NO2, $dataList)) {
-                $data = $repository->findLatestDataForStationAndPollutant($station, Pollutant::POLLUTANT_NO2);
-
-                if ($data) {
-                    $dataList[Pollutant::POLLUTANT_NO2] = $data;
-                }
-            }
-
-            if (!array_key_exists(Pollutant::POLLUTANT_O3, $dataList)) {
-                $data = $repository->findLatestDataForStationAndPollutant($station, Pollutant::POLLUTANT_O3);
-
-                if ($data) {
-                    $dataList[Pollutant::POLLUTANT_O3] = $data;
-                }
-            }
-
-            if (!array_key_exists(Pollutant::POLLUTANT_SO2, $dataList)) {
-                $data = $repository->findLatestDataForStationAndPollutant($station, Pollutant::POLLUTANT_SO2);
-
-                if ($data) {
-                    $dataList[Pollutant::POLLUTANT_SO2] = $data;
-                }
-            }
-
-            if (!array_key_exists(Pollutant::POLLUTANT_CO, $dataList)) {
-                $data = $repository->findLatestDataForStationAndPollutant($station, Pollutant::POLLUTANT_CO);
-
-                if ($data) {
-                    $dataList[Pollutant::POLLUTANT_CO] = $data;
+                    if ($data) {
+                        $dataList[$pollutant] = $data;
+                    }
                 }
             }
         }
 
         return $dataList;
+    }
+
+    protected function checkStationData(Station $station, string $pollutant): ?Data
+    {
+        /** @var DataRepository $repository */
+        $repository = $this->getDoctrine()->getRepository('AppBundle:Data');
+
+        return $repository->findLatestDataForStationAndPollutant($station, $pollutant);
     }
 }
