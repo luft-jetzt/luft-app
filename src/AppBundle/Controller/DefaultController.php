@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Data;
 use AppBundle\Entity\Station;
+use AppBundle\Pollution\Box\Box;
 use AppBundle\Pollution\Pollutant\Pollutant;
 use AppBundle\Repository\DataRepository;
 use Caldera\GeoBasic\Coord\Coord;
@@ -111,5 +112,18 @@ class DefaultController extends Controller
         $repository = $this->getDoctrine()->getRepository('AppBundle:Data');
 
         return $repository->findLatestDataForStationAndPollutant($station, $pollutant);
+    }
+
+    protected function createBox(Data $data): Box
+    {
+        $box = new Box();
+
+        $box
+            ->setData($data)
+            ->setStation($data->getStation())
+            ->setPollutant($data->getPollutant())
+        ;
+
+        return $box;
     }
 }
