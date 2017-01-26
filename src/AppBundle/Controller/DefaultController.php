@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Data;
 use AppBundle\Entity\Station;
+use AppBundle\Pollutant\Pollutant;
 use AppBundle\Repository\DataRepository;
 use Caldera\GeoBasic\Coord\Coord;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -91,43 +92,43 @@ class DefaultController extends Controller
         $dataList = [];
 
         foreach ($stationList as $station) {
-            if (!array_key_exists(Data::POLLUTANT_PM10, $dataList)) {
-                $data = $repository->findLatestDataForStationAndPollutant($station, Data::POLLUTANT_PM10);
+            if (!array_key_exists(Pollutant::POLLUTANT_PM10, $dataList)) {
+                $data = $repository->findLatestDataForStationAndPollutant($station, Pollutant::POLLUTANT_PM10);
 
                 if ($data) {
-                    $dataList[Data::POLLUTANT_PM10] = $data;
+                    $dataList[Pollutant::POLLUTANT_PM10] = $data;
                 }
             }
 
-            if (!array_key_exists(Data::POLLUTANT_NO2, $dataList)) {
-                $data = $repository->findLatestDataForStationAndPollutant($station, Data::POLLUTANT_NO2);
+            if (!array_key_exists(Pollutant::POLLUTANT_NO2, $dataList)) {
+                $data = $repository->findLatestDataForStationAndPollutant($station, Pollutant::POLLUTANT_NO2);
 
                 if ($data) {
-                    $dataList[Data::POLLUTANT_NO2] = $data;
+                    $dataList[Pollutant::POLLUTANT_NO2] = $data;
                 }
             }
 
-            if (!array_key_exists(Data::POLLUTANT_O3, $dataList)) {
-                $data = $repository->findLatestDataForStationAndPollutant($station, Data::POLLUTANT_O3);
+            if (!array_key_exists(Pollutant::POLLUTANT_O3, $dataList)) {
+                $data = $repository->findLatestDataForStationAndPollutant($station, Pollutant::POLLUTANT_O3);
 
                 if ($data) {
-                    $dataList[Data::POLLUTANT_O3] = $data;
+                    $dataList[Pollutant::POLLUTANT_O3] = $data;
                 }
             }
 
-            if (!array_key_exists(Data::POLLUTANT_SO2, $dataList)) {
-                $data = $repository->findLatestDataForStationAndPollutant($station, Data::POLLUTANT_SO2);
+            if (!array_key_exists(Pollutant::POLLUTANT_SO2, $dataList)) {
+                $data = $repository->findLatestDataForStationAndPollutant($station, Pollutant::POLLUTANT_SO2);
 
                 if ($data) {
-                    $dataList[Data::POLLUTANT_SO2] = $data;
+                    $dataList[Pollutant::POLLUTANT_SO2] = $data;
                 }
             }
 
-            if (!array_key_exists(Data::POLLUTANT_CO, $dataList)) {
-                $data = $repository->findLatestDataForStationAndPollutant($station, Data::POLLUTANT_CO);
+            if (!array_key_exists(Pollutant::POLLUTANT_CO, $dataList)) {
+                $data = $repository->findLatestDataForStationAndPollutant($station, Pollutant::POLLUTANT_CO);
 
                 if ($data) {
-                    $dataList[Data::POLLUTANT_CO] = $data;
+                    $dataList[Pollutant::POLLUTANT_CO] = $data;
                 }
             }
         }

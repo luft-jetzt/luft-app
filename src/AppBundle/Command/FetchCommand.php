@@ -3,6 +3,7 @@
 namespace AppBundle\Command;
 
 use AppBundle\Entity\Data;
+use AppBundle\Pollutant\Pollutant;
 use AppBundle\SourceFetcher\Parser\UbParser;
 use AppBundle\SourceFetcher\Persister\Persister;
 use AppBundle\SourceFetcher\Query\AbstractQuery;
@@ -67,35 +68,35 @@ class FetchCommand extends ContainerAwareCommand
     {
         $query = new UbPM10Query($dateTime);
 
-        $this->fetch($query, Data::POLLUTANT_PM10);
+        $this->fetch($query, Pollutant::POLLUTANT_PM10);
     }
 
     protected function fetchSO2(\DateTime $dateTime)
     {
         $query = new UbSO2Query($dateTime);
 
-        $this->fetch($query, Data::POLLUTANT_SO2);
+        $this->fetch($query, Pollutant::POLLUTANT_SO2);
     }
 
     protected function fetchNO2(\DateTime $dateTime)
     {
         $query = new UbNO2Query($dateTime);
 
-        $this->fetch($query, Data::POLLUTANT_NO2);
+        $this->fetch($query, Pollutant::POLLUTANT_NO2);
     }
 
     protected function fetchO3(\DateTime $dateTime)
     {
         $query = new UbO3Query($dateTime);
 
-        $this->fetch($query, Data::POLLUTANT_O3);
+        $this->fetch($query, Pollutant::POLLUTANT_O3);
     }
 
     protected function fetchCO(\DateTime $dateTime)
     {
         $query = new UbCOQuery($dateTime);
 
-        $this->fetch($query, Data::POLLUTANT_CO);
+        $this->fetch($query, Pollutant::POLLUTANT_CO);
     }
 
     protected function fetch(AbstractQuery $query, string $pollutant)
