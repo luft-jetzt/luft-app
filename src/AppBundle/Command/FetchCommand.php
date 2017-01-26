@@ -2,8 +2,7 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Entity\Data;
-use AppBundle\Pollutant\Pollutant;
+use AppBundle\Pollution\Pollutant\Pollutant;
 use AppBundle\SourceFetcher\Parser\UbParser;
 use AppBundle\SourceFetcher\Persister\Persister;
 use AppBundle\SourceFetcher\Query\AbstractQuery;

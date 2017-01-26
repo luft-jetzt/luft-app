@@ -2,9 +2,7 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Data;
-use AppBundle\Entity\Station;
-use AppBundle\Pollutant\Pollutant;
+use AppBundle\Pollution\Pollutant\Pollutant;
 use AppBundle\Repository\DataRepository;
 use Caldera\GeoBasic\Coord\Coord;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

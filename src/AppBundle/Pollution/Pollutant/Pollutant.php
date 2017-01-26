@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Pollutant;
+namespace AppBundle\Pollution\Pollutant;
 
 class Pollutant
 {

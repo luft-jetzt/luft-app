@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\PollutionLevel;
+namespace AppBundle\Pollution\PollutionLevel;
 
 class PollutionLevel
 {
