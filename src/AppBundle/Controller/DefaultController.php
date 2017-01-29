@@ -154,10 +154,12 @@ class DefaultController extends Controller
             $data = $box->getData();
 
             $pollutant = $this->getPollutantById($data->getPollutant());
+            $level = $pollutant->getPollutionLevel()->getLevel($data);
 
             $box
                 ->setStation($data->getStation())
                 ->setPollutant($pollutant)
+                ->setPollutionLevel($level)
             ;
         }
         return $boxList;

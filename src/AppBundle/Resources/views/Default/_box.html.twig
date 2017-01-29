@@ -1,6 +1,22 @@
 {% if box %}
+    {% if box.pollutionLevel == constant('LEVEL_ACCEPTABLE', box.pollutant.pollutionLevel) %}
+    {% set levelClass = 'card-success' %}
+    {% endif %}
+
+    {% if box.pollutionLevel == constant('LEVEL_WARNING', box.pollutant.pollutionLevel) %}
+    {% set levelClass = 'card-warning' %}
+    {% endif %}
+
+    {% if box.pollutionLevel == constant('LEVEL_DANGER', box.pollutant.pollutionLevel) %}
+    {% set levelClass = 'card-danger' %}
+    {% endif %}
+
+    {% if box.pollutionLevel == constant('LEVEL_DEATH', box.pollutant.pollutionLevel) %}
+    {% set levelClass = 'card-danger' %}
+    {% endif %}
+
 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
-    <div class="card card-inverse card-danger text-center">
+    <div class="card card-inverse {{ levelClass }} text-center">
         <div class="card-block text-xs-center">
             <h4 class="card-title">
                 {{ box.data.value }} {{ box.pollutant.unit|raw }}
@@ -9,5 +25,6 @@
             <p class="card-text">{{ box.station.title }}</p>
         </div>
     </div>
+    {{ box.pollutionLevel }}
 </div>
 {% endif %}
