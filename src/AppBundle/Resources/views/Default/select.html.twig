@@ -13,26 +13,38 @@
     </head>
     <body>
 
-    <script src="{{ asset('bundles/app/js/jquery/jquery-3.1.1.min.js') }}"></script>
-    <script src="{{ asset('bundles/app/js/bootstrap/bootstrap.min.js') }}"></script>
-    <script>
-        var options = {
-            enableHighAccuracy: true,
-            timeout: 5000,
-            maximumAge: 0
-        };
 
-        function success(pos) {
-            var coords = pos.coords;
+        <script src="{{ asset('bundles/app/js/jquery/jquery-3.1.1.min.js') }}"></script>
+        <script src="{{ asset('bundles/app/js/bootstrap/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 
-            alert(coords.latitude, coords.longitude);
-        };
+        <script>
+            var options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            };
 
-        function error(err) {
-            console.warn(`ERROR(${err.code}): ${err.message}`);
-        };
+            function success(pos) {
+                var coords = pos.coords;
 
-        navigator.geolocation.getCurrentPosition(success, error, options);
-    </script>
+                var route = Routing.generate(
+                    'display',
+                    {
+                        latitude: coords.latitude,
+                        longitude: coords.longitude
+                    }
+                );
+
+                window.location = route;
+            };
+
+            function error(err) {
+                console.warn(`ERROR(${err.code}): ${err.message}`);
+            };
+
+            navigator.geolocation.getCurrentPosition(success, error, options);
+        </script>
     </body>
 </html>

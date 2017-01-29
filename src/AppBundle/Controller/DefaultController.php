@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/", name="display", options = { "expose" = true })
      */
     public function indexAction(Request $request)
     {
