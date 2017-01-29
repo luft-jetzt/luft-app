@@ -50,7 +50,6 @@ class UbParser
                     ->setValue($value)
                 ;
 
-                echo $line;
             } catch (\Exception $e) {
 
             }
