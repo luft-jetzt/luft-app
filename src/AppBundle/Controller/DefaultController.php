@@ -28,7 +28,7 @@ class DefaultController extends Controller
         $longitude = $request->query->get('longitude');
 
         if (!$latitude || !$longitude) {
-            throw $this->createNotFoundException();
+            return $this->render('AppBundle:Default:select.html.twig');
         }
 
         $coord = new Coord(
