@@ -18,6 +18,6 @@ class SO2 extends AbstractPollutant
 
     public function getPollutionLevel(): PollutionLevel
     {
-        return new PollutionLevel(10, 20, 30, 40);
+        return new PollutionLevel(105, 210, 350, 600);
     }
 }

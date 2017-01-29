@@ -18,6 +18,6 @@ class CO extends AbstractPollutant
 
     public function getPollutionLevel(): PollutionLevel
     {
-        return new PollutionLevel(10, 20, 30, 40);
+        return new PollutionLevel(3000, 7000, 10000, 15000);
     }
 }

@@ -18,6 +18,6 @@ class O3 extends AbstractPollutant
 
     public function getPollutionLevel(): PollutionLevel
     {
-        return new PollutionLevel(10, 20, 30, 40);
+        return new PollutionLevel(54, 108, 180, 240);
     }
 }

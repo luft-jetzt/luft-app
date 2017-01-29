@@ -18,6 +18,6 @@ class PM10 extends AbstractPollutant
 
     public function getPollutionLevel(): PollutionLevel
     {
-        return new PollutionLevel(10, 20, 30, 40);
+        return new PollutionLevel(20, 35, 45, 75);
     }
 }
