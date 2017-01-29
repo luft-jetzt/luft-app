@@ -30,7 +30,8 @@
         "incenteev/composer-parameter-handler": "^2.0",
         "curl/curl": "^1.6",
         "calderacc/geobasic": "^0.1.0",
-        "friendsofsymfony/elastica-bundle": "^3.2"
+        "friendsofsymfony/elastica-bundle": "^3.2",
+        "friendsofsymfony/jsrouting-bundle": "^1.6"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
