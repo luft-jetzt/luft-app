@@ -3,7 +3,7 @@
     <div class="card card-inverse card-danger text-center">
         <div class="card-block text-xs-center">
             <h4 class="card-title">
-                {{ box.data.value }} {{ box.pollutant.unit }}
+                {{ box.data.value }} {{ box.pollutant.unit|raw }}
             </h4>
             <p class="card-text">{{ box.pollutant.name }}</p>
             <p class="card-text">{{ box.station.title }}</p>

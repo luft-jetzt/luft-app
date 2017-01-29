@@ -8,7 +8,7 @@ class PM10 extends AbstractPollutant
 {
     public function getUnit(): string
     {
-        return 'mg/m3';
+        return 'mg/m<sup>3</sup>';
     }
 
     public function getName(): string
