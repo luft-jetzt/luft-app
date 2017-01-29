@@ -4,6 +4,7 @@ namespace AppBundle\Pollution\Box;
 
 use AppBundle\Entity\Data;
 use AppBundle\Entity\Station;
+use AppBundle\Pollution\Pollutant\PollutantInterface;
 
 class Box
 {
@@ -12,6 +13,11 @@ class Box
     protected $pollutant;
     protected $pollutionLevel;
     protected $caption;
+
+    public function __construct(Data $data)
+    {
+        $this->data = $data;
+    }
 
     public function getStation(): Station
     {
@@ -42,7 +48,7 @@ class Box
         return $this->pollutant;
     }
 
-    public function setPollutant(int $pollutant): Box
+    public function setPollutant(PollutantInterface $pollutant): Box
     {
         $this->pollutant = $pollutant;
 

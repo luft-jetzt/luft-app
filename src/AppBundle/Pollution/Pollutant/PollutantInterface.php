@@ -2,6 +2,8 @@
 
 namespace AppBundle\Pollution\Pollutant;
 
+use AppBundle\Pollution\PollutionLevel\PollutionLevel;
+
 interface PollutantInterface
 {
     const POLLUTANT_PM10 = 1;
@@ -12,4 +14,5 @@ interface PollutantInterface
 
     public function getUnit(): string;
     public function getName(): string;
+    public function getPollutionLevel(): PollutionLevel;
 }

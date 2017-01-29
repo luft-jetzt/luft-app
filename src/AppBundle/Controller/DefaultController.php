@@ -5,7 +5,12 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Data;
 use AppBundle\Entity\Station;
 use AppBundle\Pollution\Box\Box;
+use AppBundle\Pollution\Pollutant\CO;
+use AppBundle\Pollution\Pollutant\NO2;
+use AppBundle\Pollution\Pollutant\O3;
+use AppBundle\Pollution\Pollutant\PM10;
 use AppBundle\Pollution\Pollutant\PollutantInterface;
+use AppBundle\Pollution\Pollutant\SO2;
 use AppBundle\Repository\DataRepository;
 use Caldera\GeoBasic\Coord\Coord;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -35,10 +40,12 @@ class DefaultController extends Controller
 
         $dataList = $this->getDataListFromStationList($stationList);
 
+        $boxList = $this->getBoxListFromDataList($dataList);
+
         return $this->render(
             'AppBundle:Default:index.html.twig',
             [
-                'dataList' => $dataList
+                'boxList' => $boxList
             ]
         );
     }
@@ -117,13 +124,38 @@ class DefaultController extends Controller
     protected function createBox(Data $data): Box
     {
         $box = new Box();
+        $pollutant = $this->getPollutantById($data->getPollutant());
 
         $box
             ->setData($data)
             ->setStation($data->getStation())
-            ->setPollutant($data->getPollutant())
+            ->setPollutant($pollutant)
         ;
 
         return $box;
+    }
+
+    protected function getPollutantById(int $pollutantId): PollutantInterface
+    {
+        switch ($pollutantId) {
+            case 1: return new PM10();
+            case 2: return new O3();
+            case 3: return new NO2();
+            case 4: return new SO2();
+            case 5: return new CO();
+        }
+    }
+
+    private function getBoxListFromDataList(array $dataList): array
+    {
+        $boxList = [];
+
+        foreach ($dataList as $data) {
+            if ($data) {
+                $boxList[] = new Box($data);
+            }
+        }
+
+        return $boxList;
     }
 }

@@ -2,6 +2,8 @@
 
 namespace AppBundle\Pollution\Pollutant;
 
+use AppBundle\Pollution\PollutionLevel\PollutionLevel;
+
 class SO2 extends AbstractPollutant
 {
     public function getUnit(): string
@@ -12,5 +14,10 @@ class SO2 extends AbstractPollutant
     public function getName(): string
     {
         return 'Schwefeldioxid';
+    }
+
+    public function getPollutionLevel(): PollutionLevel
+    {
+        return new PollutionLevel(10, 20, 30, 40);
     }
 }
