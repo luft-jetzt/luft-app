@@ -3,7 +3,7 @@
 namespace AppBundle\Pollution\DataList;
 
 use AppBundle\Pollution\Box\Box;
-use AppBundle\Pollution\Pollutant\Pollutant;
+use AppBundle\Pollution\Pollutant\PollutantInterface;
 
 class DataList
 {
@@ -12,11 +12,11 @@ class DataList
     public function __construct()
     {
         $this->boxes = [
-            Pollutant::POLLUTANT_PM10 => null,
-            Pollutant::POLLUTANT_O3 => null,
-            Pollutant::POLLUTANT_NO2 => null,
-            Pollutant::POLLUTANT_SO2 => null,
-            Pollutant::POLLUTANT_CO => null,
+            PollutantInterface::POLLUTANT_PM10 => null,
+            PollutantInterface::POLLUTANT_O3 => null,
+            PollutantInterface::POLLUTANT_NO2 => null,
+            PollutantInterface::POLLUTANT_SO2 => null,
+            PollutantInterface::POLLUTANT_CO => null,
         ];
     }
 

@@ -5,7 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Data;
 use AppBundle\Entity\Station;
 use AppBundle\Pollution\Box\Box;
-use AppBundle\Pollution\Pollutant\Pollutant;
+use AppBundle\Pollution\Pollutant\PollutantInterface;
 use AppBundle\Repository\DataRepository;
 use Caldera\GeoBasic\Coord\Coord;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -84,11 +84,11 @@ class DefaultController extends Controller
     protected function getDataListFromStationList(array $stationList): array
     {
         $dataList = [
-            Pollutant::POLLUTANT_PM10 => null,
-            Pollutant::POLLUTANT_O3 => null,
-            Pollutant::POLLUTANT_NO2 => null,
-            Pollutant::POLLUTANT_SO2 => null,
-            Pollutant::POLLUTANT_CO => null,
+            PollutantInterface::POLLUTANT_PM10 => null,
+            PollutantInterface::POLLUTANT_O3 => null,
+            PollutantInterface::POLLUTANT_NO2 => null,
+            PollutantInterface::POLLUTANT_SO2 => null,
+            PollutantInterface::POLLUTANT_CO => null,
         ];
 
         foreach ($stationList as $station) {
