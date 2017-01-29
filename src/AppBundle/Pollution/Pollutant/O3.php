@@ -8,7 +8,7 @@ class O3 extends AbstractPollutant
 {
     public function getUnit(): string
     {
-        return 'mg/m<sup>3</sup>';
+        return 'µg/m<sup>3</sup>';
     }
 
     public function getName(): string
