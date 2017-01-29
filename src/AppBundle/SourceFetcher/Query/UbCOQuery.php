@@ -10,8 +10,8 @@ class UbCOQuery extends AbstractQuery
         $this->scope = ['8SMW'];
         $this->group = ['station'];
 
-        $from = $datetime->format('U');
-        $to = $from + 3600;
+        $to = $datetime->format('U');
+        $from = $to - 3600;
 
         $this->range = [$from, $to];
     }

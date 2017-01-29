@@ -10,8 +10,8 @@ class UbPM10Query extends AbstractQuery
         $this->scope = ['1TMW'];
         $this->group = ['station'];
 
-        $from = $datetime->format('U');
-        $to = $from + 86400;
+        $to = $datetime->format('U');
+        $from = $to - 86400;
 
         $this->range = [$from, $to];
     }
