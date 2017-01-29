@@ -2,7 +2,7 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Pollution\Pollutant\Pollutant;
+use AppBundle\Pollution\Pollutant\PollutantInterface;
 use AppBundle\SourceFetcher\Parser\UbParser;
 use AppBundle\SourceFetcher\Persister\Persister;
 use AppBundle\SourceFetcher\Query\AbstractQuery;
@@ -39,7 +39,7 @@ class FetchCommand extends ContainerAwareCommand
         if ($input->getArgument('dateTime')) {
             $dateTime = new \DateTime($input->getArgument('dateTime'));
         } else {
-            $dateTime = new \DateTime('2017-01-15 12:00:00');
+            $dateTime = new \DateTime();
         }
 
         if ($input->getOption('pm10')) {
@@ -67,35 +67,35 @@ class FetchCommand extends ContainerAwareCommand
     {
         $query = new UbPM10Query($dateTime);
 
-        $this->fetch($query, Pollutant::POLLUTANT_PM10);
+        $this->fetch($query, PollutantInterface::POLLUTANT_PM10);
     }
 
     protected function fetchSO2(\DateTime $dateTime)
     {
         $query = new UbSO2Query($dateTime);
 
-        $this->fetch($query, Pollutant::POLLUTANT_SO2);
+        $this->fetch($query, PollutantInterface::POLLUTANT_SO2);
     }
 
     protected function fetchNO2(\DateTime $dateTime)
     {
         $query = new UbNO2Query($dateTime);
 
-        $this->fetch($query, Pollutant::POLLUTANT_NO2);
+        $this->fetch($query, PollutantInterface::POLLUTANT_NO2);
     }
 
     protected function fetchO3(\DateTime $dateTime)
     {
         $query = new UbO3Query($dateTime);
 
-        $this->fetch($query, Pollutant::POLLUTANT_O3);
+        $this->fetch($query, PollutantInterface::POLLUTANT_O3);
     }
 
     protected function fetchCO(\DateTime $dateTime)
     {
         $query = new UbCOQuery($dateTime);
 
-        $this->fetch($query, Pollutant::POLLUTANT_CO);
+        $this->fetch($query, PollutantInterface::POLLUTANT_CO);
     }
 
     protected function fetch(AbstractQuery $query, string $pollutant)
