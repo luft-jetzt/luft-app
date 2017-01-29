@@ -2,7 +2,7 @@
 
 namespace AppBundle\Pollution\Pollutant;
 
-class Pollutant
+abstract class AbstractPollutant implements PollutantInterface
 {
     const POLLUTANT_PM10 = 1;
     const POLLUTANT_O3 = 2;
