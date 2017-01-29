@@ -43,7 +43,7 @@ class Box
         return $this;
     }
 
-    public function getPollutant(): int
+    public function getPollutant(): PollutantInterface
     {
         return $this->pollutant;
     }

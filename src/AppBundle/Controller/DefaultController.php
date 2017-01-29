@@ -42,6 +42,8 @@ class DefaultController extends Controller
 
         $boxList = $this->getBoxListFromDataList($dataList);
 
+        $boxList = $this->decorateBoxList($boxList);
+
         return $this->render(
             'AppBundle:Default:index.html.twig',
             [
@@ -121,20 +123,6 @@ class DefaultController extends Controller
         return $repository->findLatestDataForStationAndPollutant($station, $pollutant);
     }
 
-    protected function createBox(Data $data): Box
-    {
-        $box = new Box();
-        $pollutant = $this->getPollutantById($data->getPollutant());
-
-        $box
-            ->setData($data)
-            ->setStation($data->getStation())
-            ->setPollutant($pollutant)
-        ;
-
-        return $box;
-    }
-
     protected function getPollutantById(int $pollutantId): PollutantInterface
     {
         switch ($pollutantId) {
@@ -146,7 +134,7 @@ class DefaultController extends Controller
         }
     }
 
-    private function getBoxListFromDataList(array $dataList): array
+    protected function getBoxListFromDataList(array $dataList): array
     {
         $boxList = [];
 
@@ -158,4 +146,21 @@ class DefaultController extends Controller
 
         return $boxList;
     }
+
+    protected function decorateBoxList(array $boxList): array
+    {
+        /** @var Box $box */
+        foreach ($boxList as $box) {
+            $data = $box->getData();
+
+            $pollutant = $this->getPollutantById($data->getPollutant());
+
+            $box
+                ->setStation($data->getStation())
+                ->setPollutant($pollutant)
+            ;
+        }
+        return $boxList;
+    }
+
 }
