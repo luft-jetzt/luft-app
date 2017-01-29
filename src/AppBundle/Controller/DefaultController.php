@@ -45,7 +45,7 @@ class DefaultController extends Controller
         $boxList = $this->decorateBoxList($boxList);
 
         return $this->render(
-            'AppBundle:Default:index.html.twig',
+            'AppBundle:Default:view.html.twig',
             [
                 'boxList' => $boxList
             ]
