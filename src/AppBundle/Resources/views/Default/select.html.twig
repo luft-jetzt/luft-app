@@ -1,50 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
+{% extends 'AppBundle::layout.html.twig' %}
 
-        <title>Luft</title>
+{% block content %}
+<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 
-        <link rel="stylesheet" href="{{ asset('bundles/app/css/air.css') }}" />
-    </head>
-    <body>
+<script>
+    var options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+    };
 
+    function success(pos) {
+        var coords = pos.coords;
 
-        <script src="{{ asset('bundles/app/js/jquery/jquery-3.1.1.min.js') }}"></script>
-        <script src="{{ asset('bundles/app/js/bootstrap/bootstrap.min.js') }}"></script>
-        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-        <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+        var route = Routing.generate(
+            'display',
+            {
+                latitude: coords.latitude,
+                longitude: coords.longitude
+            }
+        );
 
-        <script>
-            var options = {
-                enableHighAccuracy: true,
-                timeout: 5000,
-                maximumAge: 0
-            };
+        window.location = route;
+    };
 
-            function success(pos) {
-                var coords = pos.coords;
+    function error(err) {
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+    };
 
-                var route = Routing.generate(
-                    'display',
-                    {
-                        latitude: coords.latitude,
-                        longitude: coords.longitude
-                    }
-                );
-
-                window.location = route;
-            };
-
-            function error(err) {
-                console.warn(`ERROR(${err.code}): ${err.message}`);
-            };
-
-            navigator.geolocation.getCurrentPosition(success, error, options);
-        </script>
-    </body>
-</html>
+    navigator.geolocation.getCurrentPosition(success, error, options);
+</script>
+{% endblock %}
