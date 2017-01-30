@@ -13,6 +13,8 @@
     </head>
     <body>
         {% block content %}{% endblock %}
+
+        {% include 'AppBundle:Includes:footer.html.twig' %}
         <script src="{{ asset('bundles/app/js/jquery/jquery-3.1.1.min.js') }}"></script>
         <script src="{{ asset('bundles/app/js/bootstrap/bootstrap.min.js') }}"></script>
     </body>
