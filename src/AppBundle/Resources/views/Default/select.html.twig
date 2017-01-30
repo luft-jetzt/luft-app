@@ -1,6 +1,18 @@
 {% extends 'AppBundle::layout.html.twig' %}
 
 {% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="geolocation-failed" class="alert alert-info hidden-xs-up">
+                Dein Standort konnte leider nicht automatisch bestimmt werden.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 
@@ -23,12 +35,19 @@
         );
 
         window.location = route;
-    };
+    }
 
     function error(err) {
-        console.warn(`ERROR(${err.code}): ${err.message}`);
-    };
+        var $message = $('#geolocation-failed');
 
-    navigator.geolocation.getCurrentPosition(success, error, options);
+        $message.removeClass('hidden-xs-up');
+    }
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(success, error, options);
+    } else {
+        error();
+    }
+
 </script>
 {% endblock %}
