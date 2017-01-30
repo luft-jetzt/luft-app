@@ -12,6 +12,8 @@
         <link rel="stylesheet" href="{{ asset('bundles/app/css/air.css') }}" />
     </head>
     <body>
+        {% include 'AppBundle:Includes:header.html.twig' %}
+
         {% block content %}{% endblock %}
 
         {% include 'AppBundle:Includes:footer.html.twig' %}
