@@ -17,7 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class DefaultController extends Controller
+class DisplayController extends Controller
 {
     /**
      * @Route("/", name="display", options = { "expose" = true })
@@ -45,7 +45,7 @@ class DefaultController extends Controller
         $boxList = $this->decorateBoxList($boxList);
 
         return $this->render(
-            'AppBundle:Default:view.html.twig',
+            'AppBundle:Default:display.html.twig',
             [
                 'boxList' => $boxList
             ]
