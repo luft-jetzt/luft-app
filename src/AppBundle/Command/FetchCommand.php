@@ -37,29 +37,39 @@ class FetchCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($input->getArgument('dateTime')) {
-            $dateTime = new \DateTime($input->getArgument('dateTime'));
+            $dateTime = new \DateTimeImmutable($input->getArgument('dateTime'));
         } else {
-            $dateTime = new \DateTime();
+            $dateTime = new \DateTimeImmutable();
         }
 
+        $dateInterval2 = new \DateInterval('PT2H');
+        $dateInterval4 = new \DateInterval('PT4H');
+        $dateInterval8 = new \DateInterval('PT8H');
+        $dateInterval25 = new \DateInterval('PT25H');
+
+        $dateTime2 = $dateTime->sub($dateInterval2);
+        $dateTime4 = $dateTime->sub($dateInterval4);
+        $dateTime8 = $dateTime->sub($dateInterval8);
+        $dateTime25 = $dateTime->sub($dateInterval25);
+
         if ($input->getOption('pm10')) {
-            $this->fetchPM10($dateTime);
+            $this->fetchPM10($dateTime25);
         }
 
         if ($input->getOption('so2')) {
-            $this->fetchSO2($dateTime);
+            $this->fetchSO2($dateTime4);
         }
 
         if ($input->getOption('no2')) {
-            $this->fetchNO2($dateTime);
+            $this->fetchNO2($dateTime4);
         }
 
         if ($input->getOption('o3')) {
-            $this->fetchO3($dateTime);
+            $this->fetchO3($dateTime4);
         }
 
         if ($input->getOption('co')) {
-            $this->fetchCO($dateTime);
+            $this->fetchCO($dateTime4);
         }
     }
 
