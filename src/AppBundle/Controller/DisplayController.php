@@ -65,9 +65,10 @@ class DisplayController extends Controller
             '10km'
         );
 
-        $filteredQuery = new \Elastica\Query\Filtered(new \Elastica\Query\MatchAll(), $geoFilter);
+        $boolQuery = new \Elastica\Query\BoolQuery();
+        $boolQuery->addMust(new \Elastica\Query\Filtered(new \Elastica\Query\MatchAll(), $geoFilter));
 
-        $query = new \Elastica\Query($filteredQuery);
+        $query = new \Elastica\Query($boolQuery);
 
         $query->setSize(15);
         $query->setSort(
