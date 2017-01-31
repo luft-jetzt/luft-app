@@ -2,6 +2,7 @@
 
 namespace AppBundle\SourceFetcher\Parser;
 
+use AppBundle\SourceFetcher\Query\QueryInterface;
 use AppBundle\SourceFetcher\Value\Value;
 
 class UbParser
@@ -9,11 +10,12 @@ class UbParser
     const STATION = 0;
     const DATETIME = 5;
     const VALUE = 6;
-    const DATETIME_FORMAT = 'd.m.Y H:i';
 
-    public function __construct()
+    protected $query = null;
+
+    public function __construct(QueryInterface $query)
     {
-
+        $this->query = $query;
     }
 
     public function parse(string $string, string $pollutant): array
