@@ -63,15 +63,12 @@ class DisplayController extends Controller
                 'lat' => $coord->getLatitude(),
                 'lon' => $coord->getLongitude()
             ],
-            '1km'
+            '1500km'
         );
 
         $filteredQuery = new \Elastica\Query\Filtered(new \Elastica\Query\MatchAll(), $geoFilter);
 
-        $boolQuery = new \Elastica\Query\BoolQuery();
-        $boolQuery->addMust($filteredQuery);
-
-        $query = new \Elastica\Query($boolQuery);
+        $query = new \Elastica\Query($filteredQuery);
 
         $query->setSize(15);
         $query->setSort(
@@ -89,7 +86,6 @@ class DisplayController extends Controller
             ]
         );
 
-        echo '<pre>'.json_encode($query->toArray()).'</pre>';
         $results = $finder->find($query);
 
         return $results;
