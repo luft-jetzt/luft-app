@@ -13,6 +13,7 @@ use AppBundle\Pollution\Pollutant\PollutantInterface;
 use AppBundle\Pollution\Pollutant\SO2;
 use AppBundle\Repository\DataRepository;
 use Caldera\GeoBasic\Coord\Coord;
+use Elastica\Query\BoolQuery;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,11 +63,13 @@ class DisplayController extends Controller
                 'lat' => $coord->getLatitude(),
                 'lon' => $coord->getLongitude()
             ],
-            '10km'
+            '1km'
         );
 
+        $filteredQuery = new \Elastica\Query\Filtered(new \Elastica\Query\MatchAll(), $geoFilter);
+
         $boolQuery = new \Elastica\Query\BoolQuery();
-        $boolQuery->addMust(new \Elastica\Query\Filtered(new \Elastica\Query\MatchAll(), $geoFilter));
+        $boolQuery->addMust($filteredQuery);
 
         $query = new \Elastica\Query($boolQuery);
 
@@ -86,6 +89,7 @@ class DisplayController extends Controller
             ]
         );
 
+        echo '<pre>'.json_encode($query->toArray()).'</pre>';
         $results = $finder->find($query);
 
         return $results;
