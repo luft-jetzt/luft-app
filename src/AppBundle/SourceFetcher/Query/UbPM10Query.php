@@ -4,7 +4,7 @@ namespace AppBundle\SourceFetcher\Query;
 
 class UbPM10Query extends AbstractQuery
 {
-    public function __construct(\DateTime $datetime)
+    public function __construct(\DateTimeInterface $datetime)
     {
         $this->pollutant = ['PM10'];
         $this->scope = ['1TMW'];

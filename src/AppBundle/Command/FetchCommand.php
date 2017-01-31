@@ -63,35 +63,35 @@ class FetchCommand extends ContainerAwareCommand
         }
     }
 
-    protected function fetchPM10(\DateTime $dateTime)
+    protected function fetchPM10(\DateTimeInterface $dateTime)
     {
         $query = new UbPM10Query($dateTime);
 
         $this->fetch($query, PollutantInterface::POLLUTANT_PM10);
     }
 
-    protected function fetchSO2(\DateTime $dateTime)
+    protected function fetchSO2(\DateTimeInterface $dateTime)
     {
         $query = new UbSO2Query($dateTime);
 
         $this->fetch($query, PollutantInterface::POLLUTANT_SO2);
     }
 
-    protected function fetchNO2(\DateTime $dateTime)
+    protected function fetchNO2(\DateTimeInterface $dateTime)
     {
         $query = new UbNO2Query($dateTime);
 
         $this->fetch($query, PollutantInterface::POLLUTANT_NO2);
     }
 
-    protected function fetchO3(\DateTime $dateTime)
+    protected function fetchO3(\DateTimeInterface $dateTime)
     {
         $query = new UbO3Query($dateTime);
 
         $this->fetch($query, PollutantInterface::POLLUTANT_O3);
     }
 
-    protected function fetchCO(\DateTime $dateTime)
+    protected function fetchCO(\DateTimeInterface $dateTime)
     {
         $query = new UbCOQuery($dateTime);
 

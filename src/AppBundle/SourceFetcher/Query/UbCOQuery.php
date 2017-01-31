@@ -4,7 +4,7 @@ namespace AppBundle\SourceFetcher\Query;
 
 class UbCOQuery extends AbstractQuery
 {
-    public function __construct(\DateTime $datetime)
+    public function __construct(\DateTimeInterface $datetime)
     {
         $this->pollutant = ['CO'];
         $this->scope = ['8SMW'];

@@ -4,7 +4,7 @@ namespace AppBundle\SourceFetcher\Query;
 
 class UbO3Query extends AbstractQuery
 {
-    public function __construct(\DateTime $datetime)
+    public function __construct(\DateTimeInterface $datetime)
     {
         $this->pollutant = ['O3'];
         $this->scope = ['1SMW'];

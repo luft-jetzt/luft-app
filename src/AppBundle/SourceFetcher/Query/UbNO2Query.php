@@ -4,7 +4,7 @@ namespace AppBundle\SourceFetcher\Query;
 
 class UbNO2Query extends AbstractQuery
 {
-    public function __construct(\DateTime $datetime)
+    public function __construct(\DateTimeInterface $datetime)
     {
         $this->pollutant = ['NO2'];
         $this->scope = ['1SMW'];
