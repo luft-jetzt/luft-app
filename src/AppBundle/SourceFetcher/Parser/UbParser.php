@@ -37,10 +37,13 @@ class UbParser
             $dataValue = new Value();
 
             try {
+                $dateTimeFormat = $this->query->getDateTimeFormat();
+
                 $station = $parts[self::STATION];
-                $dateTime = \DateTime::createFromFormat(self::DATETIME_FORMAT, $parts[self::DATETIME]);
+                $dateTime = \DateTime::createFromFormat($dateTimeFormat, $parts[self::DATETIME]);
                 $value = $parts[self::VALUE];
 
+                var_dump($dateTimeFormat);
                 if (!$station || !$dateTime || !$value) {
                     continue;
                 }
@@ -53,7 +56,7 @@ class UbParser
                 ;
 
             } catch (\Exception $e) {
-
+                var_dump($e);
             }
 
             $valueList[] = $dataValue;

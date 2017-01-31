@@ -39,4 +39,9 @@ abstract class AbstractQuery implements QueryInterface
 
         return $queryString;
     }
+
+    public function getDateTimeFormat(): string
+    {
+        return 'd.m.Y H:i';
+    }
 }

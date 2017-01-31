@@ -15,4 +15,9 @@ class UbPM10Query extends AbstractQuery
 
         $this->range = [$from, $to];
     }
+
+    public function getDateTimeFormat(): string
+    {
+        return 'd.m.Y';
+    }
 }
