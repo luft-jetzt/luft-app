@@ -77,8 +77,8 @@ class DisplayController extends Controller
                     [
                         'pin' =>
                             [
-                                $coord->getLatitude(),
-                                $coord->getLongitude()
+                                'lat' => $coord->getLatitude(),
+                                'lon' => $coord->getLongitude()
                             ],
                         'order' => 'asc',
                         'unit' => 'km'
