@@ -63,7 +63,7 @@ class DisplayController extends Controller
                 'lat' => $coord->getLatitude(),
                 'lon' => $coord->getLongitude()
             ],
-            '1500km'
+            '20km'
         );
 
         $filteredQuery = new \Elastica\Query\Filtered(new \Elastica\Query\MatchAll(), $geoFilter);
