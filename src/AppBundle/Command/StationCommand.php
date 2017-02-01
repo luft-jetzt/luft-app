@@ -39,9 +39,11 @@ class StationCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine')->getManager();
 
         foreach ($newStationData as $stationData) {
-            $station = $this->createStation($stationData);
+            if (!$this->stationExists($stationData[0], $existingStationList)) {
+                $station = $this->createStation($stationData);
 
-            $em->merge($station);
+                $em->merge($station);
+            }
         }
 
         $em->flush();

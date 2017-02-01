@@ -2,6 +2,7 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\CityLoader\ZipLoader;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -13,8 +14,8 @@ class LoadCitiesCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('cycleways:city:load')
-            ->setDescription('Load cities');
+            ->setName('luft:zip:load')
+            ->setDescription('Load zip codes');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -22,21 +23,18 @@ class LoadCitiesCommand extends ContainerAwareCommand
         /** @var EntityManager $entityManager */
         $entityManager = $this->getContainer()->get('doctrine')->getManager();
 
-        $cityLoader = new CityLoader();
+        $zipLoader = new ZipLoader();
 
-        $cityLoader->loadData();
+        $zipLoader->loadData();
 
-        $progress = new ProgressBar($output, $cityLoader->countData());
+        $progress = new ProgressBar($output, $zipLoader->countData());
         $progress->start();
 
-        while ($cityLoader->hasData()) {
-            $city = $cityLoader->parseData();
+        while ($zipLoader->hasData()) {
+            $zip = $zipLoader->parseData();
 
-            if ($city) {
-                $slug = new Slug($city->getName());
-                $city->setSlug($slug);
-
-                $entityManager->persist($city);
+            if ($zip) {
+                $entityManager->persist($zip);
             }
 
             $progress->advance();
