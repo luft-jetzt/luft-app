@@ -2,13 +2,14 @@
 
 namespace AppBundle\Entity;
 
+use Caldera\GeoBasic\Coord\Coord;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity()
  * @ORM\Table(name="zip")
  */
-class Zip
+class Zip extends Coord
 {
     /**
      * @ORM\Id

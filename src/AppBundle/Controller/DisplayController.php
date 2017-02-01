@@ -24,17 +24,11 @@ class DisplayController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $latitude = $request->query->get('latitude');
-        $longitude = $request->query->get('longitude');
+        $coord = $this->getCoordByRequest($request);
 
-        if (!$latitude || !$longitude) {
+        if (!$coord) {
             return $this->render('AppBundle:Default:select.html.twig');
         }
-
-        $coord = new Coord(
-            $latitude,
-            $longitude
-        );
 
         $stationList = $this->findNearestStations($coord);
 
@@ -50,6 +44,30 @@ class DisplayController extends Controller
                 'boxList' => $boxList
             ]
         );
+    }
+
+    protected function getCoordByRequest(Request $request): ?Coord
+    {
+        $latitude = $request->query->get('latitude');
+        $longitude = $request->query->get('longitude');
+        $zipCode = $request->query->get('zip');
+
+        if (!$latitude && !$longitude && $zipCode) {
+            $zip = $this->getDoctrine()->getRepository('AppBundle:Zip')->findOneByZip($zipCode);
+
+            return $zip;
+        }
+
+        if ($latitude && $longitude && !$zipCode) {
+            $coord = new Coord(
+                $latitude,
+                $longitude
+            );
+
+            return $coord;
+        }
+
+        return null;
     }
 
     protected function findNearestStations(Coord $coord): array
