@@ -31,7 +31,8 @@
         "curl/curl": "^1.6",
         "calderacc/geobasic": "^0.1.0",
         "friendsofsymfony/elastica-bundle": "^3.2",
-        "friendsofsymfony/jsrouting-bundle": "^1.6"
+        "friendsofsymfony/jsrouting-bundle": "^1.6",
+        "doctrine/doctrine-migrations-bundle": "^1.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
