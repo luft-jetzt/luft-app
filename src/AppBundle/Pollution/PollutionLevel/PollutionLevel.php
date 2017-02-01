@@ -25,10 +25,12 @@ class PollutionLevel
 
     public function getLevel(Data $data): int
     {
+        $levels = array_reverse($this->levels, true);
+
         $current = null;
 
-        foreach ($this->levels as $level => $value) {
-            if (!$current || $value < $data->getValue()) {
+        foreach ($levels as $level => $value) {
+            if (!$current || $data->getValue() < $value) {
                 $current = $level;
             }
         }
