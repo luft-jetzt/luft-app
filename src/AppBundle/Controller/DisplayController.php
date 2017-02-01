@@ -13,7 +13,6 @@ use AppBundle\Pollution\Pollutant\PollutantInterface;
 use AppBundle\Pollution\Pollutant\SO2;
 use AppBundle\Repository\DataRepository;
 use Caldera\GeoBasic\Coord\Coord;
-use Elastica\Query\BoolQuery;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
