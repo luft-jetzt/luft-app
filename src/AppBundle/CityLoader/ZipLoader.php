@@ -33,13 +33,12 @@ class ZipLoader
         $parts = explode("\t", $line);
 
         if (count($parts) == 16 && $parts[self::FIELD_ZIP]) {
-            $zip = new Zip();
+            $latitude = (float) $parts[self::FIELD_LATITUDE];
+            $longitude = (float) $parts[self::FIELD_LONGITUDE];
 
-            $zip
-                ->setLatitude((float) $parts[self::FIELD_LATITUDE])
-                ->setLongitude((float) $parts[self::FIELD_LONGITUDE])
-                ->setZip($parts[self::FIELD_ZIP])
-            ;
+            $zip = new Zip($latitude, $longitude);
+
+            $zip->setZip($parts[self::FIELD_ZIP]);
 
             return $zip;
         }
