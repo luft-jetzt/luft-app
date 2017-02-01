@@ -18,7 +18,7 @@ class Zip
     protected $id;
 
     /**
-     * @ORM\Column(type="string", nullable=false, maxlength=5)
+     * @ORM\Column(type="string", nullable=false, length=5)
      */
     protected $zip;
 
