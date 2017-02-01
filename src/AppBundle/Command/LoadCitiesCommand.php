@@ -31,10 +31,10 @@ class LoadCitiesCommand extends ContainerAwareCommand
         $progress->start();
 
         while ($zipLoader->hasData()) {
-            $zip = $zipLoader->parseData();
+            $zipEntityList = $zipLoader->parseData();
 
-            if ($zip) {
-                $entityManager->persist($zip);
+            foreach ($zipEntityList as $zipEntity) {
+                $entityManager->persist($zipEntity);
             }
 
             $progress->advance();

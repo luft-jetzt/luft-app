@@ -21,13 +21,16 @@ class ZipLoader
     public function loadData(): ZipLoader
     {
         $this->lines = file(self::SOURCE_URL);
+
         array_shift($this->lines);
 
         return $this;
     }
 
-    public function parseData(): ?Zip
+    public function parseData(): array
     {
+        $zipEntityList = [];
+
         $line = array_shift($this->lines); //throw headline columns away
 
         $parts = explode("\t", $line);
@@ -35,15 +38,18 @@ class ZipLoader
         if (count($parts) == 16 && $parts[self::FIELD_ZIP]) {
             $latitude = (float) $parts[self::FIELD_LATITUDE];
             $longitude = (float) $parts[self::FIELD_LONGITUDE];
+            $zipCodes = explode(',', $parts[self::FIELD_ZIP]);
 
-            $zip = new Zip($latitude, $longitude);
+            foreach ($zipCodes as $zipCode) {
+                $zipEntity = new Zip($latitude, $longitude);
 
-            $zip->setZip($parts[self::FIELD_ZIP]);
+                $zipEntity->setZip($zipCode);
 
-            return $zip;
+                $zipEntityList[] = $zipEntity;
+            }
         }
 
-        return null;
+        return $zipEntityList;
     }
 
     public function hasData(): int
