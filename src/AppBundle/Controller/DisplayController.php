@@ -16,13 +16,14 @@ use Caldera\GeoBasic\Coord\Coord;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DisplayController extends Controller
 {
     /**
      * @Route("/", name="display", options = { "expose" = true })
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         $coord = $this->getCoordByRequest($request);
 
