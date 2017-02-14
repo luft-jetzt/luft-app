@@ -21,6 +21,22 @@ use Symfony\Component\HttpFoundation\Response;
 class DisplayController extends Controller
 {
     /**
+     * @Route("/{stationCode}", name="station", options = { "expose" = true })
+     */
+    public function stationAction(Request $request, string $stationCode)
+    {
+        $station = $this->getDoctrine()->getRepository('AppBundle:Station')->findOneByStationCode($stationCode);
+
+
+        return $this->render(
+            'AppBundle:Default:station.html.twig',
+            [
+                'station' => $station
+            ]
+        );
+    }
+
+    /**
      * @Route("/", name="display", options = { "expose" = true })
      */
     public function indexAction(Request $request): Response
