@@ -23,7 +23,7 @@
                     {{ box.data.value }} {{ box.pollutant.unit|raw }}
                 </h4>
                 <p class="card-text">{{ box.pollutant.name }}</p>
-                <p class="card-text">{{ box.station.title }}</p>
+                {% if showStationTitle is defined and showStationTitle != false %}<p class="card-text">{{ box.station.title }}</p>{% endif %}
             </div>
         </div>
     </a>

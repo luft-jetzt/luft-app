@@ -1,12 +1,6 @@
 {% extends 'AppBundle::layout.html.twig' %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-xs-12 text-xs-center">
-            <h3>
-                Messstation {{ station.stationCode }}
-            </h3>
     <div class="container">
         <div class="row">
             <div class="col-xs-12 text-xs-center">
@@ -21,14 +15,13 @@
                 An der Station {{ station.stationCode }} ({{ station.title }}) wurden zuletzt die folgenden Werte gemessen:
             </div>
         </div>
-    </div>
 
-    <div class="row mt-2">
-        <div class="col-xs-12">
-            {% for box in boxList %}
-                {% include 'AppBundle:Default:_box.html.twig' with {'box': box} %}
-            {% endfor %}
+        <div class="row mt-2">
+            <div class="col-xs-12">
+                {% for box in boxList %}
+                    {% include 'AppBundle:Default:_box.html.twig' with { 'box': box, 'showStationTitle': false } %}
+                {% endfor %}
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}
