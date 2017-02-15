@@ -3,22 +3,21 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-xs-12 text-xs-center">
-                <h3>
-                    Messstation {{ station.stationCode }}
-                </h3>
-            </div>
-        </div>
-
-        <div class="row mt-2 mb-2">
             <div class="col-xs-12">
-                <div id="map" style="height: 33.33vh;"></div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-12 text-xs-center">
-                An der Station {{ station.stationCode }} ({{ station.title }}) wurden zuletzt die folgenden Werte gemessen:
+                <div class="card">
+                    <div id="map" class="card-img-top" style="height: 33.33vh;"></div>
+                    <div class="card-block">
+                        <h4 class="card-title">
+                            Messstation {{ station.stationCode }}
+                        </h4>
+                        <h6 class="card-sutitle mb-2 text-muted">
+                            {{ station.title }}
+                        </h6>
+                        <p class="card-text">
+                            An der Station {{ station.stationCode }}  wurden zuletzt die folgenden Werte gemessen.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
 
