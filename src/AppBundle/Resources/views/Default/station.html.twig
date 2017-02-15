@@ -22,11 +22,9 @@
         </div>
 
         <div class="row mt-2">
-            <div class="col-xs-12">
-                {% for box in boxList %}
-                    {% include 'AppBundle:Default:_box.html.twig' with { 'box': box, 'showStationTitle': false } %}
-                {% endfor %}
-            </div>
+            {% for box in boxList %}
+                {% include 'AppBundle:Default:_box.html.twig' with { 'box': box, 'showStationTitle': false } %}
+            {% endfor %}
         </div>
     </div>
 {% endblock %}
