@@ -10,6 +10,12 @@
             </div>
         </div>
 
+        <div class="row mt-2 mb-2">
+            <div class="col-xs-12">
+                <div id="map" style="height: 33.33vh;"></div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-xs-12 text-xs-center">
                 An der Station {{ station.stationCode }} ({{ station.title }}) wurden zuletzt die folgenden Werte gemessen:
@@ -24,4 +30,14 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        var map = L.map('map').setView([{{ station.latitude }}, {{ station.longitude }}], 13);
+        L.tileLayer('https://api.mapbox.com/styles/v1/maltehuebner/ciz8okvlo001f2spm3bbya1kd/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFsdGVodWVibmVyIiwiYSI6IjB5c2QtNXcifQ.I7OHZr0wtAvqE0wIY_psfg', {
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>'
+        }).addTo(map);
+
+    </script>
 {% endblock %}
