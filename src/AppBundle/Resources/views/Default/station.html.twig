@@ -9,5 +9,13 @@
             </h3>
         </div>
     </div>
+
+    <div class="row mt-2">
+        <div class="col-xs-12">
+            {% for box in boxList %}
+                {% include 'AppBundle:Default:_box.html.twig' with {'box': box} %}
+            {% endfor %}
+        </div>
+    </div>
 </div>
 {% endblock %}

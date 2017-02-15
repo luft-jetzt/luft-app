@@ -27,11 +27,17 @@ class DisplayController extends Controller
     {
         $station = $this->getDoctrine()->getRepository('AppBundle:Station')->findOneByStationCode($stationCode);
 
+        $dataList = $this->getDataListFromStationList([$station]);
+
+        $boxList = $this->getBoxListFromDataList($dataList);
+
+        $boxList = $this->decorateBoxList($boxList);
 
         return $this->render(
             'AppBundle:Default:station.html.twig',
             [
-                'station' => $station
+                'station' => $station,
+                'boxList' => $boxList
             ]
         );
     }
