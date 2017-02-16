@@ -1,4 +1,7 @@
+{% if linkToStation is defined and linkToStation == true %}
 <a href="{{ path('station', { 'stationCode': station.stationCode }) }}" class="no-underline">
+{% endif %}
+
     <div class="card">
         <div id="map-station-{{ station.stationCode }}" class="map" class="card-img-top" style="height: 33.33vh;" data-latitude="{{ station.latitude }}" data-longitude="{{ station.longitude }}"></div>
         <div class="card-block">
@@ -15,4 +18,7 @@
             {% endif %}
         </div>
     </div>
+
+{% if linkToStation is defined and linkToStation == true %}
 </a>
+{% endif %}

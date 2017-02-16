@@ -13,7 +13,7 @@
     {% for station in stationList %}
     <div class="row">
         <div class="col-xs-12">
-            {% include 'AppBundle:Default:_station.html.twig' with { 'station': station } %}
+            {% include 'AppBundle:Default:_station.html.twig' with { 'station': station, linkToStation: true } %}
         </div>
     </div>
     {% endfor %}
