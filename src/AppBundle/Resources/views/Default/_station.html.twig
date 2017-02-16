@@ -7,8 +7,10 @@
         <h6 class="card-sutitle mb-2 text-muted">
             {{ station.title }}
         </h6>
+        {% if description is defined %}
         <p class="card-text">
             {{ description }}
         </p>
+        {% endif %}
     </div>
 </div>
