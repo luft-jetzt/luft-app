@@ -55,6 +55,10 @@ class DisplayController extends Controller
 
         $stationList = $this->findNearestStations($coord);
 
+        if (0 === count($stationList)) {
+            return $this->render('AppBundle:Default:nostations.html.twig');
+        }
+
         $dataList = $this->getDataListFromStationList($stationList);
 
         $boxList = $this->getBoxListFromDataList($dataList);

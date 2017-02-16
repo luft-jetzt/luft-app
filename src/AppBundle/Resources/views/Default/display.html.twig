@@ -6,11 +6,6 @@
         {% for box in boxList %}
         {% include 'AppBundle:Default:_box.html.twig' with { 'box': box, 'showStationTitle': true } %}
         {% endfor %}
-        {% if boxList|length == 0 %}
-            <div class="alert alert-info">
-                Leider sind in deinem Umfeld keine Messstationen zur Luftqualität im Betrieb.
-            </div>
-        {% endif %}
     </div>
 </div>
 {% endblock %}
