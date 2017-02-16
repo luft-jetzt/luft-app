@@ -30,6 +30,8 @@
 {% endblock %}
 
 {% block scripts %}
+    <script src="/bundles/app/js/leaflet/leaflet.js"></script>
+
     <script>
         var centerLatLng = L.latLng([{{ station.latitude }}, {{ station.longitude }}]);
 
