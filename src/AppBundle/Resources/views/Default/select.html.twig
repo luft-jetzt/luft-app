@@ -13,6 +13,24 @@
     <div class="row">
         <div class="col-xs-6 offset-xs-3 text-xs-center">
             <h3>
+                Standort automatisch bestimmen
+            </h3>
+
+            <p>
+
+            </p>
+
+            <p>
+                <button id="locate-button" class="btn btn-primary btn-lg">
+                    Standort bestimmen
+                </button>
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6 offset-xs-3 text-xs-center">
+            <h3>
                 Postleitzahl
             </h3>
 
@@ -70,11 +88,13 @@
         $message.removeClass('hidden-xs-up');
     }
 
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(success, error, options);
-    } else {
-        error();
-    }
+    $('#locate-button').on('click', function() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(success, error, options);
+        } else {
+            error();
+        }
+    });
 
 </script>
 {% endblock %}
