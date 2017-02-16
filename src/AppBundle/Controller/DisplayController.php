@@ -79,7 +79,13 @@ class DisplayController extends Controller
             $coord = $this->getCoordByRequest($request);
         }
 
-        return $this->render('AppBundle:Default:nostations.html.twig');
+        $stationList = $this->findNearestStations($coord, 1000);
+
+        return $this->render(
+            'AppBundle:Default:nostations.html.twig',
+            [
+                'stationList' => $stationList
+            ]);
     }
 
     protected function getCoordByRequest(Request $request): ?Coord
@@ -106,7 +112,7 @@ class DisplayController extends Controller
         return null;
     }
 
-    protected function findNearestStations(Coord $coord): array
+    protected function findNearestStations(Coord $coord, int $distance = 20): array
     {
         $finder = $this->container->get('fos_elastica.finder.air.station');
 
@@ -116,7 +122,7 @@ class DisplayController extends Controller
                 'lat' => $coord->getLatitude(),
                 'lon' => $coord->getLongitude()
             ],
-            '20km'
+            $distance.'km'
         );
 
         $filteredQuery = new \Elastica\Query\Filtered(new \Elastica\Query\MatchAll(), $geoFilter);
