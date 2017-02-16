@@ -16,7 +16,10 @@
     {% endif %}
 
 <div class="col-xs-12">
-    <a href="{{ path('station', { stationCode: box.station.stationCode }) }}" class="no-underline">
+
+    {% if linkToStation is defined and linkToStation == true %}
+    <a href="{{ path('station', { 'stationCode': box.station.stationCode }) }}" class="no-underline">
+    {% endif %}
         <div class="card card-inverse {{ levelClass }} text-center">
             <div class="card-block text-xs-center">
                 <h4 class="card-title">
@@ -26,6 +29,8 @@
                 {% if showStationTitle is defined and showStationTitle != false %}<p class="card-text">{{ box.station.title }}</p>{% endif %}
             </div>
         </div>
+    {% if linkToStation is defined and linkToStation == true %}
     </a>
+    {% endif %}
 </div>
 {% endif %}
