@@ -56,7 +56,7 @@ class DisplayController extends Controller
         $stationList = $this->findNearestStations($coord);
 
         if (0 === count($stationList)) {
-            return $this->render('AppBundle:Default:nostations.html.twig');
+            return $this->noStationAction($request, $coord);
         }
 
         $dataList = $this->getDataListFromStationList($stationList);
@@ -71,6 +71,15 @@ class DisplayController extends Controller
                 'boxList' => $boxList
             ]
         );
+    }
+
+    public function noStationAction(Request $request, Coord $coord = null): Response
+    {
+        if (!$coord) {
+            $coord = $this->getCoordByRequest($request);
+        }
+
+        return $this->render('AppBundle:Default:nostations.html.twig');
     }
 
     protected function getCoordByRequest(Request $request): ?Coord
