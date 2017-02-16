@@ -27,6 +27,10 @@ class DisplayController extends Controller
     {
         $station = $this->getDoctrine()->getRepository('AppBundle:Station')->findOneByStationCode($stationCode);
 
+        if (!$station) {
+            throw $this->createNotFoundException();
+        }
+
         $dataList = $this->getDataListFromStationList([$station]);
 
         $boxList = $this->getBoxListFromDataList($dataList);
