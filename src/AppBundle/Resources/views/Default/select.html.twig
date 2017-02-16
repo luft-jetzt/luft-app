@@ -60,41 +60,5 @@
 {% block scripts %}
 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-
-<script>
-    var options = {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0
-    };
-
-    function success(pos) {
-        var coords = pos.coords;
-
-        var route = Routing.generate(
-            'display',
-            {
-                latitude: coords.latitude,
-                longitude: coords.longitude
-            }
-        );
-
-        window.location = route;
-    }
-
-    function error(err) {
-        var $message = $('#geolocation-failed');
-
-        $message.removeClass('hidden-xs-up');
-    }
-
-    $('#locate-button').on('click', function() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(success, error, options);
-        } else {
-            error();
-        }
-    });
-
-</script>
+<script src="{{ asset('bundles/app/js/geolocation.js') }}"></script>
 {% endblock %}

@@ -1,4 +1,4 @@
-$( document ).ready(createAllMaps);
+$(document).ready(createAllMaps);
 
 function createAllMaps() {
     $('.map').each(function (index) {
