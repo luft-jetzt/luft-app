@@ -12,7 +12,7 @@ class DisplayController extends AbstractController
     /**
      * @Route("/{stationCode}", name="station", options = { "expose" = true })
      */
-    public function stationAction(Request $request, string $stationCode)
+    public function stationAction(Request $request, string $stationCode): Response
     {
         $station = $this->getDoctrine()->getRepository('AppBundle:Station')->findOneByStationCode($stationCode);
 
