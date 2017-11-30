@@ -9,6 +9,6 @@
     </route>
 
     <route id="api_display" path="/">
-        <default key="_controller">AppBundle:Api:index</default>
+        <default key="_controller">AppBundle:Api:display</default>
     </route>
 </routes>
