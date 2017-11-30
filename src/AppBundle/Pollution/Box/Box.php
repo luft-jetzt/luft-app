@@ -7,6 +7,9 @@ use AppBundle\Entity\Station;
 use AppBundle\Pollution\Pollutant\PollutantInterface;
 use JMS\Serializer\Annotation as JMS;
 
+/**
+ * @JMS\ExclusionPolicy("ALL")
+ */
 class Box
 {
     /**

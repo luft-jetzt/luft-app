@@ -11,6 +11,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\StationRepository")
  * @ORM\Table(name="station")
  * @UniqueEntity("stationCode")
+ * @JMS\ExclusionPolicy("ALL")
  */
 class Station
 {
