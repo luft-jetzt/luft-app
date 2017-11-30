@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -57,11 +58,6 @@ class ApiController extends AbstractController
 
         $boxList = $this->decorateBoxList($boxList);
 
-        return $this->render(
-            'AppBundle:Default:display.html.twig',
-            [
-                'boxList' => $boxList
-            ]
-        );
+        return new JsonResponse($boxList);
     }
 }
