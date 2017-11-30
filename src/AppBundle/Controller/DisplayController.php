@@ -13,16 +13,12 @@ use AppBundle\Pollution\Pollutant\PollutantInterface;
 use AppBundle\Pollution\Pollutant\SO2;
 use AppBundle\Repository\DataRepository;
 use Caldera\GeoBasic\Coord\Coord;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class DisplayController extends Controller
 {
-    /**
-     * @Route("/{stationCode}", name="station", options = { "expose" = true })
-     */
     public function stationAction(Request $request, string $stationCode)
     {
         $station = $this->getDoctrine()->getRepository('AppBundle:Station')->findOneByStationCode($stationCode);
@@ -46,9 +42,6 @@ class DisplayController extends Controller
         );
     }
 
-    /**
-     * @Route("/", name="display", options = { "expose" = true })
-     */
     public function indexAction(Request $request): Response
     {
         $coord = $this->getCoordByRequest($request);
