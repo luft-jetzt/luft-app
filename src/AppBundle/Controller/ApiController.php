@@ -51,6 +51,6 @@ class ApiController extends AbstractController
 
         $boxList = $this->decorateBoxList($boxList);
 
-        return new JsonResponse($boxList);
+        return new JsonResponse($this->get('jms_serializer')->serialize($boxList, 'json'), 200, [], true);
     }
 }
