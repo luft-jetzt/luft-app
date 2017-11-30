@@ -4,6 +4,11 @@
         xsi:schemaLocation="http://symfony.com/schema/routing
         http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <import resource="routing/api.xml" prefix="/api" />
-    <import resource="routing/frontend.xml" />
+    <route id="station" path="/{stationCode}">
+        <default key="_controller">AppBundle:Api:station</default>
+    </route>
+
+    <route id="display" path="/">
+        <default key="_controller">AppBundle:Api:index</default>
+    </route>
 </routes>
