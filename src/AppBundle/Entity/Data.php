@@ -3,10 +3,12 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DataRepository")
  * @ORM\Table(name="data")
+ * @JMS\ExclusionPolicy("ALL")
  */
 class Data
 {
@@ -25,16 +27,20 @@ class Data
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
+     * @JMS\Expose()
+     * @JMS\Type("DateTime<'U'>")
      */
     protected $dateTime;
 
     /**
      * @ORM\Column(type="float", nullable=false)
+     * @JMS\Expose()
      */
     protected $value;
 
     /**
      * @ORM\Column(type="smallint", nullable=false)
+     * @JMS\Expose()
      */
     protected $pollutant;
 

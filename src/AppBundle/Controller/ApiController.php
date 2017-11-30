@@ -2,11 +2,12 @@
 
 namespace AppBundle\Controller;
 
-use Caldera\GeoBasic\Coord\Coord;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class DisplayController extends AbstractController
+class ApiController extends AbstractController
 {
     public function stationAction(Request $request, string $stationCode): Response
     {
@@ -31,7 +32,18 @@ class DisplayController extends AbstractController
         );
     }
 
-    public function indexAction(Request $request): Response
+    /**
+     * Get pollution data for a coord by latitude and longitude.
+     *
+     * @ApiDoc(
+     *   description="Retrieve pollution data for coords",
+     *   parameters={
+     *     {"name"="latitude", "dataType"="float", "required"=true, "description"="Latitude"},
+     *     {"name"="longitude", "dataType"="float", "required"=true, "description"="Longitude"}
+     *   }
+     * )
+     */
+    public function displayAction(Request $request): Response
     {
         $coord = $this->getCoordByRequest($request);
 
@@ -51,26 +63,6 @@ class DisplayController extends AbstractController
 
         $boxList = $this->decorateBoxList($boxList);
 
-        return $this->render(
-            'AppBundle:Default:display.html.twig',
-            [
-                'boxList' => $boxList
-            ]
-        );
-    }
-
-    public function noStationAction(Request $request, Coord $coord = null): Response
-    {
-        if (!$coord) {
-            $coord = $this->getCoordByRequest($request);
-        }
-
-        $stationList = $this->findNearestStations($coord, 1000);
-
-        return $this->render(
-            'AppBundle:Default:nostations.html.twig',
-            [
-                'stationList' => $stationList
-            ]);
+        return new JsonResponse($this->get('jms_serializer')->serialize($boxList, 'json'), 200, [], true);
     }
 }

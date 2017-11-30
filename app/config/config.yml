@@ -86,3 +86,5 @@ fos_elastica:
                         provider: ~
                         listener: ~
                         finder: ~
+
+nelmio_api_doc: ~
