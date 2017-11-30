@@ -21,13 +21,13 @@ class Data
     /**
      * @ORM\ManyToOne(targetEntity="Station", inversedBy="datas")
      * @ORM\JoinColumn(name="station_id", referencedColumnName="id")
-     * @JMS\Expose()
      */
     protected $station;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
      * @JMS\Expose()
+     * @JMS\Type("DateTime<'U'>")
      */
     protected $dateTime;
 
