@@ -5,13 +5,33 @@ namespace AppBundle\Pollution\Box;
 use AppBundle\Entity\Data;
 use AppBundle\Entity\Station;
 use AppBundle\Pollution\Pollutant\PollutantInterface;
+use JMS\Serializer\Annotation as JMS;
 
 class Box
 {
+    /**
+     * @JMS\Expose()
+     */
     protected $station;
+
+    /**
+     * @JMS\Expose()
+     */
     protected $data;
+
+    /**
+     * @JMS\Expose()
+     */
     protected $pollutant;
+
+    /**
+     * @JMS\Expose()
+     */
     protected $pollutionLevel;
+
+    /**
+     * @JMS\Expose()
+     */
     protected $caption;
 
     public function __construct(Data $data)
