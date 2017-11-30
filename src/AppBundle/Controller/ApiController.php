@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,6 +32,17 @@ class ApiController extends AbstractController
         );
     }
 
+    /**
+     * Get pollution data for a coord by latitude and longitude.
+     *
+     * @ApiDoc(
+     *   description="Retrieve pollution data for coords",
+     *   parameters={
+     *     {"name"="latitude", "dataType"="float", "required"=true, "description"="Latitude"},
+     *     {"name"="longitude", "dataType"="float", "required"=true, "description"="Longitude"}
+     *   }
+     * )
+     */
     public function displayAction(Request $request): Response
     {
         $coord = $this->getCoordByRequest($request);
