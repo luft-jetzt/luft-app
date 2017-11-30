@@ -6,18 +6,10 @@ use AppBundle\Pollution\PollutionLevel\PollutionLevel;
 
 class O3 extends AbstractPollutant
 {
-    public function getUnit(): string
+    public function __construct()
     {
-        return 'µg/m<sup>3</sup>';
-    }
-
-    public function getName(): string
-    {
-        return 'Ozon';
-    }
-
-    public function getPollutionLevel(): PollutionLevel
-    {
-        return new PollutionLevel(54, 108, 180, 240);
+        $this->unit = 'µg/m<sup>3</sup>';
+        $this->name = 'Ozon';
+        $this->pollutionLevel = new PollutionLevel(54, 108, 180, 240);
     }
 }

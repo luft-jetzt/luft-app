@@ -6,18 +6,10 @@ use AppBundle\Pollution\PollutionLevel\PollutionLevel;
 
 class PM10 extends AbstractPollutant
 {
-    public function getUnit(): string
+    public function __construct()
     {
-        return 'µg/m<sup>3</sup>';
-    }
-
-    public function getName(): string
-    {
-        return 'Feinstaub PM10';
-    }
-
-    public function getPollutionLevel(): PollutionLevel
-    {
-        return new PollutionLevel(20, 35, 45, 75);
+        $this->unit = 'µg/m<sup>3</sup>';
+        $this->name = 'Feinstaub PM10';
+        $this->pollutionLevel = new PollutionLevel(20, 35, 45, 75);
     }
 }

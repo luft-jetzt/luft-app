@@ -3,6 +3,7 @@
 namespace AppBundle\Pollution\Pollutant;
 
 use AppBundle\Pollution\PollutionLevel\PollutionLevel;
+use JMS\Serializer\Annotation as JMS;
 
 interface PollutantInterface
 {
@@ -12,7 +13,18 @@ interface PollutantInterface
     const POLLUTANT_SO2 = 4;
     const POLLUTANT_CO = 5;
 
+    /**
+     * @JMS\Expose()
+     */
     public function getUnit(): string;
+
+    /**
+     * @JMS\Expose()
+     */
     public function getName(): string;
+
+    /**
+     * @JMS\Expose()
+     */
     public function getPollutionLevel(): PollutionLevel;
 }
