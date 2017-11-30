@@ -2,16 +2,12 @@
 
 namespace AppBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ApiController extends AbstractController
 {
-    /**
-     * @Route("/api/{stationCode}", name="api_station", options = { "expose" = true })
-     */
     public function stationAction(Request $request, string $stationCode): Response
     {
         $station = $this->getDoctrine()->getRepository('AppBundle:Station')->findOneByStationCode($stationCode);
@@ -35,9 +31,6 @@ class ApiController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/api", name="api_display", options = { "expose" = true })
-     */
     public function displayAction(Request $request): Response
     {
         $coord = $this->getCoordByRequest($request);
