@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DataRepository")
@@ -20,21 +21,25 @@ class Data
     /**
      * @ORM\ManyToOne(targetEntity="Station", inversedBy="datas")
      * @ORM\JoinColumn(name="station_id", referencedColumnName="id")
+     * @JMS\Expose()
      */
     protected $station;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
+     * @JMS\Expose()
      */
     protected $dateTime;
 
     /**
      * @ORM\Column(type="float", nullable=false)
+     * @JMS\Expose()
      */
     protected $value;
 
     /**
      * @ORM\Column(type="smallint", nullable=false)
+     * @JMS\Expose()
      */
     protected $pollutant;
 

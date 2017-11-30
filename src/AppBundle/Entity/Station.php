@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as JMS;
 
 
 /**
@@ -22,26 +23,31 @@ class Station
 
     /**
      * @ORM\Column(type="string", length=12, nullable=false, unique=true)
+     * @JMS\Expose()
      */
     protected $stationCode;
 
     /**
      * @ORM\Column(type="string", length=2, nullable=false)
+     * @JMS\Expose()
      */
     protected $stateCode;
 
     /**
      * @ORM\Column(type="string", nullable=false)
+     * @JMS\Expose()
      */
     protected $title;
 
     /**
      * @ORM\Column(type="float", nullable=false)
+     * @JMS\Expose()
      */
     protected $latitude;
 
     /**
      * @ORM\Column(type="float", nullable=false)
+     * @JMS\Expose()
      */
     protected $longitude;
 
