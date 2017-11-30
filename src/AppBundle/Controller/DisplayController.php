@@ -3,15 +3,11 @@
 namespace AppBundle\Controller;
 
 use Caldera\GeoBasic\Coord\Coord;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class DisplayController extends AbstractController
 {
-    /**
-     * @Route("/{stationCode}", name="station", options = { "expose" = true })
-     */
     public function stationAction(Request $request, string $stationCode): Response
     {
         $station = $this->getDoctrine()->getRepository('AppBundle:Station')->findOneByStationCode($stationCode);
@@ -35,9 +31,6 @@ class DisplayController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/", name="display", options = { "expose" = true })
-     */
     public function indexAction(Request $request): Response
     {
         $coord = $this->getCoordByRequest($request);
