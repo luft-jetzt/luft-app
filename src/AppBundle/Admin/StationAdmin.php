@@ -22,11 +22,23 @@ class StationAdmin extends AbstractAdmin
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $datagridMapper->add('name');
+        $datagridMapper
+            ->add('stationCode')
+            ->add('stateCode')
+            ->add('title')
+            ->add('latitude')
+            ->add('longitude')
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
-        $listMapper->addIdentifier('name');
+        $listMapper
+            ->add('stationCode')
+            ->add('stateCode')
+            ->add('title')
+            ->add('latitude')
+            ->add('longitude')
+        ;
     }
 }
