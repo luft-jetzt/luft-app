@@ -117,7 +117,7 @@ class FetchCommand extends ContainerAwareCommand
         $parser = new UbParser($query);
         $tmpValueList = $parser->parse($response, $pollutant);
 
-        $persister = new Persister($this->getContainer()->get('doctrine'));
+        $persister = $this->getContainer()->get('AppBundle\SourceFetcher\Persister\Persister');
         $persister->persistValues($tmpValueList);
     }
 }
