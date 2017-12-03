@@ -85,6 +85,7 @@ class CityController extends CRUDController
         $city
             ->setTwitterToken($reply->oauth_token)
             ->setTwitterSecret($reply->oauth_token_secret)
+            ->setTwitterUsername($reply->screen_name)
         ;
 
         $this->getDoctrine()->getManager()->flush();
