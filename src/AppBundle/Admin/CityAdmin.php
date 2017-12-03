@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CityAdmin extends AbstractAdmin
@@ -37,6 +38,20 @@ class CityAdmin extends AbstractAdmin
         $listMapper
             ->addIdentifier('name')
             ->add('createdAt')
+            ->add('_action', null, [
+                'actions' => [
+                    'edit' => [],
+                    'twitter' => [],
+                ]
+            ])
+        ;
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection
+            ->add('twitter', $this->getRouterIdParameter().'/twitter')
+            ->add('twitter_token', $this->getRouterIdParameter().'/twitter_token')
         ;
     }
 }

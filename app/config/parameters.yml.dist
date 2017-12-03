@@ -19,3 +19,6 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
 
     admin_password: foobarbaz
+
+    twitter.client_id: ThisTokenIsNotSoSecretChangeIt
+    twitter.client_secret: ThisTokenIsNotSoSecretChangeIt
