@@ -34,7 +34,7 @@ class StationAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('stationCode')
+            ->addIdentifier('stationCode')
             ->add('stateCode')
             ->add('title')
             ->add('latitude')
