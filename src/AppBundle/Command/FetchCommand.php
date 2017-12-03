@@ -4,7 +4,6 @@ namespace AppBundle\Command;
 
 use AppBundle\Pollution\Pollutant\PollutantInterface;
 use AppBundle\SourceFetcher\Parser\UbParser;
-use AppBundle\SourceFetcher\Persister\Persister;
 use AppBundle\SourceFetcher\Query\AbstractQuery;
 use AppBundle\SourceFetcher\Query\UbCOQuery;
 use AppBundle\SourceFetcher\Query\UbNO2Query;
@@ -19,7 +18,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class FetchCommand extends ContainerAwareCommand
 {
-
     protected function configure()
     {
         $this
@@ -117,7 +115,7 @@ class FetchCommand extends ContainerAwareCommand
         $parser = new UbParser($query);
         $tmpValueList = $parser->parse($response, $pollutant);
 
-        $persister = new Persister($this->getContainer()->get('doctrine'));
+        $persister = $this->getContainer()->get('AppBundle\SourceFetcher\Persister\Persister');
         $persister->persistValues($tmpValueList);
     }
 }

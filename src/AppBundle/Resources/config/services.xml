@@ -7,5 +7,10 @@
     <imports>
         <import resource="services/admin.xml"/>
     </imports>
-</container>
 
+    <services>
+        <defaults autowire="true" autoconfigure="true" public="true" />
+
+        <service id="AppBundle\SourceFetcher\Persister\Persister" />
+    </services>
+</container>
