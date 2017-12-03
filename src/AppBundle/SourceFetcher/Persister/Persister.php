@@ -5,7 +5,7 @@ namespace AppBundle\SourceFetcher\Persister;
 use AppBundle\Entity\Data;
 use AppBundle\Entity\Station;
 use AppBundle\SourceFetcher\Value\Value;
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
 
 class Persister
 {
@@ -13,7 +13,7 @@ class Persister
     protected $entityManager;
     protected $stationList = [];
 
-    public function __construct(Registry $doctrine)
+    public function __construct(Doctrine $doctrine)
     {
         $this->doctrine = $doctrine;
         $this->entityManager = $doctrine->getManager();
@@ -47,7 +47,7 @@ class Persister
 
     protected function fetchStationList(): Persister
     {
-        $stations = $this->doctrine->getRepository('AppBundle:Station')->findAll();
+        $stations = $this->doctrine->getRepository(Station::class)->findAll();
 
         /** @var Station $station */
         foreach ($stations as $station) {
