@@ -19,6 +19,7 @@ class CityAdmin extends AbstractAdmin
             ->end()
 
             ->with('twitter', ['class' => 'col-xs-6'])
+            ->add('twitterUsername', TextType::class, ['required' => false])
             ->add('twitterToken', TextType::class, ['required' => false])
             ->add('twitterSecret', TextType::class, ['required' => false])
             ->end()
@@ -38,6 +39,7 @@ class CityAdmin extends AbstractAdmin
         $listMapper
             ->addIdentifier('name')
             ->add('createdAt')
+            ->add('twitterUsername')
             ->add('_action', null, [
                 'actions' => [
                     'edit' => [],
