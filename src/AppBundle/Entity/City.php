@@ -32,6 +32,21 @@ class City
      */
     protected $name;
 
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $twitterToken;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $twitterSecret;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $twitterUsername;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -64,5 +79,41 @@ class City
         $this->name = $name;
 
         return $this;
+    }
+
+    public function setTwitterUsername(string $twitterUsername = null): City
+    {
+        $this->twitterUsername = $twitterUsername;
+
+        return $this;
+    }
+
+    public function getTwitterUsername(): ?string
+    {
+        return $this->twitterUsername;
+    }
+
+    public function setTwitterToken(string $twitterToken = null): City
+    {
+        $this->twitterToken = $twitterToken;
+
+        return $this;
+    }
+
+    public function getTwitterToken(): ?string
+    {
+        return $this->twitterToken;
+    }
+
+    public function setTwitterSecret(string $twitterSecret = null): City
+    {
+        $this->twitterSecret = $twitterSecret;
+
+        return $this;
+    }
+
+    public function getTwitterSecret(): ?string
+    {
+        return $this->twitterSecret;
     }
 }

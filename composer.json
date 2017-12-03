@@ -36,7 +36,8 @@
         "nelmio/api-doc-bundle": "^2.0",
         "jms/serializer-bundle": "^2.2",
         "sonata-project/admin-bundle": "^3.28",
-        "sonata-project/doctrine-orm-admin-bundle": "^3.2"
+        "sonata-project/doctrine-orm-admin-bundle": "^3.2",
+        "jublonet/codebird-php": "^3.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
