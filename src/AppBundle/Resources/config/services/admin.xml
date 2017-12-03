@@ -4,13 +4,12 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services
         http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <imports>
-        <import resource="services/admin.xml"/>
-    </imports>
-
     <services>
-        <defaults autowire="true" autoconfigure="true" public="true" />
-
-        <service id="AppBundle\SourceFetcher\Persister\Persister" />
+        <service id="app.admin.station" class="AppBundle\Admin\StationAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Luft" label="Station" />
+            <argument />
+            <argument>AppBundle\Entity\Station</argument>
+            <argument />
+        </service>
     </services>
 </container>
