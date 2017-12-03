@@ -39,7 +39,9 @@ class CityAdmin extends AbstractAdmin
         $listMapper
             ->addIdentifier('name')
             ->add('createdAt')
-            ->add('twitterUsername')
+            ->add('twitterUsername', 'string', [
+                'template' => 'SonataAdminBundle:CRUD:list__twitter_username.html.twig'
+            ])
             ->add('_action', null, [
                 'actions' => [
                     'edit' => [],
