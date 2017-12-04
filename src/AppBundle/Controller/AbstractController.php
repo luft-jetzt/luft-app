@@ -12,6 +12,7 @@ use AppBundle\Pollution\Pollutant\PM10;
 use AppBundle\Pollution\Pollutant\PollutantInterface;
 use AppBundle\Pollution\Pollutant\SO2;
 use AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory;
+use AppBundle\Pollution\StationFinder\StationFinderInterface;
 use AppBundle\Repository\DataRepository;
 use Caldera\GeoBasic\Coord\Coord;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -43,7 +44,10 @@ abstract class AbstractController extends Controller
         return null;
     }
 
-
+    protected function getStationFinder(): StationFinderInterface
+    {
+        return $this->get('AppBundle\Pollution\StationFinder\ElasticStationFinder');
+    }
 
     protected function getPollutionDataFactory(): PollutionDataFactory
     {

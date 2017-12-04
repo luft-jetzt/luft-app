@@ -56,7 +56,7 @@ class DisplayController extends AbstractController
             $coord = $this->getCoordByRequest($request);
         }
 
-        $stationList = $this->findNearestStations($coord, 1000);
+        $stationList = $this->getStationFinder()->setCoord($coord)->findNearestStations(1000.0);
 
         return $this->render(
             'AppBundle:Default:nostations.html.twig',
