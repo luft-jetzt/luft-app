@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Station;
 use Caldera\GeoBasic\Coord\Coord;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,17 +11,13 @@ class DisplayController extends AbstractController
 {
     public function stationAction(Request $request, string $stationCode): Response
     {
-        $station = $this->getDoctrine()->getRepository('AppBundle:Station')->findOneByStationCode($stationCode);
+        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
 
         if (!$station) {
             throw $this->createNotFoundException();
         }
 
-        $dataList = $this->getDataListFromStationList([$station]);
-
-        $boxList = $this->getBoxListFromDataList($dataList);
-
-        $boxList = $this->decorateBoxList($boxList);
+        $boxList = $this->getPollutionDataFactory()->createDecoratedBoxList([$station]);
 
         return $this->render(
             'AppBundle:Default:station.html.twig',
@@ -45,11 +42,7 @@ class DisplayController extends AbstractController
             return $this->noStationAction($request, $coord);
         }
 
-        $dataList = $this->getDataListFromStationList($stationList);
-
-        $boxList = $this->getBoxListFromDataList($dataList);
-
-        $boxList = $this->decorateBoxList($boxList);
+        $boxList = $this->getPollutionDataFactory()->createDecoratedBoxList($stationList);
 
         return $this->render(
             'AppBundle:Default:display.html.twig',

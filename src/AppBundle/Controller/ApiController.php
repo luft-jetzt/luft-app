@@ -17,11 +17,7 @@ class ApiController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $dataList = $this->getDataListFromStationList([$station]);
-
-        $boxList = $this->getBoxListFromDataList($dataList);
-
-        $boxList = $this->decorateBoxList($boxList);
+        $boxList = $this->getPollutionDataFactory()->createDecoratedBoxList([$station]);
 
         return $this->render(
             'AppBundle:Default:station.html.twig',
@@ -53,15 +49,7 @@ class ApiController extends AbstractController
 
         $stationList = $this->findNearestStations($coord);
 
-        if (0 === count($stationList)) {
-            return $this->noStationAction($request, $coord);
-        }
-
-        $dataList = $this->getDataListFromStationList($stationList);
-
-        $boxList = $this->getBoxListFromDataList($dataList);
-
-        $boxList = $this->decorateBoxList($boxList);
+        $boxList = $this->getPollutionDataFactory()->createDecoratedBoxList($stationList);
 
         return new JsonResponse($this->get('jms_serializer')->serialize($boxList, 'json'), 200, [], true);
     }
