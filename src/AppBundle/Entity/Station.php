@@ -120,6 +120,11 @@ class Station extends Coord
 
     public function getPin(): string
     {
-        return $this->latitude . ',' . $this->longitude;
+        return sprintf('%f,%f', $this->latitude, $this->longitude);
+    }
+
+    public function __toString()
+    {
+        return sprintf('%s: %s', $this->stationCode, $this->title);
     }
 }
