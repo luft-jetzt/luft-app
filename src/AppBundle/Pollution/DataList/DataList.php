@@ -20,7 +20,7 @@ class DataList
         ];
     }
 
-    public function addData(Data $data, bool $overwrite = true): DataList
+    public function addData(Data $data, bool $overwrite = false): DataList
     {
         if ($overwrite || !$this->hasPollutant($data)) {
             $this->list[$data->getPollutant()] = $data;
@@ -33,15 +33,15 @@ class DataList
     {
         $pollutant = $data->getPollutant();
 
-        return array_key_exists($pollutant, $this->list) && !empty($this->list[$pollutant]);
+        return $this->list[$pollutant] !== null;
     }
 
     public function getMissingPollutants(): array
     {
         $missingList = [];
 
-        array_walk($this->list, function(Data $value = null, int $key) use ($missingList) {
-            if (!$value) {
+        array_walk($this->list, function(Data $data = null, int $key) use (&$missingList) {
+            if ($data === null) {
                 array_push($missingList, $key);
             }
         });

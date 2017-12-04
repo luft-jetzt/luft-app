@@ -75,7 +75,7 @@ class PollutionDataFactory
                 $data = $this->checkStationData($station, $pollutant);
 
                 if ($data) {
-                    $dataList[$pollutant] = $data;
+                    $this->dataList->addData($data);
                 }
             }
         }
