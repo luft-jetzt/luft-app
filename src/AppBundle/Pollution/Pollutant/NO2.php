@@ -9,7 +9,7 @@ class NO2 extends AbstractPollutant
     public function __construct()
     {
         $this->unitHtml = 'µg/m<sup>3</sup>';
-        $this->unitPlain = 'µg/m&#0179;';
+        $this->unitPlain = 'µg/m³';
         $this->name = 'Stickstoffdioxid';
         $this->pollutionLevel = new PollutionLevel(60, 120, 200, 260);
     }
