@@ -86,6 +86,16 @@ fos_elastica:
                         provider: ~
                         listener: ~
                         finder: ~
+                data:
+                    mappings:
+                        station: ~
+                        dateTime: ~
+                    persistence:
+                        driver: orm
+                        model: AppBundle\Entity\Data
+                        provider: ~
+                        listener: ~
+                        finder: ~
 
 nelmio_api_doc: ~
 
