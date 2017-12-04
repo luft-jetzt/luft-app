@@ -13,10 +13,12 @@ class DataRepository extends EntityRepository
         $qb = $this->createQueryBuilder('d');
 
         $qb
-            ->where($qb->expr()->eq('d.station', $station->getId()))
-            ->andWhere($qb->expr()->eq('d.pollutant', '\''.$pollutant.'\''))
+            ->where($qb->expr()->eq('d.station', ':station'))
+            ->andWhere($qb->expr()->eq('d.pollutant', ':pollutant'))
             ->orderBy('d.dateTime', 'DESC')
             ->setMaxResults(1)
+            ->setParameter('station', $station)
+            ->setParameter('pollutant', $pollutant)
         ;
 
         $query = $qb->getQuery();
