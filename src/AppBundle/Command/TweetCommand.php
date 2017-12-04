@@ -41,7 +41,11 @@ class TweetCommand extends ContainerAwareCommand
 
                 $message = $this->createMessage($boxList);
 
-                $cb->setToken($twitterSchedule->getCity()->getTwitterToken(), $twitterSchedule->getCity()->getTwitterSecret());
+                $twitterToken = $twitterSchedule->getCity()->getTwitterToken();
+                $twitterSecret = $twitterSchedule->getCity()->getTwitterSecret();
+
+                $cb->setToken($twitterToken, $twitterSecret);
+
                 $reply = $cb->statuses_update(sprintf('status=%s', $message));
 
                 var_dump($reply);
@@ -81,7 +85,7 @@ class TweetCommand extends ContainerAwareCommand
 
         /** @var Box $box */
         foreach ($boxList as $box) {
-            $message .= sprintf("%s: %.0f %s \n", $box->getPollutant()->getName(), $box->getData()->getValue(), $box->getPollutant()->getUnit());
+            $message .= sprintf("%s: %.0f %s \n", $box->getPollutant()->getName(), $box->getData()->getValue(), $box->getPollutant()->getUnitPlain());
         }
 
         return $message;
