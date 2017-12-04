@@ -47,7 +47,13 @@ class TweetCommand extends ContainerAwareCommand
 
                 $cb->setToken($twitterToken, $twitterSecret);
 
-                $reply = $cb->statuses_update(sprintf('status=%s', $message));
+                $params = [
+                    'status' => $message,
+                    'lat' => $coord->getLatitude(),
+                    'long' => $coord->getLongitude(),
+                ];
+
+                $reply = $cb->statuses_update($params);
 
                 var_dump($reply);
             }
@@ -92,6 +98,6 @@ class TweetCommand extends ContainerAwareCommand
             ->getMessage()
         ;
 
-        return urlencode($message);
+        return $message;
     }
 }
