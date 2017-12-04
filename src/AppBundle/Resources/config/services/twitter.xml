@@ -8,5 +8,6 @@
         <defaults autowire="true" autoconfigure="true" public="true" />
 
         <service id="AppBundle\Twitter\MessageFactory\PlainMessageFactory" />
+        <service id="AppBundle\Twitter\MessageFactory\EmojiMessageFactory" />
     </services>
 </container>

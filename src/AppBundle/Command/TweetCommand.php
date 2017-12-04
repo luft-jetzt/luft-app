@@ -83,7 +83,7 @@ class TweetCommand extends ContainerAwareCommand
     protected function createMessage(array $boxList): string
     {
         /** @var MessageFactoryInterface $factory */
-        $factory = $this->getContainer()->get('AppBundle\Twitter\MessageFactory\PlainMessageFactory');
+        $factory = $this->getContainer()->get('AppBundle\Twitter\MessageFactory\EmojiMessageFactory');
 
         $message = $factory
             ->setBoxList($boxList)
