@@ -26,7 +26,12 @@
                     {{ box.data.value }} {{ box.pollutant.unit|raw }}
                 </h4>
                 <p class="card-text">{{ box.pollutant.name }}</p>
-                {% if showStationTitle is defined and showStationTitle != false %}<p class="card-text">{{ box.station.title }}</p>{% endif %}
+                <p class="card-text">
+                {% if showStationTitle is defined and showStationTitle != false %}{{ box.station.title }}<br />{% endif %}
+                    <small>
+                        gemessen: {{ box.data.dateTime|date('d.m.Y H:i') }} Uhr
+                    </small>
+                </p>
             </div>
         </div>
     {% if linkToStation is defined and linkToStation == true %}
