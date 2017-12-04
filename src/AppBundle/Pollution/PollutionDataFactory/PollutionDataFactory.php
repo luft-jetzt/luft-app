@@ -5,19 +5,12 @@ namespace AppBundle\Pollution\PollutionDataFactory;
 use AppBundle\Entity\Data;
 use AppBundle\Entity\Station;
 use AppBundle\Pollution\Box\Box;
+use AppBundle\Pollution\BoxDecorator\BoxDecoratorInterface;
 use AppBundle\Pollution\DataList\DataList;
-use AppBundle\Pollution\Pollutant\CO;
-use AppBundle\Pollution\Pollutant\NO2;
-use AppBundle\Pollution\Pollutant\O3;
-use AppBundle\Pollution\Pollutant\PM10;
-use AppBundle\Pollution\Pollutant\PollutantInterface;
-use AppBundle\Pollution\Pollutant\SO2;
-use AppBundle\Pollution\StationFinder\ElasticStationFinder;
 use AppBundle\Pollution\StationFinder\StationFinderInterface;
 use AppBundle\Repository\DataRepository;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
-use FOS\ElasticaBundle\Finder\FinderInterface;
 
 class PollutionDataFactory
 {
@@ -37,15 +30,21 @@ class PollutionDataFactory
     protected $stationFinder;
 
     /**
+     * @var StationFinderInterface $boxDecorator
+     */
+    protected $boxDecorator;
+
+    /**
      * @var DataList $dataList
      */
     protected $dataList;
 
-    public function __construct(Doctrine $doctrine, StationFinderInterface $stationFinder)
+    public function __construct(Doctrine $doctrine, StationFinderInterface $stationFinder, BoxDecoratorInterface $boxDecorator)
     {
         $this->doctrine = $doctrine;
         $this->stationFinder = $stationFinder;
         $this->dataList = new DataList();
+        $this->boxDecorator = $boxDecorator;
     }
 
     public function setCoord(CoordInterface $coord): PollutionDataFactory
@@ -91,16 +90,7 @@ class PollutionDataFactory
         return $repository->findLatestDataForStationAndPollutant($station, $pollutant);
     }
 
-    protected function getPollutantById(int $pollutantId): PollutantInterface
-    {
-        switch ($pollutantId) {
-            case 1: return new PM10();
-            case 2: return new O3();
-            case 3: return new NO2();
-            case 4: return new SO2();
-            case 5: return new CO();
-        }
-    }
+
 
     protected function getBoxListFromDataList(array $dataList): array
     {
@@ -117,20 +107,11 @@ class PollutionDataFactory
 
     protected function decorateBoxList(array $boxList): array
     {
-        /** @var Box $box */
-        foreach ($boxList as $box) {
-            $data = $box->getData();
-
-            $pollutant = $this->getPollutantById($data->getPollutant());
-            $level = $pollutant->getPollutionLevel()->getLevel($data);
-
-            $box
-                ->setStation($data->getStation())
-                ->setPollutant($pollutant)
-                ->setPollutionLevel($level)
-            ;
-        }
-
-        return $boxList;
+        return $this
+            ->boxDecorator
+            ->setBoxList($boxList)
+            ->decorate()
+            ->getBoxList()
+        ;
     }
 }
