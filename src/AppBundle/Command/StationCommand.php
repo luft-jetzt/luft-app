@@ -2,8 +2,10 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Entity\Station;
 use AppBundle\StationLoader\StationLoader;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -21,5 +23,33 @@ class StationCommand extends ContainerAwareCommand
         /** @var StationLoader $stationLoader */
         $stationLoader = $this->getContainer()->get('AppBundle\StationLoader\StationLoader');
         $stationLoader->load();
+
+        $output->writeln('New stations');
+
+        $table = new Table($output);
+        $table->setHeaders(['stationCode', 'stateCode', 'title', 'latitude', 'longitude']);
+
+        foreach ($stationLoader->getNewStationList() as $newStation) {
+            $this->addStationRow($table, $newStation);
+        }
+
+        $table->render();
+
+        $output->writeln('');
+        $output->writeln('Existing stations');
+
+        $table = new Table($output);
+        $table->setHeaders(['stationCode', 'stateCode', 'title', 'latitude', 'longitude']);
+
+        foreach ($stationLoader->getExistingStationList() as $existingStation) {
+            $this->addStationRow($table, $existingStation);
+        }
+
+        $table->render();
+    }
+
+    protected function addStationRow(Table $table, Station $station): void
+    {
+        $table->addRow([$station->getStationCode(), $station->getStateCode(), $station->getTitle(), $station->getLatitude(), $station->getLongitude()]);
     }
 }

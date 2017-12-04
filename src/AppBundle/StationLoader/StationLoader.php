@@ -15,6 +15,12 @@ class StationLoader
     /** @var Doctrine $doctrine */
     protected $doctrine;
 
+    /** @var array $existingStationList */
+    protected $existingStationList = [];
+
+    /** @var array $newStationList */
+    protected $newStationList = [];
+
     public function __construct(Doctrine $doctrine)
     {
         $this->doctrine = $doctrine;
@@ -22,17 +28,19 @@ class StationLoader
 
     public function load(): array
     {
-        $existingStationList = $this->getExistingStations();
+        $this->existingStationList = $this->getExistingStations();
         $newStationData = $this->fetchStationList();
 
         /** @var EntityManager $em */
         $em = $this->doctrine->getManager();
 
         foreach ($newStationData as $stationData) {
-            if (!$this->stationExists($stationData[0], $existingStationList)) {
+            if (!$this->stationExists($stationData[0], $this->existingStationList)) {
                 $station = $this->createStation($stationData);
 
                 $em->merge($station);
+
+                $this->newStationList[] = $station;
             }
         }
 
@@ -84,5 +92,15 @@ class StationLoader
     protected function stationExists(string $stationCode, array $stationData): bool
     {
         return array_key_exists($stationCode, $stationData);
+    }
+
+    public function getExistingStationList(): array
+    {
+        return $this->existingStationList;
+    }
+
+    public function getNewStationList(): array
+    {
+        return $this->newStationList;
     }
 }
