@@ -12,6 +12,9 @@
         <defaults autowire="true" autoconfigure="true" public="true" />
 
         <service id="AppBundle\SourceFetcher\Persister\Persister" />
-        <service id="AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory" />
+        <service id="AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory">
+            <argument type="service" id="doctrine" />
+            <argument type="service" id="fos_elastica.finder.air.station" />
+        </service>
     </services>
 </container>

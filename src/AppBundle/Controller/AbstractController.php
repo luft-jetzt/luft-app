@@ -43,43 +43,7 @@ abstract class AbstractController extends Controller
         return null;
     }
 
-    protected function findNearestStations(Coord $coord, int $distance = 20): array
-    {
-        $finder = $this->container->get('fos_elastica.finder.air.station');
 
-        $geoFilter = new \Elastica\Filter\GeoDistance(
-            'pin',
-            [
-                'lat' => $coord->getLatitude(),
-                'lon' => $coord->getLongitude()
-            ],
-            $distance.'km'
-        );
-
-        $filteredQuery = new \Elastica\Query\Filtered(new \Elastica\Query\MatchAll(), $geoFilter);
-
-        $query = new \Elastica\Query($filteredQuery);
-
-        $query->setSize(15);
-        $query->setSort(
-            [
-                '_geo_distance' =>
-                    [
-                        'pin' =>
-                            [
-                                'lat' => $coord->getLatitude(),
-                                'lon' => $coord->getLongitude()
-                            ],
-                        'order' => 'asc',
-                        'unit' => 'km'
-                    ]
-            ]
-        );
-
-        $results = $finder->find($query);
-
-        return $results;
-    }
 
     protected function getPollutionDataFactory(): PollutionDataFactory
     {

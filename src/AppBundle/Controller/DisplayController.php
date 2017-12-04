@@ -17,7 +17,7 @@ class DisplayController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $boxList = $this->getPollutionDataFactory()->createDecoratedBoxList([$station]);
+        $boxList = $this->getPollutionDataFactory()->setCoord($station)->createDecoratedBoxList();
 
         return $this->render(
             'AppBundle:Default:station.html.twig',
@@ -36,13 +36,11 @@ class DisplayController extends AbstractController
             return $this->render('AppBundle:Default:select.html.twig');
         }
 
-        $stationList = $this->findNearestStations($coord);
+        $boxList = $this->getPollutionDataFactory()->setCoord($coord)->createDecoratedBoxList();
 
-        if (0 === count($stationList)) {
+        if (0 === count($boxList)) {
             return $this->noStationAction($request, $coord);
         }
-
-        $boxList = $this->getPollutionDataFactory()->createDecoratedBoxList($stationList);
 
         return $this->render(
             'AppBundle:Default:display.html.twig',
