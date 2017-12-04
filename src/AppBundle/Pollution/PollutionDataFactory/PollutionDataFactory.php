@@ -5,6 +5,7 @@ namespace AppBundle\Pollution\PollutionDataFactory;
 use AppBundle\Entity\Data;
 use AppBundle\Entity\Station;
 use AppBundle\Pollution\Box\Box;
+use AppBundle\Pollution\DataList\DataList;
 use AppBundle\Pollution\Pollutant\CO;
 use AppBundle\Pollution\Pollutant\NO2;
 use AppBundle\Pollution\Pollutant\O3;
@@ -35,10 +36,16 @@ class PollutionDataFactory
      */
     protected $stationFinder;
 
+    /**
+     * @var DataList $dataList
+     */
+    protected $dataList;
+
     public function __construct(Doctrine $doctrine, StationFinderInterface $stationFinder)
     {
         $this->doctrine = $doctrine;
         $this->stationFinder = $stationFinder;
+        $this->dataList = new DataList();
     }
 
     public function setCoord(CoordInterface $coord): PollutionDataFactory
@@ -63,27 +70,17 @@ class PollutionDataFactory
 
     protected function getDataListFromStationList(array $stationList): array
     {
-        $dataList = [
-            PollutantInterface::POLLUTANT_PM10 => null,
-            PollutantInterface::POLLUTANT_O3 => null,
-            PollutantInterface::POLLUTANT_NO2 => null,
-            PollutantInterface::POLLUTANT_SO2 => null,
-            PollutantInterface::POLLUTANT_CO => null,
-        ];
-
         foreach ($stationList as $station) {
-            foreach ($dataList as $pollutant => $data) {
-                if (!$data) {
-                    $data = $this->checkStationData($station, $pollutant);
+            foreach ($this->dataList->getMissingPollutants() as $pollutant) {
+                $data = $this->checkStationData($station, $pollutant);
 
-                    if ($data) {
-                        $dataList[$pollutant] = $data;
-                    }
+                if ($data) {
+                    $dataList[$pollutant] = $data;
                 }
             }
         }
 
-        return $dataList;
+        return $this->dataList->getList();
     }
 
     protected function checkStationData(Station $station, string $pollutant): ?Data
