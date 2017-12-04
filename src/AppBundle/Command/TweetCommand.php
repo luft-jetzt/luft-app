@@ -5,6 +5,7 @@ namespace AppBundle\Command;
 use AppBundle\Entity\TwitterSchedule;
 use AppBundle\Pollution\Box\Box;
 use AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory;
+use AppBundle\Twitter\MessageFactory\MessageFactoryInterface;
 use Caldera\GeoBasic\Coord\Coord;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Codebird\Codebird;
@@ -81,13 +82,15 @@ class TweetCommand extends ContainerAwareCommand
 
     protected function createMessage(array $boxList): string
     {
-        $message = '';
+        /** @var MessageFactoryInterface $factory */
+        $factory = $this->getContainer()->get('AppBundle\Twitter\MessageFactory\PlainMessageFactory');
 
-        /** @var Box $box */
-        foreach ($boxList as $box) {
-            $message .= sprintf("%s: %.0f %s \n", $box->getPollutant()->getName(), $box->getData()->getValue(), $box->getPollutant()->getUnitPlain());
-        }
+        $message = $factory
+            ->setBoxList($boxList)
+            ->compose()
+            ->getMessage()
+        ;
 
-        return $message;
+        return urlencode($message);
     }
 }

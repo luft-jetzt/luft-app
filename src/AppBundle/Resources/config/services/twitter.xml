@@ -4,10 +4,9 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services
         http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <imports>
-        <import resource="services/admin.xml"/>
-        <import resource="services/pollution.xml"/>
-        <import resource="services/command.xml"/>
-        <import resource="services/twitter.xml"/>
-    </imports>
+    <services>
+        <defaults autowire="true" autoconfigure="true" public="true" />
+
+        <service id="AppBundle\Twitter\MessageFactory\PlainMessageFactory" />
+    </services>
 </container>
