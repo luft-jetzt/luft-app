@@ -9,7 +9,7 @@ use AppBundle\Pollution\Pollutant\PM10;
 use AppBundle\Pollution\Pollutant\PollutantInterface;
 use AppBundle\Pollution\Pollutant\SO2;
 
-class AbstractBoxDecorator implements BoxDecoratorInterface
+abstract class AbstractBoxDecorator implements BoxDecoratorInterface
 {
     protected $boxList = [];
 
