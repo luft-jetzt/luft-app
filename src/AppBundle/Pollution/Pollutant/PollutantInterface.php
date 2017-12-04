@@ -16,7 +16,12 @@ interface PollutantInterface
     /**
      * @JMS\Expose()
      */
-    public function getUnit(): string;
+    public function getUnitHtml(): string;
+
+    /**
+     * @JMS\Expose()
+     */
+    public function getUnitPlain(): string;
 
     /**
      * @JMS\Expose()
