@@ -18,5 +18,8 @@
 
         <service id="AppBundle\Pollution\BoxDecorator\BoxDecorator" />
         <service id="AppBundle\Pollution\StationFinder\BoxDecoratorInterface" alias="AppBundle\Pollution\BoxDecorator\BoxDecorator" />
+
+        <service id="AppBundle\Pollution\DataRetriever\DoctrineOrmDataRetriever" />
+        <service id="AppBundle\Pollution\DataRetriever\DataRetrieverInterface" alias="AppBundle\Pollution\DataRetriever\DoctrineOrmDataRetriever" />
     </services>
 </container>

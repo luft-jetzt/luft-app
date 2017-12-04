@@ -2,49 +2,36 @@
 
 namespace AppBundle\Pollution\PollutionDataFactory;
 
-use AppBundle\Entity\Data;
-use AppBundle\Entity\Station;
 use AppBundle\Pollution\Box\Box;
 use AppBundle\Pollution\BoxDecorator\BoxDecoratorInterface;
 use AppBundle\Pollution\DataList\DataList;
+use AppBundle\Pollution\DataRetriever\DataRetrieverInterface;
 use AppBundle\Pollution\StationFinder\StationFinderInterface;
-use AppBundle\Repository\DataRepository;
 use Caldera\GeoBasic\Coord\CoordInterface;
-use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
 
 class PollutionDataFactory
 {
-    /**
-     * @var Doctrine $doctrine
-     */
-    protected $doctrine;
-
-    /**
-     * @var CoordInterface $coord
-     */
+    /** @var CoordInterface $coord */
     protected $coord;
 
-    /**
-     * @var StationFinderInterface $stationFinder
-     */
+    /** @var StationFinderInterface $stationFinder */
     protected $stationFinder;
 
-    /**
-     * @var StationFinderInterface $boxDecorator
-     */
+    /** @var StationFinderInterface $boxDecorator */
     protected $boxDecorator;
 
-    /**
-     * @var DataList $dataList
-     */
+    /** @var DataList $dataList */
     protected $dataList;
 
-    public function __construct(Doctrine $doctrine, StationFinderInterface $stationFinder, BoxDecoratorInterface $boxDecorator)
+    /** @var DataRetrieverInterface */
+    protected $dataRetriever;
+
+    public function __construct(StationFinderInterface $stationFinder, BoxDecoratorInterface $boxDecorator, DataRetrieverInterface $dataRetriever)
     {
-        $this->doctrine = $doctrine;
         $this->stationFinder = $stationFinder;
         $this->dataList = new DataList();
         $this->boxDecorator = $boxDecorator;
+        $this->dataRetriever = $dataRetriever;
     }
 
     public function setCoord(CoordInterface $coord): PollutionDataFactory
@@ -71,7 +58,7 @@ class PollutionDataFactory
     {
         foreach ($stationList as $station) {
             foreach ($this->dataList->getMissingPollutants() as $pollutant) {
-                $data = $this->checkStationData($station, $pollutant);
+                $data = $this->dataRetriever->retrieveStationData($station, $pollutant);
 
                 if ($data) {
                     $this->dataList->addData($data);
@@ -81,16 +68,6 @@ class PollutionDataFactory
 
         return $this->dataList->getList();
     }
-
-    protected function checkStationData(Station $station, string $pollutant): ?Data
-    {
-        /** @var DataRepository $repository */
-        $repository = $this->doctrine->getRepository(Data::class);
-
-        return $repository->findLatestDataForStationAndPollutant($station, $pollutant);
-    }
-
-
 
     protected function getBoxListFromDataList(array $dataList): array
     {
