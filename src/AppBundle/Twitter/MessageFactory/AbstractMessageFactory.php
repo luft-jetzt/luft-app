@@ -17,6 +17,13 @@ abstract class AbstractMessageFactory implements MessageFactoryInterface
         return $this;
     }
 
+    public function setTitle(string $title = ''): MessageFactoryInterface
+    {
+        $this->message = sprintf("%s\n", $title);
+
+        return $this;
+    }
+
     abstract public function compose(): MessageFactoryInterface;
 
     public function getMessage(): string

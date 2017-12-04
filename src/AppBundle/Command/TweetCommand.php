@@ -40,7 +40,7 @@ class TweetCommand extends ContainerAwareCommand
 
                 $boxList = $this->getPollutionDataFactory()->setCoord($coord)->createDecoratedBoxList();
 
-                $message = $this->createMessage($boxList);
+                $message = $this->createMessage($twitterSchedule, $boxList);
 
                 $twitterToken = $twitterSchedule->getCity()->getTwitterToken();
                 $twitterSecret = $twitterSchedule->getCity()->getTwitterSecret();
@@ -80,12 +80,13 @@ class TweetCommand extends ContainerAwareCommand
         return $this->getContainer()->get('AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory');
     }
 
-    protected function createMessage(array $boxList): string
+    protected function createMessage(TwitterSchedule $twitterSchedule, array $boxList): string
     {
         /** @var MessageFactoryInterface $factory */
         $factory = $this->getContainer()->get('AppBundle\Twitter\MessageFactory\EmojiMessageFactory');
 
         $message = $factory
+            ->setTitle($twitterSchedule->getTitle())
             ->setBoxList($boxList)
             ->compose()
             ->getMessage()
