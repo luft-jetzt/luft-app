@@ -7,9 +7,14 @@ use AppBundle\Pollution\PollutionLevel\PollutionLevel;
 abstract class AbstractPollutant implements PollutantInterface
 {
     /**
-     * @var string $unit
+     * @var string $unitHtml
      */
-    protected $unit;
+    protected $unitHtml;
+
+    /**
+     * @var string $unitHtml
+     */
+    protected $unitPlain;
 
     /**
      * @var string $name
@@ -21,9 +26,14 @@ abstract class AbstractPollutant implements PollutantInterface
      */
     protected $pollutionLevel;
 
-    public function getUnit(): string
+    public function getUnitHtml(): string
     {
-        return $this->unit;
+        return $this->unitHtml;
+    }
+
+    public function getUnitPlain(): string
+    {
+        return $this->unitPlain;
     }
 
     public function getName(): string

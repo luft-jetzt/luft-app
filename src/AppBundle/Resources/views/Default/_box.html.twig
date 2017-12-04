@@ -23,7 +23,7 @@
         <div class="card card-inverse {{ levelClass }} text-center">
             <div class="card-block text-xs-center">
                 <h4 class="card-title">
-                    {{ box.data.value }} {{ box.pollutant.unit|raw }}
+                    {{ box.data.value }} {{ box.pollutant.unitHtml|raw }}
                 </h4>
                 <p class="card-text">{{ box.pollutant.name }}</p>
                 <p class="card-text">
