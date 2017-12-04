@@ -2,16 +2,16 @@
 
 namespace AppBundle\Pollution\DataList;
 
-use AppBundle\Pollution\Box\Box;
+use AppBundle\Entity\Data;
 use AppBundle\Pollution\Pollutant\PollutantInterface;
 
 class DataList
 {
-    protected $boxes;
+    protected $list;
 
     public function __construct()
     {
-        $this->boxes = [
+        $this->list = [
             PollutantInterface::POLLUTANT_PM10 => null,
             PollutantInterface::POLLUTANT_O3 => null,
             PollutantInterface::POLLUTANT_NO2 => null,
@@ -20,16 +20,37 @@ class DataList
         ];
     }
 
-    public function addBox(Box $box): DataList
+    public function addData(Data $data, bool $overwrite = false): DataList
     {
-        $this->boxes[$box->getPollutant()] = $box;
+        if ($overwrite || !$this->hasPollutant($data)) {
+            $this->list[$data->getPollutant()] = $data;
+        }
 
         return $this;
     }
 
-    public function getBoxes(): array
+    public function hasPollutant(Data $data): bool
     {
-        return $this->boxes;
+        $pollutant = $data->getPollutant();
+
+        return $this->list[$pollutant] !== null;
     }
 
+    public function getMissingPollutants(): array
+    {
+        $missingList = [];
+
+        array_walk($this->list, function(Data $data = null, int $key) use (&$missingList) {
+            if ($data === null) {
+                array_push($missingList, $key);
+            }
+        });
+
+        return $missingList;
+    }
+
+    public function getList(): array
+    {
+        return $this->list;
+    }
 }

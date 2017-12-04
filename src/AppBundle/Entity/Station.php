@@ -4,10 +4,10 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Caldera\GeoBasic\Coord\Coord;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as JMS;
-
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\StationRepository")
@@ -15,7 +15,7 @@ use JMS\Serializer\Annotation as JMS;
  * @UniqueEntity("stationCode")
  * @JMS\ExclusionPolicy("ALL")
  */
-class Station
+class Station extends Coord
 {
     /**
      * @ORM\Id
@@ -59,9 +59,11 @@ class Station
      */
     protected $twitterSchedules;
 
-    public function __construct()
+    public function __construct(float $latitude, float $longitude)
     {
         $this->twitterSchedules = new ArrayCollection();
+
+        parent::__construct($latitude, $longitude);
     }
 
     public function getId(): int

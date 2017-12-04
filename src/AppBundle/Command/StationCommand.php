@@ -2,22 +2,10 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Entity\Data;
 use AppBundle\Entity\Station;
-use AppBundle\SourceFetcher\Parser\UbParser;
-use AppBundle\SourceFetcher\Persister\Persister;
-use AppBundle\SourceFetcher\Query\AbstractQuery;
-use AppBundle\SourceFetcher\Query\UbCOQuery;
-use AppBundle\SourceFetcher\Query\UbNO2Query;
-use AppBundle\SourceFetcher\Query\UbO3Query;
-use AppBundle\SourceFetcher\Query\UbPM10Query;
-use AppBundle\SourceFetcher\Query\UbSO2Query;
-use AppBundle\SourceFetcher\SourceFetcher;
-use Curl\Curl;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
+use AppBundle\StationLoader\StationLoader;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -32,71 +20,36 @@ class StationCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $existingStationList = $this->getExistingStations();
-        $newStationData = $this->fetchStationList();
+        /** @var StationLoader $stationLoader */
+        $stationLoader = $this->getContainer()->get('AppBundle\StationLoader\StationLoader');
+        $stationLoader->load();
 
-        /** @var EntityManager $em */
-        $em = $this->getContainer()->get('doctrine')->getManager();
+        $output->writeln('New stations');
 
-        foreach ($newStationData as $stationData) {
-            if (!$this->stationExists($stationData[0], $existingStationList)) {
-                $station = $this->createStation($stationData);
+        $table = new Table($output);
+        $table->setHeaders(['stationCode', 'stateCode', 'title', 'latitude', 'longitude']);
 
-                $em->merge($station);
-            }
+        foreach ($stationLoader->getNewStationList() as $newStation) {
+            $this->addStationRow($table, $newStation);
         }
 
-        $em->flush();
-    }
+        $table->render();
 
-    protected function getExistingStations(): array
-    {
-        $stations = $this->getContainer()->get('doctrine')->getRepository('AppBundle:Station')->findAll();
+        $output->writeln('');
+        $output->writeln('Existing stations');
 
-        $stationList = [];
+        $table = new Table($output);
+        $table->setHeaders(['stationCode', 'stateCode', 'title', 'latitude', 'longitude']);
 
-        /** @var Station $station */
-        foreach ($stations as $station) {
-            $stationList[$station->getStationCode()] = $station;
+        foreach ($stationLoader->getExistingStationList() as $existingStation) {
+            $this->addStationRow($table, $existingStation);
         }
 
-        return $stationList;
+        $table->render();
     }
 
-    protected function fetchStationList(): array
+    protected function addStationRow(Table $table, Station $station): void
     {
-        $curl = new Curl();
-        $curl->get('https://www.umweltbundesamt.de/js/uaq/data/stations/limits');
-
-        $limitData = $curl->response;
-        $stationList = $limitData->stations_idx;
-
-        return $stationList;
-    }
-
-    public function mergeStation(Station $station, $stationData): Station
-    {
-        $station
-            ->setTitle($stationData[1])
-            ->setStationCode($stationData[0])
-            ->setStateCode($stationData[2])
-            ->setLatitude($stationData[5])
-            ->setLongitude($stationData[4]);
-
-        return $station;
-    }
-
-    protected function createStation(array $stationData): Station
-    {
-        $station = new Station();
-
-        $this->mergeStation($station, $stationData);
-
-        return $station;
-    }
-
-    protected function stationExists(string $stationCode, array $stationData): bool
-    {
-        return array_key_exists($stationCode, $stationData);
+        $table->addRow([$station->getStationCode(), $station->getStateCode(), $station->getTitle(), $station->getLatitude(), $station->getLongitude()]);
     }
 }
