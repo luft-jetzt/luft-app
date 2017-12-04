@@ -20,7 +20,7 @@ class StationLoader
         $this->doctrine = $doctrine;
     }
 
-    protected function load(): array
+    public function load(): array
     {
         $existingStationList = $this->getExistingStations();
         $newStationData = $this->fetchStationList();
