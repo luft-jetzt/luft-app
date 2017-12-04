@@ -89,7 +89,7 @@ class StationCommand extends ContainerAwareCommand
 
     protected function createStation(array $stationData): Station
     {
-        $station = new Station();
+        $station = new Station($stationData[5], $stationData[4]);
 
         $this->mergeStation($station, $stationData);
 
