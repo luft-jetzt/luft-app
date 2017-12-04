@@ -3,6 +3,7 @@
 namespace AppBundle\StationLoader;
 
 use AppBundle\Entity\Station;
+use AppBundle\Repository\StationRepository;
 use Curl\Curl;
 use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
 use Doctrine\ORM\EntityManager;
@@ -42,16 +43,9 @@ class StationLoader
 
     protected function getExistingStations(): array
     {
-        $stations = $this->doctrine->getRepository(Station::class)->findAllIndexed();
-
-        $stationList = [];
-
-        /** @var Station $station */
-        foreach ($stations as $station) {
-            $stationList[$station->getStationCode()] = $station;
-        }
-
-        return $stationList;
+        /** @var StationRepository $stationRepository */
+        $stationRepository = $this->doctrine->getRepository(Station::class);
+        return $stationRepository->findAllIndexed();
     }
 
     protected function fetchStationList(): array
