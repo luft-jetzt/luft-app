@@ -63,7 +63,7 @@ class TweetCommand extends ContainerAwareCommand
     protected function getCodeBird(): Codebird
     {
         $twitterClientId = $this->getContainer()->getParameter('twitter.client_id');
-        $twitterClientSecret = $this->getContainer()->getParameter('twitter.client_id');
+        $twitterClientSecret = $this->getContainer()->getParameter('twitter.client_secret');
 
         Codebird::setConsumerKey($twitterClientId, $twitterClientSecret);
 
@@ -81,7 +81,7 @@ class TweetCommand extends ContainerAwareCommand
 
         /** @var Box $box */
         foreach ($boxList as $box) {
-            $message .= sprintf('%s: %.0f %s\n', $box->getPollutant()->getName(), $box->getData()->getValue(), $box->getPollutant()->getUnit());
+            $message .= sprintf("%s: %.0f %s \n", $box->getPollutant()->getName(), $box->getData()->getValue(), $box->getPollutant()->getUnit());
         }
 
         return $message;
