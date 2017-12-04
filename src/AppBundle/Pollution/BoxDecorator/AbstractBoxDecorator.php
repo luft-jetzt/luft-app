@@ -35,4 +35,6 @@ class AbstractBoxDecorator implements BoxDecoratorInterface
             case 5: return new CO();
         }
     }
+
+    abstract public function decorate(): BoxDecoratorInterface;
 }
