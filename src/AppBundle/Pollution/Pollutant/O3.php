@@ -8,7 +8,8 @@ class O3 extends AbstractPollutant
 {
     public function __construct()
     {
-        $this->unit = 'µg/m<sup>3</sup>';
+        $this->unitHtml = 'µg/m<sup>3</sup>';
+        $this->unitPlain = 'µg/m&#0179;';
         $this->name = 'Ozon';
         $this->pollutionLevel = new PollutionLevel(54, 108, 180, 240);
     }
