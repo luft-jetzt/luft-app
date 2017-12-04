@@ -11,6 +11,8 @@ use AppBundle\Pollution\Pollutant\O3;
 use AppBundle\Pollution\Pollutant\PM10;
 use AppBundle\Pollution\Pollutant\PollutantInterface;
 use AppBundle\Pollution\Pollutant\SO2;
+use AppBundle\Pollution\StationFinder\ElasticStationFinder;
+use AppBundle\Pollution\StationFinder\StationFinderInterface;
 use AppBundle\Repository\DataRepository;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
@@ -29,11 +31,11 @@ class PollutionDataFactory
     protected $coord;
 
     /**
-     * @var FinderInterface $stationFinder
+     * @var StationFinderInterface $stationFinder
      */
     protected $stationFinder;
 
-    public function __construct(Doctrine $doctrine, FinderInterface $stationFinder)
+    public function __construct(Doctrine $doctrine, StationFinderInterface $stationFinder)
     {
         $this->doctrine = $doctrine;
         $this->stationFinder = $stationFinder;
@@ -48,7 +50,7 @@ class PollutionDataFactory
 
     public function createDecoratedBoxList(): array
     {
-        $stationList = $this->findNearestStations();
+        $stationList = $this->stationFinder->setCoord($this->coord)->findNearestStations();
 
         $dataList = $this->getDataListFromStationList($stationList);
 
@@ -57,42 +59,6 @@ class PollutionDataFactory
         $boxList = $this->decorateBoxList($boxList);
 
         return $boxList;
-    }
-
-    protected function findNearestStations(): array
-    {
-        $geoFilter = new \Elastica\Filter\GeoDistance(
-            'pin',
-            [
-                'lat' => $this->coord->getLatitude(),
-                'lon' => $this->coord->getLongitude()
-            ],
-            '20km'
-        );
-
-        $filteredQuery = new \Elastica\Query\Filtered(new \Elastica\Query\MatchAll(), $geoFilter);
-
-        $query = new \Elastica\Query($filteredQuery);
-
-        $query->setSize(15);
-        $query->setSort(
-            [
-                '_geo_distance' =>
-                    [
-                        'pin' =>
-                            [
-                                'lat' => $this->coord->getLatitude(),
-                                'lon' => $this->coord->getLongitude()
-                            ],
-                        'order' => 'asc',
-                        'unit' => 'km'
-                    ]
-            ]
-        );
-
-        $results = $this->stationFinder->find($query);
-
-        return $results;
     }
 
     protected function getDataListFromStationList(array $stationList): array
