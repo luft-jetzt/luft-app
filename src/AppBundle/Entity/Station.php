@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as JMS;
@@ -51,6 +53,16 @@ class Station
      * @JMS\Expose()
      */
     protected $longitude;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TwitterSchedule", mappedBy="station")
+     */
+    protected $twitterSchedules;
+
+    public function __construct()
+    {
+        $this->twitterSchedules = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -120,5 +132,31 @@ class Station
     public function getPin(): string
     {
         return $this->latitude . ',' . $this->longitude;
+    }
+
+    public function addTwitterSchedule(TwitterSchedule $twitterSchedule): Station
+    {
+        $this->twitterSchedules->add($twitterSchedule);
+
+        return $this;
+    }
+
+    public function getTwitterSchedules(): Collection
+    {
+        return $this->twitterSchedules;
+    }
+
+    public function setTwitterSchedules(Collection $twitterSchedules): Station
+    {
+        $this->twitterSchedules = $twitterSchedules;
+
+        return $this;
+    }
+
+    public function removeTwitterSchedule(TwitterSchedule $twitterSchedule): Station
+    {
+        $this->twitterSchedules->removeElement($twitterSchedule);
+
+        return $this;
     }
 }
