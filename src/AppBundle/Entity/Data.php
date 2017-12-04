@@ -61,6 +61,11 @@ class Data
         return $this;
     }
 
+    public function getDateTimeFormatted(): string
+    {
+        return $this->dateTime->format('Y-m-d H:i:s');
+    }
+
     public function getDateTime(): \DateTime
     {
         return $this->dateTime;
