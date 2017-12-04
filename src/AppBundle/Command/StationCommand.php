@@ -68,7 +68,8 @@ class StationCommand extends ContainerAwareCommand
         $curl = new Curl();
         $curl->get('https://www.umweltbundesamt.de/js/uaq/data/stations/limits');
 
-        $limitData = $curl->response;
+        $limitData = json_decode($curl->response);
+
         $stationList = $limitData->stations_idx;
 
         return $stationList;
