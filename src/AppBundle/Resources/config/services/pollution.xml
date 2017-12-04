@@ -9,12 +9,14 @@
 
         <service id="AppBundle\SourceFetcher\Persister\Persister" />
 
+        <service id="AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory" />
+
         <service id="AppBundle\Pollution\StationFinder\ElasticStationFinder">
             <argument type="service" id="fos_elastica.finder.air.station" />
         </service>
-
-        <service id="AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory" />
-
         <service id="AppBundle\Pollution\StationFinder\StationFinderInterface" alias="AppBundle\Pollution\StationFinder\ElasticStationFinder" />
+
+        <service id="AppBundle\Pollution\BoxDecorator\BoxDecorator" />
+        <service id="AppBundle\Pollution\StationFinder\BoxDecoratorInterface" alias="AppBundle\Pollution\BoxDecorator\BoxDecorator" />
     </services>
 </container>
