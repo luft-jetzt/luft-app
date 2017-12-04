@@ -6,19 +6,6 @@
 
     <imports>
         <import resource="services/admin.xml"/>
+        <import resource="services/pollution.xml"/>
     </imports>
-
-    <services>
-        <defaults autowire="true" autoconfigure="true" public="true" />
-
-        <service id="AppBundle\SourceFetcher\Persister\Persister" />
-
-        <service id="AppBundle\Pollution\StationFinder\ElasticStationFinder">
-            <argument type="service" id="fos_elastica.finder.air.station" />
-        </service>
-
-        <service id="AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory" />
-
-        <service id="AppBundle\Pollution\StationFinder\StationFinderInterface" alias="AppBundle\Pollution\StationFinder\ElasticStationFinder" />
-    </services>
 </container>
