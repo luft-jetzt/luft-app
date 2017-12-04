@@ -53,6 +53,12 @@ class TwitterSchedule
      */
     protected $station;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="City", inversedBy="twitterSchedules")
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
+     */
+    protected $city;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -133,5 +139,17 @@ class TwitterSchedule
         $this->station = $station;
 
         return $this;
+    }
+
+    public function setCity(City $city): TwitterSchedule
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
     }
 }

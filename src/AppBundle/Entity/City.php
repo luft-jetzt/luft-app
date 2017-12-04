@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
@@ -47,9 +49,15 @@ class City
      */
     protected $twitterUsername;
 
+    /**
+     * @ORM\OneToMany(targetEntity="TwitterSchedule", mappedBy="station")
+     */
+    protected $twitterSchedules;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->twitterSchedules = new ArrayCollection();
     }
 
     public function getId(): int
@@ -115,5 +123,32 @@ class City
     public function getTwitterSecret(): ?string
     {
         return $this->twitterSecret;
+    }
+
+
+    public function addTwitterSchedule(TwitterSchedule $twitterSchedule): City
+    {
+        $this->twitterSchedules->add($twitterSchedule);
+
+        return $this;
+    }
+
+    public function getTwitterSchedules(): Collection
+    {
+        return $this->twitterSchedules;
+    }
+
+    public function setTwitterSchedules(Collection $twitterSchedules): City
+    {
+        $this->twitterSchedules = $twitterSchedules;
+
+        return $this;
+    }
+
+    public function removeTwitterSchedule(TwitterSchedule $twitterSchedule): City
+    {
+        $this->twitterSchedules->removeElement($twitterSchedule);
+
+        return $this;
     }
 }
