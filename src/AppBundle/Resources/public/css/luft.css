@@ -1,4 +1,5 @@
-header #logo a:hover {
+header #logo a:hover,
+a.no-underline {
     text-decoration: none !important;
 }
 
