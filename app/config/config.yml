@@ -95,7 +95,7 @@ fos_elastica:
                             type: date
                             format: "yyyy-MM-dd HH:mm:ss"
                             property_path: dateTimeFormatted
-
+                    indexable_callback: 'isIndexable'
                     persistence:
                         driver: orm
                         model: AppBundle\Entity\Data

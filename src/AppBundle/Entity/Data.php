@@ -110,4 +110,12 @@ class Data
 
         return $this;
     }
+
+    public function isIndexable(): bool
+    {
+        $dateTime = new \DateTimeImmutable();
+        $dateTime->sub(new \DateInterval('P1W'));
+
+        return $dateTime >= $this->dateTime;
+    }
 }
