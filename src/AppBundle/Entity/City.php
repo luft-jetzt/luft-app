@@ -125,7 +125,6 @@ class City
         return $this->twitterSecret;
     }
 
-
     public function addTwitterSchedule(TwitterSchedule $twitterSchedule): City
     {
         $this->twitterSchedules->add($twitterSchedule);
@@ -154,6 +153,6 @@ class City
 
     public function __toString(): ?string
     {
-        return $this->name;
+        return $this->name ? $this->name : '';
     }
 }
