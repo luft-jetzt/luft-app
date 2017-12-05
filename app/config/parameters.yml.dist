@@ -22,3 +22,7 @@ parameters:
 
     twitter.client_id: ThisTokenIsNotSoSecretChangeIt
     twitter.client_secret: ThisTokenIsNotSoSecretChangeIt
+
+    sqibe.api_url: http://sqi.be/yourls-api.php
+    sqibe.api_username: username
+    sqibe.api_password: password
