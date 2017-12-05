@@ -23,7 +23,7 @@
     {% for station in stationList %}
     <div class="row mt-2">
         <div class="col-12">
-            {% include 'AppBundle:Default:_station.html.twig' with { 'station': station, boxList: stationBoxList[station.stationCode], showMap: false } %}
+            {% include 'AppBundle:Default:_station.html.twig' with { linkToStation: true, station: station, boxList: stationBoxList[station.stationCode], showMap: false } %}
         </div>
     </div>
     {% endfor %}
