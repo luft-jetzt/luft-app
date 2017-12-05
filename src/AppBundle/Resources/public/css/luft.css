@@ -1,0 +1,7 @@
+header #logo a:hover {
+    text-decoration: none !important;
+}
+
+header #logo a {
+    color: black;
+}
