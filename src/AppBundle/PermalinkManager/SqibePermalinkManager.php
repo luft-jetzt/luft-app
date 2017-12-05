@@ -58,7 +58,6 @@ class SqibePermalinkManager
         }
 
         $permalink = $response->shorturl;
-        $photo->setPermalink($permalink);
 
         return $permalink;
     }
@@ -82,7 +81,7 @@ class SqibePermalinkManager
         return $url;
     }
 
-    protected function postCurl(array $data): \stdClass
+    protected function postCurl(array $data)
     {
         $loginArray = [
             'username' => $this->apiUsername,
