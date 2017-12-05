@@ -17,6 +17,10 @@
             </p>
             {% endif %}
         </div>
+
+        {% for box in boxList %}
+            {% include 'AppBundle:Default:_box.html.twig' with { 'box': box, 'showStationTitle': false, combined: true } %}
+        {% endfor %}
     </div>
 
 {% if linkToStation is defined and linkToStation == true %}

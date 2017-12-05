@@ -15,12 +15,22 @@
     {% set levelClass = 'bg-dark' %}
     {% endif %}
 
+    {% if combined is defined and combined == true %}
+    {% set combined = true %}
+    {% else %}
+    {% set combined = false %}
+    {% endif %}
+
+    {% if not combined %}
 <div class="col-12">
+    {% endif %}
     {% if linkToStation is defined and linkToStation == true %}
     <a href="{{ path('station', { 'stationCode': box.station.stationCode }) }}" class="no-underline">
     {% endif %}
-        <div class="card card-inverse {{ levelClass }} text-white text-center">
-            <div class="card-body">
+    {% if not combined %}
+        <div class="card card-inverse mb-2">
+    {% endif %}
+            <div class="card-body {{ levelClass }} text-white text-center">
                 <h4 class="card-title">
                     {{ box.data.value }} {{ box.pollutant.unitHtml|raw }}
                 </h4>
@@ -34,9 +44,13 @@
                     </small>
                 </p>
             </div>
+    {% if not combined %}
         </div>
+    {% endif %}
     {% if linkToStation is defined and linkToStation == true %}
     </a>
     {% endif %}
+    {% if not combined %}
 </div>
+    {% endif %}
 {% endif %}

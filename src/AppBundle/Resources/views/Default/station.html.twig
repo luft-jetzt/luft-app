@@ -4,14 +4,8 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                {% include 'AppBundle:Default:_station.html.twig' with { 'station': station, 'description': 'An der Station ' ~ station.stationCode ~ ' wurden zuletzt die folgenden Werte gemessen.' } %}
+                {% include 'AppBundle:Default:_station.html.twig' with { 'station': station, 'description': 'An der Station ' ~ station.stationCode ~ ' wurden zuletzt die folgenden Werte gemessen.', boxList: boxList } %}
             </div>
-        </div>
-
-        <div class="row mt-2">
-            {% for box in boxList %}
-                {% include 'AppBundle:Default:_box.html.twig' with { 'box': box, 'showStationTitle': false } %}
-            {% endfor %}
         </div>
     </div>
 {% endblock %}
