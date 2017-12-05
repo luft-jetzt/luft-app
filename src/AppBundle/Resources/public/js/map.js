@@ -8,8 +8,8 @@ function createAllMaps() {
     } else {
         $('.map').each(function (index) {
             var id = $(this).prop('id');
-            var latitude = $(this).data('latitude');
-            var longitude = $(this).data('longitude');
+            var latitude = $(this).parent().data('latitude');
+            var longitude = $(this).parent().data('longitude');
 
             createMap(id, latitude, longitude);
         });
