@@ -116,4 +116,39 @@ class City
     {
         return $this->twitterSecret;
     }
+<<<<<<< Updated upstream
+=======
+
+
+    public function addTwitterSchedule(TwitterSchedule $twitterSchedule): City
+    {
+        $this->twitterSchedules->add($twitterSchedule);
+
+        return $this;
+    }
+
+    public function getTwitterSchedules(): Collection
+    {
+        return $this->twitterSchedules;
+    }
+
+    public function setTwitterSchedules(Collection $twitterSchedules): City
+    {
+        $this->twitterSchedules = $twitterSchedules;
+
+        return $this;
+    }
+
+    public function removeTwitterSchedule(TwitterSchedule $twitterSchedule): City
+    {
+        $this->twitterSchedules->removeElement($twitterSchedule);
+
+        return $this;
+    }
+
+    public function __toString(): ?string
+    {
+        return $this->name ? $this->name : '';
+    }
+>>>>>>> Stashed changes
 }
