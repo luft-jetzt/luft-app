@@ -43,7 +43,6 @@ class UbParser implements ParserInterface
                 $dateTime = \DateTime::createFromFormat($dateTimeFormat, $parts[self::DATETIME]);
                 $value = $parts[self::VALUE];
 
-                var_dump($dateTimeFormat);
                 if (!$station || !$dateTime || !$value) {
                     continue;
                 }
