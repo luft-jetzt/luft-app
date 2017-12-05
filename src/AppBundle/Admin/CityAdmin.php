@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CityAdmin extends AbstractAdmin
@@ -16,6 +17,8 @@ class CityAdmin extends AbstractAdmin
         $formMapper
             ->with('City', ['class' => 'col-xs-6'])
             ->add('name')
+            ->add('slug')
+            ->add('description', TextareaType::class, ['required' => false])
             ->end()
 
             ->with('twitter', ['class' => 'col-xs-6'])
