@@ -89,8 +89,13 @@ fos_elastica:
                 data:
                     mappings:
                         pollutant: ~
-                        station: ~
-                        dateTimeFormatted: { type: date, format: "yyyy-MM-dd HH:mm:ss" }
+                        station:
+                            property_path: stationId
+                        dateTime:
+                            type: date
+                            format: "yyyy-MM-dd HH:mm:ss"
+                            property_path: dateTimeFormatted
+
                     persistence:
                         driver: orm
                         model: AppBundle\Entity\Data

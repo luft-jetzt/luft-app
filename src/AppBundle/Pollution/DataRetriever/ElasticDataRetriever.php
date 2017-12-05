@@ -17,18 +17,18 @@ class ElasticDataRetriever implements DataRetrieverInterface
 
     public function retrieveStationData(Station $station, string $pollutant): ?Data
     {
-        $simpleQuery = new \Elastica\Query\SimpleQueryString($station->__toString());
+        $stationQuery = new \Elastica\Query\Term(['station' => $station->getId()]);
         $pollutantQuery = new \Elastica\Query\Term(['pollutant' => $pollutant]);
 
         $boolQuery = new \Elastica\Query\BoolQuery();
         $boolQuery
             ->addMust($pollutantQuery)
-            ->addMust($simpleQuery)
+            ->addMust($stationQuery)
         ;
 
         $query = new \Elastica\Query($boolQuery);
         $query
-            ->setSort(['dateTimeFormatted' => ['order' => 'desc']])
+            ->setSort(['dateTime' => ['order' => 'desc']])
             ->setSize(1)
         ;
 

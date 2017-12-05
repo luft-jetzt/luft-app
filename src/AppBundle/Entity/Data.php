@@ -61,6 +61,15 @@ class Data
         return $this;
     }
 
+    public function getStationId(): ?int
+    {
+        if ($this->station) {
+            return $this->station->getId();
+        }
+
+        return null;
+    }
+
     public function getDateTimeFormatted(): string
     {
         return $this->dateTime->format('Y-m-d H:i:s');
