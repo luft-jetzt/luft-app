@@ -8,6 +8,7 @@ use AppBundle\Pollution\Box\Box;
 use AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory;
 use AppBundle\Twitter\MessageFactory\EmojiMessageFactory;
 use AppBundle\Twitter\MessageFactory\MessageFactoryInterface;
+use AppBundle\Twitter\Twitter;
 use Caldera\GeoBasic\Coord\Coord;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Codebird\Codebird;
@@ -27,81 +28,8 @@ class TweetCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $twitterSchedules = $this->getContainer()->get('doctrine')->getRepository(TwitterSchedule::class)->findAll();
+        $twitter = $this->getContainer()->get(Twitter::class);
 
-        $cb = $this->getCodeBird();
-
-        /** @var TwitterSchedule $twitterSchedule */
-        foreach ($twitterSchedules as $twitterSchedule) {
-            $output->writeln($twitterSchedule->getCron());
-
-            $cron = CronExpression::factory($twitterSchedule->getCron());
-
-            if ($cron->isDue()) {
-                $coord = $this->getCoord($twitterSchedule);
-
-                $boxList = $this->getPollutionDataFactory()->setCoord($coord)->createDecoratedBoxList();
-
-                $message = $this->createMessage($twitterSchedule, $boxList);
-
-                $twitterToken = $twitterSchedule->getCity()->getTwitterToken();
-                $twitterSecret = $twitterSchedule->getCity()->getTwitterSecret();
-
-                $cb->setToken($twitterToken, $twitterSecret);
-
-                $params = [
-                    'status' => $message,
-                    'lat' => $coord->getLatitude(),
-                    'long' => $coord->getLongitude(),
-                ];
-
-                $reply = $cb->statuses_update($params);
-            }
-        }
-    }
-
-    protected function getCoord(TwitterSchedule $twitterSchedule): CoordInterface
-    {
-        if ($twitterSchedule->getStation()) {
-            return $twitterSchedule->getStation();
-        } else {
-            $coord = new Coord($twitterSchedule->getLatitude(), $twitterSchedule->getLongitude());
-
-            return $coord;
-        }
-    }
-
-    protected function getCodeBird(): Codebird
-    {
-        $twitterClientId = $this->getContainer()->getParameter('twitter.client_id');
-        $twitterClientSecret = $this->getContainer()->getParameter('twitter.client_secret');
-
-        Codebird::setConsumerKey($twitterClientId, $twitterClientSecret);
-
-        return Codebird::getInstance();
-    }
-
-    protected function getPollutionDataFactory(): PollutionDataFactory
-    {
-        return $this->getContainer()->get(PollutionDataFactory::class);
-    }
-
-    protected function createMessage(TwitterSchedule $twitterSchedule, array $boxList): string
-    {
-        /** @var MessageFactoryInterface $factory */
-        $factory = $this->getContainer()->get(EmojiMessageFactory::class);
-
-        /** @var SqibePermalinkManager $permalinkManager */
-        $permalinkManager = $this->getContainer()->get(SqibePermalinkManager::class);
-
-        $message = $factory
-            ->setTitle($twitterSchedule->getTitle())
-            ->setLink($permalinkManager->createPermalinkForTweet($twitterSchedule))
-            ->setBoxList($boxList)
-            ->compose()
-            ->getMessage()
-        ;
-
-        return $message;
+        $twitter->tweet();
     }
 }
