@@ -5,9 +5,16 @@
         http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <defaults autowire="true" autoconfigure="true" public="true" />
+        <defaults autowire="true" autoconfigure="true" public="true">
+            <bind key="$twitterClientId">%twitter.client_id%</bind>
+            <bind key="$twitterClientSecret">%twitter.client_secret%</bind>
+        </defaults>
 
         <service id="AppBundle\Twitter\MessageFactory\PlainMessageFactory" />
         <service id="AppBundle\Twitter\MessageFactory\EmojiMessageFactory" />
+
+        <service id="AppBundle\Twitter\MessageFactory\MessageFactoryInterface" alias="AppBundle\Twitter\MessageFactory\EmojiMessageFactory" />
+
+        <service id="AppBundle\Twitter\Twitter" />
     </services>
 </container>
