@@ -1,0 +1,37 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            <div class="card">
+                <div id="map-city-{{ city.slug }}" class="city-map card-img-top" style="height: 33.33vh;"></div>
+                <div class="card-body">
+                    <h4 class="card-title">
+                        {{ city.name }}
+                    </h4>
+                    {% if city.description %}
+                        <p class="card-text mt-2">
+                            {{ city.description|nl2br }}
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% for station in stationList %}
+    <div class="row mt-2">
+        <div class="col-12">
+            {% include 'AppBundle:Default:_station.html.twig' with { linkToStation: true, station: station, boxList: stationBoxList[station.stationCode], showMap: false } %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script src="/bundles/app/js/map.js"></script>
+{% endblock %}

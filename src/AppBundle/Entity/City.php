@@ -35,6 +35,18 @@ class City
     protected $name;
 
     /**
+     * @ORM\Column(type="string", nullable=false)
+     * @JMS\Expose()
+     */
+    protected $slug;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     * @JMS\Expose()
+     */
+    protected $description;
+
+    /**
      * @ORM\Column(type="string", nullable=true)
      */
     protected $twitterToken;
@@ -91,6 +103,30 @@ class City
     public function setName(string $name): City
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): City
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description = null): City
+    {
+        $this->description = $description;
 
         return $this;
     }
