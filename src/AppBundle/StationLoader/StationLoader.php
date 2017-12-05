@@ -60,10 +60,7 @@ class StationLoader
     {
         $curl = new Curl();
         $curl->get(self::SOURCE_URL);
-
-        $limitData = json_decode($curl->response);
-
-        $stationList = $limitData->stations_idx;
+        $stationList = $curl->response->stations_idx;
 
         return $stationList;
     }
