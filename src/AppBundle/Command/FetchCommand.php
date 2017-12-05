@@ -4,6 +4,7 @@ namespace AppBundle\Command;
 
 use AppBundle\Pollution\Pollutant\PollutantInterface;
 use AppBundle\SourceFetcher\Parser\UbParser;
+use AppBundle\SourceFetcher\Persister\Persister;
 use AppBundle\SourceFetcher\Query\AbstractQuery;
 use AppBundle\SourceFetcher\Query\UbCOQuery;
 use AppBundle\SourceFetcher\Query\UbNO2Query;
@@ -115,7 +116,7 @@ class FetchCommand extends ContainerAwareCommand
         $parser = new UbParser($query);
         $tmpValueList = $parser->parse($response, $pollutant);
 
-        $persister = $this->getContainer()->get('AppBundle\SourceFetcher\Persister\Persister');
+        $persister = $this->getContainer()->get(Persister::class);
         $persister->persistValues($tmpValueList);
     }
 }
