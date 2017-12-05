@@ -50,14 +50,20 @@ class City
     protected $twitterUsername;
 
     /**
-     * @ORM\OneToMany(targetEntity="TwitterSchedule", mappedBy="station")
+     * @ORM\OneToMany(targetEntity="TwitterSchedule", mappedBy="city")
      */
     protected $twitterSchedules;
+
+    /**
+     * @ORM\OneToMany(targetEntity="City", mappedBy="city")
+     */
+    protected $stations;
 
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->twitterSchedules = new ArrayCollection();
+        $this->stations = new ArrayCollection();
     }
 
     public function getId(): int
@@ -147,6 +153,32 @@ class City
     public function removeTwitterSchedule(TwitterSchedule $twitterSchedule): City
     {
         $this->twitterSchedules->removeElement($twitterSchedule);
+
+        return $this;
+    }
+
+    public function addStation(Station $station): City
+    {
+        $this->stations->add($station);
+
+        return $this;
+    }
+
+    public function getStations(): Collection
+    {
+        return $this->stations;
+    }
+
+    public function setStations(Collection $twitterSchedules): City
+    {
+        $this->stations = $twitterSchedules;
+
+        return $this;
+    }
+
+    public function removeStations(Station $station): City
+    {
+        $this->stations->removeElement($station);
 
         return $this;
     }

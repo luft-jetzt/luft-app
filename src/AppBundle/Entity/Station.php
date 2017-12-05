@@ -59,6 +59,12 @@ class Station extends Coord
      */
     protected $twitterSchedules;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="City", inversedBy="twitterSchedules")
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
+     */
+    protected $city;
+
     public function __construct(float $latitude, float $longitude)
     {
         $this->twitterSchedules = new ArrayCollection();
@@ -165,5 +171,17 @@ class Station extends Coord
         $this->twitterSchedules->removeElement($twitterSchedule);
 
         return $this;
+    }
+
+    public function setCity(City $city = null): Station
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
     }
 }
