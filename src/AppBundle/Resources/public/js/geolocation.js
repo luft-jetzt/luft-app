@@ -23,7 +23,7 @@ function success(pos) {
 function error(err) {
     var $message = $('#geolocation-failed');
 
-    $message.removeClass('hidden-xs-up');
+    $message.removeClass('d-none');
 }
 
 function installButton() {

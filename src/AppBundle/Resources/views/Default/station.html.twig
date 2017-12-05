@@ -3,7 +3,7 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-12">
                 {% include 'AppBundle:Default:_station.html.twig' with { 'station': station, 'description': 'An der Station ' ~ station.stationCode ~ ' wurden zuletzt die folgenden Werte gemessen.' } %}
             </div>
         </div>
