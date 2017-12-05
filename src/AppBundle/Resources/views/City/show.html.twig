@@ -1,0 +1,18 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2>
+                {{ city.name }}
+            </h2>
+            {% if city.description %}
+            <p class="lead">
+                {{ city.description|nl2br }}
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
