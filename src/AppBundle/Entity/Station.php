@@ -2,11 +2,12 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Caldera\GeoBasic\Coord\Coord;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as JMS;
-
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\StationRepository")
@@ -52,6 +53,18 @@ class Station extends Coord
      * @JMS\Expose()
      */
     protected $longitude;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TwitterSchedule", mappedBy="station")
+     */
+    protected $twitterSchedules;
+
+    public function __construct(float $latitude, float $longitude)
+    {
+        $this->twitterSchedules = new ArrayCollection();
+
+        parent::__construct($latitude, $longitude);
+    }
 
     public function getId(): int
     {
@@ -124,6 +137,37 @@ class Station extends Coord
     }
 
     public function __toString()
+    {
+        return sprintf('%s: %s', $this->stationCode, $this->title);
+    }
+
+    public function addTwitterSchedule(TwitterSchedule $twitterSchedule): Station
+    {
+        $this->twitterSchedules->add($twitterSchedule);
+
+        return $this;
+    }
+
+    public function getTwitterSchedules(): Collection
+    {
+        return $this->twitterSchedules;
+    }
+
+    public function setTwitterSchedules(Collection $twitterSchedules): Station
+    {
+        $this->twitterSchedules = $twitterSchedules;
+
+        return $this;
+    }
+
+    public function removeTwitterSchedule(TwitterSchedule $twitterSchedule): Station
+    {
+        $this->twitterSchedules->removeElement($twitterSchedule);
+
+        return $this;
+    }
+
+    public function __toString(): string
     {
         return sprintf('%s: %s', $this->stationCode, $this->title);
     }

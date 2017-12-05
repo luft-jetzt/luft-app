@@ -8,7 +8,8 @@ class PM10 extends AbstractPollutant
 {
     public function __construct()
     {
-        $this->unit = 'µg/m<sup>3</sup>';
+        $this->unitHtml = 'µg/m<sup>3</sup>';
+        $this->unitPlain = 'µg/m³';
         $this->name = 'Feinstaub PM10';
         $this->pollutionLevel = new PollutionLevel(20, 35, 45, 75);
     }

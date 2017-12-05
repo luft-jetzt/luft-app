@@ -3,6 +3,9 @@
 namespace AppBundle\PermalinkManager;
 
 use AppBundle\Entity\Photo;
+use AppBundle\Entity\Station;
+use AppBundle\Entity\TwitterSchedule;
+use Caldera\GeoBasic\Coord\Coord;
 use Curl\Curl;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -30,14 +33,23 @@ class SqibePermalinkManager
         $this->apiPassword = $apiPassword;
     }
 
-    public function createPermalink(Photo $photo): string
+    public function createPermalinkForTweet(TwitterSchedule $twitterSchedule): string
     {
+        $dateTime = new \DateTime();
+
         $data = [
-            'url' => $this->generateUrl($photo),
-            'title' => $photo->getTitle(),
+            'title' => $twitterSchedule->getTitle(),
             'format'   => 'json',
             'action'   => 'shorturl'
         ];
+
+        if ($twitterSchedule->getStation()) {
+            $data['url'] = $this->generateUrlForStation($twitterSchedule->getStation(), $dateTime);
+        } else {
+            $coord = new Coord($twitterSchedule->getLatitude(), $twitterSchedule->getLongitude());
+
+            $data['url'] = $this->generateUrlForCoord($coord, $dateTime);
+        }
 
         $response = $this->postCurl($data);
 
@@ -46,74 +58,30 @@ class SqibePermalinkManager
         }
 
         $permalink = $response->shorturl;
-        $photo->setPermalink($permalink);
 
         return $permalink;
     }
 
-    public function getUrl(Photo $photo): string
+
+    protected function generateUrlForStation(Station $station, \DateTimeInterface $dateTime): string
     {
-        $data = [
-            'shorturl' => $this->getKeyword($photo),
-            'format'   => 'json',
-            'action'   => 'expand'
-        ];
-
-        $response = $this->postCurl($data);
-
-        if (isset($response->errorCode) && $response->errorCode == 404) {
-            return '';
-        }
-
-        $longUrl = $response->longurl;
-
-        return $longUrl;
-    }
-
-    public function updatePermalink(Photo $photo): bool
-    {
-        $url = $this->generateUrl($photo);
-
-        $data = [
-            'url' => $url,
-            'shorturl' => $this->getKeyword($photo),
-            'format'   => 'json',
-            'action'   => 'update'
-        ];
-
-        $response = $this->postCurl($data);
-
-        if (isset($response->statusCode) && $response->statusCode == 200) {
-            return true;
-        }
-
-        return false;
-    }
-
-    protected function getKeyword(Photo $photo): string
-    {
-        $permalinkParts = explode('/', $photo->getPermalink());
-        $keyword = array_pop($permalinkParts);
-
-        return $keyword;
-    }
-
-    protected function generateUrl(Photo $photo): string
-    {
-        $url = $this->router->generate(
-            'show_photo',
-            [
-                'slug' => $photo->getSlug()
-            ],
-            UrlGeneratorInterface::ABSOLUTE_URL
-        );
+        $url = $this->router->generate('station', ['stationCode' => $station->getStationCode(), 'timestamp' => $dateTime->format('U')], UrlGeneratorInterface::ABSOLUTE_URL);
 
         $url = str_replace('http://', 'https://', $url);
 
         return $url;
     }
 
-    protected function postCurl(array $data): \stdClass
+    protected function generateUrlForCoord(Coord $coord, \DateTimeInterface $dateTime): string
+    {
+        $url = $this->router->generate('station', ['latitude' => $coord->getLatitude(), 'longitude' => $coord->getLongitude(), 'timestamp' => $dateTime->format('U')], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        $url = str_replace('http://', 'https://', $url);
+
+        return $url;
+    }
+
+    protected function postCurl(array $data)
     {
         $loginArray = [
             'username' => $this->apiUsername,

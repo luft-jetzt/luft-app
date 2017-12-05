@@ -5,7 +5,7 @@ namespace AppBundle\SourceFetcher\Parser;
 use AppBundle\SourceFetcher\Query\QueryInterface;
 use AppBundle\SourceFetcher\Value\Value;
 
-class UbParser
+class UbParser implements ParserInterface
 {
     const STATION = 0;
     const DATETIME = 5;
@@ -43,7 +43,6 @@ class UbParser
                 $dateTime = \DateTime::createFromFormat($dateTimeFormat, $parts[self::DATETIME]);
                 $value = $parts[self::VALUE];
 
-                var_dump($dateTimeFormat);
                 if (!$station || !$dateTime || !$value) {
                     continue;
                 }

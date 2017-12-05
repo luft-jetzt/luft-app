@@ -8,5 +8,7 @@
         <import resource="services/admin.xml"/>
         <import resource="services/pollution.xml"/>
         <import resource="services/command.xml"/>
+        <import resource="services/twitter.xml"/>
+        <import resource="services/permalink.xml"/>
     </imports>
 </container>

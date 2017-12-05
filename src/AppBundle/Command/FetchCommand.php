@@ -4,6 +4,7 @@ namespace AppBundle\Command;
 
 use AppBundle\Pollution\Pollutant\PollutantInterface;
 use AppBundle\SourceFetcher\Parser\UbParser;
+use AppBundle\SourceFetcher\Persister\Persister;
 use AppBundle\SourceFetcher\Query\AbstractQuery;
 use AppBundle\SourceFetcher\Query\UbCOQuery;
 use AppBundle\SourceFetcher\Query\UbNO2Query;
@@ -11,7 +12,9 @@ use AppBundle\SourceFetcher\Query\UbO3Query;
 use AppBundle\SourceFetcher\Query\UbPM10Query;
 use AppBundle\SourceFetcher\Query\UbSO2Query;
 use AppBundle\SourceFetcher\SourceFetcher;
+use AppBundle\SourceFetcher\Value\Value;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -51,62 +54,72 @@ class FetchCommand extends ContainerAwareCommand
         $dateTime25 = $dateTime->sub($dateInterval25);
 
         if ($input->getOption('pm10')) {
-            $this->fetchPM10($dateTime25);
+            $this->fetchPM10($output, $dateTime25);
         }
 
         if ($input->getOption('so2')) {
-            $this->fetchSO2($dateTime4);
+            $this->fetchSO2($output, $dateTime4);
         }
 
         if ($input->getOption('no2')) {
-            $this->fetchNO2($dateTime4);
+            $this->fetchNO2($output, $dateTime4);
         }
 
         if ($input->getOption('o3')) {
-            $this->fetchO3($dateTime4);
+            $this->fetchO3($output, $dateTime4);
         }
 
         if ($input->getOption('co')) {
-            $this->fetchCO($dateTime4);
+            $this->fetchCO($output, $dateTime4);
         }
     }
 
-    protected function fetchPM10(\DateTimeInterface $dateTime)
+    protected function fetchPM10(OutputInterface $output, \DateTimeInterface $dateTime)
     {
+        $output->writeln('PM10');
+
         $query = new UbPM10Query($dateTime);
 
-        $this->fetch($query, PollutantInterface::POLLUTANT_PM10);
+        $this->fetch($output, $query, PollutantInterface::POLLUTANT_PM10);
     }
 
-    protected function fetchSO2(\DateTimeInterface $dateTime)
+    protected function fetchSO2(OutputInterface $output, \DateTimeInterface $dateTime)
     {
+        $output->writeln('SO2');
+
         $query = new UbSO2Query($dateTime);
 
-        $this->fetch($query, PollutantInterface::POLLUTANT_SO2);
+        $this->fetch($output, $query, PollutantInterface::POLLUTANT_SO2);
     }
 
-    protected function fetchNO2(\DateTimeInterface $dateTime)
+    protected function fetchNO2(OutputInterface $output, \DateTimeInterface $dateTime)
     {
+        $output->writeln('NO2');
+
         $query = new UbNO2Query($dateTime);
 
-        $this->fetch($query, PollutantInterface::POLLUTANT_NO2);
+        $this->fetch($output, $query, PollutantInterface::POLLUTANT_NO2);
     }
 
-    protected function fetchO3(\DateTimeInterface $dateTime)
+    protected function fetchO3(OutputInterface $output, \DateTimeInterface $dateTime)
     {
+        $output->writeln('O3');
+
         $query = new UbO3Query($dateTime);
 
-        $this->fetch($query, PollutantInterface::POLLUTANT_O3);
+        $this->fetch($output, $query, PollutantInterface::POLLUTANT_O3);
     }
 
-    protected function fetchCO(\DateTimeInterface $dateTime)
+    protected function fetchCO(OutputInterface $output, \DateTimeInterface $dateTime)
     {
+        $output->writeln('CO');
+
         $query = new UbCOQuery($dateTime);
 
-        $this->fetch($query, PollutantInterface::POLLUTANT_CO);
+        $this->fetch($output, $query, PollutantInterface::POLLUTANT_CO);
     }
 
-    protected function fetch(AbstractQuery $query, string $pollutant)
+    protected function fetch(OutputInterface $output, AbstractQuery $query, string $pollutant)
     {
         $sourceFetcher = new SourceFetcher();
 
@@ -115,7 +128,22 @@ class FetchCommand extends ContainerAwareCommand
         $parser = new UbParser($query);
         $tmpValueList = $parser->parse($response, $pollutant);
 
-        $persister = $this->getContainer()->get('AppBundle\SourceFetcher\Persister\Persister');
+        $persister = $this->getContainer()->get(Persister::class);
         $persister->persistValues($tmpValueList);
+
+        $this->writeValueTable($output, $persister->getNewValueList());
+    }
+
+    protected function writeValueTable(OutputInterface $output, array $newValueList): void
+    {
+        $table = new Table($output);
+        $table->setHeaders(['Station', 'Title', 'Value', 'DateTime']);
+
+        /** @var Value $value */
+        foreach ($newValueList as $value) {
+            $table->addRow([$value->getStation()->getStationCode(), $value->getStation()->getTitle(), $value->getValue(), $value->getDateTime()->format('Y-m-d H:i:s')]);
+        }
+
+        $table->render();
     }
 }

@@ -4,9 +4,16 @@ namespace AppBundle\SourceFetcher\Value;
 
 class Value
 {
+    /** @var string $station */
     protected $station;
+
+    /** @var \DateTime $dateTime */
     protected $dateTime;
+
+    /** @var float $value */
     protected $value;
+
+    /** @var int $pollutant */
     protected $pollutant;
 
     public function __construct()
