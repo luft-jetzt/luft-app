@@ -5,6 +5,7 @@ namespace AppBundle\Command;
 use AppBundle\Entity\TwitterSchedule;
 use AppBundle\Pollution\Box\Box;
 use AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory;
+use AppBundle\Twitter\MessageFactory\EmojiMessageFactory;
 use AppBundle\Twitter\MessageFactory\MessageFactoryInterface;
 use Caldera\GeoBasic\Coord\Coord;
 use Caldera\GeoBasic\Coord\CoordInterface;
@@ -54,8 +55,6 @@ class TweetCommand extends ContainerAwareCommand
                 ];
 
                 $reply = $cb->statuses_update($params);
-
-                var_dump($reply);
             }
         }
     }
@@ -83,13 +82,13 @@ class TweetCommand extends ContainerAwareCommand
 
     protected function getPollutionDataFactory(): PollutionDataFactory
     {
-        return $this->getContainer()->get('AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory');
+        return $this->getContainer()->get(PollutionDataFactory::class);
     }
 
     protected function createMessage(TwitterSchedule $twitterSchedule, array $boxList): string
     {
         /** @var MessageFactoryInterface $factory */
-        $factory = $this->getContainer()->get('AppBundle\Twitter\MessageFactory\EmojiMessageFactory');
+        $factory = $this->getContainer()->get(EmojiMessageFactory::class);
 
         $message = $factory
             ->setTitle($twitterSchedule->getTitle())
