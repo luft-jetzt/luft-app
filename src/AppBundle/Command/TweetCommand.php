@@ -3,6 +3,7 @@
 namespace AppBundle\Command;
 
 use AppBundle\Entity\TwitterSchedule;
+use AppBundle\PermalinkManager\SqibePermalinkManager;
 use AppBundle\Pollution\Box\Box;
 use AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory;
 use AppBundle\Twitter\MessageFactory\EmojiMessageFactory;
@@ -90,8 +91,12 @@ class TweetCommand extends ContainerAwareCommand
         /** @var MessageFactoryInterface $factory */
         $factory = $this->getContainer()->get(EmojiMessageFactory::class);
 
+        /** @var SqibePermalinkManager $permalinkManager */
+        $permalinkManager = $this->getContainer()->get(SqibePermalinkManager::class);
+
         $message = $factory
             ->setTitle($twitterSchedule->getTitle())
+            ->setLink($permalinkManager->createPermalinkForTweet($twitterSchedule))
             ->setBoxList($boxList)
             ->compose()
             ->getMessage()
