@@ -10,6 +10,9 @@ abstract class AbstractMessageFactory implements MessageFactoryInterface
     /** @var string $message */
     protected $message = '';
 
+    /** @var string $title */
+    protected $title = '';
+
     public function setBoxList(array $boxList = []): MessageFactoryInterface
     {
         $this->boxList = $boxList;
@@ -19,7 +22,7 @@ abstract class AbstractMessageFactory implements MessageFactoryInterface
 
     public function setTitle(string $title = ''): MessageFactoryInterface
     {
-        $this->message = sprintf("%s\n", $title);
+        $this->title = $title;
 
         return $this;
     }
