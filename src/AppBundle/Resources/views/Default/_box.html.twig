@@ -1,31 +1,42 @@
 {% if box %}
     {% if box.pollutionLevel == constant('LEVEL_ACCEPTABLE', box.pollutant.pollutionLevel) %}
-    {% set levelClass = 'card-success' %}
+    {% set levelClass = 'bg-success' %}
     {% endif %}
 
     {% if box.pollutionLevel == constant('LEVEL_WARNING', box.pollutant.pollutionLevel) %}
-    {% set levelClass = 'card-warning' %}
+    {% set levelClass = 'bg-warning' %}
     {% endif %}
 
     {% if box.pollutionLevel == constant('LEVEL_DANGER', box.pollutant.pollutionLevel) %}
-    {% set levelClass = 'card-danger' %}
+    {% set levelClass = 'bg-danger' %}
     {% endif %}
 
     {% if box.pollutionLevel == constant('LEVEL_DEATH', box.pollutant.pollutionLevel) %}
-    {% set levelClass = 'card-danger' %}
+    {% set levelClass = 'bg-dark' %}
     {% endif %}
 
-<div class="col-xs-12">
+    {% if combined is defined and combined == true %}
+    {% set combined = true %}
+    {% else %}
+    {% set combined = false %}
+    {% endif %}
 
+    {% if not combined %}
+<div class="col-12">
+    {% endif %}
     {% if linkToStation is defined and linkToStation == true %}
     <a href="{{ path('station', { 'stationCode': box.station.stationCode }) }}" class="no-underline">
     {% endif %}
-        <div class="card card-inverse {{ levelClass }} text-center">
-            <div class="card-block text-xs-center">
+    {% if not combined %}
+        <div class="card card-inverse mb-2">
+    {% endif %}
+            <div class="card-body {{ levelClass }} text-white text-center">
                 <h4 class="card-title">
                     {{ box.data.value }} {{ box.pollutant.unitHtml|raw }}
                 </h4>
-                <p class="card-text">{{ box.pollutant.name }}</p>
+                <p class="card-text">
+                    {{ box.pollutant.name }}
+                </p>
                 <p class="card-text">
                 {% if showStationTitle is defined and showStationTitle != false %}{{ box.station.title }}<br />{% endif %}
                     <small>
@@ -33,9 +44,13 @@
                     </small>
                 </p>
             </div>
+    {% if not combined %}
         </div>
+    {% endif %}
     {% if linkToStation is defined and linkToStation == true %}
     </a>
     {% endif %}
+    {% if not combined %}
 </div>
+    {% endif %}
 {% endif %}
