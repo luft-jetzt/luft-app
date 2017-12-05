@@ -12,6 +12,7 @@ class StationAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
+            ->add('city')
             ->add('stationCode')
             ->add('stateCode')
             ->add('title')
@@ -23,6 +24,7 @@ class StationAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('city')
             ->add('stationCode')
             ->add('stateCode')
             ->add('title')
@@ -36,6 +38,7 @@ class StationAdmin extends AbstractAdmin
         $listMapper
             ->addIdentifier('stationCode')
             ->add('stateCode')
+            ->add('city')
             ->add('title')
             ->add('latitude')
             ->add('longitude')
