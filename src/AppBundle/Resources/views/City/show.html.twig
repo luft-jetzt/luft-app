@@ -4,14 +4,19 @@
 <div class="container">
     <div class="row">
         <div class="col-12 text-center">
-            <h2>
-                {{ city.name }}
-            </h2>
-            {% if city.description %}
-            <p class="lead">
-                {{ city.description|nl2br }}
-            </p>
-            {% endif %}
+            <div class="card">
+                <div id="map-city-{{ city.slug }}" class="map" class="card-img-top" style="height: 33.33vh;"></div>
+                <div class="card-body">
+                    <h4 class="card-title">
+                        {{ city.name }}
+                    </h4>
+                    {% if city.description %}
+                        <p class="card-text mt-2">
+                            {{ city.description|nl2br }}
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 </div>
