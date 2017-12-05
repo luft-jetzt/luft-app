@@ -15,6 +15,8 @@ class PlainMessageFactory extends AbstractMessageFactory
             $this->message .= sprintf("%s: %.0f %s \n", $box->getPollutant()->getName(), $box->getData()->getValue(), $box->getPollutant()->getUnitPlain());
         }
 
+        $this->message = sprintf("%s", $this->link);
+
         return $this;
     }
 }

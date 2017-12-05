@@ -17,6 +17,8 @@ class EmojiMessageFactory extends AbstractMessageFactory
             $this->message .= sprintf("%s %s: %.0f %s \n", $this->getEmoji($box), $box->getPollutant()->getName(), $box->getData()->getValue(), $box->getPollutant()->getUnitPlain());
         }
 
+        $this->message = sprintf("%s", $this->link);
+
         return $this;
     }
 
