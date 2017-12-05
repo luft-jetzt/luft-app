@@ -19,5 +19,13 @@
             </div>
         </div>
     </div>
+
+    {% for station in stationList %}
+    <div class="row mt-2">
+        <div class="col-12">
+            {% include 'AppBundle:Default:_station.html.twig' with { 'station': station, boxList: stationBoxList[station.stationCode] } %}
+        </div>
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}
