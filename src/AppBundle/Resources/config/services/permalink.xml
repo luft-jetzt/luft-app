@@ -6,9 +6,9 @@
 
     <services>
         <defaults autowire="true" autoconfigure="true" public="true">
-            <bind key="$apiUrl" id="%sqibe.api_url%" />
-            <bind key="$apiUsername" id="%sqibe.api_username%" />
-            <bind key="$apiPassword" id="%sqibe.api_password%" />
+            <bind key="$apiUrl">%sqibe.api_url%</bind>
+            <bind key="$apiUsername">%sqibe.api_username%</bind>
+            <bind key="$apiPassword">%sqibe.api_password%</bind>
         </defaults>
 
         <service id="AppBundle\PermalinkManager\SqibePermalinkManager" />
