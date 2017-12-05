@@ -5,7 +5,7 @@ namespace AppBundle\SourceFetcher\Parser;
 use AppBundle\SourceFetcher\Query\QueryInterface;
 use AppBundle\SourceFetcher\Value\Value;
 
-class UbParser
+class UbParser implements ParserInterface
 {
     const STATION = 0;
     const DATETIME = 5;
