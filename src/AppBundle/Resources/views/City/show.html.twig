@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-12 text-center">
             <div class="card">
-                <div id="map-city-{{ city.slug }}" class="map" class="card-img-top" style="height: 33.33vh;"></div>
+                <div id="map-city-{{ city.slug }}" class="city-map card-img-top" style="height: 33.33vh;"></div>
                 <div class="card-body">
                     <h4 class="card-title">
                         {{ city.name }}
@@ -23,9 +23,13 @@
     {% for station in stationList %}
     <div class="row mt-2">
         <div class="col-12">
-            {% include 'AppBundle:Default:_station.html.twig' with { 'station': station, boxList: stationBoxList[station.stationCode] } %}
+            {% include 'AppBundle:Default:_station.html.twig' with { 'station': station, boxList: stationBoxList[station.stationCode], showMap: false } %}
         </div>
     </div>
     {% endfor %}
 </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/bundles/app/js/map.js"></script>
 {% endblock %}

@@ -2,8 +2,10 @@
 <a href="{{ path('station', { 'stationCode': station.stationCode }) }}" class="no-underline">
 {% endif %}
 
-    <div class="card">
+    <div class="card station" data-latitude="{{ station.latitude }}" data-longitude="{{ station.longitude }}">
+    {% if showMap is not defined or showMap == true %}
         <div id="map-station-{{ station.stationCode }}" class="map" class="card-img-top" style="height: 33.33vh;" data-latitude="{{ station.latitude }}" data-longitude="{{ station.longitude }}"></div>
+        {% endif %}
         <div class="card-body">
             <h4 class="card-title">
                 Messstation {{ station.stationCode }}
