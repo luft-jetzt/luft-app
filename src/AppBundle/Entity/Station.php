@@ -133,7 +133,12 @@ class Station extends Coord
 
     public function getPin(): string
     {
-        return $this->latitude . ',' . $this->longitude;
+        return sprintf('%f,%f', $this->latitude, $this->longitude);
+    }
+
+    public function __toString()
+    {
+        return sprintf('%s: %s', $this->stationCode, $this->title);
     }
 
     public function addTwitterSchedule(TwitterSchedule $twitterSchedule): Station
@@ -160,10 +165,5 @@ class Station extends Coord
         $this->twitterSchedules->removeElement($twitterSchedule);
 
         return $this;
-    }
-
-    public function __toString(): string
-    {
-        return sprintf('%s: %s', $this->stationCode, $this->title);
     }
 }

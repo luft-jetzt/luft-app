@@ -61,6 +61,20 @@ class Data
         return $this;
     }
 
+    public function getStationId(): ?int
+    {
+        if ($this->station) {
+            return $this->station->getId();
+        }
+
+        return null;
+    }
+
+    public function getDateTimeFormatted(): string
+    {
+        return $this->dateTime->format('Y-m-d H:i:s');
+    }
+
     public function getDateTime(): \DateTime
     {
         return $this->dateTime;
@@ -95,5 +109,13 @@ class Data
         $this->pollutant = $pollutant;
 
         return $this;
+    }
+
+    public function isIndexable(): bool
+    {
+        $dateTime = new \DateTimeImmutable();
+        $dateTime->sub(new \DateInterval('P1W'));
+
+        return $dateTime >= $this->dateTime;
     }
 }
