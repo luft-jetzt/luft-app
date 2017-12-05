@@ -6,9 +6,11 @@
 
     <route id="station" path="/{stationCode}">
         <default key="_controller">AppBundle:Display:station</default>
+        <option key="expose">true</option>
     </route>
 
     <route id="display" path="/">
         <default key="_controller">AppBundle:Display:index</default>
+        <option key="expose">true</option>
     </route>
 </routes>
