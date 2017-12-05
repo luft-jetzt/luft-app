@@ -32,6 +32,9 @@ class Twitter
     /** @var string $twitterClientSecret */
     protected $twitterClientSecret;
 
+    /** @var array $validScheduleList */
+    protected $validScheduleList = [];
+
     public function __construct(Doctrine $doctrine, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, SqibePermalinkManager $permalinkManager, string $twitterClientId, string $twitterClientSecret)
     {
         $this->doctrine = $doctrine;
@@ -72,6 +75,8 @@ class Twitter
                 ];
 
                 $reply = $cb->statuses_update($params);
+
+                $this->validScheduleList[] = $twitterSchedule;
             }
         }
     }
@@ -105,5 +110,10 @@ class Twitter
         ;
 
         return $message;
+    }
+
+    public function getValidScheduleList(): array
+    {
+        return $this->validScheduleList;
     }
 }

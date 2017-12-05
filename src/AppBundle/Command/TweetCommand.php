@@ -14,6 +14,7 @@ use Caldera\GeoBasic\Coord\CoordInterface;
 use Codebird\Codebird;
 use Cron\CronExpression;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -31,5 +32,26 @@ class TweetCommand extends ContainerAwareCommand
         $twitter = $this->getContainer()->get(Twitter::class);
 
         $twitter->tweet();
+
+        $validScheduleList = $twitter->getValidScheduleList();
+
+        $table = new Table($output);
+        $table->setHeaders(['City', 'Title', 'Cron', 'Twitter', 'Station', 'Station Code', 'Latitude', 'Longitude']);
+
+        /** @var TwitterSchedule $validSchedule */
+        foreach ($validScheduleList as $validSchedule) {
+            $table->addRow([
+                $validSchedule->getCity()->getName(),
+                $validSchedule->getTitle(),
+                $validSchedule->getCron(),
+                sprintf('@%s', $validSchedule->getCity()->getTwitterUsername()),
+                $validSchedule->getStation() ? $validSchedule->getStation()->getTitle() : '',
+                $validSchedule->getStation() ? $validSchedule->getStation()->getStationCode() : '',
+                $validSchedule->getLatitude(),
+                $validSchedule->getLongitude(),
+            ]);
+        }
+
+        $table->render();
     }
 }
