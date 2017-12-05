@@ -6,12 +6,21 @@ use AppBundle\Entity\Data;
 use AppBundle\Entity\Station;
 use AppBundle\SourceFetcher\Value\Value;
 use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
+use Doctrine\Common\Persistence\ObjectManager;
 
 class Persister
 {
+    /** @var Doctrine $doctrine */
     protected $doctrine;
+
+    /** @var ObjectManager $entityManager */
     protected $entityManager;
+
+    /** @var array $stationList */
     protected $stationList = [];
+
+    /** @var array $newValueList */
+    protected $newValueList = [];
 
     public function __construct(Doctrine $doctrine)
     {
@@ -38,6 +47,8 @@ class Persister
             }
 
             $this->entityManager->persist($data);
+
+            $this->newValueList[] = $data;
         }
 
         $this->entityManager->flush();
@@ -65,5 +76,10 @@ class Persister
     protected function getStationByCode(string $stationCode): Station
     {
         return $this->stationList[$stationCode];
+    }
+
+    public function getNewValueList(): array
+    {
+        return $this->newValueList;
     }
 }
