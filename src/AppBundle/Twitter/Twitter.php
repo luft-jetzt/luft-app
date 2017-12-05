@@ -54,6 +54,10 @@ class Twitter
 
         /** @var TwitterSchedule $twitterSchedule */
         foreach ($twitterSchedules as $twitterSchedule) {
+            if (!$twitterSchedule->getStation() && !$twitterSchedule->getLatitude() && !$twitterSchedule->getLongitude()) {
+                continue;
+            }
+
             $cron = CronExpression::factory($twitterSchedule->getCron());
 
             if ($cron->isDue()) {
