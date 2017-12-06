@@ -74,7 +74,7 @@ class SqibePermalinkManager
 
     protected function generateUrlForCoord(Coord $coord, \DateTimeInterface $dateTime): string
     {
-        $url = $this->router->generate('station', ['latitude' => $coord->getLatitude(), 'longitude' => $coord->getLongitude(), 'timestamp' => $dateTime->format('U')], UrlGeneratorInterface::ABSOLUTE_URL);
+        $url = $this->router->generate('display', ['latitude' => $coord->getLatitude(), 'longitude' => $coord->getLongitude(), 'timestamp' => $dateTime->format('U')], UrlGeneratorInterface::ABSOLUTE_URL);
 
         $url = str_replace('http://', 'https://', $url);
 
