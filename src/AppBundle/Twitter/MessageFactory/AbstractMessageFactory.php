@@ -43,4 +43,11 @@ abstract class AbstractMessageFactory implements MessageFactoryInterface
     {
         return $this->message;
     }
+
+    protected function resetMessage(): AbstractMessageFactory
+    {
+        $this->message = '';
+
+        return $this;
+    }
 }
