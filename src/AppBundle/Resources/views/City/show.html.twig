@@ -15,6 +15,19 @@
                             {{ city.description|nl2br }}
                         </p>
                     {% endif %}
+
+                    {% if city.twitterUsername %}
+                        <p>
+                            Folge aktuellen Luftdaten aus {{ city.name }} auf twitter:
+                        </p>
+
+                        <p>
+                            <a href="https://twitter.com/{{ city.twitterUsername }}" class="btn btn-primary">
+                                <i class="fa fa-twitter"></i>
+                                @{{ city.twitterUsername }}
+                            </a>
+                        </p>
+                    {% endif %}
                 </div>
             </div>
         </div>
