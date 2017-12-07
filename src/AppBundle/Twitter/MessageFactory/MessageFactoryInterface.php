@@ -13,4 +13,6 @@ interface MessageFactoryInterface
     public function compose(): MessageFactoryInterface;
 
     public function getMessage(): string;
+
+    public function reset(): MessageFactoryInterface;
 }
