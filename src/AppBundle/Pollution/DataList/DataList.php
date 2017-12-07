@@ -11,13 +11,7 @@ class DataList
 
     public function __construct()
     {
-        $this->list = [
-            PollutantInterface::POLLUTANT_PM10 => null,
-            PollutantInterface::POLLUTANT_O3 => null,
-            PollutantInterface::POLLUTANT_NO2 => null,
-            PollutantInterface::POLLUTANT_SO2 => null,
-            PollutantInterface::POLLUTANT_CO => null,
-        ];
+        $this->reset();
     }
 
     public function addData(Data $data, bool $overwrite = false): DataList
@@ -56,7 +50,13 @@ class DataList
 
     public function reset(): DataList
     {
-        $this->list = [];
+        $this->list = [
+            PollutantInterface::POLLUTANT_PM10 => null,
+            PollutantInterface::POLLUTANT_O3 => null,
+            PollutantInterface::POLLUTANT_NO2 => null,
+            PollutantInterface::POLLUTANT_SO2 => null,
+            PollutantInterface::POLLUTANT_CO => null,
+        ];
 
         return $this;
     }

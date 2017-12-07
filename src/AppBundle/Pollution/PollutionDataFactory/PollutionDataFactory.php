@@ -56,6 +56,8 @@ class PollutionDataFactory
 
     protected function getDataListFromStationList(array $stationList): array
     {
+        $this->dataList->reset();
+
         foreach ($stationList as $station) {
             foreach ($this->dataList->getMissingPollutants() as $pollutant) {
                 $data = $this->dataRetriever->retrieveStationData($station, $pollutant);
