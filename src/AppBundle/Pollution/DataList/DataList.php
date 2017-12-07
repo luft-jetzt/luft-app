@@ -53,4 +53,11 @@ class DataList
     {
         return $this->list;
     }
+
+    public function reset(): DataList
+    {
+        $this->list = [];
+
+        return $this;
+    }
 }

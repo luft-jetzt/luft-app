@@ -85,10 +85,18 @@ class PollutionDataFactory
     protected function decorateBoxList(array $boxList): array
     {
         return $this
+            ->reset()
             ->boxDecorator
             ->setBoxList($boxList)
             ->decorate()
             ->getBoxList()
         ;
+    }
+
+    protected function reset(): PollutionDataFactory
+    {
+        $this->dataList->reset();
+
+        return $this;
     }
 }
