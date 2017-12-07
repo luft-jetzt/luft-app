@@ -10,6 +10,8 @@ class EmojiMessageFactory extends AbstractMessageFactory
 {
     public function compose(): MessageFactoryInterface
     {
+        $this->resetMessage();
+
         $this->message .= sprintf("%s\n", $this->title);
 
         /** @var Box $box */
