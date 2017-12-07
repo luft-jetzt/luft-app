@@ -110,7 +110,7 @@ class TwitterSchedule
         return $this->latitude;
     }
 
-    public function setLatitude(float $latitude): TwitterSchedule
+    public function setLatitude(float $latitude = null): TwitterSchedule
     {
         $this->latitude = $latitude;
 
@@ -122,7 +122,7 @@ class TwitterSchedule
         return $this->longitude;
     }
 
-    public function setLongitude(float $longitude): TwitterSchedule
+    public function setLongitude(float $longitude = null): TwitterSchedule
     {
         $this->longitude = $longitude;
 
@@ -134,7 +134,7 @@ class TwitterSchedule
         return $this->station;
     }
 
-    public function setStation(Station $station): TwitterSchedule
+    public function setStation(Station $station = null): TwitterSchedule
     {
         $this->station = $station;
 

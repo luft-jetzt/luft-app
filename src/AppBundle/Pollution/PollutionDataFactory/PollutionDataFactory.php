@@ -56,6 +56,8 @@ class PollutionDataFactory
 
     protected function getDataListFromStationList(array $stationList): array
     {
+        $this->dataList->reset();
+
         foreach ($stationList as $station) {
             foreach ($this->dataList->getMissingPollutants() as $pollutant) {
                 $data = $this->dataRetriever->retrieveStationData($station, $pollutant);
@@ -85,10 +87,18 @@ class PollutionDataFactory
     protected function decorateBoxList(array $boxList): array
     {
         return $this
+            ->reset()
             ->boxDecorator
             ->setBoxList($boxList)
             ->decorate()
             ->getBoxList()
         ;
+    }
+
+    protected function reset(): PollutionDataFactory
+    {
+        $this->dataList->reset();
+
+        return $this;
     }
 }
