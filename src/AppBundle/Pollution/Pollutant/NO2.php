@@ -11,6 +11,6 @@ class NO2 extends AbstractPollutant
         $this->unitHtml = 'µg/m<sup>3</sup>';
         $this->unitPlain = 'µg/m³';
         $this->name = 'Stickstoffdioxid';
-        $this->pollutionLevel = new PollutionLevel(60, 120, 200, 260);
+        $this->pollutionLevel = new PollutionLevel(40, 80, 150, 250);
     }
 }
