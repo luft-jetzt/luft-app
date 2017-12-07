@@ -106,6 +106,7 @@ class Twitter
     protected function createMessage(TwitterSchedule $twitterSchedule, array $boxList): string
     {
         $message = $this->messageFactory
+            ->reset()
             ->setTitle($twitterSchedule->getTitle())
             ->setLink($this->permalinkManager->createPermalinkForTweet($twitterSchedule))
             ->setBoxList($boxList)
