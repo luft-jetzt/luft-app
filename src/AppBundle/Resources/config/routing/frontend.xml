@@ -7,7 +7,7 @@
     <route id="show_city" path="/{citySlug}">
         <default key="_controller">AppBundle:City:show</default>
         <option key="expose">true</option>
-        <requirement key="citySlug">^([A-Za-z]+)$</requirement>
+        <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
 
     <route id="station" path="/{stationCode}">
