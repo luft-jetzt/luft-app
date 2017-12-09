@@ -33,13 +33,15 @@
         </div>
     </div>
 
-    {% for station in stationList %}
     <div class="row mt-2">
         <div class="col-12">
+            <div class="card-columns">
+            {% for station in stationList %}
             {% include 'AppBundle:Default:_station.html.twig' with { linkToStation: true, station: station, boxList: stationBoxList[station.stationCode], showMap: false } %}
+            {% endfor %}
+            </div>
         </div>
     </div>
-    {% endfor %}
 </div>
 {% endblock %}
 
