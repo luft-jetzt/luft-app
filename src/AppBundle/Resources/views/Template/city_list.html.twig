@@ -1,0 +1,13 @@
+<footer id="footer">
+    <div class="container">
+        <div class="row m-3">
+            <ul class="col-12 text-muted list-inline text-center">
+            {% for city in cityList %}
+                <a href="{{ path('show_city', { citySlug: city.slug }) }}">
+                    {{ city.name }}
+                </a>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+</footer>
