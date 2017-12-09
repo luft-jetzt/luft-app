@@ -56,5 +56,5 @@ function createCityMap(id) {
     });
 
     markerGroup.addTo(map);
-    map.fitBounds(markerGroup.getBounds());
+    map.fitBounds(markerGroup.getBounds(), { padding: [15, 15] });
 }
