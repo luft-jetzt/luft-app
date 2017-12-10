@@ -3,9 +3,9 @@
 namespace AppBundle\Twitter;
 
 use AppBundle\Entity\TwitterSchedule;
-use AppBundle\PermalinkManager\SqibePermalinkManager;
 use AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory;
 use AppBundle\Twitter\MessageFactory\MessageFactoryInterface;
+use AppBundle\YourlsApiManager\LuftYourlsApiManager;
 use Caldera\GeoBasic\Coord\Coord;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Codebird\Codebird;
@@ -23,7 +23,7 @@ class Twitter
     /** @var MessageFactoryInterface $messageFactory */
     protected $messageFactory;
 
-    /** @var SqibePermalinkManager $permalinkManager */
+    /** @var LuftYourlsApiManager $permalinkManager */
     protected $permalinkManager;
 
     /** @var string $twitterClientId */
@@ -35,7 +35,7 @@ class Twitter
     /** @var array $validScheduleList */
     protected $validScheduleList = [];
 
-    public function __construct(Doctrine $doctrine, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, SqibePermalinkManager $permalinkManager, string $twitterClientId, string $twitterClientSecret)
+    public function __construct(Doctrine $doctrine, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, LuftYourlsApiManager $permalinkManager, string $twitterClientId, string $twitterClientSecret)
     {
         $this->doctrine = $doctrine;
         $this->pollutionDataFactory = $pollutionDataFactory;
