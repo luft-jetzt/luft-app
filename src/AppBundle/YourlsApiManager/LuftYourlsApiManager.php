@@ -1,67 +1,44 @@
 <?php
 
-namespace AppBundle\PermalinkManager;
+namespace AppBundle\YourlsApiManager;
 
 use AppBundle\Entity\Photo;
 use AppBundle\Entity\Station;
 use AppBundle\Entity\TwitterSchedule;
 use Caldera\GeoBasic\Coord\Coord;
+use Caldera\YourlsApiManager\YourlsApiManager;
 use Curl\Curl;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class SqibePermalinkManager
+class LuftYourlsApiManager extends YourlsApiManager
 {
     /** @var Router $router */
     protected $router;
-
-    /** @var string $apiUrl */
-    protected $apiUrl;
-
-    /** @var string $apiUsername */
-    protected $apiUsername;
-
-    /** @var string $apiPassword */
-    protected $apiPassword;
 
     public function __construct(Router $router, string $apiUrl, string $apiUsername, string $apiPassword)
     {
         $this->router = $router;
 
-        $this->apiUrl = $apiUrl;
-        $this->apiUsername = $apiUsername;
-        $this->apiPassword = $apiPassword;
+        parent::__construct($apiUrl, $apiUsername, $apiPassword);
     }
 
     public function createPermalinkForTweet(TwitterSchedule $twitterSchedule): string
     {
         $dateTime = new \DateTime();
 
-        $data = [
-            'title' => $twitterSchedule->getTitle(),
-            'format'   => 'json',
-            'action'   => 'shorturl'
-        ];
-
         if ($twitterSchedule->getStation()) {
-            $data['url'] = $this->generateUrlForStation($twitterSchedule->getStation(), $dateTime);
+            $url = $this->generateUrlForStation($twitterSchedule->getStation(), $dateTime);
         } else {
             $coord = new Coord($twitterSchedule->getLatitude(), $twitterSchedule->getLongitude());
 
-            $data['url'] = $this->generateUrlForCoord($coord, $dateTime);
+            $url = $this->generateUrlForCoord($coord, $dateTime);
         }
 
-        $response = $this->postCurl($data);
-
-        if (!isset($response->shorturl)) {
-            return '';
-        }
-
-        $permalink = $response->shorturl;
+        $permalink = $this->createShorturl($url, $twitterSchedule->getTitle());
 
         return $permalink;
     }
-
 
     protected function generateUrlForStation(Station $station, \DateTimeInterface $dateTime): string
     {
@@ -81,21 +58,4 @@ class SqibePermalinkManager
         return $url;
     }
 
-    protected function postCurl(array $data)
-    {
-        $loginArray = [
-            'username' => $this->apiUsername,
-            'password' => $this->apiPassword
-        ];
-
-        $data = array_merge($data, $loginArray);
-
-        $curl = new Curl();
-        $curl->post(
-            $this->apiUrl,
-            $data
-        );
-
-        return $curl->response;
-    }
 }
