@@ -6,11 +6,11 @@
 
     <services>
         <defaults autowire="true" autoconfigure="true" public="true">
-            <bind key="$apiUrl">%sqibe.api_url%</bind>
-            <bind key="$apiUsername">%sqibe.api_username%</bind>
-            <bind key="$apiPassword">%sqibe.api_password%</bind>
+            <bind key="$apiUrl">%yourls.api_url%</bind>
+            <bind key="$apiUsername">%yourls.api_username%</bind>
+            <bind key="$apiPassword">%yourls.api_password%</bind>
         </defaults>
 
-        <service id="AppBundle\PermalinkManager\SqibePermalinkManager" />
+        <service id="AppBundle\YourlsApiManager\LuftYourlsApiManager" />
     </services>
 </container>

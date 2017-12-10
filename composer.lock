@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "bd13b767801f79133c12373702a6ae61",
+    "content-hash": "7c875cc7ef70dbd0c05ccd0a601960dd",
     "packages": [
         {
             "name": "calderacc/geobasic",
@@ -42,6 +42,42 @@
                 }
             ],
             "time": "2016-12-01T23:19:27+00:00"
+        },
+        {
+            "name": "calderacc/yourls-api-manager",
+            "version": "0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/calderacc/yourls-api-manager.git",
+                "reference": "2001826dd832ca32d0217430ff5a8c4c5230da82"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/calderacc/yourls-api-manager/zipball/2001826dd832ca32d0217430ff5a8c4c5230da82",
+                "reference": "2001826dd832ca32d0217430ff5a8c4c5230da82",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1",
+                "php-curl-class/php-curl-class": "^8.0"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "Caldera\\YourlsApiManager\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Malte Hübner",
+                    "email": "malte@caldera.cc"
+                }
+            ],
+            "time": "2017-12-09T13:31:06+00:00"
         },
         {
             "name": "cocur/slugify",
