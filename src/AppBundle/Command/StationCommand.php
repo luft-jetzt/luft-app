@@ -4,7 +4,7 @@ namespace AppBundle\Command;
 
 use AppBundle\Entity\Station;
 use AppBundle\StationLoader\LdStationLoader;
-use AppBundle\StationLoader\StationLoader;
+use AppBundle\StationLoader\UbStationLoader;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,13 +16,28 @@ class StationCommand extends ContainerAwareCommand
     {
         $this
             ->setName('luft:station')
-            ->setDescription('');
+            ->setDescription('')
+            ->addOption('ub')
+            ->addOption('ld')
+        ;
     }
+
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if ($input->getOption('ub')) {
+            $this->fetchStation(UbStationLoader::class, $output);
+        }
+
+        if ($input->getOption('ld')) {
+            $this->fetchStation(LdStationLoader::class, $output);
+        }
+    }
+
+    protected function fetchStation(string $stationLoader, OutputInterface $output): void
+    {
         /** @var LdStationLoader $stationLoader */
-        $stationLoader = $this->getContainer()->get(LdStationLoader::class);
+        $stationLoader = $this->getContainer()->get($stationLoader);
         $stationLoader->load();
 
         $output->writeln('New stations');
