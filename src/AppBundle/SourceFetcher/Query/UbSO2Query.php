@@ -2,7 +2,7 @@
 
 namespace AppBundle\SourceFetcher\Query;
 
-class UbSO2Query extends AbstractQuery
+class UbSO2Query extends AbstractUbQuery
 {
     public function __construct(\DateTimeInterface $datetime)
     {

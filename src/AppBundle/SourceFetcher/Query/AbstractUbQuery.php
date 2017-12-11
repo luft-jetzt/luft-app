@@ -2,7 +2,7 @@
 
 namespace AppBundle\SourceFetcher\Query;
 
-abstract class AbstractQuery implements QueryInterface
+abstract class AbstractUbQuery implements QueryInterface
 {
     protected $pollutant;
 

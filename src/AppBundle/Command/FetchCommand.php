@@ -6,12 +6,14 @@ use AppBundle\Pollution\Pollutant\PollutantInterface;
 use AppBundle\SourceFetcher\Parser\UbParser;
 use AppBundle\SourceFetcher\Persister\Persister;
 use AppBundle\SourceFetcher\Query\AbstractQuery;
+use AppBundle\SourceFetcher\Query\QueryInterface;
 use AppBundle\SourceFetcher\Query\UbCOQuery;
 use AppBundle\SourceFetcher\Query\UbNO2Query;
 use AppBundle\SourceFetcher\Query\UbO3Query;
 use AppBundle\SourceFetcher\Query\UbPM10Query;
 use AppBundle\SourceFetcher\Query\UbSO2Query;
 use AppBundle\SourceFetcher\SourceFetcher;
+use AppBundle\SourceFetcher\UbSourceFetcher;
 use AppBundle\SourceFetcher\Value\Value;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\Table;
@@ -119,9 +121,9 @@ class FetchCommand extends ContainerAwareCommand
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_CO);
     }
 
-    protected function fetch(OutputInterface $output, AbstractQuery $query, string $pollutant)
+    protected function fetch(OutputInterface $output, QueryInterface $query, string $pollutant)
     {
-        $sourceFetcher = new SourceFetcher();
+        $sourceFetcher = new UbSourceFetcher();
 
         $response = $sourceFetcher->query($query);
 
