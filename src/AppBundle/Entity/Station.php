@@ -31,13 +31,13 @@ class Station extends Coord
     protected $stationCode;
 
     /**
-     * @ORM\Column(type="string", length=2, nullable=false)
+     * @ORM\Column(type="string", length=2, nullable=true)
      * @JMS\Expose()
      */
     protected $stateCode;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string", nullable=true)
      * @JMS\Expose()
      */
     protected $title;
@@ -89,7 +89,7 @@ class Station extends Coord
         return $this;
     }
 
-    public function getStateCode(): string
+    public function getStateCode(): ?string
     {
         return $this->stateCode;
     }
@@ -125,7 +125,7 @@ class Station extends Coord
         return $this;
     }
 
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
