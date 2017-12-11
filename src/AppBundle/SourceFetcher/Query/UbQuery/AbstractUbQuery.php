@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\SourceFetcher\Query;
+namespace AppBundle\SourceFetcher\Query\UbQuery;
 
-abstract class AbstractUbQuery implements QueryInterface
+abstract class AbstractUbQuery implements UbQueryInterface
 {
     protected $pollutant;
 

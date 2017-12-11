@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\SourceFetcher\Query;
+namespace AppBundle\SourceFetcher\Query\UbQuery;
 
 class UbPM10Query extends AbstractUbQuery
 {
