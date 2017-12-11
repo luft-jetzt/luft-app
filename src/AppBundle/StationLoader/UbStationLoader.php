@@ -8,23 +8,9 @@ use Curl\Curl;
 use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
 use Doctrine\ORM\EntityManager;
 
-class UbStationLoader
+class UbStationLoader extends AbstractStationLoader
 {
     const SOURCE_URL = 'https://www.umweltbundesamt.de/js/uaq/data/stations/limits';
-
-    /** @var Doctrine $doctrine */
-    protected $doctrine;
-
-    /** @var array $existingStationList */
-    protected $existingStationList = [];
-
-    /** @var array $newStationList */
-    protected $newStationList = [];
-
-    public function __construct(Doctrine $doctrine)
-    {
-        $this->doctrine = $doctrine;
-    }
 
     public function load(): array
     {
@@ -47,13 +33,6 @@ class UbStationLoader
         $em->flush();
 
         return $newStationData;
-    }
-
-    protected function getExistingStations(): array
-    {
-        /** @var StationRepository $stationRepository */
-        $stationRepository = $this->doctrine->getRepository(Station::class);
-        return $stationRepository->findAllIndexed();
     }
 
     protected function fetchStationList(): array
@@ -84,20 +63,5 @@ class UbStationLoader
         $this->mergeStation($station, $stationData);
 
         return $station;
-    }
-
-    protected function stationExists(string $stationCode, array $stationData): bool
-    {
-        return array_key_exists($stationCode, $stationData);
-    }
-
-    public function getExistingStationList(): array
-    {
-        return $this->existingStationList;
-    }
-
-    public function getNewStationList(): array
-    {
-        return $this->newStationList;
     }
 }
