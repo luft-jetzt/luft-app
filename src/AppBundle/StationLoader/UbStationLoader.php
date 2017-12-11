@@ -8,7 +8,7 @@ use Curl\Curl;
 use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
 use Doctrine\ORM\EntityManager;
 
-class StationLoader
+class UbStationLoader
 {
     const SOURCE_URL = 'https://www.umweltbundesamt.de/js/uaq/data/stations/limits';
 
