@@ -3,28 +3,12 @@
 namespace AppBundle\StationLoader;
 
 use AppBundle\Entity\Station;
-use AppBundle\Repository\StationRepository;
 use Curl\Curl;
-use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
 use Doctrine\ORM\EntityManager;
 
-class LdStationLoader
+class LdStationLoader extends AbstractStationLoader
 {
     const SOURCE_URL = 'https://api.luftdaten.info/static/v2/data.dust.min.json';
-
-    /** @var Doctrine $doctrine */
-    protected $doctrine;
-
-    /** @var array $existingStationList */
-    protected $existingStationList = [];
-
-    /** @var array $newStationList */
-    protected $newStationList = [];
-
-    public function __construct(Doctrine $doctrine)
-    {
-        $this->doctrine = $doctrine;
-    }
 
     public function load(): array
     {
@@ -34,8 +18,8 @@ class LdStationLoader
         /** @var EntityManager $em */
         $em = $this->doctrine->getManager();
 
-        foreach ($newStationData as $stationData) {
-            if (!$this->stationExists($stationData[0], $this->existingStationList)) {
+        foreach ($newStationData as $stationKey => $stationData) {
+            if (!$this->stationExists($stationKey, $this->existingStationList)) {
                 $station = $this->createStation($stationData);
 
                 $em->merge($station);
@@ -49,55 +33,50 @@ class LdStationLoader
         return $newStationData;
     }
 
-    protected function getExistingStations(): array
-    {
-        /** @var StationRepository $stationRepository */
-        $stationRepository = $this->doctrine->getRepository(Station::class);
-        return $stationRepository->findAllIndexed();
-    }
-
     protected function fetchStationList(): array
     {
         $curl = new Curl();
         $curl->get(self::SOURCE_URL);
-        $stationList = $curl->response->stations_idx;
+
+        /** @var \stdClass $response */
+        $response = $curl->response;
+
+        $stationList = [];
+
+        foreach ($response as $data) {
+            $stationName = $this->composeStationName($data);
+
+            $stationList[$stationName] = $data;
+        }
 
         return $stationList;
     }
 
-    protected function mergeStation(Station $station, array $stationData): Station
+    protected function mergeStation(Station $station, \stdClass $stationData): Station
     {
         $station
-            ->setTitle($stationData[1])
-            ->setStationCode($stationData[0])
-            ->setStateCode($stationData[2])
-            ->setLatitude($stationData[5])
-            ->setLongitude($stationData[4]);
+            ->setStationCode($this->composeStationName($stationData))
+            ->setLatitude($stationData->location->latitude)
+            ->setLongitude($stationData->location->longitude)
+        ;
 
         return $station;
     }
 
-    protected function createStation(array $stationData): Station
+    protected function createStation(\stdClass $stationData): Station
     {
-        $station = new Station($stationData[5], $stationData[4]);
+        $station = new Station(
+            $stationData->location->latitude,
+            $stationData->location->longitude
+        );
 
         $this->mergeStation($station, $stationData);
 
         return $station;
     }
 
-    protected function stationExists(string $stationCode, array $stationData): bool
+    protected function composeStationName(\stdClass $stationData): string
     {
-        return array_key_exists($stationCode, $stationData);
-    }
-
-    public function getExistingStationList(): array
-    {
-        return $this->existingStationList;
-    }
-
-    public function getNewStationList(): array
-    {
-        return $this->newStationList;
+        return sprintf('LDI%d', $stationData->location->id);
     }
 }
