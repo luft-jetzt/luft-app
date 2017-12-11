@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManager;
 
 class LdStationLoader
 {
-    const SOURCE_URL = 'https://www.umweltbundesamt.de/js/uaq/data/stations/limits';
+    const SOURCE_URL = 'https://api.luftdaten.info/static/v2/data.dust.min.json';
 
     /** @var Doctrine $doctrine */
     protected $doctrine;

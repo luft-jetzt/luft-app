@@ -7,6 +7,7 @@
     <services>
         <defaults autowire="true" autoconfigure="true" public="true" />
 
-        <service id="AppBundle\StationLoader\StationLoader" />
+        <service id="AppBundle\StationLoader\UbStationLoader" />
+        <service id="AppBundle\StationLoader\LdStationLoader" />
     </services>
 </container>

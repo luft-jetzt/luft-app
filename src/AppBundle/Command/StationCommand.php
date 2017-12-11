@@ -3,6 +3,7 @@
 namespace AppBundle\Command;
 
 use AppBundle\Entity\Station;
+use AppBundle\StationLoader\LdStationLoader;
 use AppBundle\StationLoader\StationLoader;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\Table;
@@ -20,8 +21,8 @@ class StationCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var StationLoader $stationLoader */
-        $stationLoader = $this->getContainer()->get('AppBundle\StationLoader\StationLoader');
+        /** @var LdStationLoader $stationLoader */
+        $stationLoader = $this->getContainer()->get(LdStationLoader::class);
         $stationLoader->load();
 
         $output->writeln('New stations');
