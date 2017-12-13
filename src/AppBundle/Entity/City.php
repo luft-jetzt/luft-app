@@ -6,11 +6,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use JMS\ObjectRouting\Annotation\ObjectRoute as JMSOR;
 
 /**
  * @ORM\Entity()
  * @ORM\Table(name="city")
  * @JMS\ExclusionPolicy("ALL")
+ * @JMSOR\ObjectRoute(type = "view", name = "show_city", params = {
+ *     "citySlug": "slug",
+ * })
  */
 class City
 {
