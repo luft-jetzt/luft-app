@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7c875cc7ef70dbd0c05ccd0a601960dd",
+    "content-hash": "c6279fe5d29e4f65f4151ba0b534c168",
     "packages": [
         {
             "name": "calderacc/geobasic",
@@ -1677,6 +1677,42 @@
                 "yaml"
             ],
             "time": "2016-12-05T10:18:33+00:00"
+        },
+        {
+            "name": "jms/object-routing",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/schmittjoh/object-routing.git",
+                "reference": "47413c4a7d5ad04c5d1be46df389a47a27137b9a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/schmittjoh/object-routing/zipball/47413c4a7d5ad04c5d1be46df389a47a27137b9a",
+                "reference": "47413c4a7d5ad04c5d1be46df389a47a27137b9a",
+                "shasum": ""
+            },
+            "require": {
+                "jms/metadata": "~1.3",
+                "symfony/property-access": "~2.2 || ~3.0"
+            },
+            "require-dev": {
+                "doctrine/common": "~2.2",
+                "symfony/routing": "~2.1||~3.0",
+                "symfony/yaml": "~2.0 || ~3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "JMS": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache2"
+            ],
+            "description": "Library for generating routes based on objects.",
+            "time": "2016-09-12T12:19:04+00:00"
         },
         {
             "name": "jms/parser-lib",
