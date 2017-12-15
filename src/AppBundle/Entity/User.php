@@ -29,6 +29,11 @@ class User implements UserInterface, \Serializable
     protected $password;
 
     /**
+     * @var string $plainPassword
+     */
+    protected $plainPassword;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     protected $createdAt;
@@ -74,9 +79,21 @@ class User implements UserInterface, \Serializable
         return $this->password;
     }
 
+    public function setPlainPassword(string $plainPassword = null): User
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
     public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        return ['ROLE_USER', 'ROLE_ADMIN'];
     }
 
     public function serialize(): string
