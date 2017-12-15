@@ -3,7 +3,6 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\User;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -61,7 +60,7 @@ class UserAdmin extends AbstractAdmin
         $plainPassword = $user->getPlainPassword();
 
         if ($plainPassword) {
-            $factory = $this->getConfigurationPool()->getContainer()->get('security.encoder_factory');
+            $factory = $this->get('security.encoder_factory');
 
             /** @var PasswordEncoderInterface $encoder */
             $encoder = $factory->getEncoder($user);
