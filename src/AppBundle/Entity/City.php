@@ -71,11 +71,26 @@ class City
      */
     protected $stations;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="cities")
+     * @ORM\JoinTable(
+     *  name="user_city",
+     *  joinColumns={
+     *      @ORM\JoinColumn(name="city_id", referencedColumnName="id")
+     *  },
+     *  inverseJoinColumns={
+     *      @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *  }
+     * )
+     */
+    protected $users;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->twitterSchedules = new ArrayCollection();
         $this->stations = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): int
@@ -215,6 +230,33 @@ class City
     public function removeStations(Station $station): City
     {
         $this->stations->removeElement($station);
+
+        return $this;
+    }
+
+
+    public function addPhoto(User $photo): City
+    {
+        $this->users->add($photo);
+
+        return $this;
+    }
+
+    public function setUsers(Collection $users): City
+    {
+        $this->users = $users;
+
+        return $this;
+    }
+
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function removeUser(User $photo): City
+    {
+        $this->users->removeElement($photo);
 
         return $this;
     }
