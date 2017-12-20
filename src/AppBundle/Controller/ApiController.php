@@ -19,13 +19,7 @@ class ApiController extends AbstractController
 
         $boxList = $this->getPollutionDataFactory()->setCoord($station)->createDecoratedBoxList();
 
-        return $this->render(
-            'AppBundle:Default:station.html.twig',
-            [
-                'station' => $station,
-                'boxList' => $boxList
-            ]
-        );
+        return new JsonResponse($this->get('jms_serializer')->serialize($boxList, 'json'), 200, [], true);
     }
 
     /**
