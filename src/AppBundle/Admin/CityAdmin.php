@@ -47,6 +47,16 @@ class CityAdmin extends AbstractAdmin
 
     protected function configureListFields(ListMapper $listMapper)
     {
+        $actions = [];
+
+        if ($this->isRoleGranted('ROLE_TWITTER_MANAGEMENT')) {
+            $actions['twitter'] = [];
+        }
+
+        if ($this->isRoleGranted('ROLE_CITY_MANAGEMENT')) {
+            $actions['edit'] = [];
+        }
+
         $listMapper
             ->addIdentifier('name')
             ->add('createdAt')
@@ -54,13 +64,13 @@ class CityAdmin extends AbstractAdmin
             ->add('twitterUsername', 'string', [
                 'template' => 'SonataAdminBundle:CRUD:list__twitter_username.html.twig'
             ])
-            ->add('_action', null, [
-                'actions' => [
-                    'edit' => [],
-                    'twitter' => [],
-                ]
-            ])
         ;
+
+        if (count($actions)) {
+            $listMapper->add('_action', null, [
+                'actions' => $actions
+            ]);
+        }
     }
 
     protected function configureRoutes(RouteCollection $collection)

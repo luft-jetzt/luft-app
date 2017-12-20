@@ -30,3 +30,24 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, role: ROLE_ADMIN }
+
+    role_hierarchy:
+        ROLE_TWITTER_MANAGER:
+            - ROLE_USER
+            - ROLE_APP_ADMIN_CITY_TWITTER
+            - ROLE_APP_ADMIN_TWITTER_SCHEDULE_ALL
+        ROLE_CITY_MANAGER:
+            - ROLE_USER
+            - ROLE_APP_ADMIN_CITY_ALL
+        ROLE_STATION_MANAGER:
+            - ROLE_USER
+            - ROLE_APP_ADMIN_STATION_ALL
+        ROLE_ADMIN:
+            - ROLE_USER
+            - ROLE_TWITTER_MANAGER
+            - ROLE_CITY_MANAGER
+            - ROLE_STATION_MANAGER
+            - ROLE_APP_ADMIN_USER_ALL
+
+    access_decision_manager:
+        strategy: unanimous

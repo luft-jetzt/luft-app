@@ -16,4 +16,10 @@ abstract class AbstractAdmin extends SonataAbstractAdmin
     {
         return $this->getContainer()->get($id);
     }
+
+    protected function isRoleGranted(string $role): bool
+    {
+        return $this->get('security.authorization_checker')->isGranted($role);
+    }
+
 }
