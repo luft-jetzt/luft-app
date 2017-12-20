@@ -191,8 +191,12 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function __toString(): ?string
+    public function __toString(): string
     {
-        return $this->getUsername();
+        if ($this->getUsername()) {
+            return $this->getUsername();
+        }
+
+        return 'Neues Benutzerkonto';
     }
 }
