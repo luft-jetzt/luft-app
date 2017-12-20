@@ -41,7 +41,7 @@ class User implements UserInterface, \Serializable
     protected $createdAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity="City", mappedBy="users")
+     * @ORM\OneToMany(targetEntity="City", mappedBy="user")
      */
     protected $cities;
 
@@ -156,5 +156,10 @@ class User implements UserInterface, \Serializable
         $this->cities->removeElement($city);
 
         return $this;
+    }
+
+    public function __toString(): ?string
+    {
+        return $this->getUsername();
     }
 }

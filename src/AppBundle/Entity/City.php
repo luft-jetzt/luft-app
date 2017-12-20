@@ -72,18 +72,10 @@ class City
     protected $stations;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", inversedBy="cities")
-     * @ORM\JoinTable(
-     *  name="user_city",
-     *  joinColumns={
-     *      @ORM\JoinColumn(name="city_id", referencedColumnName="id")
-     *  },
-     *  inverseJoinColumns={
-     *      @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     *  }
-     * )
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="cities")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    protected $users;
+    protected $user;
 
     public function __construct()
     {
@@ -234,31 +226,16 @@ class City
         return $this;
     }
 
-
-    public function addPhoto(User $photo): City
+    public function setUser(User $user = null): City
     {
-        $this->users->add($photo);
+        $this->user = $user;
 
         return $this;
     }
 
-    public function setUsers(Collection $users): City
+    public function getUser(): ?User
     {
-        $this->users = $users;
-
-        return $this;
-    }
-
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function removeUser(User $photo): City
-    {
-        $this->users->removeElement($photo);
-
-        return $this;
+        return $this->user;
     }
 
     public function __toString(): ?string
