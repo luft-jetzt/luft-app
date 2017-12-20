@@ -31,6 +31,11 @@ class User implements UserInterface, \Serializable
     protected $password;
 
     /**
+     * @ORM\Column(type="array")
+     */
+    protected $roles;
+
+    /**
      * @var string $plainPassword
      */
     protected $plainPassword;
@@ -49,6 +54,7 @@ class User implements UserInterface, \Serializable
     {
         $this->createdAt = new \DateTime();
         $this->cities = new ArrayCollection();
+        $this->roles = [];
     }
 
     public function setUsername(string $username): User
@@ -99,9 +105,32 @@ class User implements UserInterface, \Serializable
         return $this->plainPassword;
     }
 
+    public function addRole(string $role): User
+    {
+        $this->roles[] = $role;
+
+        return $this;
+    }
+
+    public function setRoles(array $roles): User
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
     public function getRoles(): array
     {
         return ['ROLE_USER', 'ROLE_ADMIN'];
+    }
+
+    public function removeRole(string $role): User
+    {
+        if (($key = array_search($role, $this->roles)) !== false) {
+            unset($this->roles[$key]);
+        }
+
+        return $this;
     }
 
     public function serialize(): string
