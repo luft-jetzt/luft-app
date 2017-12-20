@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -38,9 +40,15 @@ class User implements UserInterface, \Serializable
      */
     protected $createdAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity="City", mappedBy="user")
+     */
+    protected $cities;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->cities = new ArrayCollection();
     }
 
     public function setUsername(string $username): User
@@ -122,5 +130,40 @@ class User implements UserInterface, \Serializable
     public function getSalt(): ?string
     {
         return null;
+    }
+
+    public function addCity(City $city): User
+    {
+        $city->setUser($this);
+
+        $this->cities->add($city);
+
+        return $this;
+    }
+
+    public function setCities(Collection $cities): User
+    {
+        $this->cities = $cities;
+
+        return $this;
+    }
+
+    public function getCities(): Collection
+    {
+        return $this->cities;
+    }
+
+    public function removeCity(City $city): User
+    {
+        $city->setUser(null);
+
+        $this->cities->removeElement($city);
+
+        return $this;
+    }
+
+    public function __toString(): ?string
+    {
+        return $this->getUsername();
     }
 }
