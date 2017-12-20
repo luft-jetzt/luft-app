@@ -2,10 +2,13 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Entity\City;
 use AppBundle\Entity\User;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\CollectionType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
@@ -21,6 +24,16 @@ class UserAdmin extends AbstractAdmin
 
             ->with('Password', ['class' => 'col-xs-6'])
             ->add('plainPassword', PasswordType::class, ['required' => false])
+            ->end()
+
+            ->with('Cities', ['class' => 'col-xs-6'])
+            ->add('cities', EntityType::class,
+                [
+                    'class' => City::class,
+                    'multiple' => true,
+                    'expanded' => false,
+                    'by_reference' => false,
+                ])
             ->end()
         ;
     }

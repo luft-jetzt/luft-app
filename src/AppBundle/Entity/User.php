@@ -134,6 +134,8 @@ class User implements UserInterface, \Serializable
 
     public function addCity(City $city): User
     {
+        $city->setUser($this);
+
         $this->cities->add($city);
 
         return $this;
@@ -153,6 +155,8 @@ class User implements UserInterface, \Serializable
 
     public function removeCity(City $city): User
     {
+        $city->setUser(null);
+
         $this->cities->removeElement($city);
 
         return $this;
