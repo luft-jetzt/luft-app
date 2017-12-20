@@ -21,6 +21,7 @@ security:
             security: false
 
         main:
+            pattern: ^/admin
             http_basic: ~
             provider: database_provider
             logout: ~
