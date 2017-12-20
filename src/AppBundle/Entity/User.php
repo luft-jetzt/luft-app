@@ -107,7 +107,7 @@ class User implements UserInterface, \Serializable
 
     public function addRole(string $role): User
     {
-        $this->roles[] = $role;
+        $this->roles[$role] = $role;
 
         return $this;
     }
@@ -121,7 +121,7 @@ class User implements UserInterface, \Serializable
 
     public function getRoles(): array
     {
-        return ['ROLE_USER', 'ROLE_ADMIN'];
+        return $this->roles;
     }
 
     public function removeRole(string $role): User
