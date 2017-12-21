@@ -106,6 +106,6 @@ class CityController extends CRUDController
 
     protected function checkAccess(City $city): bool
     {
-        return $this->isGranted('twitter') || $this->getUser()->hasRole('ROLE_ADMIN');
+        return ($this->isGranted('twitter') && $this->getUser() === $city->getUser()) || $this->getUser()->hasRole('ROLE_ADMIN');
     }
 }
