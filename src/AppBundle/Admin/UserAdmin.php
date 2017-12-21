@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserAdmin extends AbstractAdmin
 {
@@ -38,11 +39,7 @@ class UserAdmin extends AbstractAdmin
 
             ->with('Roles', ['class' => 'col-xs-6'])
             ->add('roles', ChoiceType::class, [
-                'choices' => [
-                    'ROLE_ADMIN' => 'ROLE_ADMIN',
-                    'ROLE_TWITTER_ADMIN' => 'ROLE_TWITTER_ADMIN',
-                    'ROLE_USER' => 'ROLE_USER',
-                ],
+                'choices' => $this->getRoleChoiceList($this->getSubject()),
                 'multiple' => true,
                 'required' => true,
                 'expanded' => true,
@@ -98,5 +95,20 @@ class UserAdmin extends AbstractAdmin
 
             $user->setPassword($password);
         }
+    }
+
+    protected function getRoleChoiceList(User $user): array
+    {
+        $roleList = [];
+
+        $userClass = new \ReflectionClass($user);
+
+        foreach ($userClass->getConstants() as $key => $constant) {
+            if (0 === strpos($constant, 'ROLE_')) {
+                $roleList[$key] = $constant;
+            }
+        }
+
+        return $roleList;
     }
 }

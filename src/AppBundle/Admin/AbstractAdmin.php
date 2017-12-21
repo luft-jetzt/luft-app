@@ -2,8 +2,9 @@
 
 namespace AppBundle\Admin;
 
-use Psr\Container\ContainerInterface;
+use AppBundle\Entity\User;
 use Sonata\AdminBundle\Admin\AbstractAdmin as SonataAbstractAdmin;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class AbstractAdmin extends SonataAbstractAdmin
 {
@@ -22,4 +23,8 @@ abstract class AbstractAdmin extends SonataAbstractAdmin
         return $this->get('security.authorization_checker')->isGranted($role);
     }
 
+    protected function getUser(): User
+    {
+        return $this->get('security.token_storage')->getToken()->getUser();
+    }
 }

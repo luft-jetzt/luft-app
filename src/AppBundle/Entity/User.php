@@ -13,6 +13,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface, \Serializable
 {
+    const ROLE_USER = 'ROLE_USER';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_CITY_ADMIN = 'ROLE_CITY_ADMIN';
+    const ROLE_TWITTER_ADMIN = 'ROLE_TWITTER_ADMIN';
+    const ROLE_STATION_ADMIN = 'ROLE_STATION_ADMIN';
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
