@@ -1,0 +1,12 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if is_granted('ROLE_ADMIN') %}
+    {{ object.email }}
+    {% else %}
+    {% set name = object.email|split('@')['0'] %}
+    {% set domain = object.email|split('@')['1'] %}
+
+    {{ name|first }}***{{ name|last }}@{{ domain }}
+    {% endif %}
+{% endblock %}
