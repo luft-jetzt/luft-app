@@ -1,4 +1,4 @@
-{% if admin.hasRoute('twitter') %}
+{% if admin.hasRoute('twitter') and ((object.user and object.user.id == app.user.id) or is_granted('ROLE_ADMIN')) %}
     <a href="{{ admin.generateObjectUrl('twitter', object) }}" class="btn btn-sm btn-default view_link" title="{{ 'twitter'|trans({}, 'SonataAdminBundle') }}">
         <i class="fa fa-twitter" aria-hidden="true"></i>
         {{ 'twitter'|trans({}, 'SonataAdminBundle') }}

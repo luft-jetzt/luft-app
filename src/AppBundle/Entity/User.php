@@ -63,6 +63,11 @@ class User implements UserInterface, \Serializable
         $this->roles = [];
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function setUsername(string $username): User
     {
         $this->setEmail($username);
@@ -137,6 +142,11 @@ class User implements UserInterface, \Serializable
         }
 
         return $this;
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->roles);
     }
 
     public function serialize(): string

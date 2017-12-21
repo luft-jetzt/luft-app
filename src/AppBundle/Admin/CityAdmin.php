@@ -57,6 +57,7 @@ class CityAdmin extends AbstractAdmin
             ->add('_action', null, [
                 'actions' => [
                     'edit' => [],
+                    'twitter' => [],
                 ]
             ])
         ;
