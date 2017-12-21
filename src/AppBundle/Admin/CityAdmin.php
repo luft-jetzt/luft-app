@@ -2,6 +2,7 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Entity\City;
 use AppBundle\Entity\User;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -21,20 +22,28 @@ class CityAdmin extends AbstractAdmin
             ->add('slug')
             ->add('description', TextareaType::class, ['required' => false])
             ->end()
-
-            ->with('twitter', ['class' => 'col-xs-6'])
-            ->add('twitterUsername', TextType::class, ['required' => false])
-            ->add('twitterToken', TextType::class, ['required' => false])
-            ->add('twitterSecret', TextType::class, ['required' => false])
-            ->end()
-
-            ->with('User', ['class' => 'col-xs-6'])
-            ->add('user', EntityType::class,
-            [
-                'class' => User::class,
-            ])
-            ->end()
         ;
+
+        if ($this->isRoleGranted('ROLE_ADMIN') || ($this->subject->getUser() && $this->subject->getUser() === $this->getUser())) {
+            $formMapper
+                ->with('twitter', ['class' => 'col-xs-6'])
+                ->add('twitterUsername', TextType::class, ['required' => false])
+                ->add('twitterToken', TextType::class, ['required' => false])
+                ->add('twitterSecret', TextType::class, ['required' => false])
+                ->end()
+            ;
+        }
+
+        if ($this->isRoleGranted('ROLE_ADMIN')) {
+            $formMapper
+                ->with('User', ['class' => 'col-xs-6'])
+                ->add('user', EntityType::class,
+                    [
+                        'class' => User::class,
+                    ])
+                ->end()
+            ;
+        }
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
