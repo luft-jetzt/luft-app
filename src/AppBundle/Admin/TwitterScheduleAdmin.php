@@ -49,6 +49,27 @@ class TwitterScheduleAdmin extends AbstractAdmin
             ->add('station')
             ->add('latitude')
             ->add('longitude')
+            ->add('_action', null, [
+                'actions' => [
+                    'edit' => [],
+                ]
+            ])
         ;
     }
+/*
+    public function createQuery($context = 'list')
+    {
+        $user = $this->getUser();
+
+        $query = parent::createQuery($context);
+
+        if ($user->getVenue() && !$this->isUserAdmin()) {
+            $query
+                ->andWhere($query->expr()->eq($query->getRootAliases()[0].'.venue', ':venue'))
+                ->setParameter('venue', $user->getVenue())
+            ;
+        }
+
+        return $query;
+    }*/
 }
