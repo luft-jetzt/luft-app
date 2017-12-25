@@ -11,6 +11,7 @@ use Caldera\GeoBasic\Coord\CoordInterface;
 use Codebird\Codebird;
 use Cron\CronExpression;
 use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
+use Psr\Log\LoggerInterface;
 
 class Twitter
 {
@@ -26,6 +27,9 @@ class Twitter
     /** @var LuftYourlsApiManager $permalinkManager */
     protected $permalinkManager;
 
+    /** @var LoggerInterface $logger */
+    protected $logger;
+
     /** @var string $twitterClientId */
     protected $twitterClientId;
 
@@ -35,12 +39,13 @@ class Twitter
     /** @var array $validScheduleList */
     protected $validScheduleList = [];
 
-    public function __construct(Doctrine $doctrine, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, LuftYourlsApiManager $permalinkManager, string $twitterClientId, string $twitterClientSecret)
+    public function __construct(Doctrine $doctrine, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, LuftYourlsApiManager $permalinkManager, LoggerInterface $logger, string $twitterClientId, string $twitterClientSecret)
     {
         $this->doctrine = $doctrine;
         $this->pollutionDataFactory = $pollutionDataFactory;
         $this->messageFactory = $messageFactory;
         $this->permalinkManager = $permalinkManager;
+        $this->logger = $logger;
 
         $this->twitterClientId = $twitterClientId;
         $this->twitterClientSecret = $twitterClientSecret;
@@ -80,6 +85,8 @@ class Twitter
 
                 $reply = $cb->statuses_update($params);
 
+                $this->logger->notice(json_encode($reply));
+
                 $this->validScheduleList[] = $twitterSchedule;
             }
         }
@@ -108,7 +115,7 @@ class Twitter
         $message = $this->messageFactory
             ->reset()
             ->setTitle($twitterSchedule->getTitle())
-            ->setLink($this->permalinkManager->createPermalinkForTweet($twitterSchedule))
+            //->setLink($this->permalinkManager->createPermalinkForTweet($twitterSchedule))
             ->setBoxList($boxList)
             ->compose()
             ->getMessage()

@@ -29,3 +29,6 @@ parameters:
 
     router.request_context.host: luft.jetzt
     router.request_context.scheme: https
+
+    graylog.hostname: anagnina.caldera.cc
+    graylog.port: 12201
