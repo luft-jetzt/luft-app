@@ -18,7 +18,7 @@
 
         <service id="Monolog\Handler\GelfHandler">
             <argument type="service" id="Gelf\Publisher" />
-            <argument type="string">error</argument>
+            <argument type="string">notice</argument>
         </service>
     </services>
 </container>
