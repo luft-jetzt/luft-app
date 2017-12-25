@@ -75,11 +75,18 @@ class City
      */
     protected $stations;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="cities")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    protected $user;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->twitterSchedules = new ArrayCollection();
         $this->stations = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): int
@@ -221,6 +228,18 @@ class City
         $this->stations->removeElement($station);
 
         return $this;
+    }
+
+    public function setUser(User $user = null): City
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
     }
 
     public function __toString(): ?string

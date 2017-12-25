@@ -40,7 +40,8 @@
         "jublonet/codebird-php": "^3.1",
         "dragonmantank/cron-expression": "^2.0",
         "calderacc/yourls-api-manager": "^0.1.0",
-        "jms/object-routing": "^1.0"
+        "jms/object-routing": "^1.0",
+        "graylog2/gelf-php": "^1.5"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
