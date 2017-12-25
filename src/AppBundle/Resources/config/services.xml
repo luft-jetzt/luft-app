@@ -5,10 +5,11 @@
         http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <imports>
-        <import resource="services/admin.xml"/>
-        <import resource="services/pollution.xml"/>
-        <import resource="services/command.xml"/>
-        <import resource="services/twitter.xml"/>
-        <import resource="services/permalink.xml"/>
+        <import resource="services/admin.xml" />
+        <import resource="services/pollution.xml" />
+        <import resource="services/command.xml" />
+        <import resource="services/twitter.xml" />
+        <import resource="services/permalink.xml" />
+        <import resource="services/logging.xml" />
     </imports>
 </container>
