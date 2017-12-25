@@ -19,3 +19,7 @@ monolog:
             level: debug
         console:
             type:  console
+        gelf:
+            type: service
+            id: Monolog\Handler\GelfHandler
+            level: error
