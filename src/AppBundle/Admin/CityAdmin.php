@@ -14,6 +14,10 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CityAdmin extends AbstractAdmin
 {
+    protected $accessMapping = [
+        'twitter' => 'TWITTER'
+    ];
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
