@@ -8,7 +8,7 @@
 
                 <ul class="list-inline mt-3 ">
                     {% for city in cityList %}
-                        <a class="text-muted" href="{{ path('show_city', { citySlug: city.slug }) }}"><small>{{ city.name }}</small></a>
+                        <a class="text-muted" href="{{ object_url('view', city) }}"><small>{{ city.name }}</small></a>
                     {% endfor %}
                 </ul>
             </div>
