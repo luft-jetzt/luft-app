@@ -12,7 +12,7 @@ use JMS\ObjectRouting\Annotation\ObjectRoute as JMSOR;
  * @ORM\Entity()
  * @ORM\Table(name="city")
  * @JMS\ExclusionPolicy("ALL")
- * @JMSOR\ObjectRoute(type = "view", name = "show_city", params = {
+ * @JMSOR(type = "view", name = "show_city", params = {
  *     "citySlug": "slug",
  * })
  */

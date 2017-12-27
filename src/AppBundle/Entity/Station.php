@@ -8,12 +8,16 @@ use Caldera\GeoBasic\Coord\Coord;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as JMS;
+use JMS\ObjectRouting\Annotation\ObjectRoute as JMSOR;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\StationRepository")
  * @ORM\Table(name="station")
  * @UniqueEntity("stationCode")
  * @JMS\ExclusionPolicy("ALL")
+ * @JMSOR(type = "view", name = "station", params = {
+ *     "stationCode": "stationCode",
+ * })
  */
 class Station extends Coord
 {
