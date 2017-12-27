@@ -13,6 +13,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface, \Serializable
 {
+    const ROLE_USER = 'ROLE_USER';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_CITY_ADMIN = 'ROLE_CITY_ADMIN';
+    const ROLE_TWITTER_ADMIN = 'ROLE_TWITTER_ADMIN';
+    const ROLE_STATION_ADMIN = 'ROLE_STATION_ADMIN';
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -29,6 +35,11 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="string", length=64)
      */
     protected $password;
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    protected $roles;
 
     /**
      * @var string $plainPassword
@@ -49,6 +60,12 @@ class User implements UserInterface, \Serializable
     {
         $this->createdAt = new \DateTime();
         $this->cities = new ArrayCollection();
+        $this->roles = [];
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function setUsername(string $username): User
@@ -99,9 +116,37 @@ class User implements UserInterface, \Serializable
         return $this->plainPassword;
     }
 
+    public function addRole(string $role): User
+    {
+        $this->roles[$role] = $role;
+
+        return $this;
+    }
+
+    public function setRoles(array $roles): User
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
     public function getRoles(): array
     {
-        return ['ROLE_USER', 'ROLE_ADMIN'];
+        return $this->roles;
+    }
+
+    public function removeRole(string $role): User
+    {
+        if (($key = array_search($role, $this->roles)) !== false) {
+            unset($this->roles[$key]);
+        }
+
+        return $this;
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->roles);
     }
 
     public function serialize(): string
@@ -162,8 +207,12 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function __toString(): ?string
+    public function __toString(): string
     {
-        return $this->getUsername();
+        if ($this->getUsername()) {
+            return $this->getUsername();
+        }
+
+        return 'Neues Benutzerkonto';
     }
 }

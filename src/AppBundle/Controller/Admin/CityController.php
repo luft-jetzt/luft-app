@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class CityController extends CRUDController
 {
@@ -23,6 +24,10 @@ class CityController extends CRUDController
     public function twitterAction(Request $request): Response
     {
         $city = $this->getCurrentCity($request);
+
+        if (!$this->checkAccess($city)) {
+            throw new AccessDeniedException();
+        }
 
         $session = $this->getSession();
 
@@ -44,6 +49,12 @@ class CityController extends CRUDController
 
     public function twitterTokenAction(Request $request): Response
     {
+        $city = $this->getCurrentCity($request);
+
+        if (!$this->checkAccess($city)) {
+            throw new AccessDeniedException();
+        }
+
         $session = $this->getSession();
 
         $cb = $this->getCodeBird();
@@ -61,7 +72,7 @@ class CityController extends CRUDController
             $this->saveCityAccess($request, $reply);
         }
 
-        $showUrl = $this->admin->generateObjectUrl('edit', $this->getCurrentCity($request));
+        $showUrl = $this->admin->generateObjectUrl('edit', $city);
 
         return new RedirectResponse($showUrl);
     }
@@ -91,5 +102,10 @@ class CityController extends CRUDController
         $this->getDoctrine()->getManager()->flush();
 
         return $city;
+    }
+
+    protected function checkAccess(City $city): bool
+    {
+        return ($this->admin->checkAccess('twitter') === NULL && $this->getUser() === $city->getUser()) || $this->getUser()->hasRole('ROLE_ADMIN');
     }
 }

@@ -50,6 +50,11 @@ class StationAdmin extends AbstractAdmin
             ->add('title')
             ->add('latitude')
             ->add('longitude')
+            ->add('_action', null, [
+                'actions' => [
+                    'edit' => [],
+                ]
+            ])
         ;
     }
 }

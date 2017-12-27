@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
@@ -33,6 +34,15 @@ class UserAdmin extends AbstractAdmin
                     'expanded' => false,
                     'by_reference' => false,
                 ])
+            ->end()
+
+            ->with('Roles', ['class' => 'col-xs-6'])
+            ->add('roles', ChoiceType::class, [
+                'choices' => $this->getRoleChoiceList($this->getSubject()),
+                'multiple' => true,
+                'required' => true,
+                'expanded' => true,
+            ])
             ->end()
         ;
     }
@@ -84,5 +94,20 @@ class UserAdmin extends AbstractAdmin
 
             $user->setPassword($password);
         }
+    }
+
+    protected function getRoleChoiceList(User $user): array
+    {
+        $roleList = [];
+
+        $userClass = new \ReflectionClass($user);
+
+        foreach ($userClass->getConstants() as $key => $constant) {
+            if (0 === strpos($constant, 'ROLE_')) {
+                $roleList[$key] = $constant;
+            }
+        }
+
+        return $roleList;
     }
 }
