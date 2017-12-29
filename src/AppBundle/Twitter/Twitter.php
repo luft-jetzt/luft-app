@@ -115,7 +115,7 @@ class Twitter
         $message = $this->messageFactory
             ->reset()
             ->setTitle($twitterSchedule->getTitle())
-            //->setLink($this->permalinkManager->createPermalinkForTweet($twitterSchedule))
+            ->setLink($this->permalinkManager->createPermalinkForTweet($twitterSchedule))
             ->setBoxList($boxList)
             ->compose()
             ->getMessage()
