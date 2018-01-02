@@ -56,6 +56,16 @@ class User implements UserInterface, \Serializable
      */
     protected $cities;
 
+    /**
+     * @ORM\Column(name="twitter_id", type="string", length=255, nullable=true)
+     */
+    protected $twitterId;
+
+    /**
+     * @ORM\Column(name="twitter_access_token", type="string", length=255, nullable=true)
+     */
+    protected $twitterAccessToken;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -205,6 +215,31 @@ class User implements UserInterface, \Serializable
         $this->cities->removeElement($city);
 
         return $this;
+    }
+
+
+    public function setTwitterId(string $twitterId): User
+    {
+        $this->twitterId = $twitterId;
+
+        return $this;
+    }
+
+    public function getTwitterId(): ?string
+    {
+        return $this->twitterId;
+    }
+
+    public function setTwitterAccessToken(string $twitterAccessToken): User
+    {
+        $this->twitterAccessToken = $twitterAccessToken;
+
+        return $this;
+    }
+
+    public function getTwitterAccessToken(): ?string
+    {
+        return $this->twitterAccessToken;
     }
 
     public function __toString(): string

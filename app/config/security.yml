@@ -21,15 +21,12 @@ security:
             security: false
 
         main:
-            http_basic: ~
-            provider: database_provider
-            logout: ~
             anonymous: true
             oauth:
                 resource_owners:
                     twitter:  '/login/check-twitter'
-                login_path: /admin/login
-                failure_path: /admin/login
+                login_path: /login
+                failure_path: /login
                 oauth_user_provider:
                     service: hwi_oauth.user.provider.entity
 

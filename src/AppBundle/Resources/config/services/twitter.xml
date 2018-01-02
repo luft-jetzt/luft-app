@@ -21,7 +21,7 @@
             <argument type="service" id="doctrine" />
             <argument type="string">AppBundle\Entity\User</argument>
             <argument type="collection">
-
+                <argument key="twitter" type="string">twitterId</argument>
             </argument>
         </service>
     </services>
