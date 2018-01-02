@@ -21,10 +21,17 @@ security:
             security: false
 
         main:
-            pattern: ^/admin
             http_basic: ~
             provider: database_provider
             logout: ~
+            anonymous: true
+            oauth:
+                resource_owners:
+                    twitter:  '/login/check-twitter'
+                login_path: /admin/login
+                failure_path: /admin/login
+                oauth_user_provider:
+                    service: hwi_oauth.user.provider.entity
 
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }

@@ -16,5 +16,13 @@
         <service id="AppBundle\Twitter\MessageFactory\MessageFactoryInterface" alias="AppBundle\Twitter\MessageFactory\EmojiMessageFactory" />
 
         <service id="AppBundle\Twitter\Twitter" />
+
+        <service id="hwi_oauth.user.provider.entity" class="%hwi_oauth.user.provider.entity.class%" public="true">
+            <argument type="service" id="doctrine" />
+            <argument type="string">AppBundle\Entity\User</argument>
+            <argument type="collection">
+
+            </argument>
+        </service>
     </services>
 </container>
