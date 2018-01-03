@@ -165,6 +165,8 @@ class User implements UserInterface, \Serializable
             $this->id,
             $this->email,
             $this->password,
+            $this->twitterId,
+            $this->twitterAccessToken
         ));
     }
 
@@ -174,6 +176,8 @@ class User implements UserInterface, \Serializable
             $this->id,
             $this->email,
             $this->password,
+            $this->twitterId,
+            $this->twitterAccessToken
             ) = unserialize($serialized);
     }
 

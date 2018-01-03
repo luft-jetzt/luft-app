@@ -28,7 +28,7 @@ security:
                 login_path: /login
                 failure_path: /login
                 oauth_user_provider:
-                    service: hwi_oauth.user.provider.entity
+                    service: AppBundle\UserProvider\LuftUserProvider
 
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
