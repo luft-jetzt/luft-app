@@ -4,6 +4,7 @@ namespace AppBundle\UserProvider;
 
 use AppBundle\Entity\User;
 use AppBundle\Repository\UserRepository;
+use AppBundle\UserProvider\Exception\LuftUsernameException;
 use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;
@@ -20,8 +21,6 @@ class LuftUserProvider implements OAuthAwareUserProviderInterface
 
     public function connect(User $user, UserResponseInterface $response): void
     {
-        $username = $response->getUsername();
-
         if (null !== $previousUser = $this->findUserByUsername($response)) {
             $previousUser = $this->setServiceData($previousUser, $response, true);
 
@@ -37,15 +36,30 @@ class LuftUserProvider implements OAuthAwareUserProviderInterface
     {
         $user = $this->findUserByUsername($response);
 
-        if (null === $user) {
-            $user = $this->createUser();
-
-            $user = $this->setUserData($user, $response);
+        if (!$user) {
+            $user = $this->registerUser($response);
         }
 
         $user = $this->setServiceData($user, $response);
 
         $this->updateUser($user);
+
+        return $user;
+    }
+
+    protected function registerUser(UserResponseInterface $response): User
+    {
+        $username = $response->getNickname();
+
+        if (strpos($username, 'luft_') !== 0) {
+            $message = sprintf('Twitter handle "%s" does not begin with "luft_"', $username);
+
+            throw new LuftUsernameException($message);
+        }
+
+        $user = $this->createUser();
+
+        $user = $this->setUserData($user, $response);
 
         return $user;
     }
