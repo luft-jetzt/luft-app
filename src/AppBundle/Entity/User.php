@@ -32,6 +32,11 @@ class User implements UserInterface, \Serializable
     protected $email;
 
     /**
+     * @ORM\Column(type="string", length=60, unique=true)
+     */
+    protected $username;
+
+    /**
      * @ORM\Column(type="string", length=64)
      */
     protected $password;
@@ -80,14 +85,14 @@ class User implements UserInterface, \Serializable
 
     public function setUsername(string $username): User
     {
-        $this->setEmail($username);
+        $this->username = $username;
 
         return $this;
     }
 
     public function getUsername(): ?string
     {
-        return $this->getEmail();
+        return $this->username;
     }
 
     public function setEmail(string $email): User
