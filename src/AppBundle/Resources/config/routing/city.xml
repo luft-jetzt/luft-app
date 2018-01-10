@@ -3,15 +3,17 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/routing
         http://symfony.com/schema/routing/routing-1.0.xsd">
-    
-    <route id="station" path="/{stationCode}">
-        <default key="_controller">AppBundle:Display:station</default>
+
+    <route id="show_city" path="/{citySlug}">
+        <default key="_controller">AppBundle:City:show</default>
         <option key="expose">true</option>
-        <requirement key="stationCode">^([A-Z]{4,4})([0-9]{3,3})$</requirement>
+        <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
 
-    <route id="display" path="/">
-        <default key="_controller">AppBundle:Display:index</default>
+    <route id="twitter_city" path="/{citySlug}/twitter">
+        <default key="_controller">AppBundle:City:twitter</default>
         <option key="expose">true</option>
+        <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
+
 </routes>

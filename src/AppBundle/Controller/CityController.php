@@ -6,6 +6,7 @@ use AppBundle\Entity\City;
 use AppBundle\Entity\Station;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class CityController extends AbstractController
 {
@@ -42,5 +43,29 @@ class CityController extends AbstractController
         }
 
         return $stationsBoxList;
+    }
+
+    public function twitterAction(Request $request, string $citySlug): Response
+    {
+        /** @var City $city */
+        $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
+
+        if (!$city || $city->getTwitterUsername()) {
+            throw $this->createNotFoundException();
+        }
+
+        $this->getSession()->set('twitterCity', $city);
+
+        return $this->render('AppBundle:City:twitter.html.twig', [
+            'city' => $city,
+        ]);
+    }
+
+    protected function getSession(): Session
+    {
+        /** @var Session $session */
+        $session = $this->get('session');
+
+        return $session;
     }
 }

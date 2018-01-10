@@ -6,4 +6,5 @@
 
     <import resource="routing/api.xml" prefix="/api" />
     <import resource="routing/frontend.xml" />
+    <import resource="routing/city.xml" />
 </routes>
