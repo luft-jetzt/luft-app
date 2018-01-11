@@ -78,7 +78,7 @@ fos_elastica:
             finder: ~
             types:
                 station:
-                    mappings:
+                    properties:
                         pin: { type: geo_point }
                     persistence:
                         driver: orm
@@ -87,7 +87,7 @@ fos_elastica:
                         listener: ~
                         finder: ~
                 data:
-                    mappings:
+                    properties:
                         pollutant: ~
                         station:
                             property_path: stationId
