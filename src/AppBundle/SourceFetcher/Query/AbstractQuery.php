@@ -8,7 +8,7 @@ abstract class AbstractQuery implements QueryInterface
 {
     protected $pollutant;
 
-    protected $scope;
+    protected $scope = [];
 
     protected $group = ['station'];
 
@@ -21,7 +21,17 @@ abstract class AbstractQuery implements QueryInterface
     {
         $this->reporting = $reporting;
 
-        $this->calcRange();
+        $this
+            ->calcRange()
+            ->setupScope()
+        ;
+    }
+
+    protected function setupScope(): AbstractQuery
+    {
+        $this->scope = [$this->reporting->getReportingIdentifier()];
+
+        return $this;
     }
 
     protected function calcRange(): AbstractQuery

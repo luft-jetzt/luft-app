@@ -9,7 +9,6 @@ class UbCOQuery extends AbstractQuery
     public function __construct(ReportingInterface $reporting)
     {
         $this->pollutant = ['CO'];
-        $this->scope = ['8SMW'];
 
         parent::__construct($reporting);
     }

@@ -9,7 +9,6 @@ class UbPM10Query extends AbstractQuery
     public function __construct(ReportingInterface $reporting)
     {
         $this->pollutant = ['PM10'];
-        $this->scope = ['1TMW'];
 
         parent::__construct($reporting);
     }
