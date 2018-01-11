@@ -49,7 +49,7 @@ abstract class AbstractUbReporting implements ReportingInterface
 
     protected function calcLastDayEnd(): \DateTimeImmutable
     {
-        $dateTimeSpec = $this->dateTime->format('Y-m-d H:00:00');
+        $dateTimeSpec = $this->dateTime->format('Y-m-d 00:00:00');
 
         return new \DateTimeImmutable($dateTimeSpec);
     }
