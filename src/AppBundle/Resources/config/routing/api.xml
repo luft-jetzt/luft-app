@@ -8,6 +8,10 @@
         <default key="_controller">AppBundle:Api:station</default>
     </route>
 
+    <route id="api_city" path="/{citySlug}" methods="GET">
+        <default key="_controller">AppBundle:Api:city</default>
+    </route>
+
     <route id="api_display" path="/" methods="GET">
         <default key="_controller">AppBundle:Api:display</default>
     </route>

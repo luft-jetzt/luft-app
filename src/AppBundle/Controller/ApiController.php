@@ -32,6 +32,27 @@ class ApiController extends AbstractController
     }
 
     /**
+     * Get pollution data for a provided city slug.
+     *
+     * @ApiDoc(
+     *   description="Retrieve pollution data for cities"
+     * )
+     */
+    public function cityAction(Request $request, string $citySlug): Response
+    {
+        $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
+
+        if (!$city) {
+            throw $this->createNotFoundException();
+        }
+
+        $stationList = $this->getStationListForCity($city);
+        $stationsBoxList = $this->createBoxListForStationList($stationList);
+
+        return new JsonResponse($this->get('jms_serializer')->serialize($stationsBoxList, 'json'), 200, [], true);
+    }
+
+    /**
      * Get pollution data for a coord by latitude and longitude or a zip code. You must either provide a coord or a zip code.
      *
      * @ApiDoc(
