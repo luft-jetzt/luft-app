@@ -73,7 +73,7 @@ fos_elastica:
     clients:
         default: { host: localhost, port: 9200 }
     indexes:
-        air:
+        air_station:
             client: default
             finder: ~
             types:
@@ -86,6 +86,10 @@ fos_elastica:
                         provider: ~
                         listener: ~
                         finder: ~
+        air_data:
+            client: default
+            finder: ~
+            types:
                 data:
                     properties:
                         pollutant: ~
