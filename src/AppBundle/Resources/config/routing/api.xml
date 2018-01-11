@@ -6,6 +6,12 @@
 
     <route id="api_station" path="/{stationCode}" methods="GET">
         <default key="_controller">AppBundle:Api:station</default>
+        <requirement key="stationCode">^([A-Z]{4,4})([0-9]{3,3})$</requirement>
+    </route>
+
+    <route id="api_city" path="/{citySlug}" methods="GET">
+        <default key="_controller">AppBundle:Api:city</default>
+        <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
 
     <route id="api_display" path="/" methods="GET">

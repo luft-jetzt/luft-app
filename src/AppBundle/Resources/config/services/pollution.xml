@@ -12,7 +12,7 @@
         <service id="AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory" />
 
         <service id="AppBundle\Pollution\StationFinder\ElasticStationFinder">
-            <argument type="service" id="fos_elastica.finder.air.station" />
+            <argument type="service" id="fos_elastica.finder.air_station.station" />
         </service>
         <service id="AppBundle\Pollution\StationFinder\StationFinderInterface" alias="AppBundle\Pollution\StationFinder\ElasticStationFinder" />
 
@@ -21,7 +21,7 @@
 
         <service id="AppBundle\Pollution\DataRetriever\DoctrineOrmDataRetriever" />
         <service id="AppBundle\Pollution\DataRetriever\ElasticDataRetriever">
-            <argument type="service" id="fos_elastica.finder.air.data" />
+            <argument type="service" id="fos_elastica.finder.air_data.data" />
         </service>
         <service id="AppBundle\Pollution\DataRetriever\DataRetrieverInterface" alias="AppBundle\Pollution\DataRetriever\ElasticDataRetriever" />
     </services>

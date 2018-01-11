@@ -1,9 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\City;
-use AppBundle\Entity\Station;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -26,23 +25,6 @@ class CityController extends AbstractController
             'stationList' => $stationList,
             'stationBoxList' => $stationsBoxList,
         ]);
-    }
-
-    protected function getStationListForCity(City $city): array
-    {
-        return $this->getDoctrine()->getRepository(Station::class)->findByCity($city);
-    }
-
-    protected function createBoxListForStationList(array $stationList): array
-    {
-        $stationsBoxList = [];
-
-        /** @var Station $station */
-        foreach ($stationList as $station) {
-            $stationsBoxList[$station->getStationCode()] = $this->getPollutionDataFactory()->setCoord($station)->createDecoratedBoxList();
-        }
-
-        return $stationsBoxList;
     }
 
     public function twitterAction(Request $request, string $citySlug): Response

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace AppBundle\CityLoader;
 
@@ -52,7 +52,7 @@ class ZipLoader
         return $zipEntityList;
     }
 
-    public function hasData(): int
+    public function hasData(): bool
     {
         return count($this->lines) > 0;
     }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace AppBundle\SourceFetcher\Parser;
 
@@ -18,7 +18,7 @@ class UbParser implements ParserInterface
         $this->query = $query;
     }
 
-    public function parse(string $string, string $pollutant): array
+    public function parse(string $string, int $pollutant): array
     {
         $lines = explode(PHP_EOL, $string);
         $valueList = [];
@@ -41,7 +41,7 @@ class UbParser implements ParserInterface
 
                 $station = $parts[self::STATION];
                 $dateTime = \DateTime::createFromFormat($dateTimeFormat, $parts[self::DATETIME]);
-                $value = $parts[self::VALUE];
+                $value = (float) $parts[self::VALUE];
 
                 if (!$station || !$dateTime || !$value) {
                     continue;

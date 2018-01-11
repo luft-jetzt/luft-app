@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace AppBundle\Repository;
 
@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
 
 class DataRepository extends EntityRepository
 {
-    public function findLatestDataForStationAndPollutant(Station $station, string $pollutant): ?Data
+    public function findLatestDataForStationAndPollutant(Station $station, int $pollutant): ?Data
     {
         $qb = $this->createQueryBuilder('d');
 
