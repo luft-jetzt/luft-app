@@ -26,21 +26,4 @@ class CityController extends AbstractController
             'stationBoxList' => $stationsBoxList,
         ]);
     }
-
-    protected function getStationListForCity(City $city): array
-    {
-        return $this->getDoctrine()->getRepository(Station::class)->findByCity($city);
-    }
-
-    protected function createBoxListForStationList(array $stationList): array
-    {
-        $stationsBoxList = [];
-
-        /** @var Station $station */
-        foreach ($stationList as $station) {
-            $stationsBoxList[$station->getStationCode()] = $this->getPollutionDataFactory()->setCoord($station)->createDecoratedBoxList();
-        }
-
-        return $stationsBoxList;
-    }
 }

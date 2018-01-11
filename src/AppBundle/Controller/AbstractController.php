@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\City;
 use AppBundle\Entity\Data;
 use AppBundle\Entity\Station;
 use AppBundle\Pollution\Box\Box;
@@ -52,5 +53,22 @@ abstract class AbstractController extends Controller
     protected function getPollutionDataFactory(): PollutionDataFactory
     {
         return $this->get('AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory');
+    }
+
+    protected function getStationListForCity(City $city): array
+    {
+        return $this->getDoctrine()->getRepository(Station::class)->findByCity($city);
+    }
+
+    protected function createBoxListForStationList(array $stationList): array
+    {
+        $stationsBoxList = [];
+
+        /** @var Station $station */
+        foreach ($stationList as $station) {
+            $stationsBoxList[$station->getStationCode()] = $this->getPollutionDataFactory()->setCoord($station)->createDecoratedBoxList();
+        }
+
+        return $stationsBoxList;
     }
 }
