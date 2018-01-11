@@ -9,6 +9,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApiController extends AbstractController
 {
+    /**
+     * Get pollution data for a provided station code.
+     *
+     * @ApiDoc(
+     *   description="Retrieve pollution data for stations"
+     * )
+     */
     public function stationAction(Request $request, string $stationCode): Response
     {
         $station = $this->getDoctrine()->getRepository('AppBundle:Station')->findOneByStationCode($stationCode);
@@ -23,13 +30,14 @@ class ApiController extends AbstractController
     }
 
     /**
-     * Get pollution data for a coord by latitude and longitude.
+     * Get pollution data for a coord by latitude and longitude or a zip code. You must either provide a coord or a zip code.
      *
      * @ApiDoc(
      *   description="Retrieve pollution data for coords",
      *   parameters={
-     *     {"name"="latitude", "dataType"="float", "required"=true, "description"="Latitude"},
-     *     {"name"="longitude", "dataType"="float", "required"=true, "description"="Longitude"}
+     *     {"name"="latitude", "dataType"="float", "required"=false, "description"="Latitude"},
+     *     {"name"="longitude", "dataType"="float", "required"=false, "description"="Longitude"},
+     *     {"name"="zip", "dataType"="integer", "required"=false, "description"="Zip code"}
      *   }
      * )
      */
