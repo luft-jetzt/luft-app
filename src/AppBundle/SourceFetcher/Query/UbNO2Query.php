@@ -8,8 +8,6 @@ class UbNO2Query extends AbstractQuery
 {
     public function __construct(ReportingInterface $reporting)
     {
-        $this->pollutant = ['NO2'];
-
         parent::__construct($reporting);
     }
 }

@@ -8,8 +8,6 @@ class UbO3Query extends AbstractQuery
 {
     public function __construct(ReportingInterface $reporting)
     {
-        $this->pollutant = ['O3'];
-
         parent::__construct($reporting);
     }
 }

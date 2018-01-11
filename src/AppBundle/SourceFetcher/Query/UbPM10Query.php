@@ -8,8 +8,6 @@ class UbPM10Query extends AbstractQuery
 {
     public function __construct(ReportingInterface $reporting)
     {
-        $this->pollutant = ['PM10'];
-
         parent::__construct($reporting);
     }
 

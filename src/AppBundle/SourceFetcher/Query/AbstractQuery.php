@@ -6,7 +6,7 @@ use AppBundle\SourceFetcher\Reporting\ReportingInterface;
 
 abstract class AbstractQuery implements QueryInterface
 {
-    protected $pollutant;
+    protected $pollutant = [];
 
     protected $scope = [];
 
@@ -24,12 +24,26 @@ abstract class AbstractQuery implements QueryInterface
         $this
             ->calcRange()
             ->setupScope()
+            ->setupPollutant()
         ;
     }
 
     protected function setupScope(): AbstractQuery
     {
         $this->scope = [$this->reporting->getReportingIdentifier()];
+
+        return $this;
+    }
+
+    public function setupPollutant(): AbstractQuery
+    {
+        $reflection = new \ReflectionClass($this);
+        $pollutant = $reflection->getShortName();
+
+        $pollutant = str_replace('Ub', '', $pollutant);
+        $pollutant = str_replace('Query', '', $pollutant);
+
+        $this->pollutant = [$pollutant];
 
         return $this;
     }
