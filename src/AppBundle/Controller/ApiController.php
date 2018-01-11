@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\City;
+use AppBundle\Entity\Station;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +20,7 @@ class ApiController extends AbstractController
      */
     public function stationAction(Request $request, string $stationCode): Response
     {
-        $station = $this->getDoctrine()->getRepository('AppBundle:Station')->findOneByStationCode($stationCode);
+        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
 
         if (!$station) {
             throw $this->createNotFoundException();

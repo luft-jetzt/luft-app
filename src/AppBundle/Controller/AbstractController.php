@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\City;
 use AppBundle\Entity\Station;
+use AppBundle\Entity\Zip;
 use AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory;
 use AppBundle\Pollution\StationFinder\StationFinderInterface;
 use Caldera\GeoBasic\Coord\Coord;
@@ -19,7 +20,7 @@ abstract class AbstractController extends Controller
         $zipCode = $request->query->get('zip');
 
         if (!$latitude && !$longitude && $zipCode) {
-            $zip = $this->getDoctrine()->getRepository('AppBundle:Zip')->findOneByZip($zipCode);
+            $zip = $this->getDoctrine()->getRepository(Zip::class)->findOneByZip($zipCode);
 
             return $zip;
         }
