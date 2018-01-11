@@ -15,6 +15,6 @@ class SourceFetcher
 
         $curl->get($queryString);
 
-        return $curl->response;
+        return (string) $curl->response;
     }
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace AppBundle\SourceFetcher\Reporting;
 
@@ -14,12 +14,12 @@ abstract class AbstractUbReporting implements ReportingInterface
 
     public function getStartTimestamp(): int
     {
-        return $this->getStartDateTime()->format('U');
+        return (int) $this->getStartDateTime()->format('U');
     }
 
     public function getEndTimestamp(): int
     {
-        return $this->getEndDateTime()->format('U');
+        return (int) $this->getEndDateTime()->format('U');
     }
 
     protected function calcLastHourStart(): \DateTimeImmutable
