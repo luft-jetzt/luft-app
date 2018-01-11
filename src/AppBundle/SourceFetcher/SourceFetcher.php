@@ -7,14 +7,20 @@ use Curl\Curl;
 
 class SourceFetcher
 {
+    /** @var Curl $curl */
+    protected $curl;
+
+    public function __construct()
+    {
+        $this->curl = new Curl();
+    }
+
     public function query(QueryInterface $query): string
     {
-        $curl = new Curl();
+        $queryString = sprintf('https://www.umweltbundesamt.de/uaq/csv/stations/data?%s', $query->getQueryString());
 
-        $queryString = 'https://www.umweltbundesamt.de/uaq/csv/stations/data?' . $query->getQueryString();
+        $this->curl->get($queryString);
 
-        $curl->get($queryString);
-
-        return (string) $curl->response;
+        return (string) $this->curl->response;
     }
 }
