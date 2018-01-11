@@ -2,6 +2,8 @@
 
 namespace AppBundle\SourceFetcher\Query;
 
+use AppBundle\SourceFetcher\Reporting\ReportingInterface;
+
 abstract class AbstractQuery implements QueryInterface
 {
     protected $pollutant;
@@ -10,10 +12,26 @@ abstract class AbstractQuery implements QueryInterface
 
     protected $group;
 
-    protected $range;
+    protected $range = [];
 
-    public function __construct()
+    /** @var ReportingInterface $reporting */
+    protected $reporting;
+
+    public function __construct(ReportingInterface $reporting)
     {
+        $this->reporting = $reporting;
+
+        $this->calcRange();
+    }
+
+    protected function calcRange(): AbstractQuery
+    {
+        $this->range = [
+            $this->reporting->getStartTimestamp(),
+            $this->reporting->getEndTimestamp(),
+        ];
+
+        return $this;
     }
 
     public function getQueryOptions(): array

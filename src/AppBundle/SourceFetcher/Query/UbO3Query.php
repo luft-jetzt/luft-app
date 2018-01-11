@@ -2,17 +2,16 @@
 
 namespace AppBundle\SourceFetcher\Query;
 
+use AppBundle\SourceFetcher\Reporting\ReportingInterface;
+
 class UbO3Query extends AbstractQuery
 {
-    public function __construct(\DateTimeInterface $datetime)
+    public function __construct(ReportingInterface $reporting)
     {
         $this->pollutant = ['O3'];
         $this->scope = ['1SMW'];
         $this->group = ['station'];
 
-        $to = $datetime->format('U');
-        $from = $to - 3600;
-
-        $this->range = [$from, $to];
+        parent::__construct($reporting);
     }
 }
