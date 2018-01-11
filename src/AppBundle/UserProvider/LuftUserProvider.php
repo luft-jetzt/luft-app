@@ -2,6 +2,7 @@
 
 namespace AppBundle\UserProvider;
 
+use AppBundle\Entity\City;
 use AppBundle\Entity\User;
 use AppBundle\Repository\UserRepository;
 use AppBundle\UserProvider\Exception\LuftUsernameException;
@@ -42,9 +43,27 @@ class LuftUserProvider implements OAuthAwareUserProviderInterface
 
         $user = $this->setServiceData($user, $response);
 
+        $this->assignCity($user);
+
         $this->updateUser($user);
 
         return $user;
+    }
+
+    protected function assignCity(User $user): LuftUserProvider
+    {
+        $citySlug = str_replace('luft_', '', $user->getUsername());
+
+        /** @var City $city */
+        $city = $this->doctrine->getRepository(City::class)->findOneBySlug($citySlug);
+
+        if ($city) {
+            $city->setUser($user);
+
+            $this->doctrine->getManager()->flush();
+        }
+
+        return $this;
     }
 
     protected function registerUser(UserResponseInterface $response): User
