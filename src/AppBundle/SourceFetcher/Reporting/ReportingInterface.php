@@ -8,4 +8,5 @@ interface ReportingInterface
     public function getEndDateTime(): \DateTimeImmutable;
     public function getStartTimestamp(): int;
     public function getEndTimestamp(): int;
+    public function getReportingIdentifier(): string;
 }

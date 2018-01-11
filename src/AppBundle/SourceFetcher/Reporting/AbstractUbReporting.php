@@ -53,4 +53,15 @@ abstract class AbstractUbReporting implements ReportingInterface
 
         return new \DateTimeImmutable($dateTimeSpec);
     }
+
+    public function getReportingIdentifier(): string
+    {
+        $reflection = new \ReflectionClass($this);
+        $identifier = $reflection->getShortName();
+
+        $identifier = str_replace('Ub', '', $identifier);
+        $identifier = str_replace('MAX', '_MAX', $identifier);
+
+        return $identifier;
+    }
 }
