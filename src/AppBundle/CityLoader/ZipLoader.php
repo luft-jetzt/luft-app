@@ -52,7 +52,7 @@ class ZipLoader
         return $zipEntityList;
     }
 
-    public function hasData(): int
+    public function hasData(): bool
     {
         return count($this->lines) > 0;
     }
