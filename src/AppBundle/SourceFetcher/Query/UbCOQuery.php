@@ -10,7 +10,6 @@ class UbCOQuery extends AbstractQuery
     {
         $this->pollutant = ['CO'];
         $this->scope = ['8SMW'];
-        $this->group = ['station'];
 
         parent::__construct($reporting);
     }

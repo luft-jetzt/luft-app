@@ -10,7 +10,6 @@ class UbO3Query extends AbstractQuery
     {
         $this->pollutant = ['O3'];
         $this->scope = ['1SMW'];
-        $this->group = ['station'];
 
         parent::__construct($reporting);
     }

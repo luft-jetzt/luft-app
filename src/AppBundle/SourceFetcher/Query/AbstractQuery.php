@@ -10,7 +10,7 @@ abstract class AbstractQuery implements QueryInterface
 
     protected $scope;
 
-    protected $group;
+    protected $group = ['station'];
 
     protected $range = [];
 

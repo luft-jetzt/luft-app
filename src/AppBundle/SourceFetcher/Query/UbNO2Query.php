@@ -10,7 +10,6 @@ class UbNO2Query extends AbstractQuery
     {
         $this->pollutant = ['NO2'];
         $this->scope = ['1SMW'];
-        $this->group = ['station'];
 
         parent::__construct($reporting);
     }

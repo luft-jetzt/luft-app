@@ -10,7 +10,6 @@ class UbPM10Query extends AbstractQuery
     {
         $this->pollutant = ['PM10'];
         $this->scope = ['1TMW'];
-        $this->group = ['station'];
 
         parent::__construct($reporting);
     }
