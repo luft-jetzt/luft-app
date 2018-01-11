@@ -7,5 +7,5 @@ use AppBundle\Entity\Station;
 
 interface DataRetrieverInterface
 {
-    public function retrieveStationData(Station $station, string $pollutant): ?Data;
+    public function retrieveStationData(Station $station, int $pollutant): ?Data;
 }

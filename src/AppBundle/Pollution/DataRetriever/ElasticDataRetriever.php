@@ -15,7 +15,7 @@ class ElasticDataRetriever implements DataRetrieverInterface
         $this->dataFinder = $dataFinder;
     }
 
-    public function retrieveStationData(Station $station, string $pollutant): ?Data
+    public function retrieveStationData(Station $station, int $pollutant): ?Data
     {
         $stationQuery = new \Elastica\Query\Term(['station' => $station->getId()]);
         $pollutantQuery = new \Elastica\Query\Term(['pollutant' => $pollutant]);

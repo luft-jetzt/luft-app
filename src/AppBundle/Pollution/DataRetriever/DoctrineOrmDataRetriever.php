@@ -16,7 +16,7 @@ class DoctrineOrmDataRetriever implements DataRetrieverInterface
         $this->doctrine = $doctrine;
     }
 
-    public function retrieveStationData(Station $station, string $pollutant): ?Data
+    public function retrieveStationData(Station $station, int $pollutant): ?Data
     {
         /** @var DataRepository $repository */
         $repository = $this->doctrine->getRepository(Data::class);
