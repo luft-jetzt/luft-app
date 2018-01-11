@@ -11,6 +11,9 @@ use AppBundle\SourceFetcher\Query\UbNO2Query;
 use AppBundle\SourceFetcher\Query\UbO3Query;
 use AppBundle\SourceFetcher\Query\UbPM10Query;
 use AppBundle\SourceFetcher\Query\UbSO2Query;
+use AppBundle\SourceFetcher\Reporting\Ub1SMW;
+use AppBundle\SourceFetcher\Reporting\Ub1TMW;
+use AppBundle\SourceFetcher\Reporting\Ub8SMW;
 use AppBundle\SourceFetcher\SourceFetcher;
 use AppBundle\SourceFetcher\Value\Value;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -43,34 +46,24 @@ class FetchCommand extends ContainerAwareCommand
             $dateTime = new \DateTimeImmutable();
         }
 
-        $dateInterval2 = new \DateInterval('PT2H');
-        $dateInterval4 = new \DateInterval('PT4H');
-        $dateInterval8 = new \DateInterval('PT8H');
-        $dateInterval25 = new \DateInterval('PT25H');
-
-        $dateTime2 = $dateTime->sub($dateInterval2);
-        $dateTime4 = $dateTime->sub($dateInterval4);
-        $dateTime8 = $dateTime->sub($dateInterval8);
-        $dateTime25 = $dateTime->sub($dateInterval25);
-
         if ($input->getOption('pm10')) {
-            $this->fetchPM10($output, $dateTime25);
+            $this->fetchPM10($output, $dateTime);
         }
 
         if ($input->getOption('so2')) {
-            $this->fetchSO2($output, $dateTime4);
+            $this->fetchSO2($output, $dateTime);
         }
 
         if ($input->getOption('no2')) {
-            $this->fetchNO2($output, $dateTime4);
+            $this->fetchNO2($output, $dateTime);
         }
 
         if ($input->getOption('o3')) {
-            $this->fetchO3($output, $dateTime4);
+            $this->fetchO3($output, $dateTime);
         }
 
         if ($input->getOption('co')) {
-            $this->fetchCO($output, $dateTime4);
+            $this->fetchCO($output, $dateTime);
         }
     }
 
@@ -78,7 +71,8 @@ class FetchCommand extends ContainerAwareCommand
     {
         $output->writeln('PM10');
 
-        $query = new UbPM10Query($dateTime);
+        $reporting = new Ub1TMW($dateTime);
+        $query = new UbPM10Query($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_PM10);
     }
@@ -87,7 +81,8 @@ class FetchCommand extends ContainerAwareCommand
     {
         $output->writeln('SO2');
 
-        $query = new UbSO2Query($dateTime);
+        $reporting = new Ub1SMW($dateTime);
+        $query = new UbSO2Query($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_SO2);
     }
@@ -96,7 +91,8 @@ class FetchCommand extends ContainerAwareCommand
     {
         $output->writeln('NO2');
 
-        $query = new UbNO2Query($dateTime);
+        $reporting = new Ub1SMW($dateTime);
+        $query = new UbNO2Query($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_NO2);
     }
@@ -105,7 +101,8 @@ class FetchCommand extends ContainerAwareCommand
     {
         $output->writeln('O3');
 
-        $query = new UbO3Query($dateTime);
+        $reporting = new Ub1SMW($dateTime);
+        $query = new UbO3Query($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_O3);
     }
@@ -114,7 +111,8 @@ class FetchCommand extends ContainerAwareCommand
     {
         $output->writeln('CO');
 
-        $query = new UbCOQuery($dateTime);
+        $reporting = new Ub8SMW($dateTime);
+        $query = new UbCOQuery($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_CO);
     }
