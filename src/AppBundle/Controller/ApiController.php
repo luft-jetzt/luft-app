@@ -46,7 +46,7 @@ class ApiController extends AbstractController
         $coord = $this->getCoordByRequest($request);
 
         if (!$coord) {
-            return $this->render('AppBundle:Default:select.html.twig');
+            throw $this->createNotFoundException();
         }
 
         $boxList = $this->getPollutionDataFactory()->setCoord($coord)->createDecoratedBoxList();
