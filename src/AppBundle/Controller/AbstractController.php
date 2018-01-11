@@ -3,18 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\City;
-use AppBundle\Entity\Data;
 use AppBundle\Entity\Station;
-use AppBundle\Pollution\Box\Box;
-use AppBundle\Pollution\Pollutant\CO;
-use AppBundle\Pollution\Pollutant\NO2;
-use AppBundle\Pollution\Pollutant\O3;
-use AppBundle\Pollution\Pollutant\PM10;
-use AppBundle\Pollution\Pollutant\PollutantInterface;
-use AppBundle\Pollution\Pollutant\SO2;
 use AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory;
 use AppBundle\Pollution\StationFinder\StationFinderInterface;
-use AppBundle\Repository\DataRepository;
 use Caldera\GeoBasic\Coord\Coord;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
