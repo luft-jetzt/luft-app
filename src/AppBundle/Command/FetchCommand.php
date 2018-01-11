@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace AppBundle\Command;
 
@@ -119,7 +119,7 @@ class FetchCommand extends ContainerAwareCommand
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_CO);
     }
 
-    protected function fetch(OutputInterface $output, AbstractQuery $query, string $pollutant)
+    protected function fetch(OutputInterface $output, AbstractQuery $query, int $pollutant)
     {
         $sourceFetcher = new SourceFetcher();
 

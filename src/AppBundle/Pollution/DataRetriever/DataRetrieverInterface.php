@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace AppBundle\Pollution\DataRetriever;
 
@@ -7,5 +7,5 @@ use AppBundle\Entity\Station;
 
 interface DataRetrieverInterface
 {
-    public function retrieveStationData(Station $station, string $pollutant): ?Data;
+    public function retrieveStationData(Station $station, int $pollutant): ?Data;
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace AppBundle\Controller;
 
@@ -15,8 +15,8 @@ abstract class AbstractController extends Controller
 {
     protected function getCoordByRequest(Request $request): ?Coord
     {
-        $latitude = $request->query->get('latitude');
-        $longitude = $request->query->get('longitude');
+        $latitude = (float) $request->query->get('latitude');
+        $longitude = (float) $request->query->get('longitude');
         $zipCode = $request->query->get('zip');
 
         if (!$latitude && !$longitude && $zipCode) {
