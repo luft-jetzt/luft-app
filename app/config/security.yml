@@ -6,7 +6,7 @@ security:
         database_provider:
             entity:
                 class: AppBundle:User
-                property: email
+                property: username
 
     # ...
 
@@ -20,6 +20,12 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        admin:
+            pattern: ^/admin
+            http_basic: ~
+            provider: database_provider
+            logout: ~
+
         main:
             anonymous: true
             oauth:
@@ -29,6 +35,7 @@ security:
                 failure_path: /login
                 oauth_user_provider:
                     service: AppBundle\UserProvider\LuftUserProvider
+            logout: ~
 
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
