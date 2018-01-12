@@ -43,31 +43,8 @@ security:
         - { path: ^/admin, role: ROLE_USER }
 
     role_hierarchy:
-        ROLE_TWITTER_ADMIN:
-            - ROLE_USER
-            - ROLE_APP_ADMIN_CITY_TWITTER
-            - ROLE_APP_ADMIN_TWITTER_SCHEDULE_ALL
-        ROLE_CITY_ADMIN:
-            - ROLE_USER
-            - ROLE_APP_ADMIN_CITY_ALL
-        ROLE_STATION_ADMIN:
-            - ROLE_USER
-            - ROLE_APP_ADMIN_STATION_ALL
         ROLE_ADMIN:
             - ROLE_USER
-            - ROLE_TWITTER_MANAGER
-            - ROLE_CITY_MANAGER
-            - ROLE_STATION_MANAGER
-            - ROLE_APP_ADMIN_USER_ALL
-        ROLE_USER:
-            - ROLE_APP_ADMIN_CITY_LIST
-            - ROLE_APP_ADMIN_CITY_VIEW
-            - ROLE_APP_ADMIN_STATION_LIST
-            - ROLE_APP_ADMIN_STATION_VIEW
-            - ROLE_APP_ADMIN_TWITTER_SCHEDULE_LIST
-            - ROLE_APP_ADMIN_TWITTER_SCHEDULE_VIEW
-            - ROLE_APP_ADMIN_USER_LIST
-            - ROLE_APP_ADMIN_USER_VIEW
 
     access_decision_manager:
         strategy: unanimous
