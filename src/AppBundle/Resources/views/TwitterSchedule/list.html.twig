@@ -4,11 +4,6 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-8 offset-md-2">
-                <a class="btn btn-sm btn-primary pull-right" href="{{ path('twitter_schedule_add', { citySlug: city.slug }) }}">
-                    <i class="fa fa-plus"></i>
-                    Plan hinzufügen
-                </a>
-
                 <h3>
                     twitter-Pläne für @{{ app.user.username }}
                 </h3>
@@ -19,7 +14,22 @@
             </div>
         </div>
 
-        <div class="row">
+        {% if not app.user.twitterSecret %}
+            <div class="row mt-3">
+                <div class="col-12 col-md-8 offset-md-2">
+                    <div class="alert alert-danger">
+                        <a class="btn btn-primary pull-right" href="{{ path('twitter_auth', { citySlug: app.user.city.slug }) }}">
+                            <i class="fa fa-twitter"></i>
+                            authorisieren
+                        </a>
+
+                        Bitte authorisiere Luft<sup>jetzt</sup>, auf deinem twitter-Konto <code>@{{ app.user.username }}</code> Nachrichten veröffentlichen zu dürfen:
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="row mt-3">
             <div class="col-12 col-md-8 offset-md-2">
                 <table class="table">
                     <thead>
@@ -37,11 +47,32 @@
                             </th>
 
                             <th>
-
+                                {% if scheduleList|length > 0 %}
+                                <a class="btn btn-sm btn-primary" href="{{ path('twitter_schedule_add', { citySlug: city.slug }) }}">
+                                    <i class="fa fa-plus"></i>
+                                    neu
+                                </a>
+                                {% endif %}
                             </th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% if scheduleList|length == 0 %}
+                            <tr>
+                                <td colspan="4" class="text-center alert alert-warning">
+                                    <p>
+                                        Du hast bislang keine Pläne angelegt.
+                                    </p>
+
+                                    <p>
+                                        <a class="btn btn-primary" href="{{ path('twitter_schedule_add', { citySlug: city.slug }) }}">
+                                            <i class="fa fa-plus"></i>
+                                            neuen Plan hinzufügen
+                                        </a>
+                                    </p>
+                                </td>
+                            </tr>
+                        {% endif %}
                         {% for schedule in scheduleList %}
                             <tr>
                                 <td>
