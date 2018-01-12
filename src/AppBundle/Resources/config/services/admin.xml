@@ -16,7 +16,7 @@
             <tag name="sonata.admin" manager_type="orm" group="Luft" label="City" />
             <argument />
             <argument>AppBundle\Entity\City</argument>
-            <argument>AppBundle:Admin/City</argument>
+            <argument />
         </service>
 
         <service id="app.admin.twitter_schedule" class="AppBundle\Admin\TwitterScheduleAdmin">

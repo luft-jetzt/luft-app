@@ -66,16 +66,19 @@ class Twitter
             $cron = CronExpression::factory($twitterSchedule->getCron());
 
             if ($cron->isDue()) {
+                $user = $twitterSchedule->getCity()->getUser();
+
+                if (!$user) {
+                    continue;
+                }
+
+                $cb->setToken($user->getTwitterAccessToken(), $user->getTwitterSecret());
+
                 $coord = $this->getCoord($twitterSchedule);
 
                 $boxList = $this->pollutionDataFactory->setCoord($coord)->createDecoratedBoxList();
 
                 $message = $this->createMessage($twitterSchedule, $boxList);
-
-                $twitterToken = $twitterSchedule->getCity()->getTwitterToken();
-                $twitterSecret = $twitterSchedule->getCity()->getTwitterSecret();
-
-                $cb->setToken($twitterToken, $twitterSecret);
 
                 $params = [
                     'status' => $message,
@@ -84,6 +87,8 @@ class Twitter
                 ];
 
                 $reply = $cb->statuses_update($params);
+
+                var_dump($reply);
 
                 $this->logger->notice(json_encode($reply));
 

@@ -24,7 +24,8 @@ class TweetCommand extends ContainerAwareCommand
     {
         $this
             ->setName('luft:tweet')
-            ->setDescription('Post current data');
+            ->setDescription('Post current data')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -44,7 +45,7 @@ class TweetCommand extends ContainerAwareCommand
                 $validSchedule->getCity()->getName(),
                 $validSchedule->getTitle(),
                 $validSchedule->getCron(),
-                sprintf('@%s', $validSchedule->getCity()->getTwitterUsername()),
+                sprintf('@%s', $validSchedule->getCity()->getUser()->getUsername()),
                 $validSchedule->getStation() ? $validSchedule->getStation()->getTitle() : '',
                 $validSchedule->getStation() ? $validSchedule->getStation()->getStationCode() : '',
                 $validSchedule->getLatitude(),

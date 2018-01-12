@@ -15,9 +15,6 @@ class User implements UserInterface, \Serializable
 {
     const ROLE_USER = 'ROLE_USER';
     const ROLE_ADMIN = 'ROLE_ADMIN';
-    const ROLE_CITY_ADMIN = 'ROLE_CITY_ADMIN';
-    const ROLE_TWITTER_ADMIN = 'ROLE_TWITTER_ADMIN';
-    const ROLE_STATION_ADMIN = 'ROLE_STATION_ADMIN';
 
     /**
      * @ORM\Column(type="integer")
@@ -70,6 +67,11 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(name="twitter_access_token", type="string", length=255, nullable=true)
      */
     protected $twitterAccessToken;
+
+    /**
+     * @ORM\Column(name="twitter_secret", type="string", length=255, nullable=true)
+     */
+    protected $twitterSecret;
 
     public function __construct()
     {
@@ -249,6 +251,18 @@ class User implements UserInterface, \Serializable
     public function getTwitterAccessToken(): ?string
     {
         return $this->twitterAccessToken;
+    }
+
+    public function setTwitterSecret(string $twitterSecret): User
+    {
+        $this->twitterSecret = $twitterSecret;
+
+        return $this;
+    }
+
+    public function getTwitterSecret(): ?string
+    {
+        return $this->twitterSecret;
     }
 
     public function __toString(): string
