@@ -16,4 +16,13 @@
         <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
 
+    <route id="twitter_auth" path="/{citySlug}/twitter-auth">
+        <default key="_controller">AppBundle:City:twitterAuth</default>
+        <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
+    </route>
+
+    <route id="twitter_token" path="/{citySlug}/twitter-token">
+        <default key="_controller">AppBundle:City:twitterToken</default>
+        <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
+    </route>
 </routes>
