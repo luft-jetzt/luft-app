@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\City;
 use AppBundle\Entity\Station;
+use AppBundle\Entity\TwitterSchedule;
 use AppBundle\Entity\Zip;
 use AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory;
 use AppBundle\Pollution\StationFinder\StationFinderInterface;
@@ -62,5 +63,18 @@ abstract class AbstractController extends Controller
         }
 
         return $stationsBoxList;
+    }
+
+    protected function getCityBySlug(string $citySlug): ?City
+    {
+        return $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
+    }
+
+    protected function getTwitterScheduleByRequest(Request $request): ?TwitterSchedule
+    {
+        $scheduleId = $request->query->getInt('scheduleId');
+        $schedule = $this->getDoctrine()->getRepository(TwitterSchedule::class)->find($scheduleId);
+
+        return $schedule;
     }
 }

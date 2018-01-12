@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<constraint-mapping xmlns="http://symfony.com/schema/dic/constraint-mapping"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping
+        http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
+
+    <class name="AppBundle\Entity\TwitterSchedule">
+        <property name="title">
+            <constraint name="NotBlank" />
+            <constraint name="Length">
+                <option name="min">5</option>
+                <option name="max">75</option>
+                <option name="minMessage">
+                    Bitte gib mindestens 5 Zeichen ein.
+                </option>
+                <option name="maxMessage">
+                    Bitte gib nicht mehr als 75 Zeichen ein.
+                </option>
+            </constraint>
+        </property>
+    </class>
+</constraint-mapping>

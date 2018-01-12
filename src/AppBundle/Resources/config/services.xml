@@ -11,5 +11,6 @@
         <import resource="services/twitter.xml" />
         <import resource="services/permalink.xml" />
         <import resource="services/logging.xml" />
+        <import resource="services/twig.xml" />
     </imports>
 </container>

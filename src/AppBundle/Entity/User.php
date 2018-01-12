@@ -54,9 +54,9 @@ class User implements UserInterface, \Serializable
     protected $createdAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="City", mappedBy="user")
+     * @ORM\OneToOne(targetEntity="City", mappedBy="user")
      */
-    protected $cities;
+    protected $city;
 
     /**
      * @ORM\Column(name="twitter_id", type="string", length=255, nullable=true)
@@ -198,36 +198,17 @@ class User implements UserInterface, \Serializable
         return null;
     }
 
-    public function addCity(City $city): User
+    public function setCity(City $city): User
     {
-        $city->setUser($this);
-
-        $this->cities->add($city);
+        $this->city = $city;
 
         return $this;
     }
 
-    public function setCities(Collection $cities): User
+    public function getCity(): ?City
     {
-        $this->cities = $cities;
-
-        return $this;
+        return $this->city;
     }
-
-    public function getCities(): Collection
-    {
-        return $this->cities;
-    }
-
-    public function removeCity(City $city): User
-    {
-        $city->setUser(null);
-
-        $this->cities->removeElement($city);
-
-        return $this;
-    }
-
 
     public function setTwitterId(string $twitterId): User
     {

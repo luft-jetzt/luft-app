@@ -109,9 +109,18 @@ class CityController extends AbstractController
             $this->saveCityAccess($request, $user, $reply);
         }
 
-        $showUrl = $this->generateUrl('show_city', ['citySlug' => $city->getSlug()]);
+        $showUrl = $this->generateUrl('twitter_schedule_list', ['citySlug' => $city->getSlug()]);
 
         return new RedirectResponse($showUrl);
+    }
+
+    public function twitterSuccessAction(Request $request, UserInterface $user): Response
+    {
+        if ($user->getCity()) {
+            return $this->redirectToRoute('twitter_schedule_list', ['citySlug' => $user->getCity()->getSlug()]);
+        } else {
+            return $this->redirectToRoute('display', ['citySlug' => $user->getCity()->getSlug()]);
+        }
     }
 
     protected function getCodeBird(): Codebird
@@ -120,7 +129,6 @@ class CityController extends AbstractController
 
         return Codebird::getInstance();
     }
-
 
     protected function saveCityAccess(Request $request, User $user, \stdClass $reply): User
     {
