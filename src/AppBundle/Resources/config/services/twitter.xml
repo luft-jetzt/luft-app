@@ -16,5 +16,7 @@
         <service id="AppBundle\Twitter\MessageFactory\MessageFactoryInterface" alias="AppBundle\Twitter\MessageFactory\EmojiMessageFactory" />
 
         <service id="AppBundle\Twitter\Twitter" />
+
+        <service id="AppBundle\UserProvider\LuftUserProvider" />
     </services>
 </container>

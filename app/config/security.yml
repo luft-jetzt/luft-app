@@ -6,7 +6,7 @@ security:
         database_provider:
             entity:
                 class: AppBundle:User
-                property: email
+                property: username
 
     # ...
 
@@ -20,10 +20,21 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        main:
+        admin:
             pattern: ^/admin
             http_basic: ~
             provider: database_provider
+            logout: ~
+
+        main:
+            anonymous: true
+            oauth:
+                resource_owners:
+                    twitter:  '/login/check-twitter'
+                login_path: /login
+                failure_path: /login
+                oauth_user_provider:
+                    service: AppBundle\UserProvider\LuftUserProvider
             logout: ~
 
     access_control:
