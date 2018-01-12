@@ -114,6 +114,15 @@ class CityController extends AbstractController
         return new RedirectResponse($showUrl);
     }
 
+    public function twitterSuccessAction(Request $request, UserInterface $user): Response
+    {
+        if ($user->getCity()) {
+            return $this->redirectToRoute('twitter_schedule_list', ['citySlug' => $user->getCity()->getSlug()]);
+        } else {
+            return $this->redirectToRoute('display', ['citySlug' => $user->getCity()->getSlug()]);
+        }
+    }
+
     protected function getCodeBird(): Codebird
     {
         Codebird::setConsumerKey($this->getParameter('twitter.client_id'), $this->getParameter('twitter.client_secret'));

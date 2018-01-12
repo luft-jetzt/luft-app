@@ -4,14 +4,12 @@
         xsi:schemaLocation="http://symfony.com/schema/routing
         http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="show_city" path="/{citySlug}">
-        <default key="_controller">AppBundle:City:show</default>
-        <option key="expose">true</option>
-        <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
+    <route id="twitter_city" path="/twitter-success">
+        <default key="_controller">AppBundle:City:twitterSuccess</default>
     </route>
 
-    <route id="twitter_city" path="/{citySlug}/twitter">
-        <default key="_controller">AppBundle:City:twitter</default>
+    <route id="show_city" path="/{citySlug}">
+        <default key="_controller">AppBundle:City:show</default>
         <option key="expose">true</option>
         <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>

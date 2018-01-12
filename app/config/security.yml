@@ -35,6 +35,7 @@ security:
                 failure_path: /login
                 oauth_user_provider:
                     service: AppBundle\UserProvider\LuftUserProvider
+                default_target_path: /twitter-success
             logout: ~
 
     access_control:
