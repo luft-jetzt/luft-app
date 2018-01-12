@@ -16,15 +16,15 @@
                         </p>
                     {% endif %}
 
-                    {% if city.twitterUsername %}
+                    {% if city.user %}
                         <p>
                             Folge aktuellen Luftdaten aus {{ city.name }} auf twitter:
                         </p>
 
                         <p>
-                            <a href="https://twitter.com/{{ city.twitterUsername }}" class="btn btn-primary">
+                            <a href="https://twitter.com/{{ city.user.username}}" class="btn btn-primary">
                                 <i class="fa fa-twitter"></i>
-                                @{{ city.twitterUsername }}
+                                @{{ city.user.username }}
                             </a>
                         </p>
                     {% endif %}
