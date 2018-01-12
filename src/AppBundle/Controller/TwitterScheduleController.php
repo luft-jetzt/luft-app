@@ -43,7 +43,9 @@ class TwitterScheduleController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(TwitterScheduleType::class, $schedule);
+        $form = $this->createForm(TwitterScheduleType::class, $schedule, [
+            'city' => $city,
+        ]);
 
         return $this->render(
             'AppBundle:TwitterSchedule:edit.html.twig', [
