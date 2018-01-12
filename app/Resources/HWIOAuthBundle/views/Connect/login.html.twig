@@ -1,0 +1,49 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-8 offset-md-2">
+                <div class="row">
+                    <div class="col-12">
+                        <h3>
+                            Login über twitter
+                        </h3>
+
+                        <p class="lead">
+                            Du kannst aktuelle Luftmesswerte für deine Stadt automatisch auf einem twitter-Konto veröffentlichen lassen. So funktioniert’s:
+                        </p>
+
+                        <ol>
+                            <li>
+                                Registriere dir ein twitter-Konto für deine Stadt. Der Name des Kontos muss mit <code>@luft_</code> beginnen, beispielsweise <code>@luft_hamburg</code> oder <code>@luft_berlin</code>.
+                            </li>
+
+                            <li>
+                                Verknüpfe bitte dein twitter-Konto mit deiner Mobilfunknummer. twitter wird ansonsten aufgrund der automatisierten Nachrichten das Konto recht bald sperren.
+                            </li>
+
+                            <li>
+                                Logge dich hier über den twitter-Button ein.
+                            </li>
+
+                            <li>
+                                Anschließend kannst du für verschiedene Messstationen in deiner Stadt angeben, ob und wann deren Werte auf twitter veröffentlicht werden sollen.
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <a href="{{ hwi_oauth_login_url('twitter') }}" class="btn btn-primary">
+                            <i class="fa fa-twitter">
+                                Login über twitter
+                            </i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
