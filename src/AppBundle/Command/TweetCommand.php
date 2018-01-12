@@ -24,7 +24,8 @@ class TweetCommand extends ContainerAwareCommand
     {
         $this
             ->setName('luft:tweet')
-            ->setDescription('Post current data');
+            ->setDescription('Post current data')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

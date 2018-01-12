@@ -27,13 +27,12 @@ class UserAdmin extends AbstractAdmin
             ->end()
 
             ->with('Cities', ['class' => 'col-xs-6'])
-            ->add('cities', EntityType::class,
-                [
-                    'class' => City::class,
-                    'multiple' => true,
-                    'expanded' => false,
-                    'by_reference' => false,
-                ])
+            ->add('cities', EntityType::class, [
+                'class' => City::class,
+                'multiple' => true,
+                'expanded' => false,
+                'by_reference' => false,
+            ])
             ->end()
 
             ->with('Roles', ['class' => 'col-xs-6'])
