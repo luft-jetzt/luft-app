@@ -39,6 +39,8 @@ class LuftUserProvider implements OAuthAwareUserProviderInterface
 
         if (!$user) {
             $user = $this->registerUser($response);
+
+            $this->updateUser($user);
         }
 
         $user = $this->setServiceData($user, $response);
