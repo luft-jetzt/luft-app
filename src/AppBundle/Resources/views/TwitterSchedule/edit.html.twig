@@ -5,10 +5,41 @@
         <div class="row">
             <div class="col-12 col-md-6 offset-md-3">
                 {{ form_start(scheduleForm) }}
-                {{ form_widget(scheduleForm.title) }}
-                {{ form_widget(scheduleForm.station) }}
-                {{ form_widget(scheduleForm.cron) }}
-                <button type="submit">Speichern</button>
+                <div class="row">
+                    <div class="col-12 form-group">
+                        <label>
+                            Titel:
+                        </label>
+                        {{ form_widget(scheduleForm.title, { 'attr': {'class': 'form-control'}} ) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 form-group">
+                        <label>
+                            Station:
+                        </label>
+                        {{ form_widget(scheduleForm.station, { 'attr': {'class': 'form-control'}} ) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 form-group">
+                        <label>
+                            Minute:
+                        </label>
+                        {{ form_widget(scheduleForm.cron, { 'attr': {'class': 'form-control'}} ) }}
+                        <small class="form-text text-muted">
+                            Auf welcher Minute sollen die Luftdaten pro Stunde gesendet werden?
+                        </small>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 form-group text-center">
+                        <button class="btn btn-primary" type="submit">Speichern</button>
+                    </div>
+                </div>
                 {{ form_end(scheduleForm) }}
             </div>
         </div>
