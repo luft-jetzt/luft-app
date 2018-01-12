@@ -14,10 +14,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CityAdmin extends AbstractAdmin
 {
-    protected $accessMapping = [
-        'twitter' => 'TWITTER'
-    ];
-
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -53,17 +49,8 @@ class CityAdmin extends AbstractAdmin
             ->add('_action', null, [
                 'actions' => [
                     'edit' => [],
-                    'twitter' => [],
                 ]
             ])
-        ;
-    }
-
-    protected function configureRoutes(RouteCollection $collection)
-    {
-        $collection
-            ->add('twitter', $this->getRouterIdParameter().'/twitter')
-            ->add('twitter_token', $this->getRouterIdParameter().'/twitter_token')
         ;
     }
 }
