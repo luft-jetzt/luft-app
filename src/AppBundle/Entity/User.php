@@ -68,6 +68,11 @@ class User implements UserInterface, \Serializable
      */
     protected $twitterAccessToken;
 
+    /**
+     * @ORM\Column(name="twitter_secret", type="string", length=255, nullable=true)
+     */
+    protected $twitterSecret;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -246,6 +251,18 @@ class User implements UserInterface, \Serializable
     public function getTwitterAccessToken(): ?string
     {
         return $this->twitterAccessToken;
+    }
+
+    public function setTwitterSecret(string $twitterSecret): User
+    {
+        $this->twitterSecret = $twitterSecret;
+
+        return $this;
+    }
+
+    public function getTwitterSecret(): ?string
+    {
+        return $this->twitterSecret;
     }
 
     public function __toString(): string
