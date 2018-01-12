@@ -4,7 +4,12 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-6 offset-md-3">
-                {{ form(scheduleForm) }}
+                {{ form_start(scheduleForm) }}
+                {{ form_widget(scheduleForm.title) }}
+                {{ form_widget(scheduleForm.station) }}
+                {{ form_widget(scheduleForm.cron) }}
+                <button type="submit">Speichern</button>
+                {{ form_end(scheduleForm) }}
             </div>
         </div>
     </div>

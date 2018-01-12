@@ -6,6 +6,7 @@ use AppBundle\Entity\Station;
 use AppBundle\Repository\StationRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -35,6 +36,9 @@ class TwitterScheduleType extends AbstractType
 
                     return $qb;
                 },
+            ])
+            ->add('cron', ChoiceType::class, [
+                'choices'  => range(0, 59),
             ])
         ;
     }

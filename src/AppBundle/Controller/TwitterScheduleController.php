@@ -47,6 +47,18 @@ class TwitterScheduleController extends AbstractController
             'city' => $city,
         ]);
 
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $schedule = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($schedule);
+            $em->flush();
+
+            echo "gespeichert";
+        }
+
         return $this->render(
             'AppBundle:TwitterSchedule:edit.html.twig', [
                 'scheduleForm' => $form->createView(),
