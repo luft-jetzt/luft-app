@@ -18,4 +18,9 @@
         <default key="_controller">AppBundle:TwitterSchedule:list</default>
         <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
+
+    <route id="twitter_schedule_edit" path="/{citySlug}/schedule-edit">
+        <default key="_controller">AppBundle:TwitterSchedule:edit</default>
+        <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
+    </route>
 </routes>
