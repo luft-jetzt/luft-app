@@ -27,12 +27,6 @@ class CityAdmin extends AbstractAdmin
             ->add('description', TextareaType::class, ['required' => false])
             ->end()
 
-            ->with('twitter', ['class' => 'col-xs-6'])
-            ->add('twitterUsername', TextType::class, ['required' => false])
-            ->add('twitterToken', TextType::class, ['required' => false])
-            ->add('twitterSecret', TextType::class, ['required' => false])
-            ->end()
-
             ->with('User', ['class' => 'col-xs-6'])
             ->add('user', EntityType::class, [
                     'class' => User::class,
@@ -56,9 +50,6 @@ class CityAdmin extends AbstractAdmin
             ->addIdentifier('name')
             ->add('createdAt')
             ->add('user')
-            ->add('twitterUsername', 'string', [
-                'template' => 'SonataAdminBundle:CRUD:list__twitter_username.html.twig'
-            ])
             ->add('_action', null, [
                 'actions' => [
                     'edit' => [],
