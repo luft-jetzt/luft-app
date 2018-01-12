@@ -121,7 +121,6 @@ class CityController extends AbstractController
         return Codebird::getInstance();
     }
 
-
     protected function saveCityAccess(Request $request, User $user, \stdClass $reply): User
     {
         $user->setTwitterSecret($reply->oauth_token_secret);

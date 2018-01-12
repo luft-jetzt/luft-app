@@ -1,0 +1,45 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Titel
+                            </th>
+                            <th>
+                                Station
+                            </th>
+                            <th>
+                                Minute
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for schedule in scheduleList %}
+                            <tr>
+                                <td>
+                                    {{ schedule.title }}
+                                </td>
+
+                                <td>
+                                    {{ schedule.station }}
+                                </td>
+
+                                <td>
+                                    {{ schedule.cron }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
