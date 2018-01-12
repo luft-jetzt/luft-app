@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\TwitterScheduleRepository")
  * @ORM\Table(name="twitter_schedule")
  * @JMS\ExclusionPolicy("ALL")
  */
@@ -35,17 +35,17 @@ class TwitterSchedule
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $cron;
+    protected $cron = '0 * * * *';
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    protected $latitude;
+    protected $latitude = 0.0;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    protected $longitude;
+    protected $longitude = 0.0;
 
     /**
      * @ORM\ManyToOne(targetEntity="Station", inversedBy="twitterSchedules")

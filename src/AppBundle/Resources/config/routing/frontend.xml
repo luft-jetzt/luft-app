@@ -3,13 +3,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/routing
         http://symfony.com/schema/routing/routing-1.0.xsd">
-
-    <route id="show_city" path="/{citySlug}">
-        <default key="_controller">AppBundle:City:show</default>
-        <option key="expose">true</option>
-        <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
-    </route>
-
+    
     <route id="station" path="/{stationCode}">
         <default key="_controller">AppBundle:Display:station</default>
         <option key="expose">true</option>
@@ -20,4 +14,6 @@
         <default key="_controller">AppBundle:Display:index</default>
         <option key="expose">true</option>
     </route>
+
+    <route id="logout" path="/logout" />
 </routes>

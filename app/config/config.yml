@@ -38,6 +38,10 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form_themes:
+        - AppBundle::form_theme.html.twig
+        - bootstrap_4_layout.html.twig
+        - bootstrap_4_horizontal_layout.html.twig
 
 # Doctrine Configuration
 doctrine:
@@ -115,6 +119,18 @@ sonata_block:
         sonata.admin.block.admin_list:
             contexts: [admin]
 
-sonata_admin:
-    security:
-        handler: sonata.admin.security.handler.role
+hwi_oauth:
+    firewall_names: [main]
+
+    fosub:
+        username_iterations: 30
+        properties:
+            twitter: twitterId
+
+    resource_owners:
+        twitter:
+            type:                twitter
+            client_id:           %twitter.client_id%
+            client_secret:       %twitter.client_secret%
+            options:
+                include_email: true

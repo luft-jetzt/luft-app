@@ -40,7 +40,10 @@
         "jublonet/codebird-php": "^3.1",
         "dragonmantank/cron-expression": "^2.0",
         "calderacc/yourls-api-manager": "^0.2",
-        "graylog2/gelf-php": "^1.5"
+        "graylog2/gelf-php": "^1.5",
+        "php-http/guzzle6-adapter": "^1.1",
+        "hwi/oauth-bundle": "^0.6.0",
+        "php-http/httplug-bundle": "^1.8"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

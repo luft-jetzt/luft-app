@@ -6,7 +6,7 @@ security:
         database_provider:
             entity:
                 class: AppBundle:User
-                property: email
+                property: username
 
     # ...
 
@@ -20,43 +20,32 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        main:
+        admin:
             pattern: ^/admin
             http_basic: ~
             provider: database_provider
             logout: ~
 
+        main:
+            anonymous: true
+            oauth:
+                resource_owners:
+                    twitter:  '/login/check-twitter'
+                login_path: /login
+                failure_path: /login
+                oauth_user_provider:
+                    service: AppBundle\UserProvider\LuftUserProvider
+                default_target_path: /twitter-success
+            logout: ~
+
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin, role: ROLE_USER }
+        - { path: ^/admin, role: ROLE_ADMIN }
 
     role_hierarchy:
-        ROLE_TWITTER_ADMIN:
-            - ROLE_USER
-            - ROLE_APP_ADMIN_CITY_TWITTER
-            - ROLE_APP_ADMIN_TWITTER_SCHEDULE_ALL
-        ROLE_CITY_ADMIN:
-            - ROLE_USER
-            - ROLE_APP_ADMIN_CITY_ALL
-        ROLE_STATION_ADMIN:
-            - ROLE_USER
-            - ROLE_APP_ADMIN_STATION_ALL
         ROLE_ADMIN:
             - ROLE_USER
-            - ROLE_TWITTER_MANAGER
-            - ROLE_CITY_MANAGER
-            - ROLE_STATION_MANAGER
-            - ROLE_APP_ADMIN_USER_ALL
-        ROLE_USER:
-            - ROLE_APP_ADMIN_CITY_LIST
-            - ROLE_APP_ADMIN_CITY_VIEW
-            - ROLE_APP_ADMIN_STATION_LIST
-            - ROLE_APP_ADMIN_STATION_VIEW
-            - ROLE_APP_ADMIN_TWITTER_SCHEDULE_LIST
-            - ROLE_APP_ADMIN_TWITTER_SCHEDULE_VIEW
-            - ROLE_APP_ADMIN_USER_LIST
-            - ROLE_APP_ADMIN_USER_VIEW
 
     access_decision_manager:
         strategy: unanimous

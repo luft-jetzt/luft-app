@@ -27,13 +27,12 @@ class UserAdmin extends AbstractAdmin
             ->end()
 
             ->with('Cities', ['class' => 'col-xs-6'])
-            ->add('cities', EntityType::class,
-                [
-                    'class' => City::class,
-                    'multiple' => true,
-                    'expanded' => false,
-                    'by_reference' => false,
-                ])
+            ->add('cities', EntityType::class, [
+                'class' => City::class,
+                'multiple' => true,
+                'expanded' => false,
+                'by_reference' => false,
+            ])
             ->end()
 
             ->with('Roles', ['class' => 'col-xs-6'])
@@ -57,8 +56,11 @@ class UserAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
-            ->addIdentifier('username', 'string', [
-                'template' => 'SonataAdminBundle:CRUD:list__user_email.html.twig'
+            ->addIdentifier('username')
+            ->add('_action', null, [
+                'actions' => [
+                    'edit' => [],
+                ]
             ])
         ;
     }
