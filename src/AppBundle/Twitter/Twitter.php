@@ -72,7 +72,7 @@ class Twitter
                     continue;
                 }
 
-                $cb->setToken($user->getTwitterId(), $user->getTwitterAccessToken());
+                $cb->setToken($user->getTwitterAccessToken(), $user->getTwitterSecret());
 
                 $coord = $this->getCoord($twitterSchedule);
 
