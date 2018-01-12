@@ -14,4 +14,6 @@
         <default key="_controller">AppBundle:Display:index</default>
         <option key="expose">true</option>
     </route>
+
+    <route id="logout" path="/logout" />
 </routes>
