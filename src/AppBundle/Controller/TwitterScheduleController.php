@@ -14,11 +14,9 @@ class TwitterScheduleController extends AbstractController
 {
     public function listAction(Request $request, UserInterface $user, string $citySlug): Response
     {
-        $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
+        $city = $this->getCheckedCity($citySlug);
 
-        if (!$city) {
-            throw $this->createNotFoundException();
-        }
+        $this->checkCityAccess($city, $user);
 
         $scheduleList = $this->getDoctrine()->getRepository(TwitterSchedule::class)->findByCity($city);
 
@@ -93,7 +91,7 @@ class TwitterScheduleController extends AbstractController
         $city = $this->getCheckedCity($citySlug);
         $schedule = $this->getTwitterScheduleByRequest($request);
 
-        $this->checkAccess($schedule, $user);
+        $this->checkTwitterScheduleAccess($schedule, $user);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($schedule);
@@ -102,7 +100,14 @@ class TwitterScheduleController extends AbstractController
         return $this->redirectToRoute('twitter_schedule_list', ['citySlug' => $city->getSlug()]);
     }
 
-    protected function checkAccess(TwitterSchedule $schedule, UserInterface $user): void
+    protected function checkCityAccess(City $city, UserInterface $user): void
+    {
+        if (!$user->hasRole(User::ROLE_ADMIN) && $city->getUser() !== $user) {
+            throw $this->createAccessDeniedException();
+        }
+    }
+
+    protected function checkTwitterScheduleAccess(TwitterSchedule $schedule, UserInterface $user): void
     {
         if (!$user->hasRole(User::ROLE_ADMIN) && $schedule->getCity()->getUser() !== $user) {
             throw $this->createAccessDeniedException();
