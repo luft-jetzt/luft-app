@@ -11,6 +11,9 @@
                             Titel:
                         </label>
                         {{ form_widget(scheduleForm.title, { 'attr': {'class': 'form-control'}} ) }}
+                        <small class="form-text text-muted">
+                            Dieser Text wird über den Messwerten eines Tweets angezeigt, beispielsweise „Luft in der Stresemannstraße“ oder „Luft am Alexanderplatz“. Bitte gib nicht mehr als 75 Zeichen ein.
+                        </small>
                     </div>
                 </div>
 
@@ -37,7 +40,14 @@
 
                 <div class="row">
                     <div class="col-12 form-group text-center">
-                        <button class="btn btn-primary" type="submit">Speichern</button>
+                        <div class="btn-group">
+                            <button class="btn btn-primary" type="submit">
+                                Speichern
+                            </button>
+                            <a class="btn btn-secondary" href="{{ path('twitter_schedule_list', { citySlug: app.user.city.slug }) }}">
+                                Abbrechen
+                            </a>
+                        </div>
                     </div>
                 </div>
                 {{ form_end(scheduleForm) }}
