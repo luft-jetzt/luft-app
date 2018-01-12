@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\City;
 use AppBundle\Entity\TwitterSchedule;
+use AppBundle\Entity\User;
 use AppBundle\Form\Type\TwitterScheduleType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,11 +32,7 @@ class TwitterScheduleController extends AbstractController
 
     public function addAction(Request $request, UserInterface $user, string $citySlug): Response
     {
-        $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
-
-        if (!$city) {
-            throw $this->createNotFoundException();
-        }
+        $city = $this->getCheckedCity($citySlug);
 
         $schedule = new TwitterSchedule();
 
@@ -66,18 +63,8 @@ class TwitterScheduleController extends AbstractController
 
     public function editAction(Request $request, UserInterface $user, string $citySlug): Response
     {
-        $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
-
-        if (!$city) {
-            throw $this->createNotFoundException();
-        }
-
-        $scheduleId = $request->query->getInt('scheduleId');
-        $schedule = $this->getDoctrine()->getRepository(TwitterSchedule::class)->find($scheduleId);
-
-        if (!$schedule) {
-            throw $this->createNotFoundException();
-        }
+        $city = $this->getCheckedCity($citySlug);
+        $schedule = $this->getTwitterScheduleByRequest($request);
 
         $form = $this->createForm(TwitterScheduleType::class, $schedule, [
             'city' => $city,
@@ -103,18 +90,10 @@ class TwitterScheduleController extends AbstractController
 
     public function removeAction(Request $request, UserInterface $user, string $citySlug): Response
     {
-        $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
+        $city = $this->getCheckedCity($citySlug);
+        $schedule = $this->getTwitterScheduleByRequest($request);
 
-        if (!$city) {
-            throw $this->createNotFoundException();
-        }
-
-        $scheduleId = $request->query->getInt('scheduleId');
-        $schedule = $this->getDoctrine()->getRepository(TwitterSchedule::class)->find($scheduleId);
-
-        if (!$schedule) {
-            throw $this->createNotFoundException();
-        }
+        $this->checkAccess($schedule, $user);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($schedule);
@@ -123,5 +102,32 @@ class TwitterScheduleController extends AbstractController
         return $this->redirectToRoute('twitter_schedule_list', ['citySlug' => $city->getSlug()]);
     }
 
+    protected function checkAccess(TwitterSchedule $schedule, UserInterface $user): void
+    {
+        if (!$user->hasRole(User::ROLE_ADMIN) && $schedule->getCity()->getUser() !== $user) {
+            throw $this->createAccessDeniedException();
+        }
+    }
 
+    protected function getCheckedCity(string $citySlug): City
+    {
+        $city = $this->getCityBySlug($citySlug);
+
+        if (!$city) {
+            throw $this->createNotFoundException();
+        }
+
+        return $city;
+    }
+
+    protected function getCheckedTwitterSchedule(Request $request): TwitterSchedule
+    {
+        $schedule = $this->getTwitterScheduleByRequest($request);
+
+        if (!$schedule) {
+            throw $this->createNotFoundException();
+        }
+
+        return $schedule;
+    }
 }
