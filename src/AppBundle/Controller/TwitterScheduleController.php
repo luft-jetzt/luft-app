@@ -29,6 +29,41 @@ class TwitterScheduleController extends AbstractController
         );
     }
 
+    public function addAction(Request $request, UserInterface $user, string $citySlug): Response
+    {
+        $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
+
+        if (!$city) {
+            throw $this->createNotFoundException();
+        }
+
+        $schedule = new TwitterSchedule();
+
+        $form = $this->createForm(TwitterScheduleType::class, $schedule, [
+            'city' => $city,
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $schedule = $form->getData();
+
+            $schedule->setCity($city);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($schedule);
+            $em->flush();
+
+            return $this->redirectToRoute('twitter_schedule_list', ['citySlug' => $city->getSlug()]);
+        }
+
+        return $this->render(
+            'AppBundle:TwitterSchedule:edit.html.twig', [
+                'scheduleForm' => $form->createView(),
+            ]
+        );
+    }
+
     public function editAction(Request $request, UserInterface $user, string $citySlug): Response
     {
         $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
@@ -66,7 +101,7 @@ class TwitterScheduleController extends AbstractController
         );
     }
 
-    public function addAction(Request $request, UserInterface $user, string $citySlug): Response
+    public function removeAction(Request $request, UserInterface $user, string $citySlug): Response
     {
         $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
 
@@ -74,30 +109,19 @@ class TwitterScheduleController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $schedule = new TwitterSchedule();
+        $scheduleId = $request->query->getInt('scheduleId');
+        $schedule = $this->getDoctrine()->getRepository(TwitterSchedule::class)->find($scheduleId);
 
-        $form = $this->createForm(TwitterScheduleType::class, $schedule, [
-            'city' => $city,
-        ]);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $schedule = $form->getData();
-
-            $schedule->setCity($city);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($schedule);
-            $em->flush();
-
-            return $this->redirectToRoute('twitter_schedule_list', ['citySlug' => $city->getSlug()]);
+        if (!$schedule) {
+            throw $this->createNotFoundException();
         }
 
-        return $this->render(
-            'AppBundle:TwitterSchedule:edit.html.twig', [
-                'scheduleForm' => $form->createView(),
-            ]
-        );
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($schedule);
+        $em->flush();
+
+        return $this->redirectToRoute('twitter_schedule_list', ['citySlug' => $city->getSlug()]);
     }
+
+
 }
