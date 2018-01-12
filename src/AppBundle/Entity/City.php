@@ -57,7 +57,7 @@ class City
     protected $stations;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="cities")
+     * @ORM\OneToOne(targetEntity="User", mappedBy="city")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     protected $user;
