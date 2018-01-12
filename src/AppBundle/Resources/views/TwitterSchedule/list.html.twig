@@ -33,7 +33,7 @@
                                 </td>
 
                                 <td>
-                                    {{ schedule.cron }}
+                                    {{ cron(schedule.cron, 'i') }}
                                 </td>
                             </tr>
                         {% endfor %}
