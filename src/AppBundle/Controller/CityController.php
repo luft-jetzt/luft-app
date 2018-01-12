@@ -109,7 +109,7 @@ class CityController extends AbstractController
             $this->saveCityAccess($request, $user, $reply);
         }
 
-        $showUrl = $this->generateUrl('show_city', ['citySlug' => $city->getSlug()]);
+        $showUrl = $this->generateUrl('twitter_schedule_list', ['citySlug' => $city->getSlug()]);
 
         return new RedirectResponse($showUrl);
     }
