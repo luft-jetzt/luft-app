@@ -87,9 +87,7 @@ class Twitter
                 ];
 
                 $reply = $cb->statuses_update($params);
-
-                var_dump($reply);
-
+                
                 $this->logger->notice(json_encode($reply));
 
                 $this->validScheduleList[] = $twitterSchedule;
