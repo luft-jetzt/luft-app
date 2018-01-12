@@ -23,4 +23,14 @@
         <default key="_controller">AppBundle:TwitterSchedule:edit</default>
         <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
+
+    <route id="twitter_schedule_add" path="/{citySlug}/schedule-add">
+        <default key="_controller">AppBundle:TwitterSchedule:add</default>
+        <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
+    </route>
+
+    <route id="twitter_schedule_remove" path="/{citySlug}/schedule-remove">
+        <default key="_controller">AppBundle:TwitterSchedule:remove</default>
+        <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
+    </route>
 </routes>

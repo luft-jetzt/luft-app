@@ -3,19 +3,39 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-12 col-md-6 offset-md-3">
+            <div class="col-12 col-md-8 offset-md-2">
+                <a class="btn btn-sm btn-primary pull-right" href="{{ path('twitter_schedule_add', { citySlug: city.slug }) }}">
+                    <i class="fa fa-plus"></i>
+                    Plan hinzufügen
+                </a>
+
+                <h3>
+                    twitter-Pläne für @{{ app.user.username }}
+                </h3>
+
+                <p class="lead">
+                    Du kannst automatisch Luftdaten auf deinem twitter-Konto <code>@{{ app.user.username }}</code> veröffentlichen lassen. Für jede Station kannst du auswählen, zu welchem Zeitpunkt pro Stunde die aktuellen Werte veröffentlicht werden sollen.
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-8 offset-md-2">
                 <table class="table">
                     <thead>
                         <tr>
                             <th>
                                 Titel
                             </th>
+
                             <th>
                                 Station
                             </th>
+
                             <th>
                                 Minute
                             </th>
+
                             <th>
 
                             </th>
@@ -34,6 +54,17 @@
 
                                 <td>
                                     {{ cron(schedule.cron, 'i') }}
+                                </td>
+
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a class="btn btn-outline-dark" href="{{ path('twitter_schedule_edit', { citySlug: city.slug, scheduleId: schedule.id }) }}">
+                                            <i class="fa fa-pencil"></i>
+                                        </a>
+                                        <a class="btn btn-outline-dark" href="{{ path('twitter_schedule_remove', { citySlug: city.slug, scheduleId: schedule.id }) }}">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         {% endfor %}

@@ -24,6 +24,7 @@ class TwitterScheduleController extends AbstractController
         return $this->render(
             'AppBundle:TwitterSchedule:list.html.twig', [
                 'scheduleList' => $scheduleList,
+                'city' => $city,
             ]
         );
     }
@@ -53,10 +54,44 @@ class TwitterScheduleController extends AbstractController
             $schedule = $form->getData();
 
             $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            return $this->redirectToRoute('twitter_schedule_list', ['citySlug' => $city->getSlug()]);
+        }
+
+        return $this->render(
+            'AppBundle:TwitterSchedule:edit.html.twig', [
+                'scheduleForm' => $form->createView(),
+            ]
+        );
+    }
+
+    public function addAction(Request $request, UserInterface $user, string $citySlug): Response
+    {
+        $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
+
+        if (!$city) {
+            throw $this->createNotFoundException();
+        }
+
+        $schedule = new TwitterSchedule();
+
+        $form = $this->createForm(TwitterScheduleType::class, $schedule, [
+            'city' => $city,
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $schedule = $form->getData();
+
+            $schedule->setCity($city);
+
+            $em = $this->getDoctrine()->getManager();
             $em->persist($schedule);
             $em->flush();
 
-            echo "gespeichert";
+            return $this->redirectToRoute('twitter_schedule_list', ['citySlug' => $city->getSlug()]);
         }
 
         return $this->render(
