@@ -58,7 +58,7 @@
                     &bull;
                     <a href="{{ path('nelmio_api_doc_index') }}">Api</a>
                     &bull;
-                    {% if app.user %}
+                    {% if app.user and app.user.city %}
                         <a href="{{ path('twitter_schedule_list', { citySlug: app.user.city.slug }) }}">
                             twitter-Einstellungen
                         </a>
