@@ -4,10 +4,10 @@ namespace AppBundle\SourceFetcher\Reporting;
 
 abstract class AbstractUbReporting implements ReportingInterface
 {
-    /** @var \DateTimeInterface $dateTime */
+    /** @var \DateTime $dateTime */
     protected $dateTime;
 
-    public function __construct(\DateTimeInterface $dateTime)
+    public function __construct(\DateTimeImmutable $dateTime)
     {
         $this->dateTime = $dateTime;
     }
