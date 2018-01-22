@@ -16,6 +16,7 @@ class DisplayController extends AbstractController
      * Get pollution data for a provided station code.
      *
      * @ApiDoc(
+     *   section="Data",
      *   description="Retrieve pollution data for stations"
      * )
      */
@@ -36,6 +37,7 @@ class DisplayController extends AbstractController
      * Get pollution data for a provided city slug.
      *
      * @ApiDoc(
+     *   section="Data",
      *   description="Retrieve pollution data for cities"
      * )
      */
@@ -57,6 +59,7 @@ class DisplayController extends AbstractController
      * Get pollution data for a coord by latitude and longitude or a zip code. You must either provide a coord or a zip code.
      *
      * @ApiDoc(
+     *   section="Data",
      *   description="Retrieve pollution data for coords",
      *   parameters={
      *     {"name"="latitude", "dataType"="float", "required"=false, "description"="Latitude"},

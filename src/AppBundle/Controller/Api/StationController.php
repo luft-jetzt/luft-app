@@ -17,6 +17,7 @@ class StationController extends AbstractController
      * Retrieve a list of all known stations by leaving <code>stationCode</code> empty.
      *
      * @ApiDoc(
+     *   section="Station",
      *   description="Retrieve details for stations"
      * )
      */

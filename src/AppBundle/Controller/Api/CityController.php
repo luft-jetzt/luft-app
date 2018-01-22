@@ -17,6 +17,7 @@ class CityController extends AbstractController
      * Retrieve a list of all known cities by leaving <code>citySlug</code> empty.
      *
      * @ApiDoc(
+     *   section="City",
      *   description="Retrieve details for cities"
      * )
      */
