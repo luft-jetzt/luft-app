@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Api;
 
+use AppBundle\Controller\AbstractController;
 use AppBundle\Entity\City;
 use AppBundle\Entity\Station;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -9,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ApiController extends AbstractController
+class DisplayController extends AbstractController
 {
     /**
      * Get pollution data for a provided station code.
