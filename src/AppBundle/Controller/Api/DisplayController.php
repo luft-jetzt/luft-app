@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Api;
 
+use AppBundle\Controller\AbstractController;
 use AppBundle\Entity\City;
 use AppBundle\Entity\Station;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -9,12 +10,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ApiController extends AbstractController
+class DisplayController extends AbstractController
 {
     /**
      * Get pollution data for a provided station code.
      *
      * @ApiDoc(
+     *   section="Data",
      *   description="Retrieve pollution data for stations"
      * )
      */
@@ -35,6 +37,7 @@ class ApiController extends AbstractController
      * Get pollution data for a provided city slug.
      *
      * @ApiDoc(
+     *   section="Data",
      *   description="Retrieve pollution data for cities"
      * )
      */
@@ -56,6 +59,7 @@ class ApiController extends AbstractController
      * Get pollution data for a coord by latitude and longitude or a zip code. You must either provide a coord or a zip code.
      *
      * @ApiDoc(
+     *   section="Data",
      *   description="Retrieve pollution data for coords",
      *   parameters={
      *     {"name"="latitude", "dataType"="float", "required"=false, "description"="Latitude"},
