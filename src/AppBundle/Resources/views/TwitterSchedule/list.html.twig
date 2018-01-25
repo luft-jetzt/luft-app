@@ -103,5 +103,20 @@
                 </table>
             </div>
         </div>
+
+        {% if app.user.twitterSecret %}
+            <div class="row mt-3">
+                <div class="col-12 col-md-8 offset-md-2">
+                    <div class="alert alert-info">
+                        <a class="btn btn-primary pull-right" href="{{ path('twitter_auth', { citySlug: app.user.city.slug }) }}">
+                            <i class="fa fa-twitter"></i>
+                            authorisieren
+                        </a>
+
+                        Falls es Probleme gibt, kannst du Luft<sup>jetzt</sup> noch einmal authorisieren, auf deinem twitter-Konto <code>@{{ app.user.username }}</code> Nachrichten veröffentlichen zu dürfen:
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
