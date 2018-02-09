@@ -96,8 +96,10 @@ fos_elastica:
             types:
                 data:
                     properties:
-                        pollutant: ~
+                        pollutant:
+                            type: integer
                         station:
+                            type: integer
                             property_path: stationId
                         dateTime:
                             type: date
