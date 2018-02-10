@@ -32,3 +32,5 @@ parameters:
 
     graylog.hostname: anagnina.caldera.cc
     graylog.port: 12201
+
+    staticmapsHost: https://staticmaps.caldera.cc

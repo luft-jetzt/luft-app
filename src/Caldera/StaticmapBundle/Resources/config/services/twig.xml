@@ -9,6 +9,6 @@
             <tag name="twig.extension" />
         </defaults>
 
-        <prototype namespace="Caldera\StaticmapBundle\Twig\Extension\" resource="@CalderaStaticmapBundle/Twig/Extension/*" />
+        <prototype namespace="Caldera\StaticmapBundle\Twig\Extension\" resource="../../../Twig/Extension/*" />
     </services>
 </container>
