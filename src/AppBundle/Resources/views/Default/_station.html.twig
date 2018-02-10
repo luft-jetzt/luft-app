@@ -4,9 +4,9 @@
 
     <div class="card station" data-latitude="{{ station.latitude }}" data-longitude="{{ station.longitude }}" data-station-code="{{ station.stationCode }}">
     {% if showMap is not defined or showMap == true %}
-        <img src="{{ staticmaps(station) }}" />
         <div id="map-station-{{ station.stationCode }}" class="map card-img-top" style="height: 33.33vh;"></div>
-        {% endif %}
+    {% endif %}
+        <img class="card-img-top" src="{{ staticmaps(station, 400, 300, 13) }}" />
         <div class="card-body">
             <h4 class="card-title">
                 Messstation {{ station.stationCode }}
