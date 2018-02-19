@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Station;
 use AppBundle\SeoPage\SeoPage;
 use Caldera\GeoBasic\Coord\Coord;
+use maxh\Nominatim\Nominatim;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,8 +29,7 @@ class DisplayController extends AbstractController
         }
 
         return $this->render(
-            'AppBundle:Default:station.html.twig',
-            [
+            'AppBundle:Default:station.html.twig', [
                 'station' => $station,
                 'boxList' => $boxList
             ]
@@ -50,9 +50,16 @@ class DisplayController extends AbstractController
             return $this->noStationAction($request, $coord);
         }
 
+        $cityName = $this->getCityNameForCoord($coord);
+
+        if ($cityName) {
+            $this->getSeoPage()->setTitle(sprintf('Aktuelle Luftmesswerte aus %s', $cityName));
+        } else {
+            $this->getSeoPage()->setTitle(sprintf('Aktuelle Luftmesswerte aus deiner Umgebung'));
+        }
+
         return $this->render(
-            'AppBundle:Default:display.html.twig',
-            [
+            'AppBundle:Default:display.html.twig', [
                 'boxList' => $boxList
             ]
         );
@@ -67,9 +74,26 @@ class DisplayController extends AbstractController
         $stationList = $this->getStationFinder()->setCoord($coord)->findNearestStations(1000.0);
 
         return $this->render(
-            'AppBundle:Default:nostations.html.twig',
-            [
+            'AppBundle:Default:nostations.html.twig', [
                 'stationList' => $stationList
             ]);
+    }
+
+    protected function getCityNameForCoord(Coord $coord): ?string
+    {
+        $url = "http://nominatim.openstreetmap.org/";
+        $nominatim = new Nominatim($url);
+
+        $reverse = $nominatim->newReverse()
+            ->latlon($coord->getLatitude(), $coord->getLongitude())
+        ;
+
+        try {
+            $result = $nominatim->find($reverse);
+
+            return $result['address']['city'];
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 }
