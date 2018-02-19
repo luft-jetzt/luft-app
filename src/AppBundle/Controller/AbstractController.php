@@ -8,6 +8,7 @@ use AppBundle\Entity\TwitterSchedule;
 use AppBundle\Entity\Zip;
 use AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory;
 use AppBundle\Pollution\StationFinder\StationFinderInterface;
+use AppBundle\SeoPage\SeoPage;
 use Caldera\GeoBasic\Coord\Coord;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,12 +41,17 @@ abstract class AbstractController extends Controller
 
     protected function getStationFinder(): StationFinderInterface
     {
-        return $this->get('AppBundle\Pollution\StationFinder\ElasticStationFinder');
+        return $this->get(ElasticStationFinder::class);
     }
 
     protected function getPollutionDataFactory(): PollutionDataFactory
     {
-        return $this->get('AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory');
+        return $this->get(PollutionDataFactory::class);
+    }
+
+    protected function getSeoPage(): SeoPage
+    {
+        return $this->get(SeoPage::class);
     }
 
     protected function getStationListForCity(City $city): array

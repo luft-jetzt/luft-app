@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Station;
+use AppBundle\SeoPage\SeoPage;
 use Caldera\GeoBasic\Coord\Coord;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,6 +12,7 @@ class DisplayController extends AbstractController
 {
     public function stationAction(Request $request, string $stationCode): Response
     {
+        /** @var Station $station */
         $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
 
         if (!$station) {
@@ -18,6 +20,12 @@ class DisplayController extends AbstractController
         }
 
         $boxList = $this->getPollutionDataFactory()->setCoord($station)->createDecoratedBoxList();
+
+        if ($station->getCity()) {
+            $this->getSeoPage()->setTitle(sprintf('Luftmesswerte für die Station %s in %s', $station->getStationCode(), $station->getCity()->getName()));
+        } else {
+            $this->getSeoPage()->setTitle(sprintf('Luftmesswerte für die Station %s', $station->getStationCode()));
+        }
 
         return $this->render(
             'AppBundle:Default:station.html.twig',
