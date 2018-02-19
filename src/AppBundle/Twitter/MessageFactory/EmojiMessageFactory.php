@@ -34,7 +34,7 @@ class EmojiMessageFactory extends AbstractMessageFactory
             case PollutionLevel::LEVEL_DANGER:
                 return '❌';
             case PollutionLevel::LEVEL_DEATH:
-                return '💀';
+                return '☠️';
             default:
                 return '';
         }
