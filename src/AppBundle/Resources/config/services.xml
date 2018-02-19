@@ -10,6 +10,7 @@
         <import resource="services/command.xml" />
         <import resource="services/twitter.xml" />
         <import resource="services/permalink.xml" />
+        <import resource="services/seo_page.xml" />
         <import resource="services/logging.xml" />
         <import resource="services/twig.xml" />
     </imports>

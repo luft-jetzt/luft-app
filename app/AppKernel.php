@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
             new Http\HttplugBundle\HttplugBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+            new \Sonata\SeoBundle\SonataSeoBundle(),
             new AppBundle\AppBundle(),
         ];
 

@@ -16,11 +16,17 @@ class CityController extends AbstractController
 {
     public function showAction(Request $request, string $citySlug): Response
     {
+        /** @var City $city */
         $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
 
         if (!$city) {
             throw $this->createNotFoundException();
         }
+
+        $this->getSeoPage()
+            ->setTitle(sprintf('Luft in %s', $city->getName()))
+            ->setDescription(sprintf('Aktuelle Schadstoff- und Luftmesswerte aus %s', $city->getName()))
+        ;
 
         $stationList = $this->getStationListForCity($city);
         $stationsBoxList = $this->createBoxListForStationList($stationList);
