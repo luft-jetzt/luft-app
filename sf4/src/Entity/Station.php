@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

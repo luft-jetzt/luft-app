@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\User;
+use App\Entity\User;
 use Sonata\AdminBundle\Admin\AbstractAdmin as SonataAbstractAdmin;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\Entity\City;
+use App\Entity\City;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

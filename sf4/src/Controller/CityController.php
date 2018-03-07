@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\Entity\City;
-use AppBundle\Entity\User;
+use App\Entity\City;
+use App\Entity\User;
 use Codebird\Codebird;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

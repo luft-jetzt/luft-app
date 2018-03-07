@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Twig\Extension;
+namespace App\Twig\Extension;
 
 use Cron\CronExpression;
 

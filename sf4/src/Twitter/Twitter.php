@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Twitter;
+namespace App\Twitter;
 
-use AppBundle\Entity\TwitterSchedule;
-use AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory;
-use AppBundle\Twitter\MessageFactory\MessageFactoryInterface;
-use AppBundle\YourlsApiManager\LuftYourlsApiManager;
+use App\Entity\TwitterSchedule;
+use App\Pollution\PollutionDataFactory\PollutionDataFactory;
+use App\Twitter\MessageFactory\MessageFactoryInterface;
+use App\YourlsApiManager\LuftYourlsApiManager;
 use Caldera\GeoBasic\Coord\Coord;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Codebird\Codebird;

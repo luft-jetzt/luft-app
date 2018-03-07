@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\Entity\City;
-use AppBundle\Entity\Station;
-use AppBundle\Entity\TwitterSchedule;
-use AppBundle\Entity\Zip;
-use AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory;
-use AppBundle\Pollution\StationFinder\StationFinderInterface;
-use AppBundle\SeoPage\SeoPage;
+use App\Entity\City;
+use App\Entity\Station;
+use App\Entity\TwitterSchedule;
+use App\Entity\Zip;
+use App\Pollution\PollutionDataFactory\PollutionDataFactory;
+use App\Pollution\StationFinder\StationFinderInterface;
+use App\SeoPage\SeoPage;
 use Caldera\GeoBasic\Coord\Coord;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

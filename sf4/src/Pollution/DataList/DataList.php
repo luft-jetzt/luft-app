@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Pollution\DataList;
+namespace App\Pollution\DataList;
 
-use AppBundle\Entity\Data;
-use AppBundle\Pollution\Pollutant\PollutantInterface;
+use App\Entity\Data;
+use App\Pollution\Pollutant\PollutantInterface;
 
 class DataList
 {

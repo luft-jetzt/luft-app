@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\CityLoader\ZipLoader;
+use App\CityLoader\ZipLoader;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;

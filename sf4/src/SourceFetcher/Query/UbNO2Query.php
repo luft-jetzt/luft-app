@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\SourceFetcher\Query;
+namespace App\SourceFetcher\Query;
 
 class UbNO2Query extends AbstractQuery
 {

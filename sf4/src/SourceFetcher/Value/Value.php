@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\SourceFetcher\Value;
+namespace App\SourceFetcher\Value;
 
 class Value
 {

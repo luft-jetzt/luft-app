@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\Entity\City;
-use AppBundle\Entity\TwitterSchedule;
-use AppBundle\Entity\User;
-use AppBundle\Form\Type\TwitterScheduleType;
+use App\Entity\City;
+use App\Entity\TwitterSchedule;
+use App\Entity\User;
+use App\Form\Type\TwitterScheduleType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;

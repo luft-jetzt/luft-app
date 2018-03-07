@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Pollution\Box;
+namespace App\Pollution\Box;
 
-use AppBundle\Entity\Data;
-use AppBundle\Entity\Station;
-use AppBundle\Pollution\Pollutant\PollutantInterface;
+use App\Entity\Data;
+use App\Entity\Station;
+use App\Pollution\Pollutant\PollutantInterface;
 use JMS\Serializer\Annotation as JMS;
 
 /**

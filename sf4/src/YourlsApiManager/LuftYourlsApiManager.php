@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\YourlsApiManager;
+namespace App\YourlsApiManager;
 
-use AppBundle\Entity\Photo;
-use AppBundle\Entity\Station;
-use AppBundle\Entity\TwitterSchedule;
+use App\Entity\Photo;
+use App\Entity\Station;
+use App\Entity\TwitterSchedule;
 use Caldera\GeoBasic\Coord\Coord;
 use Caldera\YourlsApiManager\YourlsApiManager;
 use Curl\Curl;

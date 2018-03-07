@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Pollution\DataRetriever;
+namespace App\Pollution\DataRetriever;
 
-use AppBundle\Entity\Data;
-use AppBundle\Entity\Station;
+use App\Entity\Data;
+use App\Entity\Station;
 use FOS\ElasticaBundle\Finder\FinderInterface;
 
 class ElasticDataRetriever implements DataRetrieverInterface

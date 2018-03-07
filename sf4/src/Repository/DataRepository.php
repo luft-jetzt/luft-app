@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\Data;
-use AppBundle\Entity\Station;
+use App\Entity\Data;
+use App\Entity\Station;
 use Doctrine\ORM\EntityRepository;
 
 class DataRepository extends EntityRepository

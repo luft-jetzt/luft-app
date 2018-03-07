@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Twitter\MessageFactory;
+namespace App\Twitter\MessageFactory;
 
 interface MessageFactoryInterface
 {

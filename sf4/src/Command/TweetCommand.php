@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\TwitterSchedule;
-use AppBundle\PermalinkManager\SqibePermalinkManager;
-use AppBundle\Pollution\Box\Box;
-use AppBundle\Pollution\PollutionDataFactory\PollutionDataFactory;
-use AppBundle\Twitter\MessageFactory\EmojiMessageFactory;
-use AppBundle\Twitter\MessageFactory\MessageFactoryInterface;
-use AppBundle\Twitter\Twitter;
+use App\Entity\TwitterSchedule;
+use App\PermalinkManager\SqibePermalinkManager;
+use App\Pollution\Box\Box;
+use App\Pollution\PollutionDataFactory\PollutionDataFactory;
+use App\Twitter\MessageFactory\EmojiMessageFactory;
+use App\Twitter\MessageFactory\MessageFactoryInterface;
+use App\Twitter\Twitter;
 use Caldera\GeoBasic\Coord\Coord;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Codebird\Codebird;

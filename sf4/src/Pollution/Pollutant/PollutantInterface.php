@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Pollution\Pollutant;
+namespace App\Pollution\Pollutant;
 
-use AppBundle\Pollution\PollutionLevel\PollutionLevel;
+use App\Pollution\PollutionLevel\PollutionLevel;
 use JMS\Serializer\Annotation as JMS;
 
 interface PollutantInterface

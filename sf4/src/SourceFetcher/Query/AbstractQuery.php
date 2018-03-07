@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\SourceFetcher\Query;
+namespace App\SourceFetcher\Query;
 
-use AppBundle\SourceFetcher\Reporting\ReportingInterface;
+use App\SourceFetcher\Reporting\ReportingInterface;
 
 abstract class AbstractQuery implements QueryInterface
 {

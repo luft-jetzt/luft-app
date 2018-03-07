@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\SourceFetcher\Reporting;
+namespace App\SourceFetcher\Reporting;
 
 interface ReportingInterface
 {

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Caldera\GeoBasic\Coord\Coord;
 use Doctrine\ORM\Mapping as ORM;

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\UserProvider\Exception;
+namespace App\UserProvider\Exception;
 
 class LuftUsernameException extends \Exception
 {

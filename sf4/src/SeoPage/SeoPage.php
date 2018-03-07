@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\SeoPage;
+namespace App\SeoPage;
 
 use Criticalmass\Bundle\AppBundle\EntityInterface\PhotoInterface;
 use Criticalmass\Bundle\AppBundle\EntityInterface\RouteableInterface;

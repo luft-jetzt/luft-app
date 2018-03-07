@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Pollution\BoxDecorator;
+namespace App\Pollution\BoxDecorator;
 
-use AppBundle\Pollution\Pollutant\CO;
-use AppBundle\Pollution\Pollutant\NO2;
-use AppBundle\Pollution\Pollutant\O3;
-use AppBundle\Pollution\Pollutant\PM10;
-use AppBundle\Pollution\Pollutant\PollutantInterface;
-use AppBundle\Pollution\Pollutant\SO2;
+use App\Pollution\Pollutant\CO;
+use App\Pollution\Pollutant\NO2;
+use App\Pollution\Pollutant\O3;
+use App\Pollution\Pollutant\PM10;
+use App\Pollution\Pollutant\PollutantInterface;
+use App\Pollution\Pollutant\SO2;
 
 abstract class AbstractBoxDecorator implements BoxDecoratorInterface
 {

@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Twitter\MessageFactory;
+namespace App\Twitter\MessageFactory;
 
-use AppBundle\Pollution\Box\Box;
-use AppBundle\Pollution\Pollutant\PollutantInterface;
-use AppBundle\Pollution\PollutionLevel\PollutionLevel;
+use App\Pollution\Box\Box;
+use App\Pollution\Pollutant\PollutantInterface;
+use App\Pollution\PollutionLevel\PollutionLevel;
 
 class EmojiMessageFactory extends AbstractMessageFactory
 {

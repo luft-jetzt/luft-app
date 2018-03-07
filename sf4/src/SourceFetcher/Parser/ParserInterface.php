@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\SourceFetcher\Parser;
+namespace App\SourceFetcher\Parser;
 
 interface ParserInterface
 {

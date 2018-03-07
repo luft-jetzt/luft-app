@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\CityLoader;
+namespace App\CityLoader;
 
-use AppBundle\Entity\Zip;
+use App\Entity\Zip;
 
 class ZipLoader
 {

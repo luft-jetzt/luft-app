@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\Station;
-use AppBundle\StationLoader\StationLoader;
+use App\Entity\Station;
+use App\StationLoader\StationLoader;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;

@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Pollution\PollutionDataFactory;
+namespace App\Pollution\PollutionDataFactory;
 
-use AppBundle\Pollution\Box\Box;
-use AppBundle\Pollution\BoxDecorator\BoxDecoratorInterface;
-use AppBundle\Pollution\DataList\DataList;
-use AppBundle\Pollution\DataRetriever\DataRetrieverInterface;
-use AppBundle\Pollution\StationFinder\StationFinderInterface;
+use App\Pollution\Box\Box;
+use App\Pollution\BoxDecorator\BoxDecoratorInterface;
+use App\Pollution\DataList\DataList;
+use App\Pollution\DataRetriever\DataRetrieverInterface;
+use App\Pollution\StationFinder\StationFinderInterface;
 use Caldera\GeoBasic\Coord\CoordInterface;
 
 class PollutionDataFactory

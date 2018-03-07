@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Form\Type;
+namespace App\Form\Type;
 
-use AppBundle\Entity\Station;
-use AppBundle\Repository\StationRepository;
+use App\Entity\Station;
+use App\Repository\StationRepository;
 use Cron\CronExpression;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

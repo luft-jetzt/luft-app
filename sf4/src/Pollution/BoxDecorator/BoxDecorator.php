@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Pollution\BoxDecorator;
+namespace App\Pollution\BoxDecorator;
 
-use AppBundle\Pollution\Box\Box;
+use App\Pollution\Box\Box;
 
 class BoxDecorator extends AbstractBoxDecorator
 {

@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\Entity\Station;
-use AppBundle\SeoPage\SeoPage;
+use App\Entity\Station;
+use App\SeoPage\SeoPage;
 use Caldera\GeoBasic\Coord\Coord;
 use maxh\Nominatim\Nominatim;
 use Symfony\Component\HttpFoundation\Request;

@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Pollution\DataRetriever;
+namespace App\Pollution\DataRetriever;
 
-use AppBundle\Entity\Data;
-use AppBundle\Entity\Station;
-use AppBundle\Repository\DataRepository;
+use App\Entity\Data;
+use App\Entity\Station;
+use App\Repository\DataRepository;
 use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
 
 class DoctrineOrmDataRetriever implements DataRetrieverInterface

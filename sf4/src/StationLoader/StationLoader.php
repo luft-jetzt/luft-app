@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\StationLoader;
+namespace App\StationLoader;
 
-use AppBundle\Entity\Station;
-use AppBundle\Repository\StationRepository;
+use App\Entity\Station;
+use App\Repository\StationRepository;
 use Curl\Curl;
 use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
 use Doctrine\ORM\EntityManager;

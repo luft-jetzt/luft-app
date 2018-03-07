@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\UserProvider;
+namespace App\UserProvider;
 
-use AppBundle\Entity\City;
-use AppBundle\Entity\User;
-use AppBundle\Repository\UserRepository;
-use AppBundle\UserProvider\Exception\LuftUsernameException;
+use App\Entity\City;
+use App\Entity\User;
+use App\Repository\UserRepository;
+use App\UserProvider\Exception\LuftUsernameException;
 use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;

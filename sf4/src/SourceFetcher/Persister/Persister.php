@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\SourceFetcher\Persister;
+namespace App\SourceFetcher\Persister;
 
-use AppBundle\Entity\Data;
-use AppBundle\Entity\Station;
-use AppBundle\SourceFetcher\Value\Value;
+use App\Entity\Data;
+use App\Entity\Station;
+use App\SourceFetcher\Value\Value;
 use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
 use Doctrine\Common\Persistence\ObjectManager;
 

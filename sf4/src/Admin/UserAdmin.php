@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\City;
-use AppBundle\Entity\User;
+use App\Entity\City;
+use App\Entity\User;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;

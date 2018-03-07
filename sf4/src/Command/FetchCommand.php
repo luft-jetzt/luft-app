@@ -1,21 +1,21 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Pollution\Pollutant\PollutantInterface;
-use AppBundle\SourceFetcher\Parser\UbParser;
-use AppBundle\SourceFetcher\Persister\Persister;
-use AppBundle\SourceFetcher\Query\AbstractQuery;
-use AppBundle\SourceFetcher\Query\UbCOQuery;
-use AppBundle\SourceFetcher\Query\UbNO2Query;
-use AppBundle\SourceFetcher\Query\UbO3Query;
-use AppBundle\SourceFetcher\Query\UbPM10Query;
-use AppBundle\SourceFetcher\Query\UbSO2Query;
-use AppBundle\SourceFetcher\Reporting\Ub1SMW;
-use AppBundle\SourceFetcher\Reporting\Ub1TMW;
-use AppBundle\SourceFetcher\Reporting\Ub8SMW;
-use AppBundle\SourceFetcher\SourceFetcher;
-use AppBundle\SourceFetcher\Value\Value;
+use App\Pollution\Pollutant\PollutantInterface;
+use App\SourceFetcher\Parser\UbParser;
+use App\SourceFetcher\Persister\Persister;
+use App\SourceFetcher\Query\AbstractQuery;
+use App\SourceFetcher\Query\UbCOQuery;
+use App\SourceFetcher\Query\UbNO2Query;
+use App\SourceFetcher\Query\UbO3Query;
+use App\SourceFetcher\Query\UbPM10Query;
+use App\SourceFetcher\Query\UbSO2Query;
+use App\SourceFetcher\Reporting\Ub1SMW;
+use App\SourceFetcher\Reporting\Ub1TMW;
+use App\SourceFetcher\Reporting\Ub8SMW;
+use App\SourceFetcher\SourceFetcher;
+use App\SourceFetcher\Value\Value;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;

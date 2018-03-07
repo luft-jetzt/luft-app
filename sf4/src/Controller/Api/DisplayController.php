@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Controller\Api;
+namespace App\Controller\Api;
 
-use AppBundle\Controller\AbstractController;
-use AppBundle\Entity\City;
-use AppBundle\Entity\Station;
+use App\Controller\AbstractController;
+use App\Entity\City;
+use App\Entity\Station;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

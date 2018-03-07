@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Twitter\MessageFactory;
+namespace App\Twitter\MessageFactory;
 
-use AppBundle\Pollution\Box\Box;
+use App\Pollution\Box\Box;
 
 class PlainMessageFactory extends AbstractMessageFactory
 {
