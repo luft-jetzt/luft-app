@@ -4,7 +4,6 @@ namespace App\Controller\Api;
 
 use App\Controller\AbstractController;
 use App\Entity\Station;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +15,7 @@ class StationController extends AbstractController
      *
      * Retrieve a list of all known stations by leaving <code>stationCode</code> empty.
      *
-     * @ApiDoc(
+     * ApiDoc(
      *   section="Station",
      *   description="Retrieve details for stations"
      * )
