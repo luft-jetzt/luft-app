@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\TwitterScheduleRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\TwitterScheduleRepository")
  * @ORM\Table(name="twitter_schedule")
  * @JMS\ExclusionPolicy("ALL")
  */

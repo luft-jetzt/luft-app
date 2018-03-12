@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\StationRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\StationRepository")
  * @ORM\Table(name="station")
  * @UniqueEntity("stationCode")
  * @JMS\ExclusionPolicy("ALL")
