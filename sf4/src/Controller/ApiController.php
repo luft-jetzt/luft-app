@@ -1,8 +1,7 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller\Api;
+namespace App\Controller;
 
-use App\Controller\AbstractController;
 use App\Entity\City;
 use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
@@ -11,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class DisplayController extends AbstractController
+class ApiController extends AbstractController
 {
     /**
      * Get pollution data for a provided station code.
@@ -21,7 +20,7 @@ class DisplayController extends AbstractController
      *   description="Retrieve pollution data for stations"
      * )
      */
-    public function stationAction(Serializer $serializer, string $stationCode, PollutionDataFactory $pollutionDataFactory): Response
+    public function displayStationAction(Serializer $serializer, string $stationCode, PollutionDataFactory $pollutionDataFactory): Response
     {
         $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
 
@@ -42,7 +41,7 @@ class DisplayController extends AbstractController
      *   description="Retrieve pollution data for cities"
      * )
      */
-    public function cityAction(Serializer $serializer, PollutionDataFactory $pollutionDataFactory, string $citySlug): Response
+    public function displayCityAction(Serializer $serializer, PollutionDataFactory $pollutionDataFactory, string $citySlug): Response
     {
         $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
 
@@ -80,5 +79,60 @@ class DisplayController extends AbstractController
         $boxList = $pollutionDataFactory->setCoord($coord)->createDecoratedBoxList();
 
         return new JsonResponse($serializer->serialize($boxList, 'json'), 200, [], true);
+    }
+
+    /**
+     * Get details of the city identified by <code>citySlug</code>.
+     *
+     * Retrieve a list of all known cities by leaving <code>citySlug</code> empty.
+     *
+     * ApiDoc(
+     *   section="City",
+     *   description="Retrieve details for cities"
+     * )
+     */
+    public function cityAction(Serializer $serializer, string $citySlug = null): Response
+    {
+        if ($citySlug) {
+            $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
+
+            if (!$city) {
+                throw $this->createNotFoundException();
+            }
+
+            return new JsonResponse($serializer->serialize($city, 'json'), 200, [], true);
+        } else {
+            $cityList = $this->getDoctrine()->getRepository(City::class)->findAll();
+        }
+
+        return new JsonResponse($serializer->serialize($cityList, 'json'), 200, [], true);
+    }
+
+    /**
+     * Get details of the station identified by <code>stationCode</code>.
+     *
+     * Retrieve a list of all known stations by leaving <code>stationCode</code> empty.
+     *
+     * ApiDoc(
+     *   section="Station",
+     *   description="Retrieve details for stations"
+     * )
+     */
+    public function stationAction(Serializer $serializer, string $stationCode = null): Response
+    {
+        if ($stationCode) {
+            $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
+
+            if (!$station) {
+                throw $this->createNotFoundException();
+            }
+
+            return new JsonResponse($serializer->serialize($station, 'json'), 200, [], true);
+        } else {
+            $stationList = $this->getDoctrine()->getRepository(Station::class)->findAll();
+        }
+
+        return new JsonResponse($serializer->serialize($stationList, 'json'), 200, [], true);
+
     }
 }
