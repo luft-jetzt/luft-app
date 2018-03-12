@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\City;
 use App\Entity\User;
+use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
 use Codebird\Codebird;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -15,7 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class CityController extends AbstractController
 {
-    public function showAction(SeoPage $seoPage, string $citySlug): Response
+    public function showAction(SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory, string $citySlug): Response
     {
         /** @var City $city */
         $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
@@ -30,7 +31,7 @@ class CityController extends AbstractController
         ;
 
         $stationList = $this->getStationListForCity($city);
-        $stationsBoxList = $this->createBoxListForStationList($stationList);
+        $stationsBoxList = $this->createBoxListForStationList($pollutionDataFactory, $stationList);
 
         return $this->render('City/show.html.twig', [
             'city' => $city,

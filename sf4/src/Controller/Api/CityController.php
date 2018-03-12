@@ -4,8 +4,8 @@ namespace App\Controller\Api;
 
 use App\Controller\AbstractController;
 use App\Entity\City;
+use JMS\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class CityController extends AbstractController
@@ -20,7 +20,7 @@ class CityController extends AbstractController
      *   description="Retrieve details for cities"
      * )
      */
-    public function cityAction(Request $request, string $citySlug = null): Response
+    public function cityAction(Serializer $serializer, string $citySlug = null): Response
     {
         if ($citySlug) {
             $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
@@ -29,11 +29,11 @@ class CityController extends AbstractController
                 throw $this->createNotFoundException();
             }
 
-            return new JsonResponse($this->get('jms_serializer')->serialize($city, 'json'), 200, [], true);
+            return new JsonResponse($serializer->serialize($city, 'json'), 200, [], true);
         } else {
             $cityList = $this->getDoctrine()->getRepository(City::class)->findAll();
         }
 
-        return new JsonResponse($this->get('jms_serializer')->serialize($cityList, 'json'), 200, [], true);
+        return new JsonResponse($serializer->serialize($cityList, 'json'), 200, [], true);
     }
 }

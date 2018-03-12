@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                {% include 'AppBundle:Default:_station.html.twig' with { 'station': station, 'description': 'An der Station ' ~ station.stationCode ~ ' wurden zuletzt die folgenden Werte gemessen.', boxList: boxList } %}
+                {% include 'Default/_station.html.twig' with { 'station': station, 'description': 'An der Station ' ~ station.stationCode ~ ' wurden zuletzt die folgenden Werte gemessen.', boxList: boxList } %}
             </div>
         </div>
     </div>

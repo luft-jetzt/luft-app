@@ -44,13 +44,13 @@ abstract class AbstractController extends Controller
         return $this->getDoctrine()->getRepository(Station::class)->findByCity($city);
     }
 
-    protected function createBoxListForStationList(array $stationList): array
+    protected function createBoxListForStationList(PollutionDataFactory $pollutionDataFactory, array $stationList): array
     {
         $stationsBoxList = [];
 
         /** @var Station $station */
         foreach ($stationList as $station) {
-            $stationsBoxList[$station->getStationCode()] = $this->getPollutionDataFactory()->setCoord($station)->createDecoratedBoxList();
+            $stationsBoxList[$station->getStationCode()] = $pollutionDataFactory->setCoord($station)->createDecoratedBoxList();
         }
 
         return $stationsBoxList;

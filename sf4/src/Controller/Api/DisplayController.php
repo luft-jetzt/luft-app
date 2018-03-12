@@ -42,7 +42,7 @@ class DisplayController extends AbstractController
      *   description="Retrieve pollution data for cities"
      * )
      */
-    public function cityAction(Serializer $serializer, string $citySlug): Response
+    public function cityAction(Serializer $serializer, PollutionDataFactory $pollutionDataFactory, string $citySlug): Response
     {
         $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
 
@@ -51,7 +51,7 @@ class DisplayController extends AbstractController
         }
 
         $stationList = $this->getStationListForCity($city);
-        $stationsBoxList = $this->createBoxListForStationList($stationList);
+        $stationsBoxList = $this->createBoxListForStationList($pollutionDataFactory, $stationList);
 
         return new JsonResponse($serializer->serialize($stationsBoxList, 'json'), 200, [], true);
     }

@@ -6,7 +6,6 @@ use App\Controller\AbstractController;
 use App\Entity\Station;
 use JMS\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class StationController extends AbstractController

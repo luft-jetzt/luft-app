@@ -1,4 +1,4 @@
-{% extends 'AppBundle::layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% block content %}
 <div class="container">
@@ -37,7 +37,7 @@
         <div class="col-12">
             <div class="card-columns">
             {% for station in stationList %}
-            {% include 'AppBundle:Default:_station.html.twig' with { linkToStation: true, station: station, boxList: stationBoxList[station.stationCode], showMap: false } %}
+            {% include 'Default/_station.html.twig' with { linkToStation: true, station: station, boxList: stationBoxList[station.stationCode], showMap: false } %}
             {% endfor %}
             </div>
         </div>
