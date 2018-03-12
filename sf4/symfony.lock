@@ -1,4 +1,7 @@
 {
+    "calderacc/geobasic": {
+        "version": "0.2"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -67,6 +70,9 @@
     },
     "egulias/email-validator": {
         "version": "2.1.3"
+    },
+    "emcconville/google-map-polyline-encoding-tool": {
+        "version": "v1.3"
     },
     "exsyst/swagger": {
         "version": "v0.4.0"
