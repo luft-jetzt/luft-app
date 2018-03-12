@@ -56,7 +56,7 @@
                     &bull;
                     <a href="http://sqi.be/ed94a">GitHub</a>
                     &bull;
-                    <a href="{{ path('nelmio_api_doc_index') }}">Api</a>
+                    <a href="{{ path('app.swagger_ui') }}">Api</a>
                     &bull;
                     {% if app.user and app.user.city %}
                         <a href="{{ path('twitter_schedule_list', { citySlug: app.user.city.slug }) }}">
