@@ -28,12 +28,10 @@ class DisplayController extends AbstractController
             $this->getSeoPage()->setTitle(sprintf('Luftmesswerte für die Station %s', $station->getStationCode()));
         }
 
-        return $this->render(
-            'AppBundle:Default:station.html.twig', [
-                'station' => $station,
-                'boxList' => $boxList
-            ]
-        );
+        return $this->render('Default/station.html.twig', [
+            'station' => $station,
+            'boxList' => $boxList,
+        ]);
     }
 
     public function indexAction(Request $request): Response
@@ -41,7 +39,7 @@ class DisplayController extends AbstractController
         $coord = $this->getCoordByRequest($request);
 
         if (!$coord) {
-            return $this->render('AppBundle:Default:select.html.twig');
+            return $this->render('Default/select.html.twig');
         }
 
         $boxList = $this->getPollutionDataFactory()->setCoord($coord)->createDecoratedBoxList();
@@ -58,11 +56,9 @@ class DisplayController extends AbstractController
             $this->getSeoPage()->setTitle(sprintf('Aktuelle Luftmesswerte aus deiner Umgebung'));
         }
 
-        return $this->render(
-            'AppBundle:Default:display.html.twig', [
-                'boxList' => $boxList
-            ]
-        );
+        return $this->render('Default/display.html.twig', [
+            'boxList' => $boxList,
+        ]);
     }
 
     public function noStationAction(Request $request, Coord $coord = null): Response
@@ -73,10 +69,9 @@ class DisplayController extends AbstractController
 
         $stationList = $this->getStationFinder()->setCoord($coord)->findNearestStations(1000.0);
 
-        return $this->render(
-            'AppBundle:Default:nostations.html.twig', [
-                'stationList' => $stationList
-            ]);
+        return $this->render('Default/nostations.html.twig', [
+            'stationList' => $stationList,
+        ]);
     }
 
     protected function getCityNameForCoord(Coord $coord): ?string

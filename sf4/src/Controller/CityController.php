@@ -31,7 +31,7 @@ class CityController extends AbstractController
         $stationList = $this->getStationListForCity($city);
         $stationsBoxList = $this->createBoxListForStationList($stationList);
 
-        return $this->render('AppBundle:City:show.html.twig', [
+        return $this->render('City/show.html.twig', [
             'city' => $city,
             'stationList' => $stationList,
             'stationBoxList' => $stationsBoxList,
@@ -49,7 +49,7 @@ class CityController extends AbstractController
 
         $this->getSession()->set('twitterCity', $city);
 
-        return $this->render('AppBundle:City:twitter.html.twig', [
+        return $this->render('City/twitter.html.twig', [
             'city' => $city,
         ]);
     }

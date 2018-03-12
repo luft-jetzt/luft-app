@@ -20,12 +20,10 @@ class TwitterScheduleController extends AbstractController
 
         $scheduleList = $this->getDoctrine()->getRepository(TwitterSchedule::class)->findByCity($city);
 
-        return $this->render(
-            'AppBundle:TwitterSchedule:list.html.twig', [
-                'scheduleList' => $scheduleList,
-                'city' => $city,
-            ]
-        );
+        return $this->render('TwitterSchedule/list.html.twig', [
+            'scheduleList' => $scheduleList,
+            'city' => $city,
+        ]);
     }
 
     public function addAction(Request $request, UserInterface $user, string $citySlug): Response
@@ -52,11 +50,9 @@ class TwitterScheduleController extends AbstractController
             return $this->redirectToRoute('twitter_schedule_list', ['citySlug' => $city->getSlug()]);
         }
 
-        return $this->render(
-            'AppBundle:TwitterSchedule:edit.html.twig', [
-                'scheduleForm' => $form->createView(),
-            ]
-        );
+        return $this->render('TwitterSchedule:edit.html.twig', [
+            'scheduleForm' => $form->createView(),
+        ]);
     }
 
     public function editAction(Request $request, UserInterface $user, string $citySlug): Response
@@ -79,11 +75,9 @@ class TwitterScheduleController extends AbstractController
             return $this->redirectToRoute('twitter_schedule_list', ['citySlug' => $city->getSlug()]);
         }
 
-        return $this->render(
-            'AppBundle:TwitterSchedule:edit.html.twig', [
-                'scheduleForm' => $form->createView(),
-            ]
-        );
+        return $this->render('TwitterSchedule/edit.html.twig', [
+            'scheduleForm' => $form->createView(),
+        ]);
     }
 
     public function removeAction(Request $request, UserInterface $user, string $citySlug): Response

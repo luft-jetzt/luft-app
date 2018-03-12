@@ -11,7 +11,7 @@ class TemplateController extends AbstractController
     public function cityListAction(Request $request): Response
     {
         return $this->render(
-            'AppBundle:Template:city_list.html.twig', [
+            'Template/city_list.html.twig', [
                 'cityList' => $this->getDoctrine()->getRepository(City::class)->findBy([], ['name' => 'ASC']),
             ]
         );
