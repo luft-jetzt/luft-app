@@ -5,32 +5,32 @@
         http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="twitter_auth" path="/{citySlug}/twitter-auth">
-        <default key="_controller">AppBundle:City:twitterAuth</default>
+        <default key="_controller">App\Controller\CityController:twitterAuthAction</default>
         <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
 
     <route id="twitter_token" path="/{citySlug}/twitter-token">
-        <default key="_controller">AppBundle:City:twitterToken</default>
+        <default key="_controller">App\Controller\CityController::twitterTokenAction</default>
         <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
 
     <route id="twitter_schedule_list" path="/{citySlug}/schedule-list">
-        <default key="_controller">AppBundle:TwitterSchedule:list</default>
+        <default key="_controller">App\Controller\TwitterScheduleController::listAction</default>
         <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
 
     <route id="twitter_schedule_edit" path="/{citySlug}/schedule-edit">
-        <default key="_controller">AppBundle:TwitterSchedule:edit</default>
+        <default key="_controller">App\Controller\TwitterScheduleController::editAction</default>
         <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
 
     <route id="twitter_schedule_add" path="/{citySlug}/schedule-add">
-        <default key="_controller">AppBundle:TwitterSchedule:add</default>
+        <default key="_controller">App\Controller\TwitterScheduleController::addAction</default>
         <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
 
     <route id="twitter_schedule_remove" path="/{citySlug}/schedule-remove">
-        <default key="_controller">AppBundle:TwitterSchedule:remove</default>
+        <default key="_controller">App\Controller\TwitterScheduleController::removeAction</default>
         <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
 </routes>

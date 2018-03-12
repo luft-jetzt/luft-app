@@ -5,34 +5,34 @@
         http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="api_station_station" path="/station/{stationCode}" methods="GET">
-        <default key="_controller">AppBundle:Api/Station:station</default>
+        <default key="_controller">App\Controller\Api\StationController::stationAction</default>
         <requirement key="stationCode">^([A-Z]{4,4})([0-9]{3,3})$</requirement>
     </route>
 
     <route id="api_station_all" path="/station" methods="GET">
-        <default key="_controller">AppBundle:Api/Station:station</default>
+        <default key="_controller">App\Controller\Api\StationController::stationAction</default>
     </route>
 
     <route id="api_city_city" path="/city/{citySlug}" methods="GET">
-        <default key="_controller">AppBundle:Api/City:city</default>
+        <default key="_controller">App\Controller\Api\CityController::cityAction</default>
         <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
 
     <route id="api_city_all" path="/city" methods="GET">
-        <default key="_controller">AppBundle:Api/City:city</default>
+        <default key="_controller">App\Controller\Api\CityController::cityAction</default>
     </route>
 
     <route id="api_station" path="/{stationCode}" methods="GET">
-        <default key="_controller">AppBundle:Api/Display:station</default>
+        <default key="_controller">App\Controller\Api\DisplayController::stationAction</default>
         <requirement key="stationCode">^([A-Z]{4,4})([0-9]{3,3})$</requirement>
     </route>
 
     <route id="api_city" path="/{citySlug}" methods="GET">
-        <default key="_controller">AppBundle:Api/Display:city</default>
+        <default key="_controller">App\Controller\Api\DisplayController::cityAction</default>
         <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
 
     <route id="api_display" path="/" methods="GET">
-        <default key="_controller">AppBundle:Api/Display:display</default>
+        <default key="_controller">App\Controller\Api\DisplayController::displayAction</default>
     </route>
 </routes>
