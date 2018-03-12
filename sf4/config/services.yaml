@@ -2,6 +2,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
+    twitter.client_id: ThisTokenIsNotSoSecretChangeIt
+    twitter.client_secret: ThisTokenIsNotSoSecretChangeIt
 
 services:
     # default configuration for services in *this* file

@@ -1,0 +1,8 @@
+hwioauth_routing_connect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
+
+hwioauth_routing_login:
+    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
+
+hwioauth_routing_redirect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
