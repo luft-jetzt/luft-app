@@ -2,6 +2,9 @@
     "calderacc/geobasic": {
         "version": "0.2"
     },
+    "composer/installers": {
+        "version": "v1.5.0"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -127,6 +130,9 @@
             "version": "2.0",
             "ref": "fe60ce509ef04a3f40da96e3979bc8d9b13b2372"
         }
+    },
+    "jublonet/codebird-php": {
+        "version": "3.1.0"
     },
     "maxh/php-nominatim": {
         "version": "1.2.3"
