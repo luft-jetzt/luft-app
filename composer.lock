@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1a9a4f75473ac1aaf5d645d3eb6cc0ad",
+    "content-hash": "713cb62f6ab4191100502addb87f4834",
     "packages": [
         {
             "name": "calderacc/geobasic",
