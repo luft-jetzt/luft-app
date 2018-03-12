@@ -28,3 +28,14 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Pollution\DataRetriever\DataRetrieverInterface:
+        alias: App\Pollution\DataRetriever\ElasticDataRetriever
+
+    App\Pollution\DataRetriever\ElasticDataRetriever:
+        arguments:
+            $dataFinder: '@fos_elastica.finder.air_data.data'
+
+    App\Pollution\StationFinder\ElasticStationFinder:
+        arguments:
+            $stationFinder: '@fos_elastica.finder.air_station.station'

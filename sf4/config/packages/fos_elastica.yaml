@@ -1,0 +1,37 @@
+fos_elastica:
+    clients:
+        default: { host: localhost, port: 9200 }
+    indexes:
+        air_station:
+            client: default
+            finder: ~
+            types:
+                station:
+                    properties:
+                        pin: { type: geo_point }
+                    persistence:
+                        driver: orm
+                        model: App\Entity\Station
+                        provider: ~
+                        listener: ~
+                        finder: ~
+        air_data:
+            client: default
+            finder: ~
+            types:
+                data:
+                    properties:
+                        pollutant: ~
+                        station:
+                            property_path: stationId
+                        dateTime:
+                            type: date
+                            format: "yyyy-MM-dd HH:mm:ss"
+                            property_path: dateTimeFormatted
+                    indexable_callback: 'isIndexable'
+                    persistence:
+                        driver: orm
+                        model: App\Entity\Data
+                        provider: ~
+                        listener: ~
+                        finder: ~
