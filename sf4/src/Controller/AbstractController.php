@@ -39,21 +39,6 @@ abstract class AbstractController extends Controller
         return null;
     }
 
-    protected function getStationFinder(): StationFinderInterface
-    {
-        return $this->get(ElasticStationFinder::class);
-    }
-
-    protected function getPollutionDataFactory(): PollutionDataFactory
-    {
-        return $this->get(PollutionDataFactory::class);
-    }
-
-    protected function getSeoPage(): SeoPage
-    {
-        return $this->get(SeoPage::class);
-    }
-
     protected function getStationListForCity(City $city): array
     {
         return $this->getDoctrine()->getRepository(Station::class)->findByCity($city);

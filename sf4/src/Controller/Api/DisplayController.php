@@ -5,6 +5,8 @@ namespace App\Controller\Api;
 use App\Controller\AbstractController;
 use App\Entity\City;
 use App\Entity\Station;
+use App\Pollution\PollutionDataFactory\PollutionDataFactory;
+use JMS\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +21,7 @@ class DisplayController extends AbstractController
      *   description="Retrieve pollution data for stations"
      * )
      */
-    public function stationAction(Request $request, string $stationCode): Response
+    public function stationAction(Serializer $serializer, string $stationCode, PollutionDataFactory $pollutionDataFactory): Response
     {
         $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
 
@@ -27,9 +29,9 @@ class DisplayController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $boxList = $this->getPollutionDataFactory()->setCoord($station)->createDecoratedBoxList();
+        $boxList = $pollutionDataFactory->setCoord($station)->createDecoratedBoxList();
 
-        return new JsonResponse($this->get('jms_serializer')->serialize($boxList, 'json'), 200, [], true);
+        return new JsonResponse($serializer->serialize($boxList, 'json'), 200, [], true);
     }
 
     /**
@@ -40,7 +42,7 @@ class DisplayController extends AbstractController
      *   description="Retrieve pollution data for cities"
      * )
      */
-    public function cityAction(Request $request, string $citySlug): Response
+    public function cityAction(Serializer $serializer, string $citySlug): Response
     {
         $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
 
@@ -51,7 +53,7 @@ class DisplayController extends AbstractController
         $stationList = $this->getStationListForCity($city);
         $stationsBoxList = $this->createBoxListForStationList($stationList);
 
-        return new JsonResponse($this->get('jms_serializer')->serialize($stationsBoxList, 'json'), 200, [], true);
+        return new JsonResponse($serializer->serialize($stationsBoxList, 'json'), 200, [], true);
     }
 
     /**
@@ -67,7 +69,7 @@ class DisplayController extends AbstractController
      *   }
      * )
      */
-    public function displayAction(Request $request): Response
+    public function displayAction(Request $request, Serializer $serializer, PollutionDataFactory $pollutionDataFactory): Response
     {
         $coord = $this->getCoordByRequest($request);
 
@@ -75,8 +77,8 @@ class DisplayController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $boxList = $this->getPollutionDataFactory()->setCoord($coord)->createDecoratedBoxList();
+        $boxList = $pollutionDataFactory->setCoord($coord)->createDecoratedBoxList();
 
-        return new JsonResponse($this->get('jms_serializer')->serialize($boxList, 'json'), 200, [], true);
+        return new JsonResponse($serializer->serialize($boxList, 'json'), 200, [], true);
     }
 }

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TemplateController extends AbstractController
 {
-    public function cityListAction(Request $request): Response
+    public function cityListAction(): Response
     {
         return $this->render(
             'Template/city_list.html.twig', [

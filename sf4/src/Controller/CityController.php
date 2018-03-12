@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\City;
 use App\Entity\User;
+use App\SeoPage\SeoPage;
 use Codebird\Codebird;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class CityController extends AbstractController
 {
-    public function showAction(Request $request, string $citySlug): Response
+    public function showAction(SeoPage $seoPage, string $citySlug): Response
     {
         /** @var City $city */
         $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
@@ -23,7 +24,7 @@ class CityController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $this->getSeoPage()
+        $seoPage
             ->setTitle(sprintf('Luft in %s', $city->getName()))
             ->setDescription(sprintf('Aktuelle Schadstoff- und Luftmesswerte aus %s', $city->getName()))
         ;
@@ -38,7 +39,7 @@ class CityController extends AbstractController
         ]);
     }
 
-    public function twitterAction(Request $request, string $citySlug): Response
+    public function twitterAction(Session $session, string $citySlug): Response
     {
         /** @var City $city */
         $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
@@ -47,22 +48,14 @@ class CityController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $this->getSession()->set('twitterCity', $city);
+        $session->set('twitterCity', $city);
 
         return $this->render('City/twitter.html.twig', [
             'city' => $city,
         ]);
     }
 
-    protected function getSession(): Session
-    {
-        /** @var Session $session */
-        $session = $this->get('session');
-
-        return $session;
-    }
-
-    public function twitterAuthAction(Request $request, string $citySlug): Response
+    public function twitterAuthAction(Session $session, string $citySlug): Response
     {
         /** @var City $city */
         $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
@@ -70,8 +63,6 @@ class CityController extends AbstractController
         if (!$city) {
             throw $this->createNotFoundException();
         }
-
-        $session = $this->getSession();
 
         $cb = $this->getCodeBird();
 
@@ -89,7 +80,7 @@ class CityController extends AbstractController
         return new RedirectResponse($cb->oauth_authorize());
     }
 
-    public function twitterTokenAction(Request $request, UserInterface $user, string $citySlug): Response
+    public function twitterTokenAction(Session $session, Request $request, UserInterface $user, string $citySlug): Response
     {
         /** @var City $city */
         $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
@@ -97,8 +88,6 @@ class CityController extends AbstractController
         if (!$city) {
             throw $this->createNotFoundException();
         }
-
-        $session = $this->getSession();
 
         $cb = $this->getCodeBird();
         $cb->setToken($session->get('oauth_token'), $session->get('oauth_token_secret'));

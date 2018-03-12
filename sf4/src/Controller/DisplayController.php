@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Station;
+use App\Pollution\PollutionDataFactory\PollutionDataFactory;
+use App\Pollution\StationFinder\StationFinderInterface;
 use App\SeoPage\SeoPage;
 use Caldera\GeoBasic\Coord\Coord;
 use maxh\Nominatim\Nominatim;
@@ -11,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DisplayController extends AbstractController
 {
-    public function stationAction(Request $request, string $stationCode): Response
+    public function stationAction(SeoPage $seoPage, string $stationCode, PollutionDataFactory $pollutionDataFactory): Response
     {
         /** @var Station $station */
         $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
@@ -20,12 +22,12 @@ class DisplayController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $boxList = $this->getPollutionDataFactory()->setCoord($station)->createDecoratedBoxList();
+        $boxList = $pollutionDataFactory->setCoord($station)->createDecoratedBoxList();
 
         if ($station->getCity()) {
-            $this->getSeoPage()->setTitle(sprintf('Luftmesswerte für die Station %s in %s', $station->getStationCode(), $station->getCity()->getName()));
+            $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s in %s', $station->getStationCode(), $station->getCity()->getName()));
         } else {
-            $this->getSeoPage()->setTitle(sprintf('Luftmesswerte für die Station %s', $station->getStationCode()));
+            $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s', $station->getStationCode()));
         }
 
         return $this->render('Default/station.html.twig', [
@@ -34,7 +36,7 @@ class DisplayController extends AbstractController
         ]);
     }
 
-    public function indexAction(Request $request): Response
+    public function indexAction(Request $request, SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory): Response
     {
         $coord = $this->getCoordByRequest($request);
 
@@ -42,7 +44,7 @@ class DisplayController extends AbstractController
             return $this->render('Default/select.html.twig');
         }
 
-        $boxList = $this->getPollutionDataFactory()->setCoord($coord)->createDecoratedBoxList();
+        $boxList = $pollutionDataFactory->setCoord($coord)->createDecoratedBoxList();
 
         if (0 === count($boxList)) {
             return $this->noStationAction($request, $coord);
@@ -51,9 +53,9 @@ class DisplayController extends AbstractController
         $cityName = $this->getCityNameForCoord($coord);
 
         if ($cityName) {
-            $this->getSeoPage()->setTitle(sprintf('Aktuelle Luftmesswerte aus %s', $cityName));
+            $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus %s', $cityName));
         } else {
-            $this->getSeoPage()->setTitle(sprintf('Aktuelle Luftmesswerte aus deiner Umgebung'));
+            $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus deiner Umgebung'));
         }
 
         return $this->render('Default/display.html.twig', [
@@ -61,13 +63,13 @@ class DisplayController extends AbstractController
         ]);
     }
 
-    public function noStationAction(Request $request, Coord $coord = null): Response
+    public function noStationAction(Request $request, Coord $coord = null, StationFinderInterface $stationFinder): Response
     {
         if (!$coord) {
             $coord = $this->getCoordByRequest($request);
         }
 
-        $stationList = $this->getStationFinder()->setCoord($coord)->findNearestStations(1000.0);
+        $stationList = $stationFinder->setCoord($coord)->findNearestStations(1000.0);
 
         return $this->render('Default/nostations.html.twig', [
             'stationList' => $stationList,

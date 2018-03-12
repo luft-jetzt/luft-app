@@ -39,3 +39,7 @@ services:
     App\Pollution\StationFinder\ElasticStationFinder:
         arguments:
             $stationFinder: '@fos_elastica.finder.air_station.station'
+
+    App\SeoPage\SeoPage:
+        arguments:
+            $sonataSeoPage: '@sonata.seo.page.default'

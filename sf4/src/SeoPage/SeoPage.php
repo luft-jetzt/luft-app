@@ -2,13 +2,7 @@
 
 namespace App\SeoPage;
 
-use Criticalmass\Bundle\AppBundle\EntityInterface\PhotoInterface;
-use Criticalmass\Bundle\AppBundle\EntityInterface\RouteableInterface;
-use Criticalmass\Component\Router\ObjectRouter;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Sonata\SeoBundle\Seo\SeoPageInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 class SeoPage
 {
