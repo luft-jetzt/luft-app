@@ -5,7 +5,7 @@ namespace App\StationLoader;
 use App\Entity\Station;
 use App\Repository\StationRepository;
 use Curl\Curl;
-use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
+use Symfony\Bridge\Doctrine\RegistryInterface as Doctrine;
 use Doctrine\ORM\EntityManager;
 
 class StationLoader

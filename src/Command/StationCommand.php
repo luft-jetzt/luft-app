@@ -11,6 +11,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class StationCommand extends ContainerAwareCommand
 {
+    /** @var StationLoader $stationLoader */
+    protected $stationLoader;
+
+    public function __construct(?string $name = null, StationLoader $stationLoader)
+    {
+        $this->stationLoader = $stationLoader;
+
+        parent::__construct($name);
+    }
+
     protected function configure()
     {
         $this
@@ -20,16 +30,14 @@ class StationCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var StationLoader $stationLoader */
-        $stationLoader = $this->getContainer()->get('AppBundle\StationLoader\StationLoader');
-        $stationLoader->load();
+        $this->stationLoader->load();
 
         $output->writeln('New stations');
 
         $table = new Table($output);
         $table->setHeaders(['stationCode', 'stateCode', 'title', 'latitude', 'longitude']);
 
-        foreach ($stationLoader->getNewStationList() as $newStation) {
+        foreach ($this->stationLoader->getNewStationList() as $newStation) {
             $this->addStationRow($table, $newStation);
         }
 
@@ -41,7 +49,7 @@ class StationCommand extends ContainerAwareCommand
         $table = new Table($output);
         $table->setHeaders(['stationCode', 'stateCode', 'title', 'latitude', 'longitude']);
 
-        foreach ($stationLoader->getExistingStationList() as $existingStation) {
+        foreach ($this->stationLoader->getExistingStationList() as $existingStation) {
             $this->addStationRow($table, $existingStation);
         }
 
