@@ -68,6 +68,9 @@
     "doctrine/orm": {
         "version": "v2.6.1"
     },
+    "dragonmantank/cron-expression": {
+        "version": "v2.0.0"
+    },
     "easycorp/easy-log-handler": {
         "version": "1.0",
         "recipe": {
