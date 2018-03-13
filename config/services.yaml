@@ -4,6 +4,9 @@ parameters:
     locale: 'en'
     twitter.client_id: ThisTokenIsNotSoSecretChangeIt
     twitter.client_secret: ThisTokenIsNotSoSecretChangeIt
+    yourls.api_url: http://sqi.be/yourls-api.php
+    yourls.api_username: username
+    yourls.api_password: password
 
 services:
     # default configuration for services in *this* file
@@ -16,6 +19,9 @@ services:
         bind:
             $twitterClientId: '%twitter.client_id%'
             $twitterClientSecret: '%twitter.client_secret%'
+            $apiUrl: '%yourls.api_url%'
+            $apiUsername: '%yourls.api_username%'
+            $apiPassword: '%yourls.api_password%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -51,31 +57,3 @@ services:
     App\SeoPage\SeoPage:
         arguments:
             $sonataSeoPage: '@sonata.seo.page.default'
-
-    admin.city:
-        class: App\Admin\CityAdmin
-        arguments: [~, App\Entity\City, ~]
-        public: true
-        tags:
-            - { name: sonata.admin, manager_type: orm, label: City }
-
-    admin.station:
-        class: App\Admin\StationAdmin
-        arguments: [~, App\Entity\Station, ~]
-        public: true
-        tags:
-            - { name: sonata.admin, manager_type: orm, label: Station }
-
-    admin.twitter_schedule:
-        class: App\Admin\TwitterScheduleAdmin
-        arguments: [~, App\Entity\TwitterSchedule, ~]
-        public: true
-        tags:
-            - { name: sonata.admin, manager_type: orm, label: Twitter Schedule }
-
-    admin.user:
-        class: App\Admin\UserAdmin
-        arguments: [~, App\Entity\User, ~]
-        public: true
-        tags:
-            - { name: sonata.admin, manager_type: orm, label: User }

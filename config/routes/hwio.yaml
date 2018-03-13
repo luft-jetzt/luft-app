@@ -1,8 +1,14 @@
-hwioauth_routing_connect:
-    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
-
-hwioauth_routing_login:
-    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
-
-hwioauth_routing_redirect:
+hwi_oauth_redirect:
     resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
+    prefix:   /connect
+
+hwi_oauth_connect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
+    prefix:   /connect
+
+hwi_oauth_login:
+    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
+    prefix:   /login
+
+twitter_login:
+    path: /login/check-twitter
