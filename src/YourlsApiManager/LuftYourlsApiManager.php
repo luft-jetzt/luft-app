@@ -2,21 +2,20 @@
 
 namespace App\YourlsApiManager;
 
-use App\Entity\Photo;
 use App\Entity\Station;
 use App\Entity\TwitterSchedule;
 use Caldera\GeoBasic\Coord\Coord;
 use Caldera\YourlsApiManager\YourlsApiManager;
 use Curl\Curl;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 class LuftYourlsApiManager extends YourlsApiManager
 {
-    /** @var Router $router */
+    /** @var RouterInterface $router */
     protected $router;
 
-    public function __construct(Router $router, string $apiUrl, string $apiUsername, string $apiPassword)
+    public function __construct(RouterInterface $router, string $apiUrl, string $apiUsername, string $apiPassword)
     {
         $this->router = $router;
 
