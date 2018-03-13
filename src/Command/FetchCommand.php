@@ -16,13 +16,13 @@ use App\SourceFetcher\Reporting\Ub1TMW;
 use App\SourceFetcher\Reporting\Ub8SMW;
 use App\SourceFetcher\SourceFetcher;
 use App\SourceFetcher\Value\Value;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class FetchCommand extends ContainerAwareCommand
+class FetchCommand extends Command
 {
     protected function configure()
     {

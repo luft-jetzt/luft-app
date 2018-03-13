@@ -4,12 +4,12 @@ namespace App\Command;
 
 use App\Entity\Station;
 use App\StationLoader\StationLoader;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class StationCommand extends ContainerAwareCommand
+class StationCommand extends Command
 {
     /** @var StationLoader $stationLoader */
     protected $stationLoader;
