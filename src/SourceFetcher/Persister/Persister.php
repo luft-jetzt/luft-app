@@ -5,12 +5,12 @@ namespace App\SourceFetcher\Persister;
 use App\Entity\Data;
 use App\Entity\Station;
 use App\SourceFetcher\Value\Value;
-use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class Persister
 {
-    /** @var Doctrine $doctrine */
+    /** @var RegistryInterface $doctrine */
     protected $doctrine;
 
     /** @var ObjectManager $entityManager */
@@ -22,7 +22,7 @@ class Persister
     /** @var array $newValueList */
     protected $newValueList = [];
 
-    public function __construct(Doctrine $doctrine)
+    public function __construct(RegistryInterface $doctrine)
     {
         $this->doctrine = $doctrine;
         $this->entityManager = $doctrine->getManager();

@@ -24,6 +24,20 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class FetchCommand extends Command
 {
+    /** @var Persister $persister */
+    protected $persister;
+
+    /** @var SourceFetcher $fetcher */
+    protected $fetcher;
+
+    public function __construct(?string $name = null, Persister $persister, SourceFetcher $fetcher)
+    {
+        $this->persister = $persister;
+        $this->fetcher = $fetcher;
+
+        parent::__construct($name);
+    }
+
     protected function configure()
     {
         $this
@@ -119,17 +133,14 @@ class FetchCommand extends Command
 
     protected function fetch(OutputInterface $output, AbstractQuery $query, int $pollutant)
     {
-        $sourceFetcher = new SourceFetcher();
-
-        $response = $sourceFetcher->query($query);
+        $response = $this->fetcher->query($query);
 
         $parser = new UbParser($query);
         $tmpValueList = $parser->parse($response, $pollutant);
 
-        $persister = $this->getContainer()->get(Persister::class);
-        $persister->persistValues($tmpValueList);
+        $this->persister->persistValues($tmpValueList);
 
-        $this->writeValueTable($output, $persister->getNewValueList());
+        $this->writeValueTable($output, $this->persister->getNewValueList());
     }
 
     protected function writeValueTable(OutputInterface $output, array $newValueList): void
