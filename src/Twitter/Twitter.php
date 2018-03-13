@@ -10,7 +10,7 @@ use Caldera\GeoBasic\Coord\Coord;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Codebird\Codebird;
 use Cron\CronExpression;
-use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
+use Symfony\Bridge\Doctrine\RegistryInterface as Doctrine;
 use Psr\Log\LoggerInterface;
 
 class Twitter
