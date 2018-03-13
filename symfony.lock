@@ -2,6 +2,9 @@
     "calderacc/geobasic": {
         "version": "0.2"
     },
+    "clue/stream-filter": {
+        "version": "v1.4.0"
+    },
     "composer/installers": {
         "version": "v1.5.0"
     },
@@ -104,11 +107,23 @@
             "ref": "370bcf99b04c0dfd0b545745aad622d757af5e1b"
         }
     },
+    "guzzlehttp/guzzle": {
+        "version": "6.3.0"
+    },
+    "guzzlehttp/promises": {
+        "version": "v1.3.1"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.4.2"
+    },
     "guzzlehttp/ringphp": {
         "version": "1.1.0"
     },
     "guzzlehttp/streams": {
         "version": "3.0.0"
+    },
+    "hwi/oauth-bundle": {
+        "version": "0.6.1"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
@@ -158,6 +173,48 @@
     "pagerfanta/pagerfanta": {
         "version": "v1.0.5"
     },
+    "php-curl-class/php-curl-class": {
+        "version": "8.0.1"
+    },
+    "php-http/cache-plugin": {
+        "version": "v1.5.0"
+    },
+    "php-http/client-common": {
+        "version": "1.7.0"
+    },
+    "php-http/discovery": {
+        "version": "1.4.0"
+    },
+    "php-http/guzzle6-adapter": {
+        "version": "v1.1.1"
+    },
+    "php-http/httplug": {
+        "version": "v1.1.0"
+    },
+    "php-http/httplug-bundle": {
+        "version": "1.6",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.6",
+            "ref": "4655962c64e2de96c418caf576c57215711c7877"
+        }
+    },
+    "php-http/logger-plugin": {
+        "version": "v1.0.0"
+    },
+    "php-http/message": {
+        "version": "1.6.0"
+    },
+    "php-http/message-factory": {
+        "version": "v1.0.2"
+    },
+    "php-http/promise": {
+        "version": "v1.0.0"
+    },
+    "php-http/stopwatch-plugin": {
+        "version": "1.1.0"
+    },
     "phpcollection/phpcollection": {
         "version": "0.5.0"
     },
@@ -178,6 +235,9 @@
     },
     "psr/container": {
         "version": "1.0.0"
+    },
+    "psr/http-message": {
+        "version": "1.0.1"
     },
     "psr/link": {
         "version": "1.0.0"
@@ -415,6 +475,9 @@
             "version": "2.5",
             "ref": "3db029c03e452b4a23f7fc45cec7c922c2247eb8"
         }
+    },
+    "symfony/templating": {
+        "version": "v4.0.6"
     },
     "symfony/translation": {
         "version": "3.3",

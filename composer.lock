@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "713cb62f6ab4191100502addb87f4834",
+    "content-hash": "32829af6b9b48e1e3d351b63d2d469fe",
     "packages": [
         {
             "name": "calderacc/geobasic",
@@ -2774,6 +2774,63 @@
                 "paging"
             ],
             "time": "2017-03-20T13:46:15+00:00"
+        },
+        {
+            "name": "php-curl-class/php-curl-class",
+            "version": "8.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-curl-class/php-curl-class.git",
+                "reference": "bdfe1fcca0c32562050c84e01e3a4cbdc31e22fd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-curl-class/php-curl-class/zipball/bdfe1fcca0c32562050c84e01e3a4cbdc31e22fd",
+                "reference": "bdfe1fcca0c32562050c84e01e3a4cbdc31e22fd",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*",
+                "squizlabs/php_codesniffer": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Curl\\": "src/Curl/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Unlicense"
+            ],
+            "authors": [
+                {
+                    "name": "Zach Borboa"
+                }
+            ],
+            "description": "PHP Curl Class makes it easy to send HTTP requests and integrate with web APIs.",
+            "homepage": "https://github.com/php-curl-class/php-curl-class",
+            "keywords": [
+                "api",
+                "class",
+                "client",
+                "curl",
+                "framework",
+                "http",
+                "http client",
+                "json",
+                "php",
+                "requests",
+                "rest",
+                "restful",
+                "web service",
+                "xml"
+            ],
+            "time": "2018-01-27T15:40:39+00:00"
         },
         {
             "name": "php-http/cache-plugin",
