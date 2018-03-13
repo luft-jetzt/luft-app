@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\CityLoader\ZipLoader;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,6 +11,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class LoadCitiesCommand extends Command
 {
+    /** @var EntityManagerInterface */
+    protected $entityManager;
+
+    public function __construct(?string $name = null, EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+
+        parent::__construct($name);
+    }
+
     protected function configure()
     {
         $this
@@ -20,9 +30,6 @@ class LoadCitiesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var EntityManager $entityManager */
-        $entityManager = $this->getContainer()->get('doctrine')->getManager();
-
         $zipLoader = new ZipLoader();
 
         $zipLoader->loadData();
@@ -34,13 +41,13 @@ class LoadCitiesCommand extends Command
             $zipEntityList = $zipLoader->parseData();
 
             foreach ($zipEntityList as $zipEntity) {
-                $entityManager->persist($zipEntity);
+                $this->entityManager->persist($zipEntity);
             }
 
             $progress->advance();
         }
 
-        $entityManager->flush();
+        $this->entityManager->flush();
         $progress->finish();
     }
 }
