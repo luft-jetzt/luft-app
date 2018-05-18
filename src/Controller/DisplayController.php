@@ -36,7 +36,7 @@ class DisplayController extends AbstractController
         ]);
     }
 
-    public function indexAction(Request $request, SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory): Response
+    public function indexAction(Request $request, SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory, StationFinderInterface $stationFinder): Response
     {
         $coord = $this->getCoordByRequest($request);
 
@@ -47,7 +47,7 @@ class DisplayController extends AbstractController
         $boxList = $pollutionDataFactory->setCoord($coord)->createDecoratedBoxList();
 
         if (0 === count($boxList)) {
-            return $this->noStationAction($request, $coord);
+            return $this->noStationAction($request, $stationFinder, $coord);
         }
 
         $cityName = $this->getCityNameForCoord($coord);
@@ -63,7 +63,7 @@ class DisplayController extends AbstractController
         ]);
     }
 
-    public function noStationAction(Request $request, Coord $coord = null, StationFinderInterface $stationFinder): Response
+    public function noStationAction(Request $request, StationFinderInterface $stationFinder, Coord $coord = null): Response
     {
         if (!$coord) {
             $coord = $this->getCoordByRequest($request);
