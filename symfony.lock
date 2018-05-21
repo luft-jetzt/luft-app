@@ -69,7 +69,7 @@
         "version": "v2.6.1"
     },
     "dragonmantank/cron-expression": {
-        "version": "v2.0.0"
+        "version": "v2.1.0"
     },
     "easycorp/easy-log-handler": {
         "version": "1.0",
@@ -158,6 +158,9 @@
     "maxh/php-nominatim": {
         "version": "1.2.3"
     },
+    "michelf/php-markdown": {
+        "version": "1.8.0"
+    },
     "monolog/monolog": {
         "version": "1.23.0"
     },
@@ -170,9 +173,6 @@
             "ref": "d13bb99357ebcd2ffb6fe808a64961f5bc1c7546"
         }
     },
-    "nikic/php-parser": {
-        "version": "v4.0.1"
-    },
     "ocramius/proxy-manager": {
         "version": "2.2.0"
     },
@@ -180,7 +180,7 @@
         "version": "v1.0.5"
     },
     "php-curl-class/php-curl-class": {
-        "version": "8.0.1"
+        "version": "8.0.3"
     },
     "php-http/cache-plugin": {
         "version": "v1.5.0"
