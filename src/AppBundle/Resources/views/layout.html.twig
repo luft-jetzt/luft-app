@@ -17,14 +17,14 @@
         {{ sonata_seo_link_canonical() }}
         {{ sonata_seo_lang_alternates() }}
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous" />
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ==" crossorigin=""/>
+        <link rel="stylesheet" href="{{ asset('/bundles/app/css/bootstrap/bootstrap.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('/bundles/app/css/leaflet/leaflet.css') }}" />
         <link rel="stylesheet" href="{{ asset('/bundles/app/css/luft.css') }}" />
-        <script src="https://use.fontawesome.com/6c9255e289.js"></script>
+        <link rel="stylesheet" href="{{ asset('/bundles/app/css/fontawesome/font-awesome.css') }}" />
     </head>
     <body>
         <a href="http://sqi.be/ed94a">
-            <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" />
+            <img style="position: absolute; top: 0; right: 0; border: 0;" src="{{ asset('/bundles/app/img/github/black-topright.png') }}" />
         </a>
         {% include 'AppBundle:Includes:header.html.twig' %}
 
@@ -32,10 +32,9 @@
 
         {% include 'AppBundle:Includes:footer.html.twig' %}
 
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-        <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log==" crossorigin=""></script>
+        <script src="{{ asset('/bundles/app/js/jquery/jquery-3.3.1.slim.min.js') }}"></script>
+        <script src="{{ asset('/bundles/app/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ asset('/bundles/app/js/leaflet/leaflet.js') }}"></script>
 
         {% block scripts %}{% endblock %}
 

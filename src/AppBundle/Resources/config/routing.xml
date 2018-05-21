@@ -5,6 +5,7 @@
         http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <import resource="routing/api.xml" prefix="/api" />
+    <import resource="routing/static.xml" />
     <import resource="routing/frontend.xml" />
     <import resource="routing/city.xml" />
     <import resource="routing/twitter.xml" />
