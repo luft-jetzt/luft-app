@@ -17,8 +17,8 @@
         {{ sonata_seo_link_canonical() }}
         {{ sonata_seo_lang_alternates() }}
 
-        <link rel="stylesheet" href="{{ asset('/bundles/app/css/bootstrap/bootstrap.min.css') }}"  />
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ==" crossorigin=""/>
+        <link rel="stylesheet" href="{{ asset('/bundles/app/css/bootstrap/bootstrap.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('/bundles/app/css/leaflet/leaflet.css') }}" />
         <link rel="stylesheet" href="{{ asset('/bundles/app/css/luft.css') }}" />
         <script src="https://use.fontawesome.com/6c9255e289.js"></script>
     </head>
@@ -34,7 +34,7 @@
 
         <script src="{{ asset('/bundles/app/js/jquery/jquery-3.3.1.slim.min.js') }}"></script>
         <script src="{{ asset('/bundles/app/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
-        <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log==" crossorigin=""></script>
+        <script src="{{ asset('/bundles/app/js/leaflet/leaflet.js') }}"></script>
 
         {% block scripts %}{% endblock %}
 
