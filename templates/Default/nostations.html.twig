@@ -1,0 +1,26 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-info">
+                Leider sind in deinem näheren Umfeld keine Messstationen zur Luftqualität im Betrieb. Du kannst aber aus der folgenden Liste Stationen in deiner Region einsehen.
+            </div>
+        </div>
+    </div>
+
+    {% for station in stationList %}
+    <div class="row">
+        <div class="col-12">
+            {% include 'AppBundle:Default:_station.html.twig' with { 'station': station, linkToStation: true } %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/js/leaflet/leaflet.js"></script>
+    <script src="/js/map.js"></script>
+{% endblock %}

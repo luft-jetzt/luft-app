@@ -1,0 +1,15 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {% include 'Default/_station.html.twig' with { 'station': station, 'description': 'An der Station ' ~ station.stationCode ~ ' wurden zuletzt die folgenden Werte gemessen.', boxList: boxList } %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/js/map.js"></script>
+{% endblock %}

@@ -1,0 +1,29 @@
+sonata_seo:
+    encoding:         UTF-8
+    page:
+        title:            Luft.jetzt
+        default:          sonata.seo.page.default
+        metas:
+            name:
+                keywords:             Luft, Stickstoffdioxid, NO2, Schwefeldioxid, SO2, Kohlemnonooxid, CO, Ozon, O3, Feinstaub, PM10
+                description:          Aktuelle Luftmesswerte aus deiner Umgebung
+                robots:               index, follow
+                'twitter:site':       '@calderacc'
+                'twitter:creator':    '@maltehuebner'
+            property:
+                'fb:app_id':          '216780188685195'
+                'og:type':            Website
+                'og:site_name':       Caldera.cc
+                'og:description':     Aktuelle Luftmesswerte aus deiner Umgebung
+                'og:locale':          de_DE
+
+            http-equiv:
+                'Content-Type':         text/html; charset=utf-8
+
+            charset:
+                UTF-8:    ''
+
+        head:
+            'xmlns':              http://www.w3.org/1999/xhtml
+            'xmlns:og':           http://opengraphprotocol.org/schema/
+            'xmlns:fb':           "http://www.facebook.com/2008/fbml"
