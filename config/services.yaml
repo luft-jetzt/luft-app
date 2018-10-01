@@ -4,9 +4,9 @@ parameters:
     locale: 'en'
     twitter.client_id: ThisTokenIsNotSoSecretChangeIt
     twitter.client_secret: ThisTokenIsNotSoSecretChangeIt
-    yourls.api_url: http://sqi.be/yourls-api.php
-    yourls.api_username: username
-    yourls.api_password: password
+    yourls.api_url: '%env(YOURLS_HOSTNAME)%'
+    yourls.api_username: '%env(YOURLS_USERNAME)%'
+    yourls.api_password: '%env(YOURLS_PASSWORD)%'
 
 services:
     # default configuration for services in *this* file
