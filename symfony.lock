@@ -53,6 +53,9 @@
             "ref": "c1431086fec31f17fbcfe6d6d7e92059458facc1"
         }
     },
+    "doctrine/event-manager": {
+        "version": "v1.0.0"
+    },
     "doctrine/inflector": {
         "version": "v1.3.0"
     },
@@ -67,6 +70,12 @@
     },
     "doctrine/orm": {
         "version": "v2.6.1"
+    },
+    "doctrine/persistence": {
+        "version": "v1.0.1"
+    },
+    "doctrine/reflection": {
+        "version": "v1.0.0"
     },
     "dragonmantank/cron-expression": {
         "version": "v2.1.0"
@@ -172,6 +181,9 @@
             "version": "2.13",
             "ref": "d13bb99357ebcd2ffb6fe808a64961f5bc1c7546"
         }
+    },
+    "nikic/php-parser": {
+        "version": "v4.0.4"
     },
     "ocramius/proxy-manager": {
         "version": "2.2.0"
@@ -421,6 +433,9 @@
             "version": "3.3",
             "ref": "41416370e732d1c8e7a0953a5ce815b641cfba0f"
         }
+    },
+    "symfony/polyfill-ctype": {
+        "version": "v1.9.0"
     },
     "symfony/polyfill-intl-icu": {
         "version": "v1.7.0"
