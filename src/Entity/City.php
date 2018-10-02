@@ -47,6 +47,18 @@ class City
     protected $description;
 
     /**
+     * @ORM\Column(type="float", nullable=false)
+     * @JMS\Expose()
+     */
+    protected $latitude;
+
+    /**
+     * @ORM\Column(type="float", nullable=false)
+     * @JMS\Expose()
+     */
+    protected $longitude;
+
+    /**
      * @ORM\OneToMany(targetEntity="TwitterSchedule", mappedBy="city")
      */
     protected $twitterSchedules;
@@ -83,6 +95,30 @@ class City
     public function setCreatedAt(\DateTime $createdAt): City
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getLatitude(): float
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(float $latitude): City
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getLongitude(): float
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(float $longitude): City
+    {
+        $this->longitude = $longitude;
 
         return $this;
     }
