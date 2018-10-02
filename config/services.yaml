@@ -7,6 +7,7 @@ parameters:
     yourls.api_url: '%env(YOURLS_HOSTNAME)%'
     yourls.api_username: '%env(YOURLS_USERNAME)%'
     yourls.api_password: '%env(YOURLS_PASSWORD)%'
+    staticmaps.host: '%env(STATICMAPS_HOST)%'
 
 services:
     # default configuration for services in *this* file
@@ -22,6 +23,7 @@ services:
             $apiUrl: '%env(YOURLS_API_URL)%'
             $apiUsername: '%env(YOURLS_API_USERNAME)%'
             $apiPassword: '%env(YOURLS_API_PASSWORD)%'
+            $staticmapsHost: '%staticmaps.host%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
