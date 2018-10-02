@@ -2,6 +2,7 @@
 
 namespace App\SeoPage;
 
+use App\StaticMap\UrlGenerator\UrlGeneratorInterface;
 use Sonata\SeoBundle\Seo\SeoPageInterface;
 
 class SeoPage
@@ -9,9 +10,13 @@ class SeoPage
     /** @var SeoPageInterface */
     protected $sonataSeoPage;
 
-    public function __construct(SeoPageInterface $sonataSeoPage)
+    /** @var UrlGeneratorInterface $urlGenerator */
+    protected $urlGenerator;
+
+    public function __construct(SeoPageInterface $sonataSeoPage, UrlGeneratorInterface $urlGenerator)
     {
         $this->sonataSeoPage = $sonataSeoPage;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function setTitle(string $title): SeoPage
@@ -34,27 +39,15 @@ class SeoPage
         return $this;
     }
 
-    /*
-    public function setPreviewPhoto(PhotoInterface $object): SeoPage
+    public function setPreviewMap(StaticMapableInterface $staticMapable): SeoPageInterface
     {
-        if (!$object->getImageName()) {
-            return $this;
-        }
-        
-        $imageFilename = $this->uploaderHelper->asset($object, 'imageFile');
-
-        $facebookPreviewPath = $this->cacheManager->getBrowserPath($imageFilename, 'facebook_preview_image');
-        $twitterPreviewPath = $this->cacheManager->getBrowserPath($imageFilename, 'twitter_summary_large_image');
-
         $this->sonataSeoPage
-            ->addMeta('property', 'og:image', $facebookPreviewPath)
-            ->addMeta('name', 'twitter:image', $twitterPreviewPath)
-            ->addMeta('name', 'twitter:card', 'summary_large_image')
-        ;
+            ->addMeta('property', 'og:image', $this->urlGenerator->generate($staticMapable, 600, 315), ['escape' => false])
+            ->addMeta('name', 'twitter:image', $this->urlGenerator->generate($staticMapable, 800, 320), ['escape' => false])
+            ->addMeta('name', 'twitter:card', 'summary_large_image');
 
         return $this;
-    }*/
-
+    }
     public function setCanonicalLink(string $link): SeoPage
     {
         $this->sonataSeoPage
