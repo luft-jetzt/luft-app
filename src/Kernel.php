@@ -2,8 +2,10 @@
 
 namespace App;
 
+use App\DependencyInjection\Compiler\TwigSeoExtensionPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
@@ -46,6 +48,8 @@ class Kernel extends BaseKernel
         $loader->load($confDir.'/{packages}/'.$this->environment.'/**/*'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{services}'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{services}_'.$this->environment.self::CONFIG_EXTS, 'glob');
+
+        $container->addCompilerPass(new TwigSeoExtensionPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 100);
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes)
