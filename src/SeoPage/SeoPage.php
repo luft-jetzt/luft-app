@@ -2,6 +2,7 @@
 
 namespace App\SeoPage;
 
+use App\StaticMap\StaticMapableInterface;
 use App\StaticMap\UrlGenerator\UrlGeneratorInterface;
 use Sonata\SeoBundle\Seo\SeoPageInterface;
 
@@ -39,15 +40,18 @@ class SeoPage
         return $this;
     }
 
-    public function setPreviewMap(StaticMapableInterface $staticMapable): SeoPageInterface
+    public function setPreviewMap(StaticMapableInterface $staticMapable): SeoPage
     {
         $this->sonataSeoPage
-            ->addMeta('property', 'og:image', $this->urlGenerator->generate($staticMapable, 600, 315), ['escape' => false])
-            ->addMeta('name', 'twitter:image', $this->urlGenerator->generate($staticMapable, 800, 320), ['escape' => false])
+            ->addMeta('property', 'og:image', $this->urlGenerator->generate($staticMapable, 600, 315),
+                ['escape' => false])
+            ->addMeta('name', 'twitter:image', $this->urlGenerator->generate($staticMapable, 800, 320),
+                ['escape' => false])
             ->addMeta('name', 'twitter:card', 'summary_large_image');
 
         return $this;
     }
+
     public function setCanonicalLink(string $link): SeoPage
     {
         $this->sonataSeoPage

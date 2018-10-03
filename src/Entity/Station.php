@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\StaticMap\StaticMapableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Caldera\GeoBasic\Coord\Coord;
@@ -15,7 +16,7 @@ use JMS\Serializer\Annotation as JMS;
  * @UniqueEntity("stationCode")
  * @JMS\ExclusionPolicy("ALL")
  */
-class Station extends Coord
+class Station extends Coord implements StaticMapableInterface
 {
     /**
      * @ORM\Id

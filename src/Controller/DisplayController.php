@@ -30,6 +30,8 @@ class DisplayController extends AbstractController
             $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s', $station->getStationCode()));
         }
 
+        $seoPage->setPreviewMap($station);
+
         return $this->render('Default/station.html.twig', [
             'station' => $station,
             'boxList' => $boxList,

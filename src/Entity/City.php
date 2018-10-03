@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\StaticMap\StaticMapableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +13,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Table(name="city")
  * @JMS\ExclusionPolicy("ALL")
  */
-class City
+class City implements StaticMapableInterface
 {
     /**
      * @ORM\Id

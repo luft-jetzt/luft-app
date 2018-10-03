@@ -11,7 +11,7 @@ class UrlGenerator extends AbstractUrlGenerator
     public function generate(StaticMapableInterface $object, int $width = null, int $height = null, int $zoom = null): string
     {
         if ($object instanceof Station) {
-            return $this->staticmapsRide($object, $width, $height, $zoom);
+            return $this->staticmapsStation($object, $width, $height, $zoom);
         } elseif ($object instanceof City) {
             return $this->staticmapsCity($object, $width, $height, $zoom);
         }
