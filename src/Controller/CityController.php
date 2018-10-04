@@ -27,7 +27,7 @@ class CityController extends AbstractController
 
         $seoPage
             ->setTitle(sprintf('Luft in %s', $city->getName()))
-            ->setDescription(sprintf('Aktuelle Schadstoff- und Luftmesswerte aus %s', $city->getName()))
+            ->setDescription(sprintf('Aktuelle Luftmesswerte aus %s: Stickstoffdioxid, Feinstaub und Ozon', $city->getName()))
         ;
 
         $stationList = $this->getStationListForCity($city);

@@ -25,9 +25,9 @@ class DisplayController extends AbstractController
         $boxList = $pollutionDataFactory->setCoord($station)->createDecoratedBoxList();
 
         if ($station->getCity()) {
-            $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s in %s', $station->getStationCode(), $station->getCity()->getName()));
+            $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s in %s: : Stickstoffdioxid, Feinstaub und Ozon', $station->getStationCode(), $station->getCity()->getName()));
         } else {
-            $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s', $station->getStationCode()));
+            $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s: : Stickstoffdioxid, Feinstaub und Ozon', $station->getStationCode()));
         }
 
         return $this->render('Default/station.html.twig', [
@@ -53,9 +53,9 @@ class DisplayController extends AbstractController
         $cityName = $this->getCityNameForCoord($coord);
 
         if ($cityName) {
-            $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus %s', $cityName));
+            $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus %s: : Stickstoffdioxid, Feinstaub und Ozon', $cityName));
         } else {
-            $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus deiner Umgebung'));
+            $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus deiner Umgebung: : Stickstoffdioxid, Feinstaub und Ozon'));
         }
 
         return $this->render('Default/display.html.twig', [
