@@ -31,7 +31,7 @@ class UrlGenerator extends AbstractUrlGenerator
     public function staticmapsStation(Station $station, int $width = null, int $height = null, int $zoom = null): string
     {
         $parameters = [
-            'markers' => sprintf('%f,%f,%s,%s,%s', $station->getLatitude(), $station->getLongitude(), 'circle', 'blue', 'university'),
+            'markers' => sprintf('%f,%f,%s,%s,%s', $station->getLatitude(), $station->getLongitude(), 'circle', 'blue', 'thermometer-full'),
         ];
 
         return $this->generateMapUrl($parameters, $width, $height, $zoom);
