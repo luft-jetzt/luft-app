@@ -1,76 +1,94 @@
 {
-    "name": "calderacc/luft-city",
-    "license": "proprietary",
     "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": "^7.1.3",
+        "ext-iconv": "*",
+        "calderacc/geobasic": "^0.2.0",
+        "calderacc/yourls-api-manager": "^0.2.0",
+        "doctrine/doctrine-migrations-bundle": "^1.0",
+        "dragonmantank/cron-expression": "^2.1",
+        "friendsofsymfony/elastica-bundle": "^5.0",
+        "friendsofsymfony/jsrouting-bundle": "^2.2",
+        "hwi/oauth-bundle": "^0.6.1",
+        "jms/serializer-bundle": "^2.3",
+        "jublonet/codebird-php": "^3.1",
+        "maxh/php-nominatim": "^1.2",
+        "nelmio/api-doc-bundle": "^3.1",
+        "php-curl-class/php-curl-class": "^8.0",
+        "php-http/guzzle6-adapter": "^1.1",
+        "php-http/httplug-bundle": "^1.9",
+        "sensio/framework-extra-bundle": "^5.1",
+        "sonata-project/seo-bundle": "^2.5",
+        "symfony/apache-pack": "^1.0",
+        "symfony/asset": "^4.0",
+        "symfony/console": "^4.0",
+        "symfony/debug-pack": "*",
+        "symfony/expression-language": "^4.0",
+        "symfony/flex": "^1.0",
+        "symfony/form": "^4.0",
+        "symfony/framework-bundle": "^4.0",
+        "symfony/lts": "^4@dev",
+        "symfony/monolog-bundle": "^3.1",
+        "symfony/orm-pack": "*",
+        "symfony/process": "^4.0",
+        "symfony/security-bundle": "^4.0",
+        "symfony/serializer-pack": "*",
+        "symfony/swiftmailer-bundle": "^3.1",
+        "symfony/validator": "^4.0",
+        "symfony/web-link": "^4.0",
+        "symfony/webpack-encore-pack": "*",
+        "symfony/yaml": "^4.0"
+    },
+    "require-dev": {
+        "symfony/browser-kit": "^4.0",
+        "symfony/css-selector": "^4.0",
+        "symfony/dotenv": "^4.0",
+        "symfony/maker-bundle": "^1.0",
+        "symfony/phpunit-bridge": "^4.0",
+        "symfony/profiler-pack": "*"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
     "autoload": {
         "psr-4": {
-            "": "src/"
-        },
-        "classmap": [
-            "app/AppKernel.php",
-            "app/AppCache.php"
-        ]
+            "App\\": "src/"
+        }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "App\\Tests\\": "tests/"
         }
     },
-    "require": {
-        "php": ">=7.2",
-        "symfony/symfony": "^3.4",
-        "doctrine/orm": "^2.5",
-        "doctrine/doctrine-bundle": "^1.6",
-        "doctrine/doctrine-cache-bundle": "^1.2",
-        "symfony/swiftmailer-bundle": "^2.3",
-        "symfony/monolog-bundle": "^3.0",
-        "symfony/polyfill-apcu": "^1.0",
-        "sensio/distribution-bundle": "^5.0",
-        "sensio/framework-extra-bundle": "^3.0.2",
-        "incenteev/composer-parameter-handler": "^2.0",
-        "php-curl-class/php-curl-class": "^8.0",
-        "calderacc/geobasic": "^0.1.0",
-        "friendsofsymfony/elastica-bundle": "^4.0",
-        "friendsofsymfony/jsrouting-bundle": "^1.6",
-        "doctrine/doctrine-migrations-bundle": "^1.2",
-        "nelmio/api-doc-bundle": "^2.0",
-        "jms/serializer-bundle": "^2.2",
-        "sonata-project/admin-bundle": "^3.28",
-        "sonata-project/doctrine-orm-admin-bundle": "^3.2",
-        "jublonet/codebird-php": "^3.1",
-        "dragonmantank/cron-expression": "^2.0",
-        "calderacc/yourls-api-manager": "^0.1.0"
-    },
-    "require-dev": {
-        "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0"
+    "replace": {
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php71": "*",
+        "symfony/polyfill-php70": "*",
+        "symfony/polyfill-php56": "*"
     },
     "scripts": {
-        "symfony-scripts": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
-        ],
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
+        },
         "post-install-cmd": [
-            "@symfony-scripts"
+            "@auto-scripts"
         ],
         "post-update-cmd": [
-            "@symfony-scripts"
+            "@auto-scripts"
         ]
     },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
     "extra": {
-        "symfony-app-dir": "app",
-        "symfony-bin-dir": "bin",
-        "symfony-var-dir": "var",
-        "symfony-web-dir": "web",
-        "symfony-tests-dir": "tests",
-        "symfony-assets-install": "relative",
-        "incenteev-parameters": {
-            "file": "app/config/parameters.yml"
-        },
-        "branch-alias": null
+        "symfony": {
+            "id": "01C7ZY80BTZQAPGP49Y9QDWY3E",
+            "allow-contrib": false
+        }
     }
 }
