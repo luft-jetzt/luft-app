@@ -1,9 +1,13 @@
 nelmio_api_doc:
     documentation:
+        host: luft.jetzt
+        schemes: [https]
         info:
-            title: My App
-            description: This is an awesome app!
-            version: 1.0.0
-    routes: # to filter documented routes
+            title: Luft.jetzt api
+            description: Get access to luft data
+            version: 0.1
+        security:
+            - Bearer: []
+    routes:
         path_patterns:
-            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
+            - ^/api(?!/doc$)
