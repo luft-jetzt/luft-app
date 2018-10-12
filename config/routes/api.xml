@@ -4,35 +4,39 @@
         xsi:schemaLocation="http://symfony.com/schema/routing
         http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="api_station_station" path="/station/{stationCode}" methods="GET">
+    <route id="app.swagger_ui" path="/api/doc" methods="GET">
+        <default key="_controller">nelmio_api_doc.controller.swagger_ui</default>
+    </route>
+
+    <route id="api_station_station" path="/api/station/{stationCode}" methods="GET">
         <default key="_controller">App\Controller\ApiController::stationAction</default>
         <requirement key="stationCode">^([A-Z]{4,4})([0-9]{3,3})$</requirement>
     </route>
 
-    <route id="api_station_all" path="/station" methods="GET">
+    <route id="api_station_all" path="/api/station" methods="GET">
         <default key="_controller">App\Controller\ApiController::stationAction</default>
     </route>
 
-    <route id="api_city_city" path="/city/{citySlug}" methods="GET">
+    <route id="api_city_city" path="/api/city/{citySlug}" methods="GET">
         <default key="_controller">App\Controller\ApiController::cityAction</default>
         <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
 
-    <route id="api_city_all" path="/city" methods="GET">
+    <route id="api_city_all" path="/api/city" methods="GET">
         <default key="_controller">App\Controller\ApiController::cityAction</default>
     </route>
 
-    <route id="api_station" path="/{stationCode}" methods="GET">
+    <route id="api_station" path="/api/{stationCode}" methods="GET">
         <default key="_controller">App\Controller\ApiController::stationAction</default>
         <requirement key="stationCode">^([A-Z]{4,4})([0-9]{3,3})$</requirement>
     </route>
 
-    <route id="api_city" path="/{citySlug}" methods="GET">
+    <route id="api_city" path="/api/{citySlug}" methods="GET">
         <default key="_controller">App\Controller\ApiController::cityAction</default>
         <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
 
-    <route id="api_display" path="/" methods="GET">
+    <route id="api_display" path="/api/" methods="GET">
         <default key="_controller">App\Controller\ApiController::displayAction</default>
     </route>
 </routes>

@@ -9,15 +9,30 @@ use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
 {
     /**
      * Get pollution data for a provided station code.
      *
-     * ApiDoc(
-     *   section="Data",
-     *   description="Retrieve pollution data for stations"
+     * @SWG\Tag(name="Station")
+     * @SWG\Response(
+     *   response=200,
+     *   description="Retrieve pollution data for station",
+     *   @SWG\Schema(
+     *     type="array",
+     *     @SWG\Items(ref=@Model(type=App\Pollution\Box\Box::class))
+     *   )
+     * )
+     * @SWG\Parameter(
+     *     name="stationCode",
+     *     in="path",
+     *     type="string",
+     *     description="station code"
      * )
      */
     public function displayStationAction(SerializerInterface $serializer, string $stationCode, PollutionDataFactory $pollutionDataFactory): Response
@@ -36,9 +51,14 @@ class ApiController extends AbstractController
     /**
      * Get pollution data for a provided city slug.
      *
-     * ApiDoc(
-     *   section="Data",
-     *   description="Retrieve pollution data for cities"
+     * @SWG\Tag(name="Data")
+     * @SWG\Response(
+     *   response=200,
+     *   description="Retrieve pollution data for cities",
+     *   @SWG\Schema(
+     *     type="array",
+     *     @SWG\Items(ref=@Model(type=App\Pollution\Box\Box::class))
+     *   )
      * )
      */
     public function displayCityAction(SerializerInterface $serializer, PollutionDataFactory $pollutionDataFactory, string $citySlug): Response
@@ -58,14 +78,32 @@ class ApiController extends AbstractController
     /**
      * Get pollution data for a coord by latitude and longitude or a zip code. You must either provide a coord or a zip code.
      *
-     * ApiDoc(
-     *   section="Data",
-     *   description="Retrieve pollution data for coords",
-     *   parameters={
-     *     {"name"="latitude", "dataType"="float", "required"=false, "description"="Latitude"},
-     *     {"name"="longitude", "dataType"="float", "required"=false, "description"="Longitude"},
-     *     {"name"="zip", "dataType"="integer", "required"=false, "description"="Zip code"}
-     *   }
+     * @SWG\Tag(name="Station")
+     * @SWG\Parameter(
+     *     name="latitude",
+     *     in="query",
+     *     type="number",
+     *     description="Latitude"
+     * )
+     * @SWG\Parameter(
+     *     name="longitude",
+     *     in="query",
+     *     type="number",
+     *     description="Longitude"
+     * )
+     * @SWG\Parameter(
+     *     name="zip",
+     *     in="query",
+     *     type="number",
+     *     description="Zip code"
+     * )
+     * @SWG\Response(
+     *   response=200,
+     *   description="Returns pollution data of specified station",
+     *   @SWG\Schema(
+     *     type="array",
+     *     @SWG\Items(ref=@Model(type=App\Pollution\Box\Box::class))
+     *   )
      * )
      */
     public function displayAction(Request $request, SerializerInterface $serializer, PollutionDataFactory $pollutionDataFactory): Response
@@ -86,9 +124,17 @@ class ApiController extends AbstractController
      *
      * Retrieve a list of all known cities by leaving <code>citySlug</code> empty.
      *
-     * ApiDoc(
-     *   section="City",
-     *   description="Retrieve details for cities"
+     * @SWG\Tag(name="City")
+     * @SWG\Parameter(
+     *     name="citySlug",
+     *     in="path",
+     *     type="string",
+     *     description="city slug"
+     * )
+     * @SWG\Response(
+     *   response=200,
+     *   description="Returns details for specified city",
+     *   @Model(type=App\Entity\City::class)
      * )
      */
     public function cityAction(SerializerInterface $serializer, string $citySlug = null): Response
@@ -109,13 +155,21 @@ class ApiController extends AbstractController
     }
 
     /**
-     * Get details of the station identified by <code>stationCode</code>.
+     * Get details of the city identified by <code>citySlug</code>.
      *
-     * Retrieve a list of all known stations by leaving <code>stationCode</code> empty.
+     * Retrieve a list of all known cities by leaving <code>citySlug</code> empty.
      *
-     * ApiDoc(
-     *   section="Station",
-     *   description="Retrieve details for stations"
+     * @SWG\Tag(name="Station")
+     * @SWG\Parameter(
+     *     name="stationCode",
+     *     in="path",
+     *     type="string",
+     *     description="station code"
+     * )
+     * @SWG\Response(
+     *   response=200,
+     *   description="Returns details for specified station",
+     *   @Model(type=App\Entity\Station::class)
      * )
      */
     public function stationAction(SerializerInterface $serializer, string $stationCode = null): Response
