@@ -8,6 +8,11 @@ gulp.task('copy-images', function () {
         .pipe(gulp.dest('public/img/leaflet/'));
 });
 
+gulp.task('copy-asset-images', function () {
+    return gulp.src('assets/img/*/*')
+        .pipe(gulp.dest('public/img/'));
+});
+
 gulp.task('compress-css', function () {
     return gulp.src([
             'node_modules/leaflet/dist/leaflet.css',
@@ -29,6 +34,6 @@ gulp.task('compress-js', function () {
         .pipe(gulp.dest('public/js/'));
 });
 
-gulp.task('build', ['copy-images', 'compress-js', 'compress-css'], function () {});
+gulp.task('build', ['copy-images', 'copy-asset-images', 'compress-js', 'compress-css'], function () {});
 
 gulp.task('default', ['build']);
