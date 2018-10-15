@@ -17,6 +17,7 @@ gulp.task('compress-css', function () {
     return gulp.src([
             'node_modules/leaflet/dist/leaflet.css',
             'node_modules/bootstrap/dist/css/bootstrap.css',
+            'assets/css/*/*',
         ])
         .pipe(cleanCSS())
         .pipe(concat('luft.min.css'))
