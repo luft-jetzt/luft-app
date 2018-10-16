@@ -5,7 +5,7 @@ namespace App\StationLoader;
 use App\Entity\Station;
 use App\Repository\StationRepository;
 use Curl\Curl;
-use Symfony\Bridge\Doctrine\RegistryInterface as Doctrine;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\ORM\EntityManager;
 use League\Csv\Reader;
 
@@ -13,8 +13,8 @@ class StationLoader
 {
     const SOURCE_URL = 'https://www.env-it.de/stationen/public/download.do?event=euMetaStation';
 
-    /** @var Doctrine $doctrine */
-    protected $doctrine;
+    /** @var RegistryInterface $registry */
+    protected $registry;
 
     /** @var array $existingStationList */
     protected $existingStationList = [];
@@ -28,9 +28,9 @@ class StationLoader
     /** @var bool $update */
     protected $update = false;
 
-    public function __construct(Doctrine $doctrine)
+    public function __construct(RegistryInterface $registry)
     {
-        $this->doctrine = $doctrine;
+        $this->registry = $registry;
     }
 
     public function load(): StationLoader
@@ -61,7 +61,7 @@ class StationLoader
     public function process(callable $callback): StationLoader
     {
         /** @var EntityManager $em */
-        $em = $this->doctrine->getManager();
+        $em = $this->registry->getManager();
 
         foreach ($this->csv as $stationData) {
             $callback();
@@ -87,7 +87,7 @@ class StationLoader
     protected function getExistingStations(): array
     {
         /** @var StationRepository $stationRepository */
-        $stationRepository = $this->doctrine->getRepository(Station::class);
+        $stationRepository = $this->registry->getRepository(Station::class);
 
         return $stationRepository->findAllIndexed();
     }
