@@ -13,6 +13,7 @@
         "hwi/oauth-bundle": "^0.6.1",
         "jms/serializer-bundle": "^2.3",
         "jublonet/codebird-php": "^3.1",
+        "league/csv": "^9.1",
         "maxh/php-nominatim": "^1.2",
         "nelmio/api-doc-bundle": "^3.1",
         "php-curl-class/php-curl-class": "^8.0",
