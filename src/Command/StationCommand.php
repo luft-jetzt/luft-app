@@ -53,7 +53,7 @@ class StationCommand extends Command
     protected function printTable(OutputInterface $output, array $stationList): void
     {
         $table = new Table($output);
-        $table->setHeaders(['stationCode', 'stateCode', 'title', 'latitude', 'longitude']);
+        $table->setHeaders(['stationCode', 'stateCode', 'title', 'latitude', 'longitude', 'fromDate', 'untilDate']);
 
         foreach ($stationList as $station) {
             $this->addStationRow($table, $station);
@@ -64,6 +64,14 @@ class StationCommand extends Command
 
     protected function addStationRow(Table $table, Station $station): void
     {
-        $table->addRow([$station->getStationCode(), $station->getStateCode(), $station->getTitle(), $station->getLatitude(), $station->getLongitude()]);
+        $table->addRow([
+            $station->getStationCode(),
+            $station->getStateCode(),
+            $station->getTitle(),
+            $station->getLatitude(),
+            $station->getLongitude(),
+            $station->getFromDate() ? $station->getFromDate()->format('Y-m-d') : '',
+            $station->getUntilDate() ? $station->getUntilDate()->format('Y-m-d') : '',
+        ]);
     }
 }
