@@ -22,25 +22,40 @@ class StationLoader
     /** @var array $newStationList */
     protected $newStationList = [];
 
+    /** @var Reader $csv */
+    protected $csv;
+
     public function __construct(Doctrine $doctrine)
     {
         $this->doctrine = $doctrine;
     }
 
-    public function load(): void
+    public function load(): StationLoader
     {
         $this->existingStationList = $this->getExistingStations();
 
-        $csv = $this->fetchStationList();
+        $this->csv = $this->fetchStationList();
 
-        $csv
+        $this->csv
             ->setDelimiter(';')
             ->setHeaderOffset(0);
 
+        return $this;
+    }
+
+    public function count(): int
+    {
+        return $this->csv ? $this->csv->count() : 0;
+    }
+
+    public function process(callable $callback): StationLoader
+    {
         /** @var EntityManager $em */
         $em = $this->doctrine->getManager();
 
-        foreach ($csv as $stationData) {
+        foreach ($this->csv as $stationData) {
+            $callback();
+
             if (!$this->stationExists($stationData['station_code'], $this->existingStationList)) {
                 $station = $this->createStation($stationData);
 
@@ -51,6 +66,8 @@ class StationLoader
         }
 
         $em->flush();
+
+        return $this;
     }
 
     protected function getExistingStations(): array
@@ -94,7 +111,6 @@ class StationLoader
 
     protected function stationExists(string $stationCode, array $stationData): bool
     {
-        echo  array_key_exists($stationCode, $stationData);
         return array_key_exists($stationCode, $stationData);
     }
 

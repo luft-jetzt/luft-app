@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Entity\Station;
 use App\StationLoader\StationLoader;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,6 +32,14 @@ class StationCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->stationLoader->load();
+
+        $progressBar = new ProgressBar($output, $this->stationLoader->count());
+
+        $this->stationLoader->process(function() use ($progressBar) {
+            $progressBar->advance();
+        });
+
+        $progressBar->finish();
 
         $output->writeln('Existing stations');
         $this->printTable($output, $this->stationLoader->getExistingStationList());
