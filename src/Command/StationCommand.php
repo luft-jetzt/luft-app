@@ -32,14 +32,13 @@ class StationCommand extends Command
     {
         $this->stationLoader->load();
 
-        $output->writeln('New stations');
-
-        $this->printTable($output, $this->stationLoader->getNewStationList());
+        $output->writeln('Existing stations');
+        $this->printTable($output, $this->stationLoader->getExistingStationList());
 
         $output->writeln('');
-        $output->writeln('Existing stations');
 
-        $this->printTable($output, $this->stationLoader->getExistingStationList());
+        $output->writeln('New stations');
+        $this->printTable($output, $this->stationLoader->getNewStationList());
     }
 
     protected function printTable(OutputInterface $output, array $stationList): void
