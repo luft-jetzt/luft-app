@@ -7,10 +7,11 @@ use App\Repository\StationRepository;
 use Curl\Curl;
 use Symfony\Bridge\Doctrine\RegistryInterface as Doctrine;
 use Doctrine\ORM\EntityManager;
+use League\Csv\Reader;
 
 class StationLoader
 {
-    const SOURCE_URL = 'https://www.umweltbundesamt.de/js/uaq/data/stations/limits';
+    const SOURCE_URL = 'https://www.env-it.de/stationen/public/download.do?event=euMetaStation';
 
     /** @var Doctrine $doctrine */
     protected $doctrine;
@@ -26,16 +27,21 @@ class StationLoader
         $this->doctrine = $doctrine;
     }
 
-    public function load(): array
+    public function load(): void
     {
         $this->existingStationList = $this->getExistingStations();
-        $newStationData = $this->fetchStationList();
+
+        $csv = $this->fetchStationList();
+
+        $csv
+            ->setDelimiter(';')
+            ->setHeaderOffset(0);
 
         /** @var EntityManager $em */
         $em = $this->doctrine->getManager();
 
-        foreach ($newStationData as $stationData) {
-            if (!$this->stationExists($stationData[0], $this->existingStationList)) {
+        foreach ($csv as $stationData) {
+            if (!$this->stationExists($stationData['station_code'], $this->existingStationList)) {
                 $station = $this->createStation($stationData);
 
                 $em->merge($station);
@@ -45,8 +51,6 @@ class StationLoader
         }
 
         $em->flush();
-
-        return $newStationData;
     }
 
     protected function getExistingStations(): array
@@ -56,30 +60,32 @@ class StationLoader
         return $stationRepository->findAllIndexed();
     }
 
-    protected function fetchStationList(): array
+    protected function fetchStationList(): Reader
     {
         $curl = new Curl();
         $curl->get(self::SOURCE_URL);
-        $stationList = $curl->response->stations_idx;
 
-        return $stationList;
+        //$csv = Reader::createFromString($curl->getResponse());
+        $csv = Reader::createFromPath('/var/www/station.csv');
+
+        return $csv;
     }
 
     protected function mergeStation(Station $station, array $stationData): Station
     {
         $station
-            ->setTitle($stationData[1])
-            ->setStationCode($stationData[0])
-            ->setStateCode($stationData[2])
-            ->setLatitude($stationData[5])
-            ->setLongitude($stationData[4]);
+            ->setTitle($stationData['station_name'])
+            ->setStationCode($stationData['station_code'])
+            ->setStateCode(substr($stationData['station_code'], 2, 2))
+            ->setLatitude(floatval($stationData['station_latitude_d']))
+            ->setLongitude(floatval($stationData['station_longitude_d']));
 
         return $station;
     }
 
     protected function createStation(array $stationData): Station
     {
-        $station = new Station($stationData[5], $stationData[4]);
+        $station = new Station(floatval($stationData['station_latitude_d']), floatval($stationData['station_longitude_d']));
 
         $this->mergeStation($station, $stationData);
 
@@ -88,6 +94,7 @@ class StationLoader
 
     protected function stationExists(string $stationCode, array $stationData): bool
     {
+        echo  array_key_exists($stationCode, $stationData);
         return array_key_exists($stationCode, $stationData);
     }
 
