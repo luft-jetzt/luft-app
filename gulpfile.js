@@ -2,6 +2,7 @@ let gulp = require('gulp');
 let minify = require('gulp-minify');
 let cleanCSS = require('gulp-clean-css');
 let concat = require('gulp-concat');
+let urlAdjuster = require('gulp-css-replace-url');
 
 gulp.task('copy-images', function () {
     return gulp.src('node_modules/leaflet/dist/images/*')
@@ -27,6 +28,9 @@ gulp.task('compress-css', function () {
         ])
         .pipe(cleanCSS())
         .pipe(concat('luft.min.css'))
+        .pipe(urlAdjuster({
+            replace: ['images/','/img/leaflet/'],
+        }))
         .pipe(gulp.dest('public/css/'));
 });
 
