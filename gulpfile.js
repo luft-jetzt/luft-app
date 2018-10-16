@@ -4,6 +4,15 @@ let cleanCSS = require('gulp-clean-css');
 let concat = require('gulp-concat');
 let urlAdjuster = require('gulp-css-replace-url');
 
+let sass = require('gulp-sass');
+sass.compiler = require('node-sass');
+
+gulp.task('sass', function () {
+    return gulp.src('assets/scss/*.scss')
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest('assets/css'));
+});
+
 gulp.task('copy-images', function () {
     return gulp.src('node_modules/leaflet/dist/images/*')
         .pipe(gulp.dest('public/img/leaflet/'));
@@ -19,12 +28,12 @@ gulp.task('copy-fonts', function () {
         .pipe(gulp.dest('public/fonts'));
 });
 
-gulp.task('compress-css', function () {
+gulp.task('compress-css', ['sass'], function () {
     return gulp.src([
+            'assets/css/*',
             'node_modules/leaflet/dist/leaflet.css',
             'node_modules/bootstrap/dist/css/bootstrap.css',
             'node_modules/font-awesome/css/font-awesome.css',
-            'assets/css/*/*',
         ])
         .pipe(cleanCSS())
         .pipe(concat('luft.min.css'))
