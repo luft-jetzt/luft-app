@@ -74,6 +74,7 @@ class StationLoader
     {
         /** @var StationRepository $stationRepository */
         $stationRepository = $this->doctrine->getRepository(Station::class);
+
         return $stationRepository->findAllIndexed();
     }
 
@@ -93,11 +94,25 @@ class StationLoader
         $station
             ->setTitle($stationData['station_name'])
             ->setStationCode($stationData['station_code'])
-            ->setStateCode(substr($stationData['station_code'], 2, 2))
+            ->setStateCode($this->parseStateCode($stationData['station_code']))
             ->setLatitude(floatval($stationData['station_latitude_d']))
-            ->setLongitude(floatval($stationData['station_longitude_d']));
+            ->setLongitude(floatval($stationData['station_longitude_d']))
+            ->setFromDate($this->parseDate($stationData['station_start_date']))
+            ->setUntilDate($this->parseDate($stationData['station_end_date']));
 
         return $station;
+    }
+
+    protected function parseStateCode(string $stationCode): string
+    {
+        return substr($stationCode, 2, 2);
+    }
+
+    protected function parseDate(string $dateString): \DateTime
+    {
+        sscanf($dateString,'%4d%2d%2d', $year, $month, $day);
+
+        return new \DateTime(sprintf('%d-%d-%d', $year, $month, $day));
     }
 
     protected function createStation(array $stationData): Station
