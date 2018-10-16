@@ -1,13 +1,36 @@
 {
-    "devDependencies": {
-        "@symfony/webpack-encore": "^0.17.0"
-    },
-    "license": "UNLICENSED",
-    "private": true,
-    "scripts": {
-        "dev-server": "encore dev-server",
-        "dev": "encore dev",
-        "watch": "encore dev --watch",
-        "build": "encore production"
-    }
+  "name": "luft",
+  "version": "1.0.0",
+  "description": "Show pollution data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/calderacc/luft"
+  },
+  "keywords": [],
+  "author": "Malte Hübner <maltehuebner@gmx.org>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/calderacc/luft/issues"
+  },
+  "homepage": "https://github.com/calderacc/luft",
+  "dependencies": {
+    "bootstrap": "^4.1.3",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.3.1",
+    "leaflet": "^1.0",
+    "popper.js": "^1.14.4"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^2.0.4",
+    "gulp-concat": "^2.6.1",
+    "gulp-css-replace-url": "^0.2.4",
+    "gulp-minify": "^3.1.0",
+    "gulp-sass": "^4.0.2",
+    "node-sass": "^4.9.4"
+  }
 }

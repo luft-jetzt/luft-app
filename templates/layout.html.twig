@@ -16,10 +16,7 @@
         {{ sonata_seo_link_canonical() }}
         {{ sonata_seo_lang_alternates() }}
 
-        <link rel="stylesheet" href="{{ asset('/css/bootstrap/bootstrap.min.css') }}" />
-        <link rel="stylesheet" href="{{ asset('/css/leaflet/leaflet.css') }}" />
-        <link rel="stylesheet" href="{{ asset('/css/luft.css') }}" />
-        <link rel="stylesheet" href="{{ asset('/css/fontawesome/font-awesome.css') }}" />
+        <link rel="stylesheet" href="{{ asset('/css/luft.min.css') }}" />
     </head>
     <body>
         <a href="http://sqi.be/ed94a">
@@ -31,9 +28,9 @@
 
         {% include 'Includes/footer.html.twig' %}
 
-        <script src="{{ asset('/js/jquery/jquery-3.3.1.slim.min.js') }}"></script>
-        <script src="{{ asset('/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
-        <script src="{{ asset('/js/leaflet/leaflet.js') }}"></script>
+        <script src="{{ asset('/js/jquery.slim-min.js') }}"></script>
+        <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('/js/leaflet-min.js') }}"></script>
 
         {% block scripts %}{% endblock %}
 
