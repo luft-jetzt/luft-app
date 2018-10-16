@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class StationCommand extends Command
@@ -26,11 +27,16 @@ class StationCommand extends Command
     {
         $this
             ->setName('luft:station')
-            ->setDescription('');
+            ->addOption('update', 'u', InputOption::VALUE_NONE, 'Update existing station data')
+            ->setDescription('Fetch station list from Umweltbundesamt');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if ($input->getOption('update')) {
+            $this->stationLoader->setUpdate(true);
+        }
+
         $this->stationLoader->load();
 
         $progressBar = new ProgressBar($output, $this->stationLoader->count());

@@ -25,6 +25,9 @@ class StationLoader
     /** @var Reader $csv */
     protected $csv;
 
+    /** @var bool $update */
+    protected $update = false;
+
     public function __construct(Doctrine $doctrine)
     {
         $this->doctrine = $doctrine;
@@ -48,6 +51,13 @@ class StationLoader
         return $this->csv ? $this->csv->count() : 0;
     }
 
+    public function setUpdate(bool $update = false): StationLoader
+    {
+        $this->update = $update;
+
+        return $this;
+    }
+
     public function process(callable $callback): StationLoader
     {
         /** @var EntityManager $em */
@@ -62,6 +72,10 @@ class StationLoader
                 $em->merge($station);
 
                 $this->newStationList[] = $station;
+            } elseif ($this->update === true) {
+                $station = $this->existingStationList[$stationData['station_code']];
+
+                $station = $this->mergeStation($station, $stationData);
             }
         }
 
