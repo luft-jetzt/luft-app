@@ -34,23 +34,21 @@ class StationCommand extends Command
 
         $output->writeln('New stations');
 
-        $table = new Table($output);
-        $table->setHeaders(['stationCode', 'stateCode', 'title', 'latitude', 'longitude']);
-
-        foreach ($this->stationLoader->getNewStationList() as $newStation) {
-            $this->addStationRow($table, $newStation);
-        }
-
-        $table->render();
+        $this->printTable($output, $this->stationLoader->getNewStationList());
 
         $output->writeln('');
         $output->writeln('Existing stations');
 
+        $this->printTable($output, $this->stationLoader->getExistingStationList());
+    }
+
+    protected function printTable(OutputInterface $output, array $stationList): void
+    {
         $table = new Table($output);
         $table->setHeaders(['stationCode', 'stateCode', 'title', 'latitude', 'longitude']);
 
-        foreach ($this->stationLoader->getExistingStationList() as $existingStation) {
-            $this->addStationRow($table, $existingStation);
+        foreach ($stationList as $station) {
+            $this->addStationRow($table, $station);
         }
 
         $table->render();
