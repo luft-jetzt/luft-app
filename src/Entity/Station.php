@@ -65,6 +65,18 @@ class Station extends Coord
      */
     protected $city;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     * @JMS\Expose()
+     */
+    protected $fromDate;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     * @JMS\Expose()
+     */
+    protected $untilDate;
+
     public function __construct(float $latitude, float $longitude)
     {
         $this->twitterSchedules = new ArrayCollection();
@@ -183,5 +195,29 @@ class Station extends Coord
     public function getCity(): ?City
     {
         return $this->city;
+    }
+
+    public function getFromDate(): ?\DateTime
+    {
+        return $this->fromDate;
+    }
+
+    public function setFromDate(\DateTime $fromDate): Station
+    {
+        $this->fromDate = $fromDate;
+
+        return $this;
+    }
+
+    public function getUntilDate(): ?\DateTime
+    {
+        return $this->untilDate;
+    }
+
+    public function setUntilDate(\DateTime $untilDate): Station
+    {
+        $this->untilDate = $untilDate;
+
+        return $this;
     }
 }
