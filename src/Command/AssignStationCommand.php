@@ -11,6 +11,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
 
 class AssignStationCommand extends Command
 {
@@ -60,11 +61,17 @@ class AssignStationCommand extends Command
                 $question = new ConfirmationQuestion(sprintf('Create new city <comment>%s</comment> and assign station <info>%s</info>?', $cityName, $station->getStationCode()), false);
 
                 if ($helper->ask($input, $output, $question)) {
+                    $citySlug = strtolower($cityName);
+                    $citySlug = str_replace(' ', '-', $citySlug);
+
+                    $citySlugQuestion = new Question(sprintf('Please propose a city slug for new city <comment>%s</comment>: <comment>[%s]</comment> ', $cityName, $citySlug), $citySlug);
+
+                    $citySlug = $helper->ask($input, $output, $citySlugQuestion);
 
                     $city = new City();
                     $city->setName($cityName)
                         ->setCreatedAt(new \DateTime())
-                        ->setSlug(strtolower($cityName));
+                        ->setSlug($citySlug);
 
                     $this->registry->getManager()->persist($city);
 
