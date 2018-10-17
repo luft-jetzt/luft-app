@@ -41,7 +41,7 @@ abstract class AbstractController extends Controller
 
     protected function getStationListForCity(City $city): array
     {
-        return $this->getDoctrine()->getRepository(Station::class)->findByCity($city);
+        return $this->getDoctrine()->getRepository(Station::class)->findActiveStationsForCity($city);
     }
 
     protected function createBoxListForStationList(PollutionDataFactory $pollutionDataFactory, array $stationList): array
