@@ -131,6 +131,12 @@
             "ref": "370bcf99b04c0dfd0b545745aad622d757af5e1b"
         }
     },
+    "geocoder-php/common-http": {
+        "version": "4.1.0"
+    },
+    "geocoder-php/nominatim-provider": {
+        "version": "5.0.0"
+    },
     "guzzlehttp/guzzle": {
         "version": "6.3.0"
     },
@@ -568,6 +574,9 @@
     },
     "webmozart/assert": {
         "version": "1.3.0"
+    },
+    "willdurand/geocoder": {
+        "version": "4.2.0"
     },
     "willdurand/jsonp-callback-validator": {
         "version": "v1.1.0"
