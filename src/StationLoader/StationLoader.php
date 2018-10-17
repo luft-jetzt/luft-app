@@ -113,7 +113,9 @@ class StationLoader
             ->setLongitude(floatval($stationData['station_longitude_d']))
             ->setFromDate($this->parseDate($stationData['station_start_date']))
             ->setUntilDate($this->parseDate($stationData['station_end_date']))
-            ->setAltitude(intval($stationData['station_altitude']));
+            ->setAltitude(intval($stationData['station_altitude']))
+            ->setStationType(!empty($stationData['type_of_station']) ? $stationData['type_of_station'] : null)
+            ->setAreaType(!empty($stationData['station_type_of_area']) ? $stationData['station_type_of_area'] : null);
 
         return $station;
     }

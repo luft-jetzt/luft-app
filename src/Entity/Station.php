@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Caldera\GeoBasic\Coord\Coord;
+use App\DBAL\Types\StationType;
+use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as JMS;
@@ -82,6 +84,18 @@ class Station extends Coord
      * @JMS\Expose()
      */
     protected $altitude;
+
+    /**
+     * @ORM\Column(type="StationType", nullable=true)
+     * @DoctrineAssert\Enum(entity="App\DBAL\Types\StationType")
+     */
+    protected $stationType;
+
+    /**
+     * @ORM\Column(type="AreaType", nullable=true)
+     * @DoctrineAssert\Enum(entity="App\DBAL\Types\AreaType")
+     */
+    protected $areaType;
 
     public function __construct(float $latitude, float $longitude)
     {
@@ -235,6 +249,30 @@ class Station extends Coord
     public function setAltitude(int $altitude): Station
     {
         $this->altitude = $altitude;
+
+        return $this;
+    }
+
+    public function getStationType(): ?string
+    {
+        return $this->stationType;
+    }
+
+    public function setStationType(string $stationType = null): Station
+    {
+        $this->stationType = $stationType;
+
+        return $this;
+    }
+
+    public function getAreaType(): ?string
+    {
+        return $this->areaType;
+    }
+
+    public function setAreaType(string $areaType = null): Station
+    {
+        $this->areaType = $areaType;
 
         return $this;
     }
