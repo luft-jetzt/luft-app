@@ -77,6 +77,12 @@ class Station extends Coord
      */
     protected $untilDate;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @JMS\Expose()
+     */
+    protected $altitude;
+
     public function __construct(float $latitude, float $longitude)
     {
         $this->twitterSchedules = new ArrayCollection();
@@ -217,6 +223,18 @@ class Station extends Coord
     public function setUntilDate(\DateTime $untilDate): Station
     {
         $this->untilDate = $untilDate;
+
+        return $this;
+    }
+
+    public function getAltitude(): ?int
+    {
+        return $this->altitude;
+    }
+
+    public function setAltitude(int $altitude): Station
+    {
+        $this->altitude = $altitude;
 
         return $this;
     }
