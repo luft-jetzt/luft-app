@@ -61,17 +61,13 @@ class AssignStationCommand extends Command
                 $question = new ConfirmationQuestion(sprintf('Create new city <comment>%s</comment> and assign station <info>%s</info>?', $cityName, $station->getStationCode()), false);
 
                 if ($helper->ask($input, $output, $question)) {
-                    $citySlug = strtolower($cityName);
-                    $citySlug = str_replace(' ', '-', $citySlug);
+                    $citySlug = $this->generateCitySlugByCityName($cityName);
 
                     $citySlugQuestion = new Question(sprintf('Please propose a city slug for new city <comment>%s</comment>: <comment>[%s]</comment> ', $cityName, $citySlug), $citySlug);
 
                     $citySlug = $helper->ask($input, $output, $citySlugQuestion);
 
-                    $city = new City();
-                    $city->setName($cityName)
-                        ->setCreatedAt(new \DateTime())
-                        ->setSlug($citySlug);
+                    $city = $this->createCity($cityName, $citySlug);
 
                     $this->registry->getManager()->persist($city);
 
@@ -96,8 +92,26 @@ class AssignStationCommand extends Command
         return $cityName;
     }
 
+    protected function generateCitySlugByCityName(string $cityName): string
+    {
+        $citySlug = strtolower($cityName);
+        $citySlug = str_replace(' ', '-', $citySlug);
+
+        return $citySlug;
+    }
+
     protected function getCityByName(string $cityName): ?City
     {
         return $this->registry->getRepository(City::class)->findOneByName($cityName);
+    }
+
+    protected function createCity(string $cityName, string $citySlug): City
+    {
+        $city = new City();
+        $city->setName($cityName)
+            ->setCreatedAt(new \DateTime())
+            ->setSlug($citySlug);
+
+        return $city;
     }
 }
