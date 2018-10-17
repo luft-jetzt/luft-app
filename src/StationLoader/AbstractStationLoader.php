@@ -68,7 +68,7 @@ abstract class AbstractStationLoader implements StationLoaderInterface
         $curl = new Curl();
         $curl->get(StationLoaderInterface::SOURCE_URL);
 
-        $csv = Reader::createFromString($curl->response);
+        $csv = Reader::createFromString(utf8_decode($curl->response));
 
         return $csv;
     }
