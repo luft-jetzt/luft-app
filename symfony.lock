@@ -104,6 +104,15 @@
     "fig/link-util": {
         "version": "1.0.0"
     },
+    "fresh/doctrine-enum-bundle": {
+        "version": "6.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "6.0",
+            "ref": "fab86661c13bc12e4f14f706c86af09912d55bfb"
+        }
+    },
     "friendsofsymfony/elastica-bundle": {
         "version": "5.0",
         "recipe": {
@@ -163,6 +172,9 @@
     },
     "jublonet/codebird-php": {
         "version": "3.1.0"
+    },
+    "league/csv": {
+        "version": "9.1.4"
     },
     "maxh/php-nominatim": {
         "version": "1.2.3"
