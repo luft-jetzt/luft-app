@@ -44,7 +44,7 @@ class StationLoader extends AbstractStationLoader
             ->setLatitude(floatval($stationData['station_latitude_d']))
             ->setLongitude(floatval($stationData['station_longitude_d']))
             ->setFromDate($this->parseDate($stationData['station_start_date']))
-            ->setUntilDate($this->parseDate($stationData['station_end_date']))
+            ->setUntilDate(!empty($stationData['station_end_date']) ? $this->parseDate($stationData['station_end_date']) :null)
             ->setAltitude(intval($stationData['station_altitude']))
             ->setStationType(!empty($stationData['type_of_station']) ? $stationData['type_of_station'] : null)
             ->setAreaType(!empty($stationData['station_type_of_area']) ? $stationData['station_type_of_area'] : null);

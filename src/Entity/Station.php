@@ -222,7 +222,7 @@ class Station extends Coord
         return $this->fromDate;
     }
 
-    public function setFromDate(\DateTime $fromDate): Station
+    public function setFromDate(\DateTime $fromDate = null): Station
     {
         $this->fromDate = $fromDate;
 
@@ -234,7 +234,7 @@ class Station extends Coord
         return $this->untilDate;
     }
 
-    public function setUntilDate(\DateTime $untilDate): Station
+    public function setUntilDate(\DateTime $untilDate = null): Station
     {
         $this->untilDate = $untilDate;
 
