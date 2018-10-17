@@ -8,10 +8,8 @@ use Curl\Curl;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use League\Csv\Reader;
 
-abstract class AbstractStationLoader
+abstract class AbstractStationLoader implements StationLoaderInterface
 {
-    const SOURCE_URL = 'https://www.env-it.de/stationen/public/download.do?event=euMetaStation';
-
     /** @var RegistryInterface $registry */
     protected $registry;
 
@@ -32,7 +30,7 @@ abstract class AbstractStationLoader
         $this->registry = $registry;
     }
 
-    public function load(): StationLoader
+    public function load(): StationLoaderInterface
     {
         $this->existingStationList = $this->getExistingStations();
 
@@ -50,7 +48,7 @@ abstract class AbstractStationLoader
         return $this->csv ? $this->csv->count() : 0;
     }
 
-    public function setUpdate(bool $update = false): StationLoader
+    public function setUpdate(bool $update = false): StationLoaderInterface
     {
         $this->update = $update;
 
@@ -68,7 +66,7 @@ abstract class AbstractStationLoader
     protected function fetchStationList(): Reader
     {
         $curl = new Curl();
-        $curl->get(self::SOURCE_URL);
+        $curl->get(StationLoaderInterface::SOURCE_URL);
 
         $csv = Reader::createFromString($curl->response);
 

@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManager;
 
 class StationLoader extends AbstractStationLoader
 {
-    public function process(callable $callback): StationLoader
+    public function process(callable $callback): StationLoaderInterface
     {
         /** @var EntityManager $em */
         $em = $this->registry->getManager();
