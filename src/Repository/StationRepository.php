@@ -16,5 +16,14 @@ class StationRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findWithoutCity(): array
+    {
+        $qb = $this->createQueryBuilder('s');
+
+        $qb->where($qb->expr()->isNull('s.city'));
+
+        return $qb->getQuery()->getResult();
+    }
 }
 
