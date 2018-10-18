@@ -47,7 +47,7 @@ class DisplayController extends AbstractController
         $boxList = $pollutionDataFactory->setCoord($coord)->createDecoratedBoxList();
 
         if (0 === count($boxList)) {
-            return $this->noStationAction($request, $stationFinder, $coord);
+            return $this->noStationAction();
         }
 
         $cityName = $this->getCityNameForCoord($coord);
@@ -63,17 +63,9 @@ class DisplayController extends AbstractController
         ]);
     }
 
-    public function noStationAction(Request $request, StationFinderInterface $stationFinder, Coord $coord = null): Response
+    public function noStationAction(): Response
     {
-        if (!$coord) {
-            $coord = $this->getCoordByRequest($request);
-        }
-
-        $stationList = $stationFinder->setCoord($coord)->findNearestStations(1000.0);
-
-        return $this->render('Default/nostations.html.twig', [
-            'stationList' => $stationList,
-        ]);
+        return $this->render('Default/no_stations.html.twig');
     }
 
     protected function getCityNameForCoord(Coord $coord): ?string
