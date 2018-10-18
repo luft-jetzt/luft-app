@@ -26,7 +26,7 @@ class StationCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('luft:station')
+            ->setName('luft:load-station')
             ->addOption('update', 'u', InputOption::VALUE_NONE, 'Update existing station data')
             ->setDescription('Fetch station list from Umweltbundesamt');
     }
