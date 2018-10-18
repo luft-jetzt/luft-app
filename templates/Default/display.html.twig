@@ -2,6 +2,24 @@
 
 {% block content %}
 <div class="container">
+    <div class="row mb-3">
+        <div class="col-12 text-center">
+            <h3>
+                Aktuelle Luftmesswerte aus {{ cityName }}
+            </h3>
+
+            <p class="lead">
+                In deiner Umgebung wurden die folgenden Messwerte ermittelt:
+            </p>
+
+            {% if city %}
+                <a href="{{ path('show_city', { citySlug: city.slug }) }}" class="btn btn-primary" title="Zeige weitere Schadstoff-Messwerte aus {{ city.name }}">
+                    Weitere Messwerte aus {{ city.name }}
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
     <div class="row">
         {% for box in boxList %}
         {% include 'Default/_box.html.twig' with { 'box': box, 'showStationTitle': true, 'linkToStation': true } %}

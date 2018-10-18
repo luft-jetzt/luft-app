@@ -11,11 +11,24 @@
                 Messstation {{ station.stationCode }}
             </h4>
             <h6 class="card-sutitle text-muted">
+                {% if not linkToStation is defined and station.city %}
+                <a href="{{ path('show_city', { citySlug: station.city.slug }) }}" title="Übersicht über {{ station.city.name }}">
+                    {{ station.title }}
+                </a>
+                {% else %}
                 {{ station.title }}
+                {% endif %}
             </h6>
+
             {% if description is defined %}
-            <p class="card-text mt-2">
+            <p class="card-text">
                 {{ description }}
+            </p>
+            {% endif %}
+
+            {% if station.stationType and station.areaType %}
+            <p class="card-text text-muted">
+                Stationstyp: {{ station.stationType|readable_enum|trans({}, 'messages', 'de') }}, {{ station.areaType|readable_enum|trans({}, 'messages', 'de') }}
             </p>
             {% endif %}
         </div>

@@ -1,0 +1,9 @@
+station:
+  area:
+    urban: städtisch
+    suburban: vorstädtisch
+    rural: ländlich
+  type:
+    background: Hintergrundmessung
+    traffic: Verkehrsmessung
+    industrial: Industriemessung

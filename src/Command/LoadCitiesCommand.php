@@ -24,7 +24,7 @@ class LoadCitiesCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('luft:zip:load')
+            ->setName('luft:load-cities')
             ->setDescription('Load zip codes');
     }
 
