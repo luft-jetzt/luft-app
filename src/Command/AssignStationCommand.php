@@ -4,8 +4,7 @@ namespace App\Command;
 
 use App\Entity\City;
 use App\Entity\Station;
-use Doctrine\ORM\EntityManagerInterface;
-use Geocoder\Query\ReverseQuery;
+use App\Geocoding\CityGuesserInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,17 +14,16 @@ use Symfony\Component\Console\Question\Question;
 
 class AssignStationCommand extends Command
 {
-    const LOCALE = 'de';
-    const NOMINATIM_URL = 'https://nominatim.openstreetmap.org';
-    const USER_AGENT = 'Luft.jetzt geocoder';
-    const REFERER = 'https://luft.jetzt/';
-
     /** @var RegistryInterface $registry */
     protected $registry;
 
-    public function __construct(?string $name = null, RegistryInterface $registry)
+    /** @var CityGuesserInterface $cityGuesser */
+    protected $cityGuesser;
+
+    public function __construct(?string $name = null, RegistryInterface $registry, CityGuesserInterface $cityGuesser)
     {
         $this->registry = $registry;
+        $this->cityGuesser = $cityGuesser;
 
         parent::__construct($name);
     }
@@ -45,7 +43,7 @@ class AssignStationCommand extends Command
         foreach ($stationList as $station) {
             $output->writeln(sprintf('Station <info>%s</info>: <comment>%s</comment>', $station->getStationCode(), $station->getTitle()));
 
-            $cityName = $this->determineCityName($station);
+            $cityName = $this->cityGuesser->guess($station);
 
             $output->writeln(sprintf('Proposed city by coords <info>%f</info>, <info>%f</info>: <comment>%s</comment>', $station->getLatitude(), $station->getLongitude(), $cityName));
 
@@ -77,19 +75,6 @@ class AssignStationCommand extends Command
 
             $this->registry->getManager()->flush();
         }
-    }
-
-    protected function determineCityName(Station $station): ?string
-    {
-        $httpClient = new \Http\Adapter\Guzzle6\Client();
-        $provider = new \Geocoder\Provider\Nominatim\Nominatim($httpClient, self::NOMINATIM_URL, self::USER_AGENT, self::REFERER);
-        $geocoder = new \Geocoder\StatefulGeocoder($provider, self::LOCALE);
-
-        $result = $geocoder->reverseQuery(ReverseQuery::fromCoordinates($station->getLatitude(), $station->getLongitude()));
-
-        $cityName = $result->first()->getLocality();
-
-        return $cityName;
     }
 
     protected function generateCitySlugByCityName(string $cityName): string
