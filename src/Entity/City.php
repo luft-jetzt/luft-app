@@ -47,6 +47,12 @@ class City
     protected $description;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     * @JMS\Expose()
+     */
+    protected $fahrverboteSlug;
+
+    /**
      * @ORM\OneToMany(targetEntity="TwitterSchedule", mappedBy="city")
      */
     protected $twitterSchedules;
@@ -185,6 +191,23 @@ class City
     public function getUser(): ?User
     {
         return $this->user;
+    }
+
+    public function setFahrverboteSlug(string $fahrverboteSlug): City
+    {
+        $this->fahrverboteSlug = $fahrverboteSlug;
+
+        return $this;
+    }
+
+    public function getFahrverboteSlug(): ?string
+    {
+        return $this->fahrverboteSlug;
+    }
+
+    public function hasFahrverbote(): bool
+    {
+        return $this->fahrverboteSlug !== null;
     }
 
     public function __toString(): ?string
