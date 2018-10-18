@@ -11,7 +11,13 @@
                 Messstation {{ station.stationCode }}
             </h4>
             <h6 class="card-sutitle text-muted">
+                {% if not linkToStation is defined and station.city %}
+                <a href="{{ path('show_city', { citySlug: station.city.slug }) }}" title="Übersicht über {{ station.city.name }}">
+                    {{ station.title }}
+                </a>
+                {% else %}
                 {{ station.title }}
+                {% endif %}
             </h6>
 
             {% if description is defined %}
