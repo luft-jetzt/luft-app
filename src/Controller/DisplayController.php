@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Station;
+use App\Geocoding\CityGuesserInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\Pollution\StationFinder\StationFinderInterface;
 use App\SeoPage\SeoPage;
@@ -36,7 +37,7 @@ class DisplayController extends AbstractController
         ]);
     }
 
-    public function indexAction(Request $request, SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory, StationFinderInterface $stationFinder): Response
+    public function indexAction(Request $request, SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory, CityGuesserInterface $cityGuesser): Response
     {
         $coord = $this->getCoordByRequest($request);
 
@@ -50,9 +51,7 @@ class DisplayController extends AbstractController
             return $this->noStationAction();
         }
 
-        $cityName = $this->getCityNameForCoord($coord);
-
-        if ($cityName) {
+        if ($cityName = $cityGuesser->guess($coord)) {
             $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus %s', $cityName));
         } else {
             $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus deiner Umgebung'));
@@ -66,23 +65,5 @@ class DisplayController extends AbstractController
     public function noStationAction(): Response
     {
         return $this->render('Default/no_stations.html.twig');
-    }
-
-    protected function getCityNameForCoord(Coord $coord): ?string
-    {
-        $url = "http://nominatim.openstreetmap.org/";
-        $nominatim = new Nominatim($url);
-
-        $reverse = $nominatim->newReverse()
-            ->latlon($coord->getLatitude(), $coord->getLongitude())
-        ;
-
-        try {
-            $result = $nominatim->find($reverse);
-
-            return $result['address']['city'];
-        } catch (\Exception $e) {
-            return null;
-        }
     }
 }
