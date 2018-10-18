@@ -65,7 +65,7 @@ class DisplayController extends AbstractController
 
     public function noStationAction(): Response
     {
-        return $this->render('Default/nostations.html.twig');
+        return $this->render('Default/no_stations.html.twig');
     }
 
     protected function getCityNameForCoord(Coord $coord): ?string
