@@ -51,7 +51,9 @@ class DisplayController extends AbstractController
             return $this->noStationAction();
         }
 
-        if ($cityName = $cityGuesser->guess($coord)) {
+        $cityName = $cityGuesser->guess($coord);
+
+        if ($cityName) {
             $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus %s', $cityName));
         } else {
             $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus deiner Umgebung'));
@@ -59,6 +61,7 @@ class DisplayController extends AbstractController
 
         return $this->render('Default/display.html.twig', [
             'boxList' => $boxList,
+            'cityName' => $cityName,
         ]);
     }
 

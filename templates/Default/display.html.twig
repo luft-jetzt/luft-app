@@ -2,6 +2,14 @@
 
 {% block content %}
 <div class="container">
+    <div class="row mb-2">
+        <div class="col-12">
+            <h3 class="text-center">
+                Aktuelle Luftmesswerte aus {{ cityName }}
+            </h3>
+        </div>
+    </div>
+
     <div class="row">
         {% for box in boxList %}
         {% include 'Default/_box.html.twig' with { 'box': box, 'showStationTitle': true, 'linkToStation': true } %}
