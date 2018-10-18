@@ -2,11 +2,21 @@
 
 {% block content %}
 <div class="container">
-    <div class="row mb-2">
-        <div class="col-12">
-            <h3 class="text-center">
+    <div class="row mb-3">
+        <div class="col-12 text-center">
+            <h3>
                 Aktuelle Luftmesswerte aus {{ cityName }}
             </h3>
+
+            <p class="lead">
+                In deiner Umgebung wurden die folgenden Messwerte ermittelt:
+            </p>
+
+            {% if city %}
+                <a href="{{ path('show_city', { citySlug: city.slug }) }}" class="btn btn-primary" title="Zeige weitere Schadstoff-Messwerte aus {{ city.name }}">
+                    Weitere Messwerte aus {{ city.name }}
+                </a>
+            {% endif %}
         </div>
     </div>
 

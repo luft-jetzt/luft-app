@@ -2,13 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\City;
 use App\Entity\Station;
 use App\Geocoding\CityGuesserInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
-use App\Pollution\StationFinder\StationFinderInterface;
 use App\SeoPage\SeoPage;
-use Caldera\GeoBasic\Coord\Coord;
-use maxh\Nominatim\Nominatim;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -62,11 +60,17 @@ class DisplayController extends AbstractController
         return $this->render('Default/display.html.twig', [
             'boxList' => $boxList,
             'cityName' => $cityName,
+            'city' => $this->findCityForName($cityName),
         ]);
     }
 
     public function noStationAction(): Response
     {
         return $this->render('Default/no_stations.html.twig');
+    }
+
+    protected function findCityForName(string $cityName): ?City
+    {
+        return $this->getDoctrine()->getRepository(City::class)->findOneByName($cityName);
     }
 }
