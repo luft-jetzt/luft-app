@@ -13,9 +13,16 @@
             <h6 class="card-sutitle text-muted">
                 {{ station.title }}
             </h6>
+
             {% if description is defined %}
-            <p class="card-text mt-2">
+            <p class="card-text">
                 {{ description }}
+            </p>
+            {% endif %}
+
+            {% if station.stationType and station.areaType %}
+            <p class="card-text text-muted">
+                Stationstyp: {{ station.stationType|readable_enum|trans({}, 'messages', 'de') }}, {{ station.areaType|readable_enum|trans({}, 'messages', 'de') }}
             </p>
             {% endif %}
         </div>
