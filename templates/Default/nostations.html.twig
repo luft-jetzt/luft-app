@@ -5,18 +5,10 @@
     <div class="row">
         <div class="col-12">
             <div class="alert alert-info">
-                Leider sind in deinem näheren Umfeld keine Messstationen zur Luftqualität im Betrieb. Du kannst aber aus der folgenden Liste Stationen in deiner Region einsehen.
+                Leider sind in deinem näheren Umfeld keine Messstationen zur Luftqualität im Betrieb.
             </div>
         </div>
     </div>
-
-    {% for station in stationList %}
-    <div class="row">
-        <div class="col-12">
-            {% include 'AppBundle:Default:_station.html.twig' with { 'station': station, linkToStation: true } %}
-        </div>
-    </div>
-    {% endfor %}
 </div>
 {% endblock %}
 
