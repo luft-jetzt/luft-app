@@ -8,6 +8,9 @@
     "clue/stream-filter": {
         "version": "v1.4.0"
     },
+    "cocur/slugify": {
+        "version": "v3.1"
+    },
     "composer/installers": {
         "version": "v1.5.0"
     },
@@ -179,6 +182,12 @@
     "jublonet/codebird-php": {
         "version": "3.1.0"
     },
+    "knplabs/knp-menu": {
+        "version": "2.3.0"
+    },
+    "knplabs/knp-menu-bundle": {
+        "version": "v2.2.1"
+    },
     "league/csv": {
         "version": "9.1.4"
     },
@@ -298,6 +307,33 @@
             "version": "4.0",
             "ref": "aaddfdf43cdecd4cf91f992052d76c2cadc04543"
         }
+    },
+    "sonata-project/admin-bundle": {
+        "version": "3.31",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.31",
+            "ref": "0e5931df1732e3dccfba42a20853049e5e9db6ae"
+        }
+    },
+    "sonata-project/block-bundle": {
+        "version": "3.12.1"
+    },
+    "sonata-project/cache": {
+        "version": "2.0.1"
+    },
+    "sonata-project/core-bundle": {
+        "version": "3.9",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.9",
+            "ref": "2f69bd1995730b73a5211a9707622fb25a925df7"
+        }
+    },
+    "sonata-project/datagrid-bundle": {
+        "version": "2.4.0"
     },
     "sonata-project/exporter": {
         "version": "1.8.0"
@@ -488,6 +524,9 @@
     "symfony/security": {
         "version": "v4.0.6"
     },
+    "symfony/security-acl": {
+        "version": "v3.0.1"
+    },
     "symfony/security-bundle": {
         "version": "3.3",
         "recipe": {
@@ -568,6 +607,15 @@
     },
     "symfony/yaml": {
         "version": "v4.0.6"
+    },
+    "twig/extensions": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "ddb2e0a77773b7fd75d8d649545f174e664500ab"
+        }
     },
     "twig/twig": {
         "version": "v2.4.6"

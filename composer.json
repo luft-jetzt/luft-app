@@ -23,6 +23,7 @@
         "php-http/httplug-bundle": "^1.9",
         "php-http/message": "^1.7",
         "sensio/framework-extra-bundle": "^5.1",
+        "sonata-project/admin-bundle": "^3.40",
         "sonata-project/seo-bundle": "^2.5",
         "symfony/apache-pack": "^1.0",
         "symfony/asset": "^4.0",
