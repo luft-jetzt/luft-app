@@ -58,7 +58,7 @@ class City
     protected $twitterSchedules;
 
     /**
-     * @ORM\OneToMany(targetEntity="City", mappedBy="city")
+     * @ORM\OneToMany(targetEntity="Station", mappedBy="city")
      */
     protected $stations;
 
