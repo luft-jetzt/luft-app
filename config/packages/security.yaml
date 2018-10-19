@@ -5,8 +5,6 @@ security:
                 class: AppBundle:User
                 property: username
 
-    # ...
-
     encoders:
         AppBundle\Entity\User:
             algorithm: bcrypt
