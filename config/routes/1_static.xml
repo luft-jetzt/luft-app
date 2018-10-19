@@ -14,7 +14,7 @@
         <default key="template">Static/impress.html.twig</default>
     </route>
 
-    <route id="impress" path="/grenzwerte">
+    <route id="limits" path="/grenzwerte">
         <default key="_controller">Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction</default>
         <default key="template">Static/limits.html.twig</default>
     </route>
