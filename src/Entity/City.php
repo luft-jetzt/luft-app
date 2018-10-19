@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\CityRepository")
  * @ORM\Table(name="city")
  * @JMS\ExclusionPolicy("ALL")
  */
@@ -58,7 +58,7 @@ class City
     protected $twitterSchedules;
 
     /**
-     * @ORM\OneToMany(targetEntity="City", mappedBy="city")
+     * @ORM\OneToMany(targetEntity="Station", mappedBy="city")
      */
     protected $stations;
 
