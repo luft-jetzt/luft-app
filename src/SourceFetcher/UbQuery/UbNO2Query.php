@@ -1,13 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace AppBundle\SourceFetcher\Query\UbQuery;
+namespace App\SourceFetcher\Query\UbQuery;
 
-class UbCOQuery extends AbstractUbQuery
+class UbNO2Query extends AbstractUbQuery
 {
     public function __construct(\DateTimeInterface $datetime)
     {
-        $this->pollutant = ['CO'];
-        $this->scope = ['8SMW'];
+        $this->pollutant = ['NO2'];
+        $this->scope = ['1SMW'];
         $this->group = ['station'];
 
         $to = $datetime->format('U');

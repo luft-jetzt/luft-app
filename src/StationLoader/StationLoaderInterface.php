@@ -1,6 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace AppBundle\StationLoader;
+namespace App\StationLoader;
 
 interface StationLoaderInterface
 {

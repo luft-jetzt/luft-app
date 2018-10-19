@@ -1,6 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace AppBundle\StationLoader;
+namespace App\StationLoader;
 
 use AppBundle\Entity\Station;
 use Curl\Curl;

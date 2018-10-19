@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace AppBundle\SourceFetcher\Parser;
+namespace App\SourceFetcher\Parser;
 
-use AppBundle\SourceFetcher\Query\QueryInterface;
+use App\SourceFetcher\Query\QueryInterface;
 
 class LdParser implements ParserInterface
 {
