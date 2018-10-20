@@ -36,10 +36,10 @@ gulp.task('compress-css', ['sass'], function () {
             'node_modules/font-awesome/css/font-awesome.css',
         ])
         .pipe(cleanCSS())
-        .pipe(concat('luft.min.css'))
         .pipe(urlAdjuster({
             replace: ['images/','/img/leaflet/'],
         }))
+        .pipe(concat('luft.min.css'))
         .pipe(gulp.dest('public/css/'));
 });
 
