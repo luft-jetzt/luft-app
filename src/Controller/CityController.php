@@ -12,11 +12,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class CityController extends AbstractController
 {
-    public function showAction(SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory, string $citySlug): Response
+    public function showAction(SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory, string $citySlug, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
     {
         /** @var City $city */
         $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
@@ -27,8 +29,11 @@ class CityController extends AbstractController
 
         $seoPage
             ->setTitle(sprintf('Luft in %s', $city->getName()))
-            ->setDescription(sprintf('Aktuelle Schadstoff- und Luftmesswerte aus %s', $city->getName()))
-        ;
+            ->setDescription(sprintf('Aktuelle Schadstoff- und Luftmesswerte aus %s', $city->getName()));
+
+        $breadcrumbs
+            ->addItem('Luft', $router->generate('display'))
+            ->addItem('Hamburg', $router->generate('show_city', ['citySlug' => $city->getSlug()]));
 
         $stationList = $this->getStationListForCity($city);
         $stationsBoxList = $this->createBoxListForStationList($pollutionDataFactory, $stationList);

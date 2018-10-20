@@ -9,10 +9,12 @@ use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
+use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class DisplayController extends AbstractController
 {
-    public function stationAction(SeoPage $seoPage, string $stationCode, PollutionDataFactory $pollutionDataFactory): Response
+    public function stationAction(SeoPage $seoPage, string $stationCode, PollutionDataFactory $pollutionDataFactory, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
     {
         /** @var Station $station */
         $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
@@ -24,8 +26,17 @@ class DisplayController extends AbstractController
         $boxList = $pollutionDataFactory->setCoord($station)->createDecoratedBoxList();
 
         if ($station->getCity()) {
+            $breadcrumbs
+                ->addItem('Luft', $router->generate('display'))
+                ->addItem('Hamburg', $router->generate('show_city', ['citySlug' => $station->getCity()->getSlug()]))
+                ->addItem(sprintf('Station %s', $station->getStationCode()));
+
             $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s in %s', $station->getStationCode(), $station->getCity()->getName()));
         } else {
+            $breadcrumbs
+                ->addItem('Luft')
+                ->addItem(sprintf('Station %s', $station->getStationCode()));
+
             $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s', $station->getStationCode()));
         }
 
@@ -35,7 +46,7 @@ class DisplayController extends AbstractController
         ]);
     }
 
-    public function indexAction(Request $request, SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory, CityGuesserInterface $cityGuesser): Response
+    public function indexAction(Request $request, SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory, CityGuesserInterface $cityGuesser, Breadcrumbs $breadcrumbs): Response
     {
         $coord = $this->getCoordByRequest($request);
 

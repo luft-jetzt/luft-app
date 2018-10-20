@@ -24,6 +24,8 @@
         </a>
         {% include 'Includes/header.html.twig' %}
 
+        {{ wo_render_breadcrumbs() }}
+
         {% block content %}{% endblock %}
 
         {% include 'Includes/footer.html.twig' %}
