@@ -32,7 +32,9 @@
     {% endif %}
             <div class="card-body {{ levelClass }} text-white text-center">
                 <div class="float-right">
-                    <a href="{{ path('limits') }}" class="btn btn-outline-secondary">i</a>
+                    <a href="{{ path('limits') }}#{{ box.pollutant.identifier }}" class="btn btn-secondary">
+                        <i class="fa fa-info-circle"></i>
+                    </a>
                 </div>
                 <h4 class="card-title">
                     {{ box.data.value }} {{ box.pollutant.unitHtml|raw }}
