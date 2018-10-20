@@ -16,4 +16,11 @@ class TemplateController extends AbstractController
             ]
         );
     }
+
+    public function staticAction(string $templateName): Response
+    {
+        $templateFilename = sprintf('Static/%s.html.twig', $templateName);
+
+        return $this->render($templateFilename);
+    }
 }
