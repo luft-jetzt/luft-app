@@ -31,6 +31,9 @@
         <div class="card card-inverse mb-2">
     {% endif %}
             <div class="card-body {{ levelClass }} text-white text-center">
+                <div class="float-right">
+                    <a href="{{ path('limits') }}" class="btn btn-outline-secondary">i</a>
+                </div>
                 <h4 class="card-title">
                     {{ box.data.value }} {{ box.pollutant.unitHtml|raw }}
                 </h4>
