@@ -28,7 +28,7 @@ class DisplayController extends AbstractController
         if ($station->getCity()) {
             $breadcrumbs
                 ->addItem('Luft', $router->generate('display'))
-                ->addItem('Hamburg', $router->generate('show_city', ['citySlug' => $station->getCity()->getSlug()]))
+                ->addItem($station->getCity()->getName(), $router->generate('show_city', ['citySlug' => $station->getCity()->getSlug()]))
                 ->addItem(sprintf('Station %s', $station->getStationCode()));
 
             $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s in %s', $station->getStationCode(), $station->getCity()->getName()));

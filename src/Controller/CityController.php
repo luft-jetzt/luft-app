@@ -33,7 +33,7 @@ class CityController extends AbstractController
 
         $breadcrumbs
             ->addItem('Luft', $router->generate('display'))
-            ->addItem('Hamburg', $router->generate('show_city', ['citySlug' => $city->getSlug()]));
+            ->addItem($city->getName(), $router->generate('show_city', ['citySlug' => $city->getSlug()]));
 
         $stationList = $this->getStationListForCity($city);
         $stationsBoxList = $this->createBoxListForStationList($pollutionDataFactory, $stationList);
