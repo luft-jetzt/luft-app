@@ -28,17 +28,21 @@ gulp.task('copy-fonts', function () {
         .pipe(gulp.dest('public/fonts'));
 });
 
-gulp.task('compress-css', ['sass'], function () {
+gulp.task('leaflet-css', [], function() {
+   return gulp.src('node_modules/leaflet/dist/leaflet.css')
+       .pipe(urlAdjuster({
+           replace: ['images/','/img/leaflet/'],
+       }))
+       .pipe(gulp.dest('assets/css'));
+});
+
+gulp.task('compress-css', ['leaflet-css', 'sass'], function () {
     return gulp.src([
-            'assets/css/*',
-            'node_modules/leaflet/dist/leaflet.css',
             'node_modules/bootstrap/dist/css/bootstrap.css',
             'node_modules/font-awesome/css/font-awesome.css',
+            'assets/css/*',
         ])
         .pipe(cleanCSS())
-        .pipe(urlAdjuster({
-            replace: ['images/','/img/leaflet/'],
-        }))
         .pipe(concat('luft.min.css'))
         .pipe(gulp.dest('public/css/'));
 });
