@@ -39,19 +39,19 @@
     {% endif %}
 
     <div class="card-body {{ levelClass }} text-white text-center">
-        {% if stationLink %}<a href="{{ path('station', { 'stationCode': box.station.stationCode }) }}" class="no-underline text-white">{% endif %}
+        {% if stationLink %}<a href="{{ path('station', { 'stationCode': box.station.stationCode }) }}" class="no-underline text-white" title="Weitere Luftmesswerte der Station {{ box.station.stationCode }}{% if box.station.city %} aus {{ box.station.city.name }}{% endif %}">{% endif %}
         <h4 class="card-title">
             {{ box.data.value }} {{ box.pollutant.unitHtml|raw }}
         </h4>
         {% if stationLink %}</a>{% endif %}
 
         <p class="card-text">
-            <a href="{{ path('limits') }}#{{ box.pollutant.identifier }}" class="btn btn-sm text-white">
+            <a href="{{ path('limits') }}#{{ box.pollutant.identifier }}" class="btn btn-sm text-white" title="Weitere Informationen über den Luftschadstoff {{ box.pollutant.name }}">
                 <i class="fa fa-info-circle"></i> {{ box.pollutant.name }}
             </a>
         </p>
 
-        {% if stationLink %}<a href="{{ path('station', { 'stationCode': box.station.stationCode }) }}" class="no-underline text-white">{% endif %}
+        {% if stationLink %}<a href="{{ path('station', { 'stationCode': box.station.stationCode }) }}" class="no-underline text-white" title="Weitere Luftmesswerte der Station {{ box.station.stationCode }}{% if box.station.city %} aus {{ box.station.city.name }}{% endif %}">{% endif %}
 
         <p class="card-text">
         {% if stationTitle %}
