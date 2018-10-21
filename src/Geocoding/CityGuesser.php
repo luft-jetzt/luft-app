@@ -18,10 +18,10 @@ class CityGuesser extends AbstractGeocoding implements CityGuesserInterface
     {
         $result = $this->geocoder->reverseQuery(ReverseQuery::fromCoordinates($coord->getLatitude(), $coord->getLongitude()));
 
-        if (!$result || !$result->first() || !$result->first()->getLocality()) {
+        if (!$result || !$result->first() || (!$result->first()->getLocality() && !$result->first()->getSubLocality())) {
             return null;
         }
 
-        return $result->first()->getLocality();
+        return $result->first()->getLocality() ?? $result->first()->getSubLocality();
     }
 }

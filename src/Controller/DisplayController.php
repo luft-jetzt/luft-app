@@ -53,15 +53,17 @@ class DisplayController extends AbstractController
 
         if ($cityName) {
             $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus %s', $cityName));
+            $city = $this->findCityForName($cityName);
         } else {
             $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus deiner Umgebung'));
+            $city = null;
         }
 
         return $this->render('Default/display.html.twig', [
             'boxList' => $boxList,
             'cityName' => $cityName,
-            'city' => $this->findCityForName($cityName),
             'coord' => $coord,
+            'city' => $city,
         ]);
     }
 
