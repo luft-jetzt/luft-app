@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\City;
+use App\SeoPage\SeoPage;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,13 +21,17 @@ class TemplateController extends AbstractController
         );
     }
 
-    public function staticAction(string $templateName, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
+    public function staticAction(string $templateName, Breadcrumbs $breadcrumbs, RouterInterface $router, SeoPage $seoPage): Response
     {
+        $title = $this->readH2Tag($templateName);
+
         $templateFilename = sprintf('Static/%s.html.twig', $templateName);
+
+        $seoPage->setTitle($title);
 
         $breadcrumbs
             ->addItem('Luft', $router->generate('display'))
-            ->addItem(sprintf($this->readH2Tag($templateName)));
+            ->addItem($title);
 
         return $this->render($templateFilename);
     }
