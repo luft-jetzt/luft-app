@@ -1,17 +1,14 @@
 $(document).ready(function () {
-    var $input = $('.typeahead');
-
-    $('.typeahead').typeahead({
-        source: function (query, process) {
-            console.log(query);
-            return $.getJSON(
-                'url-to-file.php',
-                { query: query },
-                function (data) {
-                    console.log(data)
-                    return process(data);
-                })
-        }
+    var countries = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: '/search/prefetch'
     });
 
+// passing in `null` for the `options` arguments will result in the default
+// options being used
+    $('.typeahead').typeahead(null, {
+        name: 'countries',
+        source: countries
+    });
 });
