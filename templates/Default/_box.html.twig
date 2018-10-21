@@ -17,25 +17,19 @@
 
     {% set pollutionLevel = 0 %}
 
-    {% for box in boxList %}
-        {% if box.pollutionLevel > pollutionLevel %}
-            {% set pollutionLevel = box.pollutionLevel %}
-        {% endif %}
-    {% endfor %}
-
-    {% if pollutionLevel == 1 %}
+    {% if box.pollutionLevel == 1 %}
         {% set stationColor = 'green' %}
     {% endif %}
 
-    {% if pollutionLevel == 2 %}
+    {% if box.pollutionLevel == 2 %}
         {% set stationColor = 'yellow' %}
     {% endif %}
 
-    {% if pollutionLevel == 3 %}
+    {% if box.pollutionLevel == 3 %}
         {% set stationColor = 'red' %}
     {% endif %}
 
-    {% if pollutionLevel == 4 %}
+    {% if box.pollutionLevel == 4 %}
         {% set stationColor = 'black' %}
     {% endif %}
 
