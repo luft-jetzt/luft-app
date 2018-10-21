@@ -12,6 +12,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class CityAdmin extends AbstractAdmin
 {
+    protected $datagridValues = [
+        '_page' => 1,
+        '_sort_order' => 'ASC',
+        '_sort_by' => 'name',
+    ];
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -42,7 +48,6 @@ class CityAdmin extends AbstractAdmin
     {
         $listMapper
             ->addIdentifier('name')
-            ->add('createdAt')
             ->add('user')
             ->add('_action', null, [
                 'actions' => [
