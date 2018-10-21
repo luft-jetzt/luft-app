@@ -1,8 +1,31 @@
+{% set pollutionLevel = 0 %}
+
+{% for box in boxList %}
+{% if box.pollutionLevel > pollutionLevel %}
+    {% set pollutionLevel = box.pollutionLevel %}
+{% endif %}
+{% endfor %}
+
+{% if pollutionLevel == 1 %}
+    {% set stationColor = 'green' %}
+{% endif %}
+
+{% if pollutionLevel == 2 %}
+    {% set stationColor = 'yellow' %}
+{% endif %}
+
+{% if pollutionLevel == 3 %}
+    {% set stationColor = 'red' %}
+{% endif %}
+
+{% if pollutionLevel == 4 %}
+    {% set stationColor = 'black' %}
+{% endif %}
+
 {% if linkToStation is defined and linkToStation == true %}
 <a href="{{ path('station', { 'stationCode': station.stationCode }) }}" class="no-underline">
 {% endif %}
-
-    <div class="card station" data-latitude="{{ station.latitude }}" data-longitude="{{ station.longitude }}" data-station-code="{{ station.stationCode }}">
+    <div class="card station" data-latitude="{{ station.latitude }}" data-longitude="{{ station.longitude }}" data-station-code="{{ station.stationCode }}" data-station-color="{{ stationColor }}">
     {% if showMap is not defined or showMap == true %}
         <div id="map-station-{{ station.stationCode }}" class="map card-img-top" style="height: 33.33vh;"></div>
         {% endif %}
