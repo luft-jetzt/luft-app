@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\City;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -9,6 +10,15 @@ class TypeaheadController extends AbstractController
 {
     public function prefetchAction(): Response
     {
-        return new JsonResponse(['foo', 'bar', 'baz']);
+        $cityList = $this->getDoctrine()->getRepository(City::class)->findAll();
+
+        $data = [];
+
+        /** @var City $city */
+        foreach ($cityList as $city) {
+            $data[] = $city->getName();
+        }
+
+        return new JsonResponse($data);
     }
 }
