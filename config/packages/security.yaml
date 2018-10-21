@@ -1,5 +1,10 @@
 security:
     providers:
+        admin_provider:
+            memory:
+                users:
+                    admin: { password: '%env(ADMIN_PASSWORD)%', roles: [ 'ROLE_ADMIN' ] }
+
         database_provider:
             entity:
                 class: AppBundle:User
@@ -9,6 +14,9 @@ security:
         AppBundle\Entity\User:
             algorithm: bcrypt
 
+        Symfony\Component\Security\Core\User\User:
+            algorithm: plaintext
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -17,11 +25,12 @@ security:
         admin:
             pattern: ^/admin
             http_basic: ~
-            provider: database_provider
+            provider: admin_provider
             logout: ~
 
         main:
             anonymous: true
+            provider: database_provider
             oauth:
                 resource_owners:
                     twitter:  '/login/check-twitter'
