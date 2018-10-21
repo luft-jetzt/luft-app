@@ -62,6 +62,7 @@ class DisplayController extends AbstractController
         return $this->render('Default/display.html.twig', [
             'boxList' => $boxList,
             'cityName' => $cityName,
+            'coord' => $coord,
             'city' => $city,
         ]);
     }
