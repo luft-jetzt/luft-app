@@ -12,7 +12,7 @@ class TemplateController extends AbstractController
     {
         return $this->render(
             'Template/city_list.html.twig', [
-                'cityList' => $this->getDoctrine()->getRepository(City::class)->findBy([], ['name' => 'ASC']),
+                'cityList' => $this->getDoctrine()->getRepository(City::class)->findCitiesWithActiveStations(),
             ]
         );
     }

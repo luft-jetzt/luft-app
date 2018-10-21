@@ -5,8 +5,10 @@ namespace App\Command;
 use App\Entity\Station;
 use App\StationLoader\StationLoader;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class StationCommand extends Command
@@ -24,33 +26,43 @@ class StationCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('luft:station')
-            ->setDescription('');
+            ->setName('luft:load-station')
+            ->addOption('update', 'u', InputOption::VALUE_NONE, 'Update existing station data')
+            ->setDescription('Fetch station list from Umweltbundesamt');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->stationLoader->load();
-
-        $output->writeln('New stations');
-
-        $table = new Table($output);
-        $table->setHeaders(['stationCode', 'stateCode', 'title', 'latitude', 'longitude']);
-
-        foreach ($this->stationLoader->getNewStationList() as $newStation) {
-            $this->addStationRow($table, $newStation);
+        if ($input->getOption('update')) {
+            $this->stationLoader->setUpdate(true);
         }
 
-        $table->render();
+        $this->stationLoader->load();
+
+        $progressBar = new ProgressBar($output, $this->stationLoader->count());
+
+        $this->stationLoader->process(function() use ($progressBar) {
+            $progressBar->advance();
+        });
+
+        $progressBar->finish();
+
+        $output->writeln('Existing stations');
+        $this->printTable($output, $this->stationLoader->getExistingStationList());
 
         $output->writeln('');
-        $output->writeln('Existing stations');
 
+        $output->writeln('New stations');
+        $this->printTable($output, $this->stationLoader->getNewStationList());
+    }
+
+    protected function printTable(OutputInterface $output, array $stationList): void
+    {
         $table = new Table($output);
-        $table->setHeaders(['stationCode', 'stateCode', 'title', 'latitude', 'longitude']);
+        $table->setHeaders(['stationCode', 'stateCode', 'title', 'latitude', 'longitude', 'altitude', 'fromDate', 'untilDate', 'stationType']);
 
-        foreach ($this->stationLoader->getExistingStationList() as $existingStation) {
-            $this->addStationRow($table, $existingStation);
+        foreach ($stationList as $station) {
+            $this->addStationRow($table, $station);
         }
 
         $table->render();
@@ -58,6 +70,16 @@ class StationCommand extends Command
 
     protected function addStationRow(Table $table, Station $station): void
     {
-        $table->addRow([$station->getStationCode(), $station->getStateCode(), $station->getTitle(), $station->getLatitude(), $station->getLongitude()]);
+        $table->addRow([
+            $station->getStationCode(),
+            $station->getStateCode(),
+            $station->getTitle(),
+            $station->getLatitude(),
+            $station->getLongitude(),
+            $station->getAltitude() ?? '',
+            $station->getFromDate() ? $station->getFromDate()->format('Y-m-d') : '',
+            $station->getUntilDate() ? $station->getUntilDate()->format('Y-m-d') : '',
+            $station->getStationType(),
+        ]);
     }
 }

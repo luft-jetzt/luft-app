@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\City;
 use Doctrine\ORM\EntityRepository;
 
 class StationRepository extends EntityRepository
@@ -13,6 +14,28 @@ class StationRepository extends EntityRepository
         $qb
             ->indexBy('s', 's.stationCode')
         ;
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findWithoutCity(): array
+    {
+        $qb = $this->createQueryBuilder('s');
+
+        $qb->where($qb->expr()->isNull('s.city'));
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findActiveStationsForCity(City $city): array
+    {
+        $qb = $this->createQueryBuilder('s');
+
+        $qb
+            ->where($qb->expr()->eq('s.city', ':city'))
+            ->setParameter('city', $city)
+            ->andWhere($qb->expr()->isNull('s.untilDate'))
+            ->orderBy('s.stationCode');
 
         return $qb->getQuery()->getResult();
     }
