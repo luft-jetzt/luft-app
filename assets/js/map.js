@@ -81,12 +81,25 @@ function createCityMap(id) {
 
 function createCoordMap(id) {
     var map = L.map(id);
+    $map = $('#' + id);
 
     L.tileLayer('https://tiles.caldera.cc/wikimedia-intl/{z}/{x}/{y}.png', {
         attribution: 'Wikimedia maps beta | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
     }).addTo(map);
 
     var markerGroup = new L.featureGroup();
+
+    var latitude = $map.parent().data('latitude');
+    var longitude = $map.parent().data('longitude');
+
+    var markerIcon = L.ExtraMarkers.icon({
+        icon: 'fa-user',
+        markerColor: 'blue',
+        shape: 'circle',
+        prefix: 'fa'
+    });
+
+    var marker = L.marker([latitude, longitude], {icon: markerIcon}).addTo(markerGroup);
 
     $('.box').each(function (index) {
         var stationCode = $(this).data('station-code');
