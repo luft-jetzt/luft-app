@@ -10,13 +10,14 @@ function createAllMaps() {
             var id = $(this).prop('id');
             var latitude = $(this).parent().data('latitude');
             var longitude = $(this).parent().data('longitude');
+            var color = $(this).parent().data('station-color');
 
-            createMap(id, latitude, longitude);
+            createMap(id, latitude, longitude, color);
         });
     }
 }
 
-function createMap(id, latitude, longitude) {
+function createMap(id, latitude, longitude, color) {
     var centerLatLng = L.latLng([latitude, longitude]);
 
     var map = L.map(id, {
@@ -27,9 +28,10 @@ function createMap(id, latitude, longitude) {
         attribution: 'Wikimedia maps beta | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
     }).addTo(map);
 
+    console.log(color);
     var markerIcon = L.ExtraMarkers.icon({
         icon: 'fa-circle-o',
-        markerColor: 'blue',
+        markerColor: color,
         shape: 'circle',
         prefix: 'fa'
     });
@@ -54,10 +56,12 @@ function createCityMap(id) {
         var stationCode = $(this).data('station-code');
         var latitude = $(this).data('latitude');
         var longitude = $(this).data('longitude');
+        var color = $(this).data('station-color');
 
+        console.log(color);
         var markerIcon = L.ExtraMarkers.icon({
             icon: 'fa-circle-o',
-            markerColor: 'blue',
+            markerColor: color,
             shape: 'circle',
             prefix: 'fa'
         });
