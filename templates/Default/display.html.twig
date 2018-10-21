@@ -5,7 +5,9 @@
     <div class="row mb-2">
         <div class="col-12 text-center">
             {% if city %}
+            <h3>
                 Aktuelle Luftmesswerte aus {{ city.name }}
+            </h3>
             {% elseif cityName %}
             <h3>
                 Aktuelle Luftmesswerte aus {{ cityName }}
