@@ -61,6 +61,7 @@ class DisplayController extends AbstractController
             'boxList' => $boxList,
             'cityName' => $cityName,
             'city' => $this->findCityForName($cityName),
+            'coord' => $coord,
         ]);
     }
 
