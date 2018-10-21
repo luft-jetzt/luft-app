@@ -27,7 +27,14 @@ function createMap(id, latitude, longitude) {
         attribution: 'Wikimedia maps beta | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
     }).addTo(map);
 
-    var marker = L.marker(centerLatLng).addTo(map);
+    var markerIcon = L.ExtraMarkers.icon({
+        icon: 'fa-circle-o',
+        markerColor: 'blue',
+        shape: 'circle',
+        prefix: 'fa'
+    });
+
+    var marker = L.marker(centerLatLng, {icon: markerIcon}).addTo(map);
 
     map._handlers.forEach(function (handler) {
         handler.disable();
@@ -48,7 +55,14 @@ function createCityMap(id) {
         var latitude = $(this).data('latitude');
         var longitude = $(this).data('longitude');
 
-        var marker = L.marker([latitude, longitude]).addTo(markerGroup);
+        var markerIcon = L.ExtraMarkers.icon({
+            icon: 'fa-circle-o',
+            markerColor: 'blue',
+            shape: 'circle',
+            prefix: 'fa'
+        });
+
+        var marker = L.marker([latitude, longitude], {icon: markerIcon}).addTo(markerGroup);
 
         marker.on('click', function() {
             window.location = Routing.generate('station', { stationCode: stationCode });
