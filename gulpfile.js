@@ -71,6 +71,7 @@ gulp.task('compress-js', function () {
             'node_modules/bootstrap/dist/js/bootstrap.min.js',
             'node_modules/leaflet/dist/leaflet.js',
             'node_modules/leaflet-extra-markers/dist/js/leaflet.extra-markers.min.js',
+            'node_modules/typeahead.js/dist/typeahead.bundle.min.js',
             'assets/js/*',
         ])
         .pipe(minify())

@@ -46,7 +46,7 @@
 
             <form method="get">
                 <div class="form-group">
-                    <input type="text" class="form-control form-control-lg" id="zip" name="zip" placeholder="Postleitzahl" maxlength="5" />
+                    <input type="text" class="form-control form-control-lg typeahead" id="zip" name="zip" placeholder="Postleitzahl" maxlength="5" />
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-lg">
@@ -63,4 +63,5 @@
 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 <script src="{{ asset('/js/geolocation.js') }}"></script>
+<script src="{{ asset('/js/typeahead.js') }}"></script>
 {% endblock %}
