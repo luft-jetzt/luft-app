@@ -4,12 +4,20 @@
 <div class="container">
     <div class="row mb-2">
         <div class="col-12 text-center">
+            {% if city %}
+                Aktuelle Luftmesswerte aus {{ city.name }}
+            {% elseif cityName %}
             <h3>
                 Aktuelle Luftmesswerte aus {{ cityName }}
             </h3>
+            {% else %}
+            <h3>
+                Aktuelle Messwerte aus deiner Umgebung
+            </h3>
+            {% endif %}
 
             <p class="lead">
-                In deiner Umgebung wurden die folgenden Messwerte ermittelt:
+                Es wurden die folgenden Schadstoffwerte aus Messstationen deiner Umgebung ermittelt:
             </p>
         </div>
     </div>
