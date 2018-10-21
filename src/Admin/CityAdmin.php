@@ -18,12 +18,12 @@ class CityAdmin extends AbstractAdmin
         '_sort_by' => 'name',
     ];
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper
             ->with('City', ['class' => 'col-xs-6'])
-            ->add('name')
-            ->add('slug')
+            ->add('name', TextType::class, ['required' => true])
+            ->add('slug', TextType::class, ['required' => true])
             ->add('description', TextareaType::class, ['required' => false])
             ->end()
 
@@ -40,7 +40,7 @@ class CityAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper): void
     {
         $datagridMapper
             ->add('name')
@@ -48,7 +48,7 @@ class CityAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('name')
