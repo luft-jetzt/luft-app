@@ -47,9 +47,7 @@ $(document).ready(function () {
         templates: {
             suggestion: renderSuggestion,
         }
-    }).on('typeahead:selected', function (e, datum) {
-            console.log(datum);
-        });
+    }).on('typeahead:selected', redirect);
 });
 
 function renderSuggestion(data) {
@@ -68,4 +66,8 @@ function renderSuggestion(data) {
     html += '</a>';
 
     return html;
+}
+
+function redirect(event, datum) {
+    window.location = datum.value.url;
 }
