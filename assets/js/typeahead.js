@@ -22,7 +22,7 @@ $(document).ready(function () {
     }, {
         name: 'cities',
         source: cities,
-        displayKey: 'value',
+        displayKey: 'value.name',
         templates: {
             suggestion: renderSuggestion,
         }
@@ -33,12 +33,12 @@ function renderSuggestion(data) {
     var html = '';
 
     console.log(data);
-    html += '<a href="' + data.url + '">';
+    html += '<a href="' + data.value.url + '">';
 
     html += '<div class="row">';
     html += '<div class="col-12">';
     html += '<i class="fa fa-university"></i> ';
-    html += data.value;
+    html += data.value.name;
     html += '</div>';
     html += '</div>';
 

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\City;
 use App\Entity\Zip;
+use Curl\Curl;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,7 +12,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 class TypeaheadController extends AbstractController
 {
-    public function prefetchAction(): Response
+    public function prefetchAction(RouterInterface $router): Response
     {
         $cityList = $this->getDoctrine()->getRepository(City::class)->findAll();
 
@@ -19,7 +20,14 @@ class TypeaheadController extends AbstractController
 
         /** @var City $city */
         foreach ($cityList as $city) {
-            $data[] = ['value' => $city->getName()];
+            $url = $router->generate('show_city', ['citySlug' => $city->getSlug()]);
+
+            $data[] = ['value' => [
+                'url' => $url,
+                'latitude' => $city->getLatitude(),
+                'longitude' => $city->getLongitude(),
+                'name' => $city->getName(),
+            ]];
         }
 
         return new JsonResponse($data);
@@ -29,14 +37,25 @@ class TypeaheadController extends AbstractController
     {
         $queryString = $request->query->get('query');
 
-        $result = [];
-        $zipList = $this->getDoctrine()->getRepository(Zip::class)->findByZip($queryString);
+        $curl = new Curl();
+        $curl->get(sprintf('https://photon.komoot.de/api/?q=%s&lang=de', $queryString));
 
-        /** @var Zip $zip */
-        foreach ($zipList as $zip) {
-            $result = [
+        $features = $curl->response->features;
+
+        $result = [];
+
+        foreach ($features as $feature) {
+            $latitude = $feature->geometry->coordinates[1];
+            $longitude = $feature->geometry->coordinates[0];
+            $url = $router->generate('display', ['latitude' => $latitude, 'longitude' => $longitude]);
+
+            $result[] = [
                 'value' => [
-                    'zip' => $zip->getZip(),
+                    'url' => $url,
+                    'latitude' => $latitude,
+                    'longitude' => $longitude,
+                    'name' => $feature->properties->name,
+                    //'zipCode' => $feature->properties->postcode,
                 ]
             ];
         }
