@@ -24,9 +24,8 @@ class TypeaheadController extends AbstractController
 
             $data[] = ['value' => [
                 'url' => $url,
-                'latitude' => $city->getLatitude(),
-                'longitude' => $city->getLongitude(),
                 'name' => $city->getName(),
+                'type' => 'city',
             ]];
         }
 
@@ -42,21 +41,35 @@ class TypeaheadController extends AbstractController
 
         $features = $curl->response->features;
 
+        //var_dump($features);
         $result = [];
 
         foreach ($features as $feature) {
+            if (!$feature->properties) {
+                continue;
+            }
+
+            if (!$feature->properties->country || $feature->properties->country !== 'Deutschland') {
+                continue;
+            }
+
             $latitude = $feature->geometry->coordinates[1];
             $longitude = $feature->geometry->coordinates[0];
             $url = $router->generate('display', ['latitude' => $latitude, 'longitude' => $longitude]);
 
+            $value = [
+                'url' => $url,
+                'latitude' => $latitude,
+                'longitude' => $longitude,
+                'name' => $feature->properties->name,
+            ];
+
+            if (isset($feature->properties->postcode)) {
+                $value['zipCode'] = $feature->properties->postcode;
+            }
+
             $result[] = [
-                'value' => [
-                    'url' => $url,
-                    'latitude' => $latitude,
-                    'longitude' => $longitude,
-                    'name' => $feature->properties->name,
-                    //'zipCode' => $feature->properties->postcode,
-                ]
+                'value' => $value
             ];
         }
 

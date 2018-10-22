@@ -1,15 +1,25 @@
 $(document).ready(function () {
-    const cities = new Bloodhound({
+    const prefetchedCities = new Bloodhound({
         datumTokenizer: function (data) {
             return Bloodhound.tokenizers.whitespace(data.value);
         },
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         prefetch: Routing.generate('prefetch'),
         cache: false,
+        ttl: 60,
+    });
+
+    const remoteCities = new Bloodhound({
+        datumTokenizer: function (data) {
+            return Bloodhound.tokenizers.whitespace(data.value);
+        },
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        cache: false,
+        ttl: 60,
         remote: {
             url: Routing.generate('search') + '?query=%QUERY',
             wildcard: '%QUERY'
-        }
+        },
     });
 
     $('.typeahead').typeahead({
@@ -20,17 +30,30 @@ $(document).ready(function () {
             dataset: 'tt-dataset tt-dataset-results container'
         }
     }, {
-        name: 'cities',
-        source: cities,
-        displayKey: 'value.name',
+        name: 'prefetchedCities',
+        source: prefetchedCities,
+        display: function(data) {
+            return data.value.name;
+        },
         templates: {
             suggestion: renderSuggestion,
         }
-    });
+    }, {
+        name: 'remoteCities',
+            source: remoteCities,
+            display: function(data) {
+            return data.value.name;
+        },
+        templates: {
+            suggestion: renderSuggestion,
+        }
+    }).on('typeahead:selected', function (e, datum) {
+            console.log(datum);
+        });
 });
 
 function renderSuggestion(data) {
-    var html = '';
+    let html = '';
 
     console.log(data);
     html += '<a href="' + data.value.url + '">';
