@@ -24,14 +24,15 @@ $(document).ready(function () {
         source: cities,
         displayKey: 'value',
         templates: {
-            suggestion: renderRideSuggestion,
+            suggestion: renderSuggestion,
         }
     });
 });
 
-function renderRideSuggestion(data) {
+function renderSuggestion(data) {
     var html = '';
 
+    console.log(data);
     html += '<a href="' + data.url + '">';
 
     html += '<div class="row">';

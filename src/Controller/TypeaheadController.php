@@ -35,8 +35,9 @@ class TypeaheadController extends AbstractController
         /** @var Zip $zip */
         foreach ($zipList as $zip) {
             $result = [
-                'url' => $router->generate('display', ['latitude' => $zip->getLatitude(), 'longitude' => $zip->getLongitude()]),
-                'value' => $queryString,
+                'value' => [
+                    'zip' => $zip->getZip(),
+                ]
             ];
         }
 
