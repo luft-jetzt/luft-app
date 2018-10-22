@@ -19,35 +19,21 @@
     </div>
 
     <div class="row mt-3">
-        <div class="col-12 col-md-6 text-center">
+        <div class="col-6 offset-3 text-center">
             <h4>
-                Standort automatisch bestimmen
+                Ortsangabe
             </h4>
-
-            <p>
-                Klicke auf den folgenden Button, um deinen Standort automatisch über dein Gerät bestimmen zu lassen:
-            </p>
-
-            <p>
-                <button id="locate-button" class="btn btn-primary btn-lg">
-                    Standort bestimmen
-                </button>
-            </p>
-        </div>
-
-        <div class="col-12 col-md-6 text-center">
-            <h4>
-                Standort per Postleitzahl bestimmen
-            </h4>
-
-            <p>
-                Gib deine Postleitzahl ein, um Stationen in deiner Nähe abzufragen:
-            </p>
 
             <form method="get">
-                <div class="form-group">
-                    <input type="text" class="form-control form-control-lg typeahead" id="zip" name="zip" placeholder="Postleitzahl" />
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control form-control-lg" id="zip" name="zip" placeholder="Postleitzahl" />
+                    <div class="input-group-append">
+                        <button class="btn btn-primary btn-lg" type="button" id="locate-button" title="Deinen Aufenthaltsort automatisch bestimmen">
+                            <i class="fa fa-map-pin"></i>
+                        </button>
+                    </div>
                 </div>
+
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-lg">
                         Weiter
