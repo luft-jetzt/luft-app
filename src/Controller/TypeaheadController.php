@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\City;
+use App\Entity\Zip;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 
 class TypeaheadController extends AbstractController
 {
@@ -16,9 +19,27 @@ class TypeaheadController extends AbstractController
 
         /** @var City $city */
         foreach ($cityList as $city) {
-            $data[] = $city->getName();
+            $data[] = ['value' => $city->getName()];
         }
 
         return new JsonResponse($data);
+    }
+
+    public function searchAction(Request $request, RouterInterface $router): Response
+    {
+        $queryString = $request->query->get('query');
+
+        $result = [];
+        $zipList = $this->getDoctrine()->getRepository(Zip::class)->findByZip($queryString);
+
+        /** @var Zip $zip */
+        foreach ($zipList as $zip) {
+            $result = [
+                'url' => $router->generate('display', ['latitude' => $zip->getLatitude(), 'longitude' => $zip->getLongitude()]),
+                'value' => $queryString,
+            ];
+        }
+
+        return new JsonResponse($result);
     }
 }
