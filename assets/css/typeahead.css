@@ -56,3 +56,25 @@ span.twitter-typeahead {
     display: block !important; }
 .input-group span.twitter-typeahead .tt-menu {
     top: 2.375rem !important; }
+
+/* fix for broken typeahead input group */
+/* thanks to yaldabaoth444: https://github.com/bassjobsen/typeahead.js-bootstrap4-css/issues/1#issuecomment-395792024 */
+.input-group>.twitter-typeahead {
+    position: relative;
+    -ms-flex: 1 1 auto;
+    -webkit-box-flex: 1;
+    flex: 1 1 auto;
+    width: 1%;
+    margin-bottom: 0;
+}
+.input-group>.twitter-typeahead:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.input-group>.twitter-typeahead>.tt-input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.form-control.tt-input:focus {
+    z-index: 3
+}
