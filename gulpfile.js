@@ -97,7 +97,7 @@ gulp.task('compress-js', function () {
 
 gulp.task('copy-js-external', function () {
     return gulp.src([
-        'node_modules/jquery/dist/jquery.slim.js',
+        'node_modules/jquery/dist/jquery.slim.min.js',
         'node_modules/popper.js/dist/popper.min.js',
         'node_modules/bootstrap/dist/js/bootstrap.min.js',
         'node_modules/leaflet/dist/leaflet.js',
