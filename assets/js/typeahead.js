@@ -58,7 +58,7 @@ function renderSuggestion(data) {
 
     html += '<div class="row">';
     html += '<div class="col-12">';
-    html += '<i class="fa fa-university"></i> ';
+    html += '<i class="fa fa-' + data.icon + '"></i> ';
     html += data.value.name;
     html += '</div>';
     html += '</div>';

@@ -61,11 +61,28 @@ class TypeaheadController extends AbstractController
                 'url' => $url,
                 'latitude' => $latitude,
                 'longitude' => $longitude,
-                'name' => $feature->properties->name,
+                'icon' => 'map-marker',
             ];
+
+            if (isset($feature->properties->name)) {
+                $value['name'] = $feature->properties->name;
+            } else {
+                continue;
+            }
 
             if (isset($feature->properties->postcode)) {
                 $value['zipCode'] = $feature->properties->postcode;
+            }
+
+            if (isset($feature->properties->osm_key) && isset($feature->properties->osm_value)) {
+                $osmKey = $feature->properties->osm_key;
+                $osmValue = $feature->properties->osm_value;
+
+                if ($osmValue === 'city' || $osmValue === 'suburb') {
+                    $value['icon'] = 'city';
+                } elseif ($osmValue === 'building' || $osmValue === 'residental') {
+                    $value['icon'] = 'road';
+                }
             }
 
             $result[] = [
