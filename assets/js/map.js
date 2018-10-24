@@ -81,7 +81,7 @@ function createCityMap(id) {
 
 function createCoordMap(id) {
     var map = L.map(id);
-    $map = $('#' + id);
+    var $map = $('#' + id);
 
     L.tileLayer('https://tiles.caldera.cc/wikimedia-intl/{z}/{x}/{y}.png', {
         attribution: 'Wikimedia maps beta | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
@@ -101,24 +101,31 @@ function createCoordMap(id) {
 
     var marker = L.marker([latitude, longitude], {icon: markerIcon}).addTo(markerGroup);
 
+    var knownStations = [];
+
     $('.box').each(function (index) {
         var stationCode = $(this).data('station-code');
-        var latitude = $(this).data('station-latitude');
-        var longitude = $(this).data('station-longitude');
-        var color = $(this).data('station-color');
 
-        var markerIcon = L.ExtraMarkers.icon({
-            icon: 'fa-circle-o',
-            markerColor: color,
-            shape: 'circle',
-            prefix: 'fa'
-        });
+        if (!knownStations.includes(stationCode)) {
+            var latitude = $(this).data('station-latitude');
+            var longitude = $(this).data('station-longitude');
+            var color = $(this).data('station-color');
 
-        var marker = L.marker([latitude, longitude], {icon: markerIcon}).addTo(markerGroup);
+            var markerIcon = L.ExtraMarkers.icon({
+                icon: 'fa-circle-o',
+                markerColor: color,
+                shape: 'circle',
+                prefix: 'fa'
+            });
 
-        marker.on('click', function() {
-            window.location = Routing.generate('station', { stationCode: stationCode });
-        });
+            var marker = L.marker([latitude, longitude], {icon: markerIcon}).addTo(markerGroup);
+
+            marker.on('click', function() {
+                window.location = Routing.generate('station', { stationCode: stationCode });
+            });
+
+            knownStations.push(stationCode);
+        }
     });
 
     markerGroup.addTo(map);
