@@ -21,7 +21,9 @@ class DisplayController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $boxList = $pollutionDataFactory->setCoord($station)->createDecoratedBoxList();
+        $boxList = $pollutionDataFactory
+            ->setStation($station)
+            ->createDecoratedBoxList();
 
         if ($station->getCity()) {
             $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s in %s', $station->getStationCode(), $station->getCity()->getName()));

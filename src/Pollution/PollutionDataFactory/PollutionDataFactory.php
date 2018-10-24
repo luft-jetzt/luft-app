@@ -2,6 +2,7 @@
 
 namespace App\Pollution\PollutionDataFactory;
 
+use App\Entity\Station;
 use App\Pollution\Box\Box;
 use App\Pollution\BoxDecorator\BoxDecoratorInterface;
 use App\Pollution\DataList\DataList;
@@ -26,6 +27,8 @@ class PollutionDataFactory
     /** @var DataRetrieverInterface */
     protected $dataRetriever;
 
+    protected $stationList = [];
+
     public function __construct(StationFinderInterface $stationFinder, BoxDecoratorInterface $boxDecorator, DataRetrieverInterface $dataRetriever)
     {
         $this->stationFinder = $stationFinder;
@@ -37,15 +40,22 @@ class PollutionDataFactory
     public function setCoord(CoordInterface $coord): PollutionDataFactory
     {
         $this->coord = $coord;
+        $this->stationList = $this->stationFinder->setCoord($this->coord)->findNearestStations();
+
+        return $this;
+    }
+
+    public function setStation(Station $station): PollutionDataFactory
+    {
+        $this->coord = $station;
+        $this->stationList = [$station];
 
         return $this;
     }
 
     public function createDecoratedBoxList(): array
     {
-        $stationList = $this->stationFinder->setCoord($this->coord)->findNearestStations();
-
-        $dataList = $this->getDataListFromStationList($stationList);
+        $dataList = $this->getDataListFromStationList($this->stationList);
 
         $boxList = $this->getBoxListFromDataList($dataList);
 
