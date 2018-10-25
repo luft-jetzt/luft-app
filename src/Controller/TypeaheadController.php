@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\City;
-use App\Entity\Zip;
+use App\Geocoding\Query\GeoQueryInterface;
 use Curl\Curl;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,71 +32,9 @@ class TypeaheadController extends AbstractController
         return new JsonResponse($data);
     }
 
-    public function searchAction(Request $request, RouterInterface $router): Response
+    public function searchAction(Request $request, GeoQueryInterface $geoQuery): Response
     {
-        $queryString = $request->query->get('query');
-
-        $curl = new Curl();
-        $curl->get(sprintf('https://photon.komoot.de/api/?q=%s&lang=de', $queryString));
-
-        $features = $curl->response->features;
-
-        //var_dump($features);
-        $result = [];
-
-        foreach ($features as $feature) {
-            if (!$feature->properties) {
-                continue;
-            }
-
-            if (!$feature->properties->country || $feature->properties->country !== 'Deutschland') {
-                continue;
-            }
-
-            $latitude = $feature->geometry->coordinates[1];
-            $longitude = $feature->geometry->coordinates[0];
-            $url = $router->generate('display', ['latitude' => $latitude, 'longitude' => $longitude]);
-
-            $value = [
-                'url' => $url,
-                'latitude' => $latitude,
-                'longitude' => $longitude,
-                'icon' => 'map-marker',
-            ];
-
-            if (isset($feature->properties->name)) {
-                $value['name'] = $feature->properties->name;
-
-                if (isset($feature->properties->street)) {
-                    $value['address'] = $feature->properties->street;
-                }
-            } elseif (isset($feature->properties->street)) {
-                $value['name'] = $feature->properties->street;
-            }
-
-            if (isset($feature->properties->city)) {
-                $value['city'] = $feature->properties->city;
-            }
-
-            if (isset($feature->properties->postcode)) {
-                $value['zipCode'] = $feature->properties->postcode;
-            }
-
-            if (isset($feature->properties->osm_key) && isset($feature->properties->osm_value)) {
-                $osmKey = $feature->properties->osm_key;
-                $osmValue = $feature->properties->osm_value;
-
-                if ($osmValue === 'city' || $osmValue === 'suburb') {
-                    $value['icon'] = 'city';
-                } elseif ($osmValue === 'building' || $osmValue === 'residental') {
-                    $value['icon'] = 'road';
-                }
-            }
-
-            $result[] = [
-                'value' => $value
-            ];
-        }
+        $result = $geoQuery->query($request->query->get('query'));
 
         return new JsonResponse($result);
     }
