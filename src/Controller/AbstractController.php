@@ -6,6 +6,7 @@ use App\Entity\City;
 use App\Entity\Station;
 use App\Entity\TwitterSchedule;
 use App\Entity\Zip;
+use App\Geocoding\Query\GeoQueryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\Pollution\StationFinder\StationFinderInterface;
 use App\SeoPage\SeoPage;
@@ -15,11 +16,24 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractController extends Controller
 {
-    protected function getCoordByRequest(Request $request): ?Coord
+    protected function getCoordByRequest(Request $request, GeoQueryInterface $geoQuery): ?Coord
     {
         $latitude = (float) $request->query->get('latitude');
         $longitude = (float) $request->query->get('longitude');
         $zipCode = $request->query->get('zip');
+        $query = $request->query->get('query');
+
+        if ($query) {
+            $result = $geoQuery->query($query);
+
+            $firstResult = array_pop($result);
+
+            if ($firstResult) {
+                $coord = new Coord($firstResult['value']['latitude'], $firstResult['value']['longitude']);
+
+                return $coord;
+            }
+        }
 
         if (!$latitude && !$longitude && $zipCode) {
             $zip = $this->getDoctrine()->getRepository(Zip::class)->findOneByZip($zipCode);

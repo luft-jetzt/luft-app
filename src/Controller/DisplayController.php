@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\City;
 use App\Entity\Station;
 use App\Geocoding\CityGuesserInterface;
+use App\Geocoding\Query\GeoQueryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,9 +38,9 @@ class DisplayController extends AbstractController
         ]);
     }
 
-    public function indexAction(Request $request, SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory, CityGuesserInterface $cityGuesser): Response
+    public function indexAction(Request $request, SeoPage $seoPage, GeoQueryInterface $geoQuery, PollutionDataFactory $pollutionDataFactory, CityGuesserInterface $cityGuesser): Response
     {
-        $coord = $this->getCoordByRequest($request);
+        $coord = $this->getCoordByRequest($request, $geoQuery);
 
         if (!$coord) {
             return $this->render('Default/select.html.twig');
