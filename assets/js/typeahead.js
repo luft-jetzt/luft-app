@@ -58,8 +58,37 @@ function renderSuggestion(data) {
 
     html += '<div class="row">';
     html += '<div class="col-12">';
-    html += '<i class="fa fa-' + data.icon + '"></i> ';
+    html += '<i class="fa fa-' + data.value.icon + '"></i> ';
     html += data.value.name;
+
+    if (data.value.address || data.value.zipCode || data.value.city) {
+        html += '<address>';
+
+        if (data.value.address) {
+            html += data.value.address;
+        }
+
+        if (data.value.address && (data.value.zipCode || data.value.city)) {
+            html += '<br />';
+        }
+
+        if (data.value.zipCode) {
+            html += data.value.zipCode;
+        }
+
+        if (data.value.zipCode && data.value.city) {
+            html += ' ';
+        }
+
+        if (data.value.city) {
+            html += data.value.city;
+        }
+
+        html += '</address>';
+
+    }
+
+
     html += '</div>';
     html += '</div>';
 

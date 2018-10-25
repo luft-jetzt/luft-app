@@ -25,7 +25,7 @@ class TypeaheadController extends AbstractController
             $data[] = ['value' => [
                 'url' => $url,
                 'name' => $city->getName(),
-                'type' => 'city',
+                'icon' => 'university',
             ]];
         }
 
@@ -66,8 +66,16 @@ class TypeaheadController extends AbstractController
 
             if (isset($feature->properties->name)) {
                 $value['name'] = $feature->properties->name;
-            } else {
-                continue;
+
+                if (isset($feature->properties->street)) {
+                    $value['address'] = $feature->properties->street;
+                }
+            } elseif (isset($feature->properties->street)) {
+                $value['name'] = $feature->properties->street;
+            }
+
+            if (isset($feature->properties->city)) {
+                $value['city'] = $feature->properties->city;
             }
 
             if (isset($feature->properties->postcode)) {
