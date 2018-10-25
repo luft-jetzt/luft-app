@@ -1,7 +1,7 @@
 $(document).ready(function () {
     const prefetchedCities = new Bloodhound({
         datumTokenizer: function (data) {
-            return Bloodhound.tokenizers.whitespace(data.value);
+            return Bloodhound.tokenizers.whitespace(data.value.name);
         },
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         prefetch: Routing.generate('prefetch'),
@@ -23,9 +23,9 @@ $(document).ready(function () {
     });
 
     $('.typeahead').typeahead({
-        hint: false,
+        hint: true,
         highlight: true,
-        minLength: 3,
+        minLength: 2,
         classNames: {
             dataset: 'tt-dataset tt-dataset-results container'
         }
