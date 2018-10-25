@@ -20,8 +20,23 @@ abstract class AbstractController extends Controller
     {
         $latitude = (float) $request->query->get('latitude');
         $longitude = (float) $request->query->get('longitude');
-        $zipCode = $request->query->get('zip');
         $query = $request->query->get('query');
+        $zipCode = $request->query->get('zip');
+
+        if (($query && preg_match('/^([0-9]{5,5})$/', $query)) || $zipCode) {
+            $zip = $this->getDoctrine()->getRepository(Zip::class)->findOneByZip($zipCode ?? $query);
+
+            return $zip;
+        }
+
+        if ($latitude && $longitude) {
+            $coord = new Coord(
+                $latitude,
+                $longitude
+            );
+
+            return $coord;
+        }
 
         if ($query) {
             $result = $geoQuery->query($query);
@@ -33,21 +48,6 @@ abstract class AbstractController extends Controller
 
                 return $coord;
             }
-        }
-
-        if (!$latitude && !$longitude && $zipCode) {
-            $zip = $this->getDoctrine()->getRepository(Zip::class)->findOneByZip($zipCode);
-
-            return $zip;
-        }
-
-        if ($latitude && $longitude && !$zipCode) {
-            $coord = new Coord(
-                $latitude,
-                $longitude
-            );
-
-            return $coord;
         }
 
         return null;
@@ -83,5 +83,10 @@ abstract class AbstractController extends Controller
         $schedule = $this->getDoctrine()->getRepository(TwitterSchedule::class)->find($scheduleId);
 
         return $schedule;
+    }
+
+    protected function findCityForName(string $cityName): ?City
+    {
+        return $this->getDoctrine()->getRepository(City::class)->findOneByName($cityName);
     }
 }
