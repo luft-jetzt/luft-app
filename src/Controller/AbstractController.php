@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\City;
 use App\Entity\Station;
 use App\Entity\TwitterSchedule;
-use App\Entity\Zip;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

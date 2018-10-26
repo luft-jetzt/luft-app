@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\City;
-use App\Geocoding\CityGuesserInterface;
+use App\Geocoding\Guesser\CityGuesserInterface;
 use App\Geocoding\Query\GeoQueryInterface;
 use App\Geocoding\RequestConverter\RequestConverterInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
