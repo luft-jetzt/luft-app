@@ -100,7 +100,7 @@ function renderSuggestion(data) {
 }
 
 function redirect(event, datum) {
-    _paq.push(['trackEvent', 'Search', 'queryPhrase', datum.value.name]);
+    _paq.push(['trackEvent', 'Search', 'proposedPhrase', datum.value.name]);
 
     window.location = datum.value.url;
 }

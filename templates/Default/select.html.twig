@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-lg">
+                    <button id="search-button" type="submit" class="btn btn-primary btn-lg">
                         Weiter
                     </button>
                 </div>
@@ -50,4 +50,5 @@
 <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 <script src="{{ asset('/js/geolocation.min.js') }}"></script>
 <script src="{{ asset('/js/typeahead.min.js') }}"></script>
+<script src="{{ asset('/js/search.min.js') }}"></script>
 {% endblock %}
