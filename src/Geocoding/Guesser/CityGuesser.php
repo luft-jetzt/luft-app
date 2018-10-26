@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace App\Geocoding;
+namespace App\Geocoding\Guesser;
 
 use Caldera\GeoBasic\Coord\Coord;
 use Geocoder\Query\ReverseQuery;
 
-class CityGuesser extends AbstractGeocoding implements CityGuesserInterface
+class CityGuesser extends AbstractGuesser implements CityGuesserInterface
 {
     public function guessForLatLng(float $latitude, float $longitude): ?string
     {
@@ -18,10 +18,10 @@ class CityGuesser extends AbstractGeocoding implements CityGuesserInterface
     {
         $result = $this->geocoder->reverseQuery(ReverseQuery::fromCoordinates($coord->getLatitude(), $coord->getLongitude()));
 
-        if (!$result || !$result->first() || !$result->first()->getLocality()) {
+        if (!$result || !$result->first() || (!$result->first()->getLocality() && !$result->first()->getSubLocality())) {
             return null;
         }
 
-        return $result->first()->getLocality();
+        return $result->first()->getLocality() ?? $result->first()->getSubLocality();
     }
 }

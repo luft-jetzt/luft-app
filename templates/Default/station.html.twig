@@ -3,13 +3,36 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-12">
-                {% include 'Default/_station.html.twig' with { 'station': station, 'description': 'An der Station ' ~ station.stationCode ~ ' wurden zuletzt die folgenden Werte gemessen.', boxList: boxList } %}
+            <div class="col-12 text-center">
+                <h2 class="h3">
+                    Messwerte der Station {{ station.stationCode }}
+                </h2>
+
+                <p class="lead">
+                    An der Station {{ station.stationCode }}{% if station.city %} in <a href="{{ path('show_city', { citySlug: station.city.slug }) }}" title="Zeige weitere Schadstoff-Messwerte aus {{ station.city.name }} an">{{ station.city.name }}</a>{% endif %} wurden zuletzt die folgenden Werte gemessen:
+                </p>
             </div>
         </div>
+
+        <div class="row mt-2">
+            <div class="col-12">
+                {% include 'Default/_station.html.twig' with { 'station': station, 'boxList': boxList } %}
+            </div>
+        </div>
+
+        {% if station.city %}
+        <div class="row mt-2">
+            <div class="col-12 text-center">
+                <a href="{{ path('show_city', { citySlug: station.city.slug }) }}" class="btn btn-primary" title="Zeige weitere Schadstoff-Messwerte aus {{ station.city.name }} an">
+                    Weitere Messwerte aus {{ station.city.name }}
+                </a>
+            </div>
+        </div>
+        {% endif %}
     </div>
 {% endblock %}
 
 {% block scripts %}
-    <script src="/js/map.js"></script>
+    <script src="/js/leaflet.extra-markers.min.js"></script>
+    <script src="/js/map.min.js"></script>
 {% endblock %}

@@ -3,17 +3,14 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/routing
         http://symfony.com/schema/routing/routing-1.0.xsd">
-    
-    <route id="station" path="/{stationCode}">
-        <default key="_controller">App\Controller\StationController::stationAction</default>
-        <option key="expose">true</option>
-        <requirement key="stationCode">^([A-Z]{4,4})([0-9]{3,3})$</requirement>
-    </route>
 
-    <route id="display" path="/">
-        <default key="_controller">App\Controller\DisplayController::indexAction</default>
+    <route id="prefetch" path="/search/prefetch">
+        <default key="_controller">App\Controller\TypeaheadController::prefetchAction</default>
         <option key="expose">true</option>
     </route>
 
-    <route id="logout" path="/logout" />
+    <route id="search" path="/search/query">
+        <default key="_controller">App\Controller\TypeaheadController::searchAction</default>
+        <option key="expose">true</option>
+    </route>
 </routes>

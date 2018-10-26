@@ -17,6 +17,10 @@ function success(pos) {
         }
     );
 
+    var coordsString = coords.latitude + ',' + coords.longitude;
+
+    _paq.push(['trackEvent', 'Search', 'coords', coordsString]);
+
     window.location = route;
 }
 

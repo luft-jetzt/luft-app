@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\City;
-use App\Entity\Station;
-use App\Geocoding\CityGuesserInterface;
+use App\Geocoding\Guesser\CityGuesserInterface;
+use App\Geocoding\Query\GeoQueryInterface;
+use App\Geocoding\RequestConverter\RequestConverterInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,32 +13,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DisplayController extends AbstractController
 {
-    public function stationAction(SeoPage $seoPage, string $stationCode, PollutionDataFactory $pollutionDataFactory): Response
+    public function indexAction(Request $request, RequestConverterInterface $requestConverter, SeoPage $seoPage, GeoQueryInterface $geoQuery, PollutionDataFactory $pollutionDataFactory, CityGuesserInterface $cityGuesser): Response
     {
-        /** @var Station $station */
-        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
-
-        if (!$station) {
-            throw $this->createNotFoundException();
-        }
-
-        $boxList = $pollutionDataFactory->setCoord($station)->createDecoratedBoxList();
-
-        if ($station->getCity()) {
-            $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s in %s: : Stickstoffdioxid, Feinstaub und Ozon', $station->getStationCode(), $station->getCity()->getName()));
-        } else {
-            $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s: : Stickstoffdioxid, Feinstaub und Ozon', $station->getStationCode()));
-        }
-
-        return $this->render('Default/station.html.twig', [
-            'station' => $station,
-            'boxList' => $boxList,
-        ]);
-    }
-
-    public function indexAction(Request $request, SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory, CityGuesserInterface $cityGuesser): Response
-    {
-        $coord = $this->getCoordByRequest($request);
+        $coord = $requestConverter->getCoordByRequest($request);
 
         if (!$coord) {
             return $this->render('Default/select.html.twig');
@@ -52,15 +30,18 @@ class DisplayController extends AbstractController
         $cityName = $cityGuesser->guess($coord);
 
         if ($cityName) {
-            $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus %s: : Stickstoffdioxid, Feinstaub und Ozon', $cityName));
+            $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus %s', $cityName));
+            $city = $this->findCityForName($cityName);
         } else {
-            $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus deiner Umgebung: : Stickstoffdioxid, Feinstaub und Ozon'));
+            $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus deiner Umgebung'));
+            $city = null;
         }
 
         return $this->render('Default/display.html.twig', [
             'boxList' => $boxList,
             'cityName' => $cityName,
-            'city' => $this->findCityForName($cityName),
+            'coord' => $coord,
+            'city' => $city,
         ]);
     }
 
