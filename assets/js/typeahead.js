@@ -36,6 +36,7 @@ $(document).ready(function () {
             return data.value.name;
         },
         templates: {
+            header: '<strong>Städte</strong>',
             suggestion: renderSuggestion,
         }
     }, {
@@ -45,6 +46,7 @@ $(document).ready(function () {
             return data.value.name;
         },
         templates: {
+            header: '<strong>Suchergebnisse</strong>',
             suggestion: renderSuggestion,
         }
     }).on('typeahead:selected', redirect);
@@ -98,5 +100,7 @@ function renderSuggestion(data) {
 }
 
 function redirect(event, datum) {
+    _paq.push(['trackEvent', 'Search', 'queryPhrase', datum.value.name]);
+
     window.location = datum.value.url;
 }

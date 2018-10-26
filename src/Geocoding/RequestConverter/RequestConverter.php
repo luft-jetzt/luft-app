@@ -19,6 +19,7 @@ class RequestConverter implements RequestConverterInterface
     public function __construct(GeoQueryInterface $geoQuery, RegistryInterface $registry)
     {
         $this->geoQuery = $geoQuery;
+        $this->registry = $registry;
     }
 
     public function getCoordByRequest(Request $request): ?Coord
