@@ -2,65 +2,46 @@
 
 namespace App\SeoPage;
 
-use Sonata\SeoBundle\Seo\SeoPageInterface;
+use Symfony\Component\Asset\Package;
+use Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy;
 
-class SeoPage
+class SeoPage extends AbstractSeoPage
 {
-    /** @var SeoPageInterface */
-    protected $sonataSeoPage;
-
-    public function __construct(SeoPageInterface $sonataSeoPage)
-    {
-        $this->sonataSeoPage = $sonataSeoPage;
-    }
-
-    public function setTitle(string $title): SeoPage
+    public function setTitle(string $title): SeoPageInterface
     {
         $this->sonataSeoPage
             ->setTitle($title)
-            ->addMeta('property', 'og:title', $title)
-        ;
+            ->addMeta('property', 'og:title', $title);
 
         return $this;
     }
 
-    public function setDescription(string $description): SeoPage
+    public function setDescription(string $description): SeoPageInterface
     {
         $this->sonataSeoPage
-            ->addMeta('name', 'description',$description)
-            ->addMeta('property', 'og:description', $description)
-        ;
+            ->addMeta('name', 'description', $description)
+            ->addMeta('property', 'og:description', $description);
 
         return $this;
     }
 
-    /*
-    public function setPreviewPhoto(PhotoInterface $object): SeoPage
+    public function setStandardPreviewPhoto(): SeoPageInterface
     {
-        if (!$object->getImageName()) {
-            return $this;
-        }
-        
-        $imageFilename = $this->uploaderHelper->asset($object, 'imageFile');
-
-        $facebookPreviewPath = $this->cacheManager->getBrowserPath($imageFilename, 'facebook_preview_image');
-        $twitterPreviewPath = $this->cacheManager->getBrowserPath($imageFilename, 'twitter_summary_large_image');
+        $package = new Package(new StaticVersionStrategy($this->assetsVersion));
 
         $this->sonataSeoPage
-            ->addMeta('property', 'og:image', $facebookPreviewPath)
-            ->addMeta('name', 'twitter:image', $twitterPreviewPath)
-            ->addMeta('name', 'twitter:card', 'summary_large_image')
-        ;
+            ->addMeta('property', 'og:image', $package->getUrl('/img/share/opengraph.jpeg'))
+            ->addMeta('name', 'twitter:image', $package->getUrl('/img/share/twitter.jpeg'))
+            ->addMeta('name', 'twitter:card', 'summary_large_image');
 
         return $this;
-    }*/
+    }
 
-    public function setCanonicalLink(string $link): SeoPage
+    public function setCanonicalLink(string $link): SeoPageInterface
     {
         $this->sonataSeoPage
             ->setLinkCanonical($link)
-            ->addMeta('property', 'og:url', $link)
-        ;
+            ->addMeta('property', 'og:url', $link);
 
         return $this;
     }
