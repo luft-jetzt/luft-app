@@ -4,6 +4,7 @@ namespace App\Pollution\PollutionLevel;
 
 use App\Entity\Data;
 
+/** @deprecated  */
 class PollutionLevel
 {
     const LEVEL_ACCEPTABLE = 1;
