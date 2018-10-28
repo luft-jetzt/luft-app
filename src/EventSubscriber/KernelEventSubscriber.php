@@ -43,10 +43,10 @@ class KernelEventSubscriber implements EventSubscriberInterface
         $canonical = $request->getUri();
 
         $canonical = str_replace([
-            'http',
+            'http://',
             'www.',
         ], [
-            'https',
+            'https://',
             '',
         ], $canonical);
 
