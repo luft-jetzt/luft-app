@@ -18,6 +18,8 @@ class DisplayController extends AbstractController
         $coord = $requestConverter->getCoordByRequest($request);
 
         if (!$coord) {
+            $seoPage->setStandardPreviewPhoto();
+            
             return $this->render('Default/select.html.twig');
         }
 
