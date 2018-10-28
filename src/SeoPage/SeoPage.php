@@ -2,9 +2,6 @@
 
 namespace App\SeoPage;
 
-use Symfony\Component\Asset\Package;
-use Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy;
-
 class SeoPage extends AbstractSeoPage
 {
     public function setTitle(string $title): SeoPageInterface
@@ -27,11 +24,9 @@ class SeoPage extends AbstractSeoPage
 
     public function setStandardPreviewPhoto(): SeoPageInterface
     {
-        $package = new Package(new StaticVersionStrategy($this->assetsVersion));
-
         $this->sonataSeoPage
-            ->addMeta('property', 'og:image', $package->getUrl('/img/share/opengraph.jpeg'))
-            ->addMeta('name', 'twitter:image', $package->getUrl('/img/share/twitter.jpeg'))
+            ->addMeta('property', 'og:image', $this->asset('/img/share/opengraph.jpeg'))
+            ->addMeta('name', 'twitter:image', $this->asset('/img/share/twitter.jpeg'))
             ->addMeta('name', 'twitter:card', 'summary_large_image');
 
         return $this;
