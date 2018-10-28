@@ -41,6 +41,12 @@ abstract class AbstractPollutant implements PollutantInterface
         return $this->name;
     }
 
+    public function getIdentifier(): string
+    {
+        $reflection = new \ReflectionClass($this);
+        return strtolower($reflection->getShortName());
+    }
+
     public function getPollutionLevel(): PollutionLevel
     {
         return $this->pollutionLevel;

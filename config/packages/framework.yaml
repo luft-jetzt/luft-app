@@ -1,6 +1,8 @@
 framework:
     secret: '%env(APP_SECRET)%'
-    #default_locale: en
+    default_locale: de
+    translator:
+        fallbacks: ['de']
     #csrf_protection: true
     #http_method_override: true
 
@@ -28,3 +30,5 @@ framework:
 
         # APCu (not recommended with heavy random-write workloads as memory fragmentation can cause perf issues)
         #app: cache.adapter.apcu
+    assets:
+        version: '%assets_version%'

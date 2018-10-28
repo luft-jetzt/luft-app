@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Caldera\GeoBasic\Coord\Coord;
+use App\DBAL\Types\StationType;
+use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as JMS;
@@ -64,6 +66,36 @@ class Station extends Coord
      * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
      */
     protected $city;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     * @JMS\Expose()
+     */
+    protected $fromDate;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     * @JMS\Expose()
+     */
+    protected $untilDate;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @JMS\Expose()
+     */
+    protected $altitude;
+
+    /**
+     * @ORM\Column(type="StationType", nullable=true)
+     * @DoctrineAssert\Enum(entity="App\DBAL\Types\StationType")
+     */
+    protected $stationType;
+
+    /**
+     * @ORM\Column(type="AreaType", nullable=true)
+     * @DoctrineAssert\Enum(entity="App\DBAL\Types\AreaType")
+     */
+    protected $areaType;
 
     public function __construct(float $latitude, float $longitude)
     {
@@ -183,5 +215,65 @@ class Station extends Coord
     public function getCity(): ?City
     {
         return $this->city;
+    }
+
+    public function getFromDate(): ?\DateTime
+    {
+        return $this->fromDate;
+    }
+
+    public function setFromDate(\DateTime $fromDate = null): Station
+    {
+        $this->fromDate = $fromDate;
+
+        return $this;
+    }
+
+    public function getUntilDate(): ?\DateTime
+    {
+        return $this->untilDate;
+    }
+
+    public function setUntilDate(\DateTime $untilDate = null): Station
+    {
+        $this->untilDate = $untilDate;
+
+        return $this;
+    }
+
+    public function getAltitude(): ?int
+    {
+        return $this->altitude;
+    }
+
+    public function setAltitude(int $altitude): Station
+    {
+        $this->altitude = $altitude;
+
+        return $this;
+    }
+
+    public function getStationType(): ?string
+    {
+        return $this->stationType;
+    }
+
+    public function setStationType(string $stationType = null): Station
+    {
+        $this->stationType = $stationType;
+
+        return $this;
+    }
+
+    public function getAreaType(): ?string
+    {
+        return $this->areaType;
+    }
+
+    public function setAreaType(string $areaType = null): Station
+    {
+        $this->areaType = $areaType;
+
+        return $this;
     }
 }

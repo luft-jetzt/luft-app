@@ -9,18 +9,10 @@
             </div>
         </div>
     </div>
-
-    {% for station in stationList %}
-    <div class="row">
-        <div class="col-12">
-            {% include 'AppBundle:Default:_station.html.twig' with { 'station': station, linkToStation: true } %}
-        </div>
-    </div>
-    {% endfor %}
 </div>
 {% endblock %}
 
 {% block scripts %}
     <script src="/js/leaflet/leaflet.js"></script>
-    <script src="/js/map.js"></script>
+    <script src="/js/map.min.js"></script>
 {% endblock %}

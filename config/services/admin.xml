@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="App\Admin\CityAdmin">
+            <argument/>
+            <argument type="string">App\Entity\City</argument>
+            <argument/>
+            <tag name="sonata.admin" manager-type="orm" group="Luft" label="City"/>
+        </service>
+
+        <service id="App\Admin\StationAdmin">
+            <argument/>
+            <argument type="string">App\Entity\Station</argument>
+            <argument/>
+            <tag name="sonata.admin" manager-type="orm" group="Luft" label="Station"/>
+        </service>
+
+        <service id="App\Admin\TwitterScheduleAdmin">
+            <argument/>
+            <argument type="string">App\Entity\TwitterSchedule</argument>
+            <argument/>
+            <tag name="sonata.admin" manager-type="orm" group="Community" label="TwitterSchedule"/>
+        </service>
+
+        <service id="App\Admin\UserAdmin">
+            <argument/>
+            <argument type="string">App\Entity\User</argument>
+            <argument/>
+            <tag name="sonata.admin" manager-type="orm" group="Community" label="User"/>
+        </service>
+    </services>
+</container>

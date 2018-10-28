@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\CityRepository")
  * @ORM\Table(name="city")
  * @JMS\ExclusionPolicy("ALL")
  */
@@ -47,12 +47,18 @@ class City
     protected $description;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     * @JMS\Expose()
+     */
+    protected $fahrverboteSlug;
+
+    /**
      * @ORM\OneToMany(targetEntity="TwitterSchedule", mappedBy="city")
      */
     protected $twitterSchedules;
 
     /**
-     * @ORM\OneToMany(targetEntity="City", mappedBy="city")
+     * @ORM\OneToMany(targetEntity="Station", mappedBy="city")
      */
     protected $stations;
 
@@ -185,6 +191,23 @@ class City
     public function getUser(): ?User
     {
         return $this->user;
+    }
+
+    public function setFahrverboteSlug(string $fahrverboteSlug): City
+    {
+        $this->fahrverboteSlug = $fahrverboteSlug;
+
+        return $this;
+    }
+
+    public function getFahrverboteSlug(): ?string
+    {
+        return $this->fahrverboteSlug;
+    }
+
+    public function hasFahrverbote(): bool
+    {
+        return $this->fahrverboteSlug !== null;
     }
 
     public function __toString(): ?string

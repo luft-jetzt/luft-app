@@ -33,4 +33,9 @@ interface PollutantInterface
      * @JMS\Expose()
      */
     public function getPollutionLevel(): PollutionLevel;
+
+    /**
+     * @JMS\Expose()
+     */
+    public function getIdentifier(): string;
 }

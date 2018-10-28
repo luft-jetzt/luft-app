@@ -3,101 +3,52 @@
 namespace App\StationLoader;
 
 use App\Entity\Station;
-use App\Repository\StationRepository;
-use Curl\Curl;
-use Symfony\Bridge\Doctrine\RegistryInterface as Doctrine;
 use Doctrine\ORM\EntityManager;
 
-class StationLoader
+class StationLoader extends AbstractStationLoader
 {
-    const SOURCE_URL = 'https://www.umweltbundesamt.de/js/uaq/data/stations/limits';
-
-    /** @var Doctrine $doctrine */
-    protected $doctrine;
-
-    /** @var array $existingStationList */
-    protected $existingStationList = [];
-
-    /** @var array $newStationList */
-    protected $newStationList = [];
-
-    public function __construct(Doctrine $doctrine)
+    public function process(callable $callback): StationLoaderInterface
     {
-        $this->doctrine = $doctrine;
-    }
-
-    public function load(): array
-    {
-        $this->existingStationList = $this->getExistingStations();
-        $newStationData = $this->fetchStationList();
-
         /** @var EntityManager $em */
-        $em = $this->doctrine->getManager();
+        $em = $this->registry->getManager();
 
-        foreach ($newStationData as $stationData) {
-            if (!$this->stationExists($stationData[0], $this->existingStationList)) {
+        foreach ($this->csv as $stationData) {
+            $callback();
+
+            if (!$stationData['station_code']) {
+                continue;
+            } elseif (!$this->stationExists($stationData['station_code'], $this->existingStationList)) {
                 $station = $this->createStation($stationData);
 
                 $em->merge($station);
 
                 $this->newStationList[] = $station;
+            } elseif ($this->update === true) {
+                $station = $this->existingStationList[$stationData['station_code']];
+
+                $station = $this->mergeStation($station, $stationData);
             }
         }
 
         $em->flush();
 
-        return $newStationData;
-    }
-
-    protected function getExistingStations(): array
-    {
-        /** @var StationRepository $stationRepository */
-        $stationRepository = $this->doctrine->getRepository(Station::class);
-        return $stationRepository->findAllIndexed();
-    }
-
-    protected function fetchStationList(): array
-    {
-        $curl = new Curl();
-        $curl->get(self::SOURCE_URL);
-        $stationList = $curl->response->stations_idx;
-
-        return $stationList;
+        return $this;
     }
 
     protected function mergeStation(Station $station, array $stationData): Station
     {
         $station
-            ->setTitle($stationData[1])
-            ->setStationCode($stationData[0])
-            ->setStateCode($stationData[2])
-            ->setLatitude($stationData[5])
-            ->setLongitude($stationData[4]);
+            ->setTitle($stationData['station_name'])
+            ->setStationCode($stationData['station_code'])
+            ->setStateCode($this->parseStateCode($stationData['station_code']))
+            ->setLatitude(floatval($stationData['station_latitude_d']))
+            ->setLongitude(floatval($stationData['station_longitude_d']))
+            ->setFromDate($this->parseDate($stationData['station_start_date']))
+            ->setUntilDate(!empty($stationData['station_end_date']) ? $this->parseDate($stationData['station_end_date']) :null)
+            ->setAltitude(intval($stationData['station_altitude']))
+            ->setStationType(!empty($stationData['type_of_station']) ? $stationData['type_of_station'] : null)
+            ->setAreaType(!empty($stationData['station_type_of_area']) ? $stationData['station_type_of_area'] : null);
 
         return $station;
-    }
-
-    protected function createStation(array $stationData): Station
-    {
-        $station = new Station($stationData[5], $stationData[4]);
-
-        $this->mergeStation($station, $stationData);
-
-        return $station;
-    }
-
-    protected function stationExists(string $stationCode, array $stationData): bool
-    {
-        return array_key_exists($stationCode, $stationData);
-    }
-
-    public function getExistingStationList(): array
-    {
-        return $this->existingStationList;
-    }
-
-    public function getNewStationList(): array
-    {
-        return $this->newStationList;
     }
 }

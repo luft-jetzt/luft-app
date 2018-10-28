@@ -2,10 +2,53 @@
 
 {% block content %}
 <div class="container">
-    <div class="row">
+    <div class="row mb-2">
+        <div class="col-12 text-center">
+            {% if city %}
+            <h3>
+                Aktuelle Luftmesswerte aus {{ city.name }}
+            </h3>
+            {% elseif cityName %}
+            <h3>
+                Aktuelle Luftmesswerte aus {{ cityName }}
+            </h3>
+            {% else %}
+            <h3>
+                Aktuelle Messwerte aus deiner Umgebung
+            </h3>
+            {% endif %}
+
+            <p class="lead">
+                Es wurden die folgenden Schadstoffwerte aus Messstationen deiner Umgebung ermittelt:
+            </p>
+        </div>
+    </div>
+
+    <div class="card coord" data-latitude="{{ coord.latitude }}" data-longitude="{{ coord.longitude }}">
+        {% if showMap is not defined or showMap == true %}
+            <div id="coord-map" class="coord-map card-img-top" style="height: 33.33vh;"></div>
+        {% endif %}
+
         {% for box in boxList %}
-        {% include 'Default/_box.html.twig' with { 'box': box, 'showStationTitle': true, 'linkToStation': true } %}
+            {% include 'Default/_box.html.twig' with { 'box': box, 'showStationTitle': true, 'linkToStation': true, 'combined': true } %}
         {% endfor %}
     </div>
+
+    {% if city %}
+    <div class="row mt-2">
+        <div class="col-12 text-center">
+            <a href="{{ path('show_city', { citySlug: city.slug }) }}" class="btn btn-primary" title="Zeige weitere Schadstoff-Messwerte aus {{ city.name }}">
+                Weitere Messwerte aus {{ city.name }}
+            </a>
+        </div>
+    </div>
+    {% endif %}
 </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script src="/js/leaflet.extra-markers.min.js"></script>
+    <script src="/js/map.min.js"></script>
 {% endblock %}

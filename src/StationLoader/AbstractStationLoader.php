@@ -2,14 +2,17 @@
 
 namespace App\StationLoader;
 
-use AppBundle\Entity\Station;
-use AppBundle\Repository\StationRepository;
+use App\Entity\Station;
+use App\Repository\StationRepository;
+use Curl\Curl;
 use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
+use League\Csv\Reader;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 abstract class AbstractStationLoader implements StationLoaderInterface
 {
-    /** @var Doctrine $doctrine */
-    protected $doctrine;
+    /** @var RegistryInterface $registry */
+    protected $registry;
 
     /** @var array $existingStationList */
     protected $existingStationList = [];
@@ -17,17 +20,79 @@ abstract class AbstractStationLoader implements StationLoaderInterface
     /** @var array $newStationList */
     protected $newStationList = [];
 
-    public function __construct(Doctrine $doctrine)
+    /** @var Reader $csv */
+    protected $csv;
+
+    /** @var bool $update */
+    protected $update = false;
+
+    public function __construct(RegistryInterface $registry)
     {
-        $this->doctrine = $doctrine;
+        $this->registry = $registry;
+    }
+
+    public function load(): StationLoaderInterface
+    {
+        $this->existingStationList = $this->getExistingStations();
+
+        $this->csv = $this->fetchStationList();
+
+        $this->csv
+            ->setDelimiter(';')
+            ->setHeaderOffset(1);
+
+        return $this;
+    }
+
+    public function count(): int
+    {
+        return $this->csv ? $this->csv->count() : 0;
+    }
+
+    public function setUpdate(bool $update = false): StationLoaderInterface
+    {
+        $this->update = $update;
+
+        return $this;
     }
 
     protected function getExistingStations(): array
     {
         /** @var StationRepository $stationRepository */
-        $stationRepository = $this->doctrine->getRepository(Station::class);
+        $stationRepository = $this->registry->getRepository(Station::class);
 
         return $stationRepository->findAllIndexed();
+    }
+
+    protected function fetchStationList(): Reader
+    {
+        $curl = new Curl();
+        $curl->get(StationLoaderInterface::SOURCE_URL);
+
+        $csv = Reader::createFromString(utf8_decode($curl->response));
+
+        return $csv;
+    }
+
+    protected function parseStateCode(string $stationCode): string
+    {
+        return substr($stationCode, 2, 2);
+    }
+
+    protected function parseDate(string $dateString): \DateTime
+    {
+        sscanf($dateString,'%4d%2d%2d', $year, $month, $day);
+
+        return new \DateTime(sprintf('%d-%d-%d', $year, $month, $day));
+    }
+
+    protected function createStation(array $stationData): Station
+    {
+        $station = new Station(floatval($stationData['station_latitude_d']), floatval($stationData['station_longitude_d']));
+
+        $this->mergeStation($station, $stationData);
+
+        return $station;
     }
 
     protected function stationExists(string $stationCode, array $stationData): bool
