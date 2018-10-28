@@ -27,6 +27,17 @@ class StationRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findActiveStations(): array
+    {
+        $qb = $this->createQueryBuilder('s');
+
+        $qb
+            ->where($qb->expr()->isNull('s.untilDate'))
+            ->orderBy('s.stationCode');
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function findActiveStationsForCity(City $city): array
     {
         $qb = $this->createQueryBuilder('s');
