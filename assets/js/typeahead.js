@@ -4,7 +4,17 @@ $(document).ready(function () {
             return Bloodhound.tokenizers.whitespace(data.value.name);
         },
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: Routing.generate('prefetch'),
+        prefetch: Routing.generate('prefetch_cities'),
+        cache: false,
+        ttl: 60,
+    });
+
+    const prefetchedStations = new Bloodhound({
+        datumTokenizer: function (data) {
+            return Bloodhound.tokenizers.whitespace(data.value.name);
+        },
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: Routing.generate('prefetch_stations'),
         cache: false,
         ttl: 60,
     });
@@ -37,6 +47,16 @@ $(document).ready(function () {
         },
         templates: {
             header: '<strong>Städte</strong>',
+            suggestion: renderSuggestion,
+        }
+    }, {
+        name: 'prefetchedStations',
+        source: prefetchedStations,
+        display: function(data) {
+            return data.value.name;
+        },
+        templates: {
+            header: '<strong>Messstationen</strong>',
             suggestion: renderSuggestion,
         }
     }, {
