@@ -4,7 +4,7 @@ namespace App\AirQuality\PollutionLevel;
 
 use App\Entity\Data;
 
-class AbstractPollutionLevel implements PollutionLevelInterface
+abstract class AbstractPollutionLevel implements PollutionLevelInterface
 {
     protected $levels = [];
 
@@ -21,5 +21,14 @@ class AbstractPollutionLevel implements PollutionLevelInterface
         }
 
         return $current;
+    }
+
+    public function getPollutionIdentifier(): string
+    {
+        $reflection = new \ReflectionClass($this);
+
+        $className = $reflection->getShortName();
+
+        return strtolower(substr($className, 0, -5));
     }
 }

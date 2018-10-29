@@ -8,6 +8,7 @@ class BoxDecorator extends AbstractBoxDecorator
 {
     public function decorate(): BoxDecoratorInterface
     {
+
         /** @var Box $box */
         foreach ($this->boxList as $box) {
             $data = $box->getData();

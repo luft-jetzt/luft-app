@@ -7,4 +7,5 @@ use App\Entity\Data;
 interface PollutionLevelInterface
 {
     public function getLevel(Data $data): int;
+    public function getPollutionIdentifier(): string;
 }
