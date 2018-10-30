@@ -20,7 +20,8 @@ abstract class AbstractPollutionLevel implements PollutionLevelInterface
             }
         }
 
-        return $current;
+        // as the index for level 2 is 1, we have to +1
+        return $current + 1;
     }
 
     public function getPollutionIdentifier(): string

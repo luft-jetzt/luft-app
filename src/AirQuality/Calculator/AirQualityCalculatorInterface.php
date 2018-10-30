@@ -3,9 +3,11 @@
 namespace App\AirQuality\Calculator;
 
 use App\AirQuality\PollutionLevel\PollutionLevelInterface;
+use App\Pollution\Box\Box;
 
 interface AirQualityCalculatorInterface
 {
-    public function calculate(array $boxList): int;
+    public function calculateBoxList(array $boxList): int;
+    public function calculateBox(Box $box): int;
     public function addPollutionLevel(PollutionLevelInterface $pollutionLevel): AirQualityCalculatorInterface;
 }
