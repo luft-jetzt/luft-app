@@ -3,67 +3,66 @@
 namespace App\Command;
 
 use App\Entity\Station;
+use App\Provider\ProviderInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class StationCommand extends Command
 {
-    /** @var StationLoader $stationLoader */
-    protected $stationLoader;
+    protected $providerList = [];
 
-    public function __construct(?string $name = null, StationLoader $stationLoader)
+    public function addProvider(ProviderInterface $provider)
     {
-        $this->stationLoader = $stationLoader;
-
-        parent::__construct($name);
+        $this->providerList[$provider->getIdentifier()] = $provider;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('luft:load-station')
-            ->addOption('ub')
-            ->addOption('ld')
             ->addOption('update', 'u', InputOption::VALUE_NONE, 'Update existing station data')
-            ->setDescription('Fetch station list from Umweltbundesamt');
+            ->addArgument('provider', InputArgument::REQUIRED, 'Providers to fetch from')
+            ->setDescription('Fetch station list');
     }
 
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($input->getOption('ub')) {
-            $this->fetchStation(UbStationLoader::class, $output);
+        /** @var ProviderInterface $provider */
+        foreach ($this->providerList as $provider) {
+            if ($input->getArgument('provider') !== $provider->getIdentifier()) {
+                continue;
+            }
+
+            $stationLoader = $provider->getStationLoader();
+
+            $stationLoader->load();
+
+            if ($input->getOption('update')) {
+                $stationLoader->setUpdate(true);
+            }
+
+            $progressBar = new ProgressBar($output, $stationLoader->count());
+
+            $stationLoader->process(function() use ($progressBar) {
+                $progressBar->advance();
+            });
+
+            $progressBar->finish();
+
+            $output->writeln('Existing stations');
+            $this->printTable($output, $stationLoader->getExistingStationList());
+
+            $output->writeln('');
+
+            $output->writeln('New stations');
+            $this->printTable($output, $stationLoader->getNewStationList());
         }
-
-        if ($input->getOption('ld')) {
-            $this->fetchStation(LdStationLoader::class, $output);
-        }
-
-        if ($input->getOption('update')) {
-            $this->stationLoader->setUpdate(true);
-        }
-
-        $this->stationLoader->load();
-
-        $progressBar = new ProgressBar($output, $this->stationLoader->count());
-
-        $this->stationLoader->process(function() use ($progressBar) {
-            $progressBar->advance();
-        });
-
-        $progressBar->finish();
-
-        $output->writeln('Existing stations');
-        $this->printTable($output, $this->stationLoader->getExistingStationList());
-
-        $output->writeln('');
-
-        $output->writeln('New stations');
-        $this->printTable($output, $this->stationLoader->getNewStationList());
     }
 
     protected function printTable(OutputInterface $output, array $stationList): void

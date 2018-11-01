@@ -2,9 +2,18 @@
 
 namespace App\Provider\Umweltbundesamt;
 
-use App\Provider\ProviderInterface;
+use App\Provider\AbstractProvider;
+use App\Provider\Umweltbundesamt\StationLoader\UmweltbundesamtStationLoader;
 
-class UmweltbundesamtProvider implements ProviderInterface
+class UmweltbundesamtProvider extends AbstractProvider
 {
+    public function __construct(UmweltbundesamtStationLoader $umweltbundesamtStationLoader)
+    {
+        $this->stationLoader = $umweltbundesamtStationLoader;
+    }
 
+    public function getIdentifier(): string
+    {
+        return 'uba_de';
+    }
 }

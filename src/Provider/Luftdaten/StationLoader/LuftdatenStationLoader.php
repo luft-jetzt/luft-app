@@ -15,4 +15,29 @@ class LuftdatenStationLoader extends AbstractStationLoader
     {
         return $this;
     }
+
+    public function load(): StationLoaderInterface
+    {
+        // TODO: Implement load() method.
+    }
+
+    public function count(): int
+    {
+        // TODO: Implement count() method.
+    }
+
+    public function setUpdate(bool $update = false): StationLoaderInterface
+    {
+        // TODO: Implement setUpdate() method.
+    }
+
+    public function getExistingStationList(): array
+    {
+        // TODO: Implement getExistingStationList() method.
+    }
+
+    public function getNewStationList(): array
+    {
+        // TODO: Implement getNewStationList() method.
+    }
 }

@@ -4,5 +4,7 @@ namespace App\Provider;
 
 interface ProviderInterface
 {
+    public function getIdentifier(): string;
 
+    public function getStationLoader(): StationLoaderInterface;
 }
