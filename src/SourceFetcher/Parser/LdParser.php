@@ -13,8 +13,10 @@ class LdParser implements ParserInterface
         $this->query = $query;
     }
 
-    public function parse(string $string, string $pollutant): array
+    public function parse(string $string, int $pollutant): array
     {
+        // TODO: Implement parse() method.
 
+        return [];
     }
 }

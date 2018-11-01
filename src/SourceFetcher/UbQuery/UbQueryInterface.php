@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\SourceFetcher\Query\UbQuery;
+namespace App\SourceFetcher\UbQuery;
 
-use AppBundle\SourceFetcher\Query\QueryInterface;
+use App\SourceFetcher\Query\QueryInterface;
 
 interface UbQueryInterface extends QueryInterface
 {

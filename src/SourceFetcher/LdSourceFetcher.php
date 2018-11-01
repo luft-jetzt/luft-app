@@ -2,7 +2,7 @@
 
 namespace App\SourceFetcher;
 
-use AppBundle\SourceFetcher\Query\QueryInterface;
+use App\SourceFetcher\Query\QueryInterface;
 use Curl\Curl;
 
 class LdSourceFetcher implements SourceFetcherInterface

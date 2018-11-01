@@ -1,12 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace App\StationLoader;
+namespace App\Provider\Umweltbundesamt\StationLoader;
 
 use App\Entity\Station;
+use App\Provider\AbstractStationLoader;
+use App\Provider\StationLoaderInterface;
 use Doctrine\ORM\EntityManager;
 
-class StationLoader extends AbstractStationLoader
+class UmweltbundesamtStationLoader extends AbstractStationLoader
 {
+    const SOURCE_URL = 'https://www.umweltbundesamt.de/js/uaq/data/stations/limits';
+
     public function process(callable $callback): StationLoaderInterface
     {
         /** @var EntityManager $em */

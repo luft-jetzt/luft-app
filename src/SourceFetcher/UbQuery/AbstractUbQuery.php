@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\SourceFetcher\Query\UbQuery;
+namespace App\SourceFetcher\UbQuery;
 
 abstract class AbstractUbQuery implements UbQueryInterface
 {

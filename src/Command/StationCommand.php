@@ -3,9 +3,6 @@
 namespace App\Command;
 
 use App\Entity\Station;
-use App\StationLoader\LdStationLoader;
-use App\StationLoader\StationLoader;
-use App\StationLoader\UbStationLoader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\Table;
