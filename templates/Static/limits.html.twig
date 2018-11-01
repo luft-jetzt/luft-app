@@ -1,4 +1,59 @@
 {% extends 'layout.html.twig' %}
+{% import _self as self %}
+
+{% macro pollutant_table(pollutant_identifier) %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                Symbol
+            </th>
+
+            <th>
+                LQI
+            </th>
+
+            <th>
+                Bedeutung
+            </th>
+
+            <th>
+                Grenzwert
+            </th>
+        </tr>
+        </thead>
+
+        {% set levels = pollution_levels(pollutant_identifier) %}
+        {% set last_level = levels.levels|last  %}
+        {% set last_limit = last_level|number_format(0, ',', '.') %}
+
+        <tbody>
+        {% for level,limit in levels.levels|merge(['air_quality.list.more_than'|trans({'%limit%': last_limit})]) %}
+            <tr>
+                <td>
+                    {{ ('air_quality.index.' ~ loop.index ~ '.icon')|trans }}
+                </td>
+
+                <td>
+                    {{ loop.index }}
+                </td>
+
+                <td>
+                    {{ ('air_quality.index.' ~ loop.index ~ '.name')|trans }}
+                </td>
+
+                <td>
+                    {% if limit is numeric %}
+                    {{ limit|number_format(0, ',', '.') }} µg/m<sup>3</sup>
+                    {% else %}
+                    {{ limit }} µg/m<sup>3</sup>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}
 
 {% block content %}
 <div class="container">
@@ -17,7 +72,10 @@
             </p>
 
             <p>
-                Für Feinstaub PM<sub>10</sub> etwa dürfen 50 Mikrogramm pro Kubikmeter im Tagesmittel nur an höchstens 35 Tagen im Jahr überschritten werden, so dass genaugenommen im Januar eines Jahres noch gar keine kritischen Messwerte angezeigt werden dürften. Natürlich ist der im Januar eingeatmete Feinstaub ebenso gefährlich wie im Sommer. Auf dieser Webseite werden darum die Messwerte in die vier Kategorien <span class="text-success">moderat</span>, <span class="text-warning">schwach gesundheitsgefährdend</span>, <span class="text-danger">gesundheitsgefährdend</span> und <span class="text-dark">stark gesundheitsgefährdend</span> eingeteilt, um das ungefähre Gefahrenpotenzial der Schadstoffkonzentrationen abbilden zu können.
+                Für Feinstaub PM<sub>10</sub> etwa dürfen 50 Mikrogramm pro Kubikmeter im Tagesmittel nur an höchstens 35 Tagen im Jahr überschritten werden, so dass genaugenommen im Januar eines Jahres noch gar keine kritischen Messwerte angezeigt werden dürften. Natürlich ist der im Januar eingeatmete Feinstaub ebenso gefährlich wie im Sommer.</p>
+
+            <p>
+                Auf dieser Webseite werden die Messwerte darum anhand des Luftqualitätsindex’ LQI bewertet. Abhängig von der jeweiligen Konzentration eines Schadstoffs wird eine Bewertung von 1 bis 6 vergeben, die sich an dem aus der Schule bekannten Notensystem orientiert. Der Luftqualitätindex eines bestimmten Ortes ergibt sich wiederum aus der schlechtesten Bewertung aller an diesem Ort gemessenen Schadstoffe.
             </p>
 
             <a name="feinstaub-pm10" />
@@ -31,81 +89,7 @@
                 Feinstaub entsteht unter anderem beim Betrieb von Kraftfahrzeugen, beispielsweise bei der Verbrennung von Kraftstoffen oder als Abrieb von Bremsen, Reifen oder Kupplungen. Seit einigen Jahren steigt die Feinstaubbelastung in Wohn- und insbesondere in Neubaugebieten deutlich an, da das Befeuern von Hausöfen wieder in Mode gekommen ist. Feinstaubpartikel können je nach Größe in die Nasenhöhle, in die Lungenbläßchen oder gar in den Blutkreislauf eindringen. Dort erhöhen sie das Thrombose- und Plaquerisiko in Blutgefäßen und stehen im Verdacht, die Entstehung von Alzheimer zu begünstigen.
             </p>
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            Symbol
-                        </th>
-
-                        <th>
-                            Bedeutung
-                        </th>
-
-                        <th>
-                            Grenzwert
-                        </th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr>
-                        <td>
-                            ✅
-                        </td>
-
-                        <td class="text-success">
-                            moderat
-                        </td>
-
-                        <td>
-                            20 µg/m<sup>3</sup>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            ⚠️
-                        </td>
-
-                        <td class="text-warning">
-                            leicht gesundheitsgefährdend
-                        </td>
-
-                        <td>
-                            35 µg/m<sup>3</sup>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            ❌
-                        </td>
-
-                        <td class="text-danger">
-                            gesundheitsgefährdend
-                        </td>
-
-                        <td>
-                            45 µg/m<sup>3</sup>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            ☠
-                        </td>
-
-                        <td class="text-dark">
-                            stark gesundheitsgefährdend
-                        </td>
-
-                        <td>
-                            75 µg/m<sup>3</sup>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            {{ self.pollutant_table('pm10') }}
 
             <a name="stickstoffdioxid" />
             <a name="no2" />
@@ -118,79 +102,7 @@
                 Stickoxide entstehen bei der Verbennung von Öl, Kohle und Holz. Insbesondere das im Straßenverkehr emittierte Stickstoffdioxid verursacht Reizungen der Augen und der Atemwege. Es begünstigt Entzündungen und kann somit eine Vielzahl verschiedener Erkrankungen begünstigen, etwa Atemwegsinfektionen, Verminderung der Lungenfunktion oder Herz-Kreislauf-Erkrankungen.
             </p>
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            Symbol
-                        </th>
-
-                        <th>
-                            Bedeutung
-                        </th>
-
-                        <th>
-                            Grenzwert
-                        </th>
-                    </tr>
-                </thead>
-
-                <tr>
-                    <td>
-                        ✅
-                    </td>
-
-                    <td class="text-success">
-                        moderat
-                    </td>
-
-                    <td>
-                        40 µg/m<sup>3</sup>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        ⚠️
-                    </td>
-
-                    <td class="text-warning">
-                        leicht gesundheitsgefährdend
-                    </td>
-
-                    <td>
-                        80 µg/m<sup>3</sup>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        ❌
-                    </td>
-
-                    <td class="text-danger">
-                        gesundheitsgefährdend
-                    </td>
-
-                    <td>
-                        150 µg/m<sup>3</sup>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        ☠
-                    </td>
-
-                    <td class="text-dark">
-                        stark gesundheitsgefährdend
-                    </td>
-
-                    <td>
-                        250 µg/m<sup>3</sup>
-                    </td>
-                </tr>
-            </table>
+            {{ self.pollutant_table('no2') }}
 
             <a name="schwefeldioxid" />
             <a name="so2" />
@@ -203,79 +115,7 @@
                 Bei der Verbrennung von fossilen Energieträgern entsteht Schwefeldioxid bei der Oxidation des in Erdöl und Kohle enthaltenen Schwefels. Es führt zu Reizungen der Augen und der Atemwege.
             </p>
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            Symbol
-                        </th>
-
-                        <th>
-                            Bedeutung
-                        </th>
-
-                        <th>
-                            Grenzwert
-                        </th>
-                    </tr>
-                </thead>
-
-                <tr>
-                    <td>
-                        ✅
-                    </td>
-
-                    <td class="text-success">
-                        moderat
-                    </td>
-
-                    <td>
-                        105 µg/m<sup>3</sup>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        ⚠️
-                    </td>
-
-                    <td class="text-warning">
-                        leicht gesundheitsgefährdend
-                    </td>
-
-                    <td>
-                        210 µg/m<sup>3</sup>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        ❌
-                    </td>
-
-                    <td class="text-danger">
-                        gesundheitsgefährdend
-                    </td>
-
-                    <td>
-                        350 µg/m<sup>3</sup>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        ☠
-                    </td>
-
-                    <td class="text-dark">
-                        stark gesundheitsgefährdend
-                    </td>
-
-                    <td>
-                        600 µg/m<sup>3</sup>
-                    </td>
-                </tr>
-            </table>
+            {{ self.pollutant_table('so2') }}
 
             <a name="kohlenmonoxid" />
             <a name="co" />
@@ -288,79 +128,7 @@
                 Kohlenmonoxid ist ein farb- und geruchsloses, aber hochgiftiges Gas, das bei unvollständiger Verbrennung entsteht. Es unterbindet den Sauerstofftransport im Blut und führt bei höheren Konzentrationen nach kürzester Zeit zum Tod.
             </p>
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            Symbol
-                        </th>
-
-                        <th>
-                            Bedeutung
-                        </th>
-
-                        <th>
-                            Grenzwert
-                        </th>
-                    </tr>
-                </thead>
-
-                <tr>
-                    <td>
-                        ✅
-                    </td>
-
-                    <td class="text-success">
-                        moderat
-                    </td>
-
-                    <td>
-                        3.000 µg/m<sup>3</sup>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        ⚠️
-                    </td>
-
-                    <td class="text-warning">
-                        leicht gesundheitsgefährdend
-                    </td>
-
-                    <td>
-                        7.000 µg/m<sup>3</sup>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        ❌
-                    </td>
-
-                    <td class="text-danger">
-                        gesundheitsgefährdend
-                    </td>
-
-                    <td>
-                        10.000 µg/m<sup>3</sup>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        ☠
-                    </td>
-
-                    <td class="text-dark">
-                        stark gesundheitsgefährdend
-                    </td>
-
-                    <td>
-                        15.000 µg/m<sup>3</sup>
-                    </td>
-                </tr>
-            </table>
+            {{ self.pollutant_table('co') }}
 
             <a name="ozon" />
             <a name="o3" />
@@ -373,79 +141,7 @@
                 Bodennahes Ozon reizt Augen und Atemwege und die Leistungsfähigkeit des menschlichen Körpers verringern. Insbesondere an warmen Sommerabenden ist mit hohen Ozonkonzentrationen zu rechnen, während denen im Interesse der Gesundheit auf sportliche Aktivitäten oder gar den Aufenthalt im Freien verzichtet werden sollte.
             </p>
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            Symbol
-                        </th>
-
-                        <th>
-                            Bedeutung
-                        </th>
-
-                        <th>
-                            Grenzwert
-                        </th>
-                    </tr>
-                </thead>
-
-                <tr>
-                    <td>
-                        ✅
-                    </td>
-
-                    <td class="text-success">
-                        moderat
-                    </td>
-
-                    <td>
-                        54 µg/m<sup>3</sup>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        ⚠️
-                    </td>
-
-                    <td class="text-warning">
-                        leicht gesundheitsgefährdend
-                    </td>
-
-                    <td>
-                        108 µg/m<sup>3</sup>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        ❌
-                    </td>
-
-                    <td class="text-danger">
-                        gesundheitsgefährdend
-                    </td>
-
-                    <td>
-                        180 µg/m<sup>3</sup>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        ☠
-                    </td>
-
-                    <td class="text-dark">
-                        stark gesundheitsgefährdend
-                    </td>
-
-                    <td>
-                        240 µg/m<sup>3</sup>
-                    </td>
-                </tr>
-            </table>
+            {{ self.pollutant_table('o3') }}
         </div>
     </div>
 </div>

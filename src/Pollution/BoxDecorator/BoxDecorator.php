@@ -13,14 +13,13 @@ class BoxDecorator extends AbstractBoxDecorator
             $data = $box->getData();
 
             $pollutant = $this->getPollutantById($data->getPollutant());
-            $level = $pollutant->getPollutionLevel()->getLevel($data);
 
             $box
                 ->setStation($data->getStation())
-                ->setPollutant($pollutant)
-                ->setPollutionLevel($level)
-            ;
+                ->setPollutant($pollutant);
         }
+
+        $this->airQualityCalculator->calculateBoxList($this->boxList);
 
         return $this;
     }
