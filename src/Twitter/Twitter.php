@@ -21,7 +21,7 @@ class Twitter extends AbstractTwitter
 
             $cron = CronExpression::factory($twitterSchedule->getCron());
 
-            if ($cron->isDue()) {
+            if ($cron->isDue() || $this->dryRun) {
                 $user = $twitterSchedule->getCity()->getUser();
 
                 if (!$user) {
@@ -42,9 +42,11 @@ class Twitter extends AbstractTwitter
                     'long' => $coord->getLongitude(),
                 ];
 
-                $reply = $cb->statuses_update($params);
-                
-                $this->logger->notice(json_encode($reply));
+                if (!$this->dryRun) {
+                    $reply = $cb->statuses_update($params);
+
+                    $this->logger->notice(json_encode($reply));
+                }
 
                 $this->validScheduleList[] = $twitterSchedule;
             }
@@ -53,14 +55,20 @@ class Twitter extends AbstractTwitter
 
     protected function createMessage(TwitterSchedule $twitterSchedule, array $boxList): string
     {
-        $message = $this->messageFactory
+        $this->messageFactory
             ->reset()
             ->setTitle($twitterSchedule->getTitle())
-            ->setLink($this->permalinkManager->createPermalinkForTweet($twitterSchedule))
-            ->setBoxList($boxList)
+            ->setBoxList($boxList);
+
+        if ($this->dryRun) {
+            $this->messageFactory->setLink('https://localhost/foobarbaz');
+        } else {
+            $this->messageFactory->setLink($this->permalinkManager->createPermalinkForTweet($twitterSchedule));
+        }
+
+        $message = $this->messageFactory
             ->compose()
-            ->getMessage()
-        ;
+            ->getMessage();
 
         return $message;
     }

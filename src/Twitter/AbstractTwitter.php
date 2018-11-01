@@ -38,6 +38,9 @@ abstract class AbstractTwitter implements TwitterInterface
     /** @var array $validScheduleList */
     protected $validScheduleList = [];
 
+    /** @var bool $dryRun */
+    protected $dryRun = false;
+
     public function __construct(Doctrine $doctrine, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, LuftYourlsApiManager $permalinkManager, LoggerInterface $logger, string $twitterClientId, string $twitterClientSecret)
     {
         $this->doctrine = $doctrine;
@@ -71,5 +74,17 @@ abstract class AbstractTwitter implements TwitterInterface
     public function getValidScheduleList(): array
     {
         return $this->validScheduleList;
+    }
+
+    public function getDryRun(): bool
+    {
+        return $this->dryRun;
+    }
+
+    public function setDryRun(bool $dryRun): TwitterInterface
+    {
+        $this->dryRun = $dryRun;
+
+        return $this;
     }
 }

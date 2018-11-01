@@ -25,11 +25,15 @@ class TweetCommand extends Command
         $this
             ->setName('luft:tweet')
             ->setDescription('Post current data')
-        ;
+            ->addOption('dry-run');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if ($input->getOption('dry-run')) {
+            $this->twitter->setDryRun(true);
+        }
+
         $this->twitter->tweet();
 
         $validScheduleList = $this->twitter->getValidScheduleList();
