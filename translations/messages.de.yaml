@@ -18,7 +18,7 @@ air_quality:
       icon: ✅
     3:
       name: befriedigend
-      icon: ⚠️
+      icon: ⚠️ 
     4:
       name: unbefriedigend
       icon: ⚠️
