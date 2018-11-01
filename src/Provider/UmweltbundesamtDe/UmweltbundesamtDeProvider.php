@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace App\Provider\Umweltbundesamt;
+namespace App\Provider\UmweltbundesamtDe;
 
 use App\Provider\AbstractProvider;
-use App\Provider\Umweltbundesamt\StationLoader\UmweltbundesamtStationLoader;
+use App\Provider\UmweltbundesamtDe\StationLoader\UmweltbundesamtStationLoader;
 
-class UmweltbundesamtProvider extends AbstractProvider
+class UmweltbundesamtDeProvider extends AbstractProvider
 {
     public function __construct(UmweltbundesamtStationLoader $umweltbundesamtStationLoader)
     {

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Provider\Umweltbundesamt\StationLoader;
+namespace App\Provider\UmweltbundesamtDe\StationLoader;
 
 use App\Entity\Station;
 use App\Provider\AbstractStationLoader;
