@@ -14,4 +14,9 @@ abstract class AbstractAirQualityCalculator implements AirQualityCalculatorInter
 
         return $this;
     }
+
+    public function getPollutionLevels(): array
+    {
+        return $this->pollutionLevels;
+    }
 }

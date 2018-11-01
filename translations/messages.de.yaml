@@ -7,3 +7,27 @@ station:
     background: Hintergrundmessung
     traffic: Verkehrsmessung
     industrial: Industriemessung
+
+air_quality:
+  index:
+    1:
+      name: sehr gut
+      icon: ✅
+    2:
+      name: gut
+      icon: ✅
+    3:
+      name: befriedigend
+      icon: ⚠️
+    4:
+      name: unbefriedigend
+      icon: ⚠️
+    5:
+      name: schlecht
+      icon: ❌
+    6:
+      name: sehr schlecht
+      icon: ❌
+  list:
+    caption:
+    more_than: 'über %limit%'

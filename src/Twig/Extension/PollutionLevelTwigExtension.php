@@ -2,6 +2,9 @@
 
 namespace App\Twig\Extension;
 
+use App\AirQuality\Calculator\AirQualityCalculatorInterface;
+use App\AirQuality\PollutionLevel\PollutionLevelInterface;
+
 class PollutionLevelTwigExtension extends \Twig_Extension
 {
     protected $backgroundColors = [
@@ -24,11 +27,20 @@ class PollutionLevelTwigExtension extends \Twig_Extension
         6 => 'red',
     ];
 
+    /** @var AirQualityCalculatorInterface $airQualityCalculator */
+    protected $airQualityCalculator;
+
+    public function __construct(AirQualityCalculatorInterface $airQualityCalculator)
+    {
+        $this->airQualityCalculator = $airQualityCalculator;
+    }
+
     public function getFunctions(): array
     {
         return [
             new \Twig_SimpleFunction('pollution_color', [$this, 'pollutionColor'], ['is_safe' => ['raw']]),
             new \Twig_SimpleFunction('pollution_color_name', [$this, 'pollutionColorName'], ['is_safe' => ['raw']]),
+            new \Twig_SimpleFunction('pollution_levels', [$this, 'getLevelsForPollutant'], ['is_safe' => ['raw']]),
         ];
     }
 
@@ -40,6 +52,13 @@ class PollutionLevelTwigExtension extends \Twig_Extension
     public function pollutionColorName(int $pollutionLevel): string
     {
         return $this->backgroundColorNames[$pollutionLevel];
+    }
+
+    public function getLevelsForPollutant(string $pollutantIdentifier): PollutionLevelInterface
+    {
+        $pollutionLevels = $this->airQualityCalculator->getPollutionLevels();
+
+        return $pollutionLevels[$pollutantIdentifier];
     }
 
     public function getName(): string

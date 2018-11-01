@@ -8,6 +8,11 @@ abstract class AbstractPollutionLevel implements PollutionLevelInterface
 {
     protected $levels = [];
 
+    public function getLevels(): array
+    {
+        return $this->levels;
+    }
+
     public function getLevel(Data $data): int
     {
         $levels = array_reverse($this->levels, true);

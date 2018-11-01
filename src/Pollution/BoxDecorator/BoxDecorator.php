@@ -16,8 +16,7 @@ class BoxDecorator extends AbstractBoxDecorator
 
             $box
                 ->setStation($data->getStation())
-                ->setPollutant($pollutant)
-            ;
+                ->setPollutant($pollutant);
         }
 
         $this->airQualityCalculator->calculateBoxList($this->boxList);
