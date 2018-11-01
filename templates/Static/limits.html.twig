@@ -24,9 +24,11 @@
         </thead>
 
         {% set levels = pollution_levels(pollutant_identifier) %}
+        {% set last_level = levels.levels|last  %}
+        {% set last_limit = last_level|number_format(0, ',', '.') %}
 
         <tbody>
-        {% for level,limit in levels.levels|merge(['air_quality.list.more_than'|trans({'%limit%': levels.levels|last})]) %}
+        {% for level,limit in levels.levels|merge(['air_quality.list.more_than'|trans({'%limit%': last_limit})]) %}
             <tr>
                 <td>
                     {{ ('air_quality.index.' ~ loop.index ~ '.icon')|trans }}
@@ -41,7 +43,11 @@
                 </td>
 
                 <td>
+                    {% if limit is numeric %}
+                    {{ limit|number_format(0, ',', '.') }} µg/m<sup>3</sup>
+                    {% else %}
                     {{ limit }} µg/m<sup>3</sup>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
