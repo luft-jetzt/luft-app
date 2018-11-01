@@ -3,9 +3,7 @@
 namespace App\Command;
 
 use App\Entity\TwitterSchedule;
-use App\PermalinkManager\SqibePermalinkManager;
-use App\Twitter\Twitter;
-use Cron\CronExpression;
+use App\Twitter\TwitterInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,7 +13,7 @@ class TweetCommand extends Command
 {
     protected $twitter;
 
-    public function __construct(?string $name = null, Twitter $twitter)
+    public function __construct(?string $name = null, TwitterInterface $twitter)
     {
         $this->twitter = $twitter;
 
