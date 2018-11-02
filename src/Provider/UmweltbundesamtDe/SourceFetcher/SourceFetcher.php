@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Provider\UmweltbundesamtDe\Reporting;
+namespace App\Provider\UmweltbundesamtDe\SourceFetcher;
 
-use App\SourceFetcher\Query\QueryInterface;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaQueryInterface;
 use Curl\Curl;
 
 class SourceFetcher
@@ -15,7 +15,7 @@ class SourceFetcher
         $this->curl = new Curl();
     }
 
-    public function query(QueryInterface $query): string
+    public function query(UbaQueryInterface $query): string
     {
         $queryString = sprintf('https://www.umweltbundesamt.de/uaq/csv/stations/data?%s', $query->getQueryString());
 

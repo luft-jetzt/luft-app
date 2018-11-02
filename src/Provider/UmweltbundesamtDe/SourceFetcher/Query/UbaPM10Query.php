@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Provider\UmweltbundesamtDe\Query;
+namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Query;
 
-class PM10Query extends AbstractQuery
+class UbaPM10Query extends AbstractUbaQuery
 {
     public function getDateTimeFormat(): string
     {

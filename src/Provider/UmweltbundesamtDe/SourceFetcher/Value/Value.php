@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Provider\UmweltbundesamtDe\Value;
+namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Value;
 
 class Value
 {

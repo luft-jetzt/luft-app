@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Provider\UmweltbundesamtDe\Query;
+namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Query;
 
-interface QueryInterface
+interface UbaQueryInterface
 {
     public function getQueryString(): string;
     public function getQueryOptions(): array;

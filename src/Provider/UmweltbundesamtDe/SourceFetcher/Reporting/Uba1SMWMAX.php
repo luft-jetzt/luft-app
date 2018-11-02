@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace App\Provider\UmweltbundesamtDe\Reporting;
+namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting;
 
 /**
- * Acht-Stunden-Mittelwert
+ * Ein-Stunden-Tagesmaxima
  */
-class SMW extends AbstractReporting
+class Uba1SMWMAX extends AbstractReporting
 {
     public function __construct(\DateTimeImmutable $dateTime)
     {
@@ -16,11 +16,11 @@ class SMW extends AbstractReporting
 
     public function getStartDateTime(): \DateTimeImmutable
     {
-        return $this->calcLastHourStart();
+        return $this->calcLastDayStart();
     }
 
     public function getEndDateTime(): \DateTimeImmutable
     {
-        return $this->calcLastHourEnd();
+        return $this->calcLastDayEnd();
     }
 }

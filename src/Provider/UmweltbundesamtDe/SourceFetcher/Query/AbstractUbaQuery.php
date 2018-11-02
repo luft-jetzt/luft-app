@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Provider\UmweltbundesamtDe\Query;
+namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Query;
 
-abstract class AbstractQuery implements QueryInterface
+abstract class AbstractUbaQuery implements UbaQueryInterface
 {
     protected $pollutant;
 
