@@ -4,6 +4,7 @@ namespace App\Provider\Luftdaten\StationLoader;
 
 use App\Entity\Station;
 use App\Provider\AbstractStationLoader;
+use App\Provider\Luftdaten\LuftdatenProvider;
 use App\Provider\StationLoaderInterface;
 use Curl\Curl;
 use Doctrine\ORM\EntityManager;
@@ -27,7 +28,7 @@ class LuftdatenStationLoader extends AbstractStationLoader
         foreach ($this->sensorData as $data) {
             $callback();
 
-            $station = $this->createStation($data->location);
+            $station = $this->createStation($data['location']);
 
             if (!$this->stationExists($station->getStationCode())) {
 
@@ -49,7 +50,7 @@ class LuftdatenStationLoader extends AbstractStationLoader
         $curl = new Curl();
         $curl->get(self::SOURCE_URL);
 
-        $this->sensorData = $curl->response;
+        $this->sensorData = json_decode(json_encode($curl->response), true);
 
         return $this;
     }
@@ -60,7 +61,7 @@ class LuftdatenStationLoader extends AbstractStationLoader
             return 0;
         }
 
-        return 1;
+        return count($this->sensorData);
     }
 
     public function setUpdate(bool $update = false): StationLoaderInterface
@@ -68,17 +69,22 @@ class LuftdatenStationLoader extends AbstractStationLoader
         // TODO: Implement setUpdate() method.
     }
 
-    protected function createStation(\stdClass $locationData): Station
+    protected function createStation(array $locationData): Station
     {
-        $stationCode = sprintf('LFTDTN%d', $locationData->id);
+        $stationCode = sprintf('LFTDTN%d', $locationData['id']);
 
-        $station = new Station((float) $locationData->latitude, (float) $locationData->longitude);
+        $station = new Station((float) $locationData['latitude'], (float) $locationData['longitude']);
 
         $station
-            ->setAltitude((int) $locationData->altitude)
+            ->setAltitude((int) $locationData['altitude'])
             ->setStationCode($stationCode)
-            ->setProvider('ld');
+            ->setProvider(LuftdatenProvider::IDENTIFIER);
 
         return $station;
+    }
+
+    public function getExistingStationList(): array
+    {
+        return $this->registry->getRepository(Station::class)->findIndexedByProvider(LuftdatenProvider::IDENTIFIER);
     }
 }
