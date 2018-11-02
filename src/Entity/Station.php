@@ -97,6 +97,12 @@ class Station extends Coord
      */
     protected $areaType;
 
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     * @JMS\Expose()
+     */
+    protected $provider;
+
     public function __construct(float $latitude, float $longitude)
     {
         $this->twitterSchedules = new ArrayCollection();
@@ -273,6 +279,18 @@ class Station extends Coord
     public function setAreaType(string $areaType = null): Station
     {
         $this->areaType = $areaType;
+
+        return $this;
+    }
+
+    public function getProvider(): ?string
+    {
+        return $this->provider;
+    }
+
+    public function setProvider(string $provider): Station
+    {
+        $this->provider = $provider;
 
         return $this;
     }
