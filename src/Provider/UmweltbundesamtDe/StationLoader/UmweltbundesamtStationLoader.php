@@ -9,31 +9,16 @@ use App\Repository\StationRepository;
 use Curl\Curl;
 use Doctrine\ORM\EntityManager;
 use League\Csv\Reader;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class UmweltbundesamtStationLoader extends AbstractStationLoader
 {
     const SOURCE_URL = 'https://www.env-it.de/stationen/public/download.do?event=euMetaStation';
-
-    /** @var RegistryInterface $registry */
-    protected $registry;
-
-    /** @var array $existingStationList */
-    protected $existingStationList = [];
-
-    /** @var array $newStationList */
-    protected $newStationList = [];
 
     /** @var Reader $csv */
     protected $csv;
 
     /** @var bool $update */
     protected $update = false;
-
-    public function __construct(RegistryInterface $registry)
-    {
-        $this->registry = $registry;
-    }
 
     public function process(callable $callback): StationLoaderInterface
     {
@@ -82,7 +67,7 @@ class UmweltbundesamtStationLoader extends AbstractStationLoader
 
     public function load(): StationLoaderInterface
     {
-        $this->existingStationList = $this->getExistingStations();
+        $this->existingStationList = $this->getExistingStationList('uba_de');
 
         $this->csv = $this->fetchStationList();
 
@@ -103,14 +88,6 @@ class UmweltbundesamtStationLoader extends AbstractStationLoader
         $this->update = $update;
 
         return $this;
-    }
-
-    protected function getExistingStations(): array
-    {
-        /** @var StationRepository $stationRepository */
-        $stationRepository = $this->registry->getRepository(Station::class);
-
-        return $stationRepository->findIndexedByProvider('uba_de');
     }
 
     protected function fetchStationList(): Reader
@@ -142,20 +119,5 @@ class UmweltbundesamtStationLoader extends AbstractStationLoader
         $this->mergeStation($station, $stationData);
 
         return $station;
-    }
-
-    protected function stationExists(string $stationCode, array $stationData): bool
-    {
-        return array_key_exists($stationCode, $stationData);
-    }
-
-    public function getExistingStationList(): array
-    {
-        return $this->existingStationList;
-    }
-
-    public function getNewStationList(): array
-    {
-        return $this->newStationList;
     }
 }

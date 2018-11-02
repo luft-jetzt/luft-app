@@ -7,7 +7,6 @@ use App\Provider\AbstractStationLoader;
 use App\Provider\StationLoaderInterface;
 use Curl\Curl;
 use Doctrine\ORM\EntityManager;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class LuftdatenStationLoader extends AbstractStationLoader
 {
@@ -16,22 +15,12 @@ class LuftdatenStationLoader extends AbstractStationLoader
     /** @var \stdClass $sensorData */
     protected $sensorData;
 
-    /** @var array $existingStationList */
-    protected $existingStationList = [];
-
-    /** @var array $newStationList */
-    protected $newStationList = [];
-
-    /** @var RegistryInterface $registry */
-    protected $registry;
-
-    public function __construct(RegistryInterface $registry)
-    {
-        $this->registry = $registry;
-    }
-
     public function process(callable $callback): StationLoaderInterface
     {
+        if (!$this->sensorData) {
+            return $this;
+        }
+
         /** @var EntityManager $em */
         $em = $this->registry->getManager();
 
@@ -55,7 +44,7 @@ class LuftdatenStationLoader extends AbstractStationLoader
 
     public function load(): StationLoaderInterface
     {
-        $this->existingStationList = $this->getExistingStationList();
+        $this->existingStationList = $this->getExistingStationList('ld');
 
         $curl = new Curl();
         $curl->get(self::SOURCE_URL);
@@ -79,16 +68,6 @@ class LuftdatenStationLoader extends AbstractStationLoader
         // TODO: Implement setUpdate() method.
     }
 
-    public function getExistingStationList(): array
-    {
-        return $this->registry->getRepository(Station::class)->findIndexedByProvider('ld');
-    }
-
-    public function getNewStationList(): array
-    {
-        return $this->newStationList;
-    }
-
     protected function createStation(\stdClass $locationData): Station
     {
         $stationCode = sprintf('LFTDTN%d', $locationData->id);
@@ -101,10 +80,5 @@ class LuftdatenStationLoader extends AbstractStationLoader
             ->setProvider('ld');
 
         return $station;
-    }
-
-    protected function stationExists(string $stationCode): bool
-    {
-        return array_key_exists($stationCode, $this->existingStationList) || array_key_exists($stationCode, $this->newStationList);
     }
 }
