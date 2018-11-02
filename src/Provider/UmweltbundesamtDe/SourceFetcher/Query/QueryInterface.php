@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\SourceFetcher\Query;
+namespace App\Provider\UmweltbundesamtDe\Query;
 
 interface QueryInterface
 {

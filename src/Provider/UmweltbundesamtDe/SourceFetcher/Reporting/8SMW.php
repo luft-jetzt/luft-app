@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace App\SourceFetcher\Reporting;
+namespace App\Provider\UmweltbundesamtDe\Reporting;
 
 /**
  * Acht-Stunden-Mittelwert
  */
-class Ub8SMW extends AbstractUbReporting
+class SMW extends AbstractReporting
 {
     public function __construct(\DateTimeImmutable $dateTime)
     {

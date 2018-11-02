@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\SourceFetcher\Persister;
+namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Persister;
 
 use App\Entity\Data;
 use App\Entity\Station;

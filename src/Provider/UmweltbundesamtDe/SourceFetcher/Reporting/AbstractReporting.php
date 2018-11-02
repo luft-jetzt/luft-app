@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\SourceFetcher\Reporting;
+namespace App\Provider\UmweltbundesamtDe\Reporting;
 
-abstract class AbstractUbReporting implements ReportingInterface
+abstract class AbstractReporting implements ReportingInterface
 {
     /** @var \DateTime $dateTime */
     protected $dateTime;

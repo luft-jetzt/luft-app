@@ -1,11 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\SourceFetcher\Parser;
+namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Parser;
 
-use App\SourceFetcher\Query\QueryInterface;
-use App\SourceFetcher\Value\Value;
+use App\Provider\UmweltbundesamtDe\Query\QueryInterface;
 
-class UbParser implements ParserInterface
+class Parser implements ParserInterface
 {
     const STATION = 0;
     const DATETIME = 5;

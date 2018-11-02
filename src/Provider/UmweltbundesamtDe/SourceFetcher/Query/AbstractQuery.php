@@ -1,61 +1,19 @@
 <?php declare(strict_types=1);
 
-namespace App\SourceFetcher\Query;
-
-use App\SourceFetcher\Reporting\ReportingInterface;
+namespace App\Provider\UmweltbundesamtDe\Query;
 
 abstract class AbstractQuery implements QueryInterface
 {
-    protected $pollutant = [];
+    protected $pollutant;
 
-    protected $scope = [];
+    protected $scope;
 
-    protected $group = ['station'];
+    protected $group;
 
-    protected $range = [];
+    protected $range;
 
-    /** @var ReportingInterface $reporting */
-    protected $reporting;
-
-    public function __construct(ReportingInterface $reporting)
+    public function __construct()
     {
-        $this->reporting = $reporting;
-
-        $this
-            ->calcRange()
-            ->setupScope()
-            ->setupPollutant()
-        ;
-    }
-
-    protected function setupScope(): AbstractQuery
-    {
-        $this->scope = [$this->reporting->getReportingIdentifier()];
-
-        return $this;
-    }
-
-    public function setupPollutant(): AbstractQuery
-    {
-        $reflection = new \ReflectionClass($this);
-        $pollutant = $reflection->getShortName();
-
-        $pollutant = str_replace('Ub', '', $pollutant);
-        $pollutant = str_replace('Query', '', $pollutant);
-
-        $this->pollutant = [$pollutant];
-
-        return $this;
-    }
-
-    protected function calcRange(): AbstractQuery
-    {
-        $this->range = [
-            $this->reporting->getStartTimestamp(),
-            $this->reporting->getEndTimestamp(),
-        ];
-
-        return $this;
     }
 
     public function getQueryOptions(): array

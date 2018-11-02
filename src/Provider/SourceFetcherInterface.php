@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\SourceFetcher;
+namespace App\Provider;
 
 use App\SourceFetcher\Query\QueryInterface;
 

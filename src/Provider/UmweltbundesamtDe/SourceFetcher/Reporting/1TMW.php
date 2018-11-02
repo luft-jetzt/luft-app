@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace App\SourceFetcher\Reporting;
+namespace App\Provider\UmweltbundesamtDe\Reporting;
 
 /**
  * Tagesmittelwert
  */
-class Ub1TMW extends AbstractUbReporting
+class TMW extends AbstractReporting
 {
     public function getStartDateTime(): \DateTimeImmutable
     {
