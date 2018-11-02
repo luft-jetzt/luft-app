@@ -110,7 +110,7 @@ class UmweltbundesamtStationLoader extends AbstractStationLoader
         /** @var StationRepository $stationRepository */
         $stationRepository = $this->registry->getRepository(Station::class);
 
-        return $stationRepository->findAllIndexed();
+        return $stationRepository->findIndexedByProvider('uba_de');
     }
 
     protected function fetchStationList(): Reader
