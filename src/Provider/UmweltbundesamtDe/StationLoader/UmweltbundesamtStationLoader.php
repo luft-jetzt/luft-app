@@ -5,7 +5,7 @@ namespace App\Provider\UmweltbundesamtDe\StationLoader;
 use App\Entity\Station;
 use App\Provider\AbstractStationLoader;
 use App\Provider\StationLoaderInterface;
-use App\Repository\StationRepository;
+use App\Provider\UmweltbundesamtDe\UmweltbundesamtDeProvider;
 use Curl\Curl;
 use Doctrine\ORM\EntityManager;
 use League\Csv\Reader;
@@ -119,5 +119,10 @@ class UmweltbundesamtStationLoader extends AbstractStationLoader
         $this->mergeStation($station, $stationData);
 
         return $station;
+    }
+
+    public function getExistingStationList(): array
+    {
+        return $this->registry->getRepository(Station::class)->findIndexedByProvider(UmweltbundesamtDeProvider::IDENTIFIER);
     }
 }

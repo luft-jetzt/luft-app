@@ -7,6 +7,8 @@ use App\Provider\UmweltbundesamtDe\StationLoader\UmweltbundesamtStationLoader;
 
 class UmweltbundesamtDeProvider extends AbstractProvider
 {
+    const IDENTIFIER = 'uba_de';
+
     public function __construct(UmweltbundesamtStationLoader $umweltbundesamtStationLoader)
     {
         $this->stationLoader = $umweltbundesamtStationLoader;
@@ -14,6 +16,6 @@ class UmweltbundesamtDeProvider extends AbstractProvider
 
     public function getIdentifier(): string
     {
-        return 'uba_de';
+        return self::IDENTIFIER;
     }
 }

@@ -8,6 +8,6 @@ interface StationLoaderInterface
     public function count(): int;
     public function setUpdate(bool $update = false): StationLoaderInterface;
     public function process(callable $callback): StationLoaderInterface;
-    public function getExistingStationList(string $providerIdentifier): array;
+    public function getExistingStationList(): array;
     public function getNewStationList(): array;
 }

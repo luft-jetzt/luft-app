@@ -7,6 +7,8 @@ use App\Provider\Luftdaten\StationLoader\LuftdatenStationLoader;
 
 class LuftdatenProvider extends AbstractProvider
 {
+    const IDENTIFIER = 'ld';
+
     public function __construct(LuftdatenStationLoader $luftdatenStationLoader)
     {
         $this->stationLoader = $luftdatenStationLoader;
@@ -14,6 +16,6 @@ class LuftdatenProvider extends AbstractProvider
 
     public function getIdentifier(): string
     {
-        return 'ld';
+        return self::IDENTIFIER;
     }
 }

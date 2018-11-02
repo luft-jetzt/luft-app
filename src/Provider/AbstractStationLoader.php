@@ -21,11 +21,6 @@ abstract class AbstractStationLoader implements StationLoaderInterface
         $this->registry = $registry;
     }
 
-    public function getExistingStationList(string $providerIdentifier): array
-    {
-        return $this->registry->getRepository(Station::class)->findIndexedByProvider($providerIdentifier);
-    }
-
     public function getNewStationList(): array
     {
         return $this->newStationList;
