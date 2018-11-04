@@ -2,18 +2,60 @@
 
 namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Query;
 
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\ReportingInterface;
+
 abstract class AbstractUbaQuery implements UbaQueryInterface
 {
-    protected $pollutant;
+    protected $pollutant = [];
 
-    protected $scope;
+    protected $scope = [];
 
-    protected $group;
+    protected $group = ['station'];
 
-    protected $range;
+    protected $range = [];
 
-    public function __construct()
+    /** @var ReportingInterface $reporting */
+    protected $reporting;
+
+    public function __construct(ReportingInterface $reporting)
     {
+        $this->reporting = $reporting;
+
+        $this
+            ->calcRange()
+            ->setupScope()
+            ->setupPollutant()
+        ;
+    }
+
+    protected function setupScope(): AbstractUbaQuery
+    {
+        $this->scope = [$this->reporting->getReportingIdentifier()];
+
+        return $this;
+    }
+
+    public function setupPollutant(): AbstractUbaQuery
+    {
+        $reflection = new \ReflectionClass($this);
+        $pollutant = $reflection->getShortName();
+
+        $pollutant = str_replace('Ub', '', $pollutant);
+        $pollutant = str_replace('Query', '', $pollutant);
+
+        $this->pollutant = [$pollutant];
+
+        return $this;
+    }
+
+    protected function calcRange(): AbstractUbaQuery
+    {
+        $this->range = [
+            $this->reporting->getStartTimestamp(),
+            $this->reporting->getEndTimestamp(),
+        ];
+
+        return $this;
     }
 
     public function getQueryOptions(): array

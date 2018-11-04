@@ -2,7 +2,7 @@
 
 namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Parser;
 
-use App\Provider\UmweltbundesamtDe\Query\QueryInterface;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaQueryInterface;
 
 class Parser implements ParserInterface
 {
@@ -12,7 +12,7 @@ class Parser implements ParserInterface
 
     protected $query = null;
 
-    public function __construct(QueryInterface $query)
+    public function __construct(UbaQueryInterface $query)
     {
         $this->query = $query;
     }
