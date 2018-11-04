@@ -3,34 +3,11 @@
 namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Persister;
 
 use App\Entity\Data;
-use App\Entity\Station;
-use App\SourceFetcher\Value\Value;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Value\Value;
 
-class Persister
+class Persister extends AbstractPersister
 {
-    /** @var RegistryInterface $doctrine */
-    protected $doctrine;
-
-    /** @var ObjectManager $entityManager */
-    protected $entityManager;
-
-    /** @var array $stationList */
-    protected $stationList = [];
-
-    /** @var array $newValueList */
-    protected $newValueList = [];
-
-    public function __construct(RegistryInterface $doctrine)
-    {
-        $this->doctrine = $doctrine;
-        $this->entityManager = $doctrine->getManager();
-
-        $this->fetchStationList();
-    }
-
-    public function persistValues(array $values): Persister
+    public function persistValues(array $values): PersisterInterface
     {
         /** @var Value $value */
         foreach ($values as $value) {
@@ -54,32 +31,5 @@ class Persister
         $this->entityManager->flush();
 
         return $this;
-    }
-
-    protected function fetchStationList(): Persister
-    {
-        $stations = $this->doctrine->getRepository(Station::class)->findAll();
-
-        /** @var Station $station */
-        foreach ($stations as $station) {
-            $this->stationList[$station->getStationCode()] = $station;
-        }
-
-        return $this;
-    }
-
-    protected function stationExists(string $stationCode): bool
-    {
-        return array_key_exists($stationCode, $this->stationList);
-    }
-
-    protected function getStationByCode(string $stationCode): Station
-    {
-        return $this->stationList[$stationCode];
-    }
-
-    public function getNewValueList(): array
-    {
-        return $this->newValueList;
     }
 }

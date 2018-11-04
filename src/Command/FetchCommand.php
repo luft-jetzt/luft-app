@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Pollution\Pollutant\PollutantInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Parser\Parser;
-use App\Provider\UmweltbundesamtDe\SourceFetcher\Persister\Persister;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Persister\PersisterInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaCOQuery;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaNO2Query;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaO3Query;
@@ -24,13 +24,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class FetchCommand extends Command
 {
-    /** @var Persister $persister */
+    /** @var PersisterInterface $persister */
     protected $persister;
 
     /** @var SourceFetcher $fetcher */
     protected $fetcher;
 
-    public function __construct(?string $name = null, Persister $persister, SourceFetcher $fetcher)
+    public function __construct(?string $name = null, PersisterInterface $persister, SourceFetcher $fetcher)
     {
         $this->persister = $persister;
         $this->fetcher = $fetcher;
