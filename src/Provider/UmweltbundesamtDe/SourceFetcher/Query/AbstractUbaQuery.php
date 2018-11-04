@@ -40,7 +40,7 @@ abstract class AbstractUbaQuery implements UbaQueryInterface
         $reflection = new \ReflectionClass($this);
         $pollutant = $reflection->getShortName();
 
-        $pollutant = str_replace('Ub', '', $pollutant);
+        $pollutant = str_replace('Uba', '', $pollutant);
         $pollutant = str_replace('Query', '', $pollutant);
 
         $this->pollutant = [$pollutant];

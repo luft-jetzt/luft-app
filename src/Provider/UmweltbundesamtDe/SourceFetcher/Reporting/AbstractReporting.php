@@ -59,7 +59,7 @@ abstract class AbstractReporting implements ReportingInterface
         $reflection = new \ReflectionClass($this);
         $identifier = $reflection->getShortName();
 
-        $identifier = str_replace('Ub', '', $identifier);
+        $identifier = str_replace('Uba', '', $identifier);
         $identifier = str_replace('MAX', '_MAX', $identifier);
 
         return $identifier;

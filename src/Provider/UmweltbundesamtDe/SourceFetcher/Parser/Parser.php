@@ -3,6 +3,7 @@
 namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Parser;
 
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaQueryInterface;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Value\Value;
 
 class Parser implements ParserInterface
 {
