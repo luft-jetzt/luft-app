@@ -48,7 +48,7 @@ class ElasticStationFinder implements StationFinderInterface
 
         $query = new \Elastica\Query();
 
-        $query->setSize(15);
+        $query->setSize(100);
         $query->setSort(
             [
                 '_geo_distance' =>
