@@ -22,7 +22,7 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
         $this->dataList->reset();
 
         foreach ($stationList as $station) {
-            foreach ($this->dataList->getMissingPollutants() as $pollutant) {
+            foreach ($this->strategy->getMissingPollutants($this->dataList) as $pollutant) {
                 $data = $this->dataRetriever->retrieveStationData($station, $pollutant);
 
                 if ($data) {

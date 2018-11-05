@@ -7,6 +7,7 @@ use App\Pollution\Box\Box;
 use App\Pollution\BoxDecorator\BoxDecoratorInterface;
 use App\Pollution\DataList\DataList;
 use App\Pollution\DataRetriever\DataRetrieverInterface;
+use App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
 use App\Pollution\StationFinder\StationFinderInterface;
 use Caldera\GeoBasic\Coord\CoordInterface;
 
@@ -30,12 +31,16 @@ abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInter
     /** @var array $stationList */
     protected $stationList = [];
 
-    public function __construct(StationFinderInterface $stationFinder, BoxDecoratorInterface $boxDecorator, DataRetrieverInterface $dataRetriever)
+    /** @var PollutantFactoryStrategyInterface $strategy */
+    protected $strategy;
+
+    public function __construct(StationFinderInterface $stationFinder, BoxDecoratorInterface $boxDecorator, DataRetrieverInterface $dataRetriever, PollutantFactoryStrategyInterface $strategy)
     {
         $this->stationFinder = $stationFinder;
         $this->dataList = new DataList();
         $this->boxDecorator = $boxDecorator;
         $this->dataRetriever = $dataRetriever;
+        $this->strategy = $strategy;
     }
 
     public function setCoord(CoordInterface $coord): PollutionDataFactoryInterface

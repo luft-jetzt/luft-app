@@ -31,19 +31,6 @@ class DataList implements DataListInterface
         return $this->list[$pollutant] !== null;
     }
 
-    public function getMissingPollutants(): array
-    {
-        $missingList = [];
-
-        array_walk($this->list, function(Data $data = null, int $key) use (&$missingList) {
-            if ($data === null) {
-                array_push($missingList, $key);
-            }
-        });
-
-        return $missingList;
-    }
-
     public function getList(): array
     {
         return $this->list;
