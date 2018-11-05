@@ -282,4 +282,16 @@ class Station extends Coord
 
         return $this;
     }
+
+    public function getNetwork(): ?Network
+    {
+        return $this->network;
+    }
+
+    public function setNetwork(Network $network): Station
+    {
+        $this->network = $network;
+
+        return $this;
+    }
 }
