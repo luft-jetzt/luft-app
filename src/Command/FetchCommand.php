@@ -124,7 +124,7 @@ class FetchCommand extends Command
     {
         $output->writeln('CO');
 
-        $reporting = new Ub8SMW($dateTime);
+        $reporting = new Ub1SMW($dateTime);
         $query = new UbCOQuery($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_CO);
