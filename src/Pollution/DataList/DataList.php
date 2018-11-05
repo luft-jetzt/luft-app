@@ -7,6 +7,7 @@ use App\Pollution\Pollutant\PollutantInterface;
 
 class DataList
 {
+    /** @var array $list */
     protected $list;
 
     public function __construct()
@@ -52,6 +53,7 @@ class DataList
     {
         $this->list = [
             PollutantInterface::POLLUTANT_PM10 => null,
+            PollutantInterface::POLLUTANT_PM25 => null,
             PollutantInterface::POLLUTANT_O3 => null,
             PollutantInterface::POLLUTANT_NO2 => null,
             PollutantInterface::POLLUTANT_SO2 => null,
