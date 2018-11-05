@@ -40,7 +40,6 @@ class StationAdmin extends AbstractAdmin
 
             ->with('Code', ['class' => 'col-md-6'])
             ->add('stationCode', TextType::class, ['required' => true])
-            ->add('stateCode', TextType::class, ['required' => true])
             ->end()
 
             ->with('Coord', ['class' => 'col-md-6'])
@@ -80,7 +79,6 @@ class StationAdmin extends AbstractAdmin
         $datagridMapper
             ->add('city')
             ->add('stationCode')
-            ->add('stateCode')
             ->add('title')
             ->add('latitude')
             ->add('longitude')
