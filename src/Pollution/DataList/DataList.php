@@ -15,11 +15,9 @@ class DataList implements DataListInterface
         $this->reset();
     }
 
-    public function addData(Data $data, bool $overwrite = false): DataListInterface
+    public function addData(Data $data): DataListInterface
     {
-        if ($overwrite || !$this->hasPollutant($data)) {
-            $this->list[$data->getPollutant()][$data->getId()] = $data;
-        }
+        $this->list[$data->getPollutant()][$data->getId()] = $data;
 
         return $this;
     }

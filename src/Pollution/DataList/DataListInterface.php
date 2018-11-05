@@ -6,7 +6,7 @@ use App\Entity\Data;
 
 interface DataListInterface
 {
-    public function addData(Data $data, bool $overwrite = false): DataListInterface;
+    public function addData(Data $data): DataListInterface;
     public function hasPollutant(Data $data): bool;
     public function getList(): array;
     public function reset(): DataListInterface;

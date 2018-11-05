@@ -23,6 +23,12 @@ class SimplePollutantFactoryStrategy implements PollutantFactoryStrategyInterfac
 
     public function addDataToList(DataListInterface $dataList, Data $data): bool
     {
-        // TODO: Implement addDataToList() method.
+        if (!$dataList->hasPollutant($data)) {
+            $dataList->addData($data);
+
+            return true;
+        }
+
+        return false;
     }
 }
