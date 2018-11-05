@@ -5,16 +5,17 @@ namespace App\Pollution\DataList;
 use App\Entity\Data;
 use App\Pollution\Pollutant\PollutantInterface;
 
-class DataList
+class DataList implements DataListInterface
 {
-    protected $list;
+    /** @var array $list */
+    protected $list = [];
 
     public function __construct()
     {
         $this->reset();
     }
 
-    public function addData(Data $data, bool $overwrite = false): DataList
+    public function addData(Data $data, bool $overwrite = false): DataListInterface
     {
         if ($overwrite || !$this->hasPollutant($data)) {
             $this->list[$data->getPollutant()] = $data;
@@ -48,7 +49,7 @@ class DataList
         return $this->list;
     }
 
-    public function reset(): DataList
+    public function reset(): DataListInterface
     {
         $this->list = [
             PollutantInterface::POLLUTANT_PM10 => null,
