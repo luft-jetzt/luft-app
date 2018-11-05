@@ -21,6 +21,11 @@ class SimplePollutantFactoryStrategy implements PollutantFactoryStrategyInterfac
         return $missingList;
     }
 
+    public function accepts(Data $data = null): bool
+    {
+        return $data !== null;
+    }
+
     public function addDataToList(DataListInterface $dataList, Data $data): bool
     {
         if (!$dataList->hasPollutant($data)) {
