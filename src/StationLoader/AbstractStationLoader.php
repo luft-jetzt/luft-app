@@ -73,11 +73,6 @@ abstract class AbstractStationLoader implements StationLoaderInterface
         return $csv;
     }
 
-    protected function parseStateCode(string $stationCode): string
-    {
-        return substr($stationCode, 2, 2);
-    }
-
     protected function parseDate(string $dateString): \DateTime
     {
         sscanf($dateString,'%4d%2d%2d', $year, $month, $day);
