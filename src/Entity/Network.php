@@ -21,7 +21,7 @@ class Network
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $title;
+    protected $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -50,14 +50,14 @@ class Network
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getName(): ?string
     {
-        return $this->title;
+        return $this->name;
     }
 
-    public function setTitle(string $title): Network
+    public function setName(string $name): Network
     {
-        $this->title = $title;
+        $this->name = $name;
 
         return $this;
     }
