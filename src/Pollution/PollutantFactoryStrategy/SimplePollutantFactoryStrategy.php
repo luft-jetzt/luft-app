@@ -12,8 +12,8 @@ class SimplePollutantFactoryStrategy implements PollutantFactoryStrategyInterfac
         $list = $dataList->getList();
         $missingList = [];
 
-        array_walk($list, function(Data $data = null, int $key) use (&$missingList) {
-            if ($data === null) {
+        array_walk($list, function(array $data = [], int $key) use (&$missingList) {
+            if (0 === count($data) || null === $data) {
                 array_push($missingList, $key);
             }
         });

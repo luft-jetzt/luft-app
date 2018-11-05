@@ -39,8 +39,10 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
         $boxList = [];
 
         foreach ($dataList as $data) {
-            if ($data) {
-                $boxList[] = new Box($data);
+            foreach ($data as $dataElement) {
+                if ($dataElement) {
+                    $boxList[] = new Box($dataElement);
+                }
             }
         }
 

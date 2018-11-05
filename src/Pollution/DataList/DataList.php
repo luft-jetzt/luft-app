@@ -18,7 +18,7 @@ class DataList implements DataListInterface
     public function addData(Data $data, bool $overwrite = false): DataListInterface
     {
         if ($overwrite || !$this->hasPollutant($data)) {
-            $this->list[$data->getPollutant()] = $data;
+            $this->list[$data->getPollutant()][$data->getId()] = $data;
         }
 
         return $this;
@@ -28,7 +28,7 @@ class DataList implements DataListInterface
     {
         $pollutant = $data->getPollutant();
 
-        return $this->list[$pollutant] !== null;
+        return 0 !== count($this->list[$pollutant]);
     }
 
     public function getList(): array
@@ -39,11 +39,11 @@ class DataList implements DataListInterface
     public function reset(): DataListInterface
     {
         $this->list = [
-            PollutantInterface::POLLUTANT_PM10 => null,
-            PollutantInterface::POLLUTANT_O3 => null,
-            PollutantInterface::POLLUTANT_NO2 => null,
-            PollutantInterface::POLLUTANT_SO2 => null,
-            PollutantInterface::POLLUTANT_CO => null,
+            PollutantInterface::POLLUTANT_PM10 => [],
+            PollutantInterface::POLLUTANT_O3 => [],
+            PollutantInterface::POLLUTANT_NO2 => [],
+            PollutantInterface::POLLUTANT_SO2 => [],
+            PollutantInterface::POLLUTANT_CO => [],
         ];
 
         return $this;
