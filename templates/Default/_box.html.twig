@@ -25,7 +25,7 @@
     <div class="card-body text-white text-center box" style="background-color: {{ pollution_color(box.pollutionLevel) }}" data-station-code="{{ box.station.stationCode }}" data-station-latitude="{{ box.station.latitude }}" data-station-longitude="{{ box.station.longitude }}" data-station-color="{{ pollution_color_name(box.pollutionLevel) }}">
         {% if stationLink %}<a href="{{ path('station', { 'stationCode': box.station.stationCode }) }}" class="no-underline text-white" title="Weitere Luftmesswerte der Station {{ box.station.stationCode }}{% if box.station.city %} aus {{ box.station.city.name }}{% endif %}">{% endif %}
         <h4 class="card-title">
-            {{ box.data.value }} {{ box.pollutant.unitHtml|raw }}
+            {{ box.data.value|number_format }} {{ box.pollutant.unitHtml|raw }}
         </h4>
         {% if stationLink %}</a>{% endif %}
 
