@@ -91,6 +91,12 @@ class Station extends Coord
      */
     protected $areaType;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Network", inversedBy="stations")
+     * @ORM\JoinColumn(name="network_id", referencedColumnName="id")
+     */
+    protected $network;
+
     public function __construct(float $latitude, float $longitude)
     {
         $this->twitterSchedules = new ArrayCollection();
@@ -255,6 +261,18 @@ class Station extends Coord
     public function setAreaType(string $areaType = null): Station
     {
         $this->areaType = $areaType;
+
+        return $this;
+    }
+
+    public function getNetwork(): ?Network
+    {
+        return $this->network;
+    }
+
+    public function setNetwork(Network $network): Station
+    {
+        $this->network = $network;
 
         return $this;
     }
