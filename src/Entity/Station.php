@@ -97,6 +97,12 @@ class Station extends Coord
      */
     protected $areaType;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Network", inversedBy="stations")
+     * @ORM\JoinColumn(name="network_id", referencedColumnName="id")
+     */
+    protected $network;
+
     public function __construct(float $latitude, float $longitude)
     {
         $this->twitterSchedules = new ArrayCollection();
