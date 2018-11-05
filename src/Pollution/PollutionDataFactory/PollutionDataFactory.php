@@ -77,6 +77,10 @@ class PollutionDataFactory
                     $this->dataList->addData($data);
                 }
             }
+
+            if (0 === count($this->dataList->getMissingPollutants())) {
+                break;
+            }
         }
 
         return $this->dataList->getList();
