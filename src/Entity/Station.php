@@ -229,6 +229,11 @@ class Station extends Coord
         return $this;
     }
 
+    public function getFromDateFormatted(): ?string
+    {
+        return $this->fromDate ? $this->fromDate->format('Y-m-d H:i:s') : null;
+    }
+
     public function getUntilDate(): ?\DateTime
     {
         return $this->untilDate;
@@ -239,6 +244,11 @@ class Station extends Coord
         $this->untilDate = $untilDate;
 
         return $this;
+    }
+
+    public function getUntilDateFormatted(): ?string
+    {
+        return $this->untilDate ? $this->untilDate->format('Y-m-d H:i:s') : null;
     }
 
     public function getAltitude(): ?int
