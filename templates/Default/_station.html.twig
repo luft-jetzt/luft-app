@@ -1,10 +1,12 @@
 {% set pollutionLevel = 0 %}
 {% set stationColor = 'white' %}
 
-{% for box in boxList %}
-{% if box.pollutionLevel > pollutionLevel %}
-    {% set pollutionLevel = box.pollutionLevel %}
-{% endif %}
+{% for boxRow in boxList %}
+    {% for box in boxRow %}
+        {% if box.pollutionLevel > pollutionLevel %}
+        {% set pollutionLevel = box.pollutionLevel %}
+        {% endif %}
+    {% endfor %}
 {% endfor %}
 
 {% if pollutionLevel == 1 %}
@@ -61,8 +63,10 @@
             {% endif %}
         </div>
 
-        {% for box in boxList %}
-            {% include 'Default/_box.html.twig' with { 'box': box, 'showStationTitle': false, combined: true } %}
+        {% for boxRow in boxList %}
+            {% for box in boxRow %}
+                {% include 'Default/_box.html.twig' with { 'box': box, 'showStationTitle': false, combined: true } %}
+            {% endfor %}
         {% endfor %}
     </div>
 

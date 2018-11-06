@@ -2,6 +2,7 @@
 
 namespace App\Pollution\PollutionDataFactory;
 
+use App\Entity\Data;
 use App\Pollution\Box\Box;
 
 class PollutionDataFactory extends AbstractPollutionDataFactory
@@ -38,10 +39,12 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
     {
         $boxList = [];
 
+        /** @var array $data */
         foreach ($dataList as $data) {
+            /** @var Data $dataElement */
             foreach ($data as $dataElement) {
                 if ($dataElement) {
-                    $boxList[] = new Box($dataElement);
+                    $boxList[$dataElement->getPollutant()][$dataElement->getId()] = new Box($dataElement);
                 }
             }
         }
