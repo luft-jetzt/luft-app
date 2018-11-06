@@ -45,4 +45,32 @@ class DateTimeUtil
 
         return new \DateTime($dateTime);
     }
+
+    public static function getHourStartDateTime(\DateTime $hour): \DateTime
+    {
+        $dateTime = sprintf('%d-%d-%d %d:00:00', $hour->format('Y'), $hour->format('m'), $hour->format('d'), $hour->format('H'));
+
+        return new \DateTime($dateTime);
+    }
+
+    public static function getHourEndDateTime(\DateTime $hour): \DateTime
+    {
+        $dateTime = sprintf('%d-%d-%d %d:59:59', $hour->format('Y'), $hour->format('m'), $hour->format('d'), $hour->format('H'));
+
+        return new \DateTime($dateTime);
+    }
+
+    public static function getMinuteStartDateTime(\DateTime $minute): \DateTime
+    {
+        $dateTime = sprintf('%d-%d-%d %d:%d:00', $minute->format('Y'), $minute->format('m'), $minute->format('d'), $minute->format('H'), $minute->format('m'));
+
+        return new \DateTime($dateTime);
+    }
+
+    public static function getMinuteEndDateTime(\DateTime $minute): \DateTime
+    {
+        $dateTime = sprintf('%d-%d-%d %d:%d:59', $minute->format('Y'), $minute->format('m'), $minute->format('d'), $minute->format('H'), $minute->format('m'));
+
+        return new \DateTime($dateTime);
+    }
 }
