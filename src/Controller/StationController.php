@@ -20,7 +20,7 @@ class StationController extends AbstractController
 
         $boxList = $pollutionDataFactory
             ->setStation($station)
-            ->createDecoratedBoxList();
+            ->createDecoratedPollutantList();
 
         if ($station->getCity()) {
             $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s in %s', $station->getStationCode(), $station->getCity()->getName()));

@@ -9,9 +9,9 @@ class BoxDecorator extends AbstractBoxDecorator
     public function decorate(): BoxDecoratorInterface
     {
         /** @var array $boxArray */
-        foreach ($this->boxList as $boxArray) {
+        foreach ($this->pollutantList as $boxList) {
             /** @var Box $box */
-            foreach ($boxArray as $box) {
+            foreach ($boxList as $box) {
                 $data = $box->getData();
 
                 $pollutant = $this->getPollutantById($data->getPollutant());

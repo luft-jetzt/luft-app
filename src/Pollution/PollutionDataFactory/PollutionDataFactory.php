@@ -8,13 +8,13 @@ use App\Pollution\Box\Box;
 
 class PollutionDataFactory extends AbstractPollutionDataFactory
 {
-    public function createDecoratedBoxList(): array
+    public function createDecoratedPollutantList(): array
     {
         $dataList = $this->getDataListFromStationList($this->stationList);
 
         $boxList = $this->getBoxListFromDataList($dataList);
 
-        $boxList = $this->decorateBoxList($boxList);
+        $boxList = $this->decoratePollutantList($boxList);
 
         return $boxList;
     }
@@ -47,29 +47,29 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
 
     protected function getBoxListFromDataList(array $dataList): array
     {
-        $boxList = [];
+        $pollutantList = [];
 
         /** @var array $data */
         foreach ($dataList as $data) {
             /** @var Data $dataElement */
             foreach ($data as $dataElement) {
                 if ($dataElement) {
-                    $boxList[$dataElement->getPollutant()][$dataElement->getId()] = new Box($dataElement);
+                    $pollutantList[$dataElement->getPollutant()][$dataElement->getId()] = new Box($dataElement);
                 }
             }
         }
 
-        return $boxList;
+        return $pollutantList;
     }
 
-    protected function decorateBoxList(array $boxList): array
+    protected function decoratePollutantList(array $pollutantList): array
     {
         return $this
             ->reset()
             ->boxDecorator
-            ->setBoxList($boxList)
+            ->setPollutantList($pollutantList)
             ->decorate()
-            ->getBoxList()
+            ->getPollutantList()
         ;
     }
 }

@@ -43,9 +43,9 @@ class ApiController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $boxList = $pollutionDataFactory->setCoord($station)->createDecoratedBoxList();
+        $pollutantList = $pollutionDataFactory->setCoord($station)->createDecoratedPollutantList();
 
-        return new JsonResponse($serializer->serialize($boxList, 'json'), 200, [], true);
+        return new JsonResponse($serializer->serialize($pollutantList, 'json'), 200, [], true);
     }
 
     /**
@@ -114,9 +114,9 @@ class ApiController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $boxList = $pollutionDataFactory->setCoord($coord)->createDecoratedBoxList();
+        $pollutantList = $pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();
 
-        return new JsonResponse($serializer->serialize($boxList, 'json'), 200, [], true);
+        return new JsonResponse($serializer->serialize($pollutantList, 'json'), 200, [], true);
     }
 
     /**

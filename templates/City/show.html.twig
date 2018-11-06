@@ -74,7 +74,7 @@
             <div class="card-columns">
             {% for station in stationList %}
             {% if stationBoxList[station.stationCode]|length > 0 %}
-            {% include 'Default/_station.html.twig' with { linkToStation: true, station: station, boxList: stationBoxList[station.stationCode], showMap: false } %}
+            {% include 'Default/_station.html.twig' with { 'linkToStation': true, 'station': station, 'pollutantList': stationBoxList[station.stationCode], 'showMap': false } %}
             {% endif %}
             {% endfor %}
             </div>
