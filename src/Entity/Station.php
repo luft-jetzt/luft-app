@@ -64,12 +64,14 @@ class Station extends Coord
     /**
      * @ORM\Column(type="date", nullable=true)
      * @JMS\Expose()
+     * @JMS\Type("DateTime<'U'>")
      */
     protected $fromDate;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      * @JMS\Expose()
+     * @JMS\Type("DateTime<'U'>")
      */
     protected $untilDate;
 
