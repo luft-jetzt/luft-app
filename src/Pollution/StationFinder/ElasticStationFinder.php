@@ -40,17 +40,18 @@ class ElasticStationFinder implements StationFinderInterface
             '20km'
         );
 
-        $untilQuery = new \Elastica\Query\Term(['untilDate' => null]);
+        $untilQuery = new \Elastica\Query\Exists('untilDate');
 
         $boolQuery = new \Elastica\Query\BoolQuery();
         $boolQuery
             ->addMust($matchAll)
-            ->addMust($untilQuery)
+            ->addMustNot($untilQuery)
             ->addFilter($geoQuery);
 
         $query = new \Elastica\Query();
+        $query->setQuery($boolQuery);
 
-        $query->setSize(15);
+        $query->setSize(25);
         $query->setSort(
             [
                 '_geo_distance' =>
