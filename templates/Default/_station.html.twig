@@ -64,9 +64,7 @@
         </div>
 
         {% for pollutant in pollutantList %}
-            {% for box in pollutant %}
-                {% include 'Default/_box.html.twig' with { 'box': box, 'showStationTitle': false, combined: true } %}
-            {% endfor %}
+            {% include 'Default/_pollutant.html.twig' with { 'pollutant': pollutant, 'showStationTitle': false, 'combined': true } %}
         {% endfor %}
     </div>
 
