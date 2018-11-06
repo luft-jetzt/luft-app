@@ -14,11 +14,12 @@ class BoxDecorator extends AbstractBoxDecorator
             foreach ($boxList as $box) {
                 $data = $box->getData();
 
-            $pollutant = $this->getPollutantById($data->getPollutant());
+                $pollutant = $this->getPollutantById($data->getPollutant());
 
-            $box
-                ->setStation($data->getStation())
-                ->setPollutant($pollutant);
+                $box
+                    ->setStation($data->getStation())
+                    ->setPollutant($pollutant);
+            }
         }
 
         $this->airQualityCalculator->calculatePollutantList($this->pollutantList);
