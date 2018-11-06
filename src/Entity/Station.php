@@ -33,12 +33,6 @@ class Station extends Coord
     protected $stationCode;
 
     /**
-     * @ORM\Column(type="string", length=2, nullable=false)
-     * @JMS\Expose()
-     */
-    protected $stateCode;
-
-    /**
      * @ORM\Column(type="string", nullable=false)
      * @JMS\Expose()
      */
@@ -97,6 +91,12 @@ class Station extends Coord
      */
     protected $areaType;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Network", inversedBy="stations")
+     * @ORM\JoinColumn(name="network_id", referencedColumnName="id")
+     */
+    protected $network;
+
     public function __construct(float $latitude, float $longitude)
     {
         $this->twitterSchedules = new ArrayCollection();
@@ -117,18 +117,6 @@ class Station extends Coord
     public function setStationCode(string $stationCode): Station
     {
         $this->stationCode = $stationCode;
-
-        return $this;
-    }
-
-    public function getStateCode(): string
-    {
-        return $this->stateCode;
-    }
-
-    public function setStateCode(string $stateCode): Station
-    {
-        $this->stateCode = $stateCode;
 
         return $this;
     }
@@ -273,6 +261,18 @@ class Station extends Coord
     public function setAreaType(string $areaType = null): Station
     {
         $this->areaType = $areaType;
+
+        return $this;
+    }
+
+    public function getNetwork(): ?Network
+    {
+        return $this->network;
+    }
+
+    public function setNetwork(Network $network): Station
+    {
+        $this->network = $network;
 
         return $this;
     }

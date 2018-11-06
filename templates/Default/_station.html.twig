@@ -53,6 +53,10 @@
             {% if station.stationType and station.areaType %}
             <p class="card-text text-muted">
                 Stationstyp: {{ station.stationType|readable_enum|trans({}, 'messages', 'de') }}, {{ station.areaType|readable_enum|trans({}, 'messages', 'de') }}
+                {% if station.network %}
+                <br />
+                {{ station.network.name }}
+                {% endif %}
             </p>
             {% endif %}
         </div>
