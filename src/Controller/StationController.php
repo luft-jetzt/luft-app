@@ -33,4 +33,9 @@ class StationController extends AbstractController
             'boxList' => $boxList,
         ]);
     }
+
+    public function historyAction(string $stationCode): Response
+    {
+
+    }
 }
