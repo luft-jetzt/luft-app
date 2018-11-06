@@ -1,5 +1,5 @@
 hwi_oauth:
-    firewall_names: [main]
+    firewall_names: ['main']
 
     fosub:
         username_iterations: 30

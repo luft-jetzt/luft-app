@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Entity\City;
 use App\Entity\Station;
-use App\Geocoding\CityGuesserInterface;
+use App\Geocoding\Guesser\CityGuesserInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

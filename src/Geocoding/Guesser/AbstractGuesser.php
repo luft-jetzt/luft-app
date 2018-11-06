@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace App\Geocoding;
+namespace App\Geocoding\Guesser;
 
 use Geocoder\Geocoder;
 use Geocoder\Provider\Nominatim\Nominatim;
 use Geocoder\StatefulGeocoder;
 use Http\Adapter\Guzzle6\Client;
 
-abstract class AbstractGeocoding
+abstract class AbstractGuesser
 {
     const LOCALE = 'de';
     const NOMINATIM_URL = 'https://nominatim.openstreetmap.org';

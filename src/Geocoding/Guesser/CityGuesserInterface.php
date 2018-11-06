@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Geocoding;
+namespace App\Geocoding\Guesser;
 
 use Caldera\GeoBasic\Coord\Coord;
 

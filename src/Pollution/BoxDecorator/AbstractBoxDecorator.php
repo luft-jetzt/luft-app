@@ -2,6 +2,7 @@
 
 namespace App\Pollution\BoxDecorator;
 
+use App\AirQuality\Calculator\AirQualityCalculatorInterface;
 use App\Pollution\Pollutant\CO;
 use App\Pollution\Pollutant\NO2;
 use App\Pollution\Pollutant\O3;
@@ -11,18 +12,27 @@ use App\Pollution\Pollutant\SO2;
 
 abstract class AbstractBoxDecorator implements BoxDecoratorInterface
 {
-    protected $boxList = [];
+    /** @var array $pollutantList */
+    protected $pollutantList = [];
 
-    public function setBoxList(array $boxList): BoxDecoratorInterface
+    /** @var AirQualityCalculatorInterface $airQualityCalculator */
+    protected $airQualityCalculator;
+
+    public function __construct(AirQualityCalculatorInterface $airQualityCalculator)
     {
-        $this->boxList = $boxList;
+        $this->airQualityCalculator = $airQualityCalculator;
+    }
+
+    public function setPollutantList(array $pollutantList): BoxDecoratorInterface
+    {
+        $this->pollutantList = $pollutantList;
 
         return $this;
     }
 
-    public function getBoxList(): array
+    public function getPollutantList(): array
     {
-        return $this->boxList;
+        return $this->pollutantList;
     }
 
     protected function getPollutantById(int $pollutantId): PollutantInterface

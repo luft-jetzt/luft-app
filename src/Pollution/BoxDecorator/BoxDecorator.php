@@ -8,19 +8,21 @@ class BoxDecorator extends AbstractBoxDecorator
 {
     public function decorate(): BoxDecoratorInterface
     {
-        /** @var Box $box */
-        foreach ($this->boxList as $box) {
-            $data = $box->getData();
+        /** @var array $boxArray */
+        foreach ($this->pollutantList as $boxList) {
+            /** @var Box $box */
+            foreach ($boxList as $box) {
+                $data = $box->getData();
 
-            $pollutant = $this->getPollutantById($data->getPollutant());
-            $level = $pollutant->getPollutionLevel()->getLevel($data);
+                $pollutant = $this->getPollutantById($data->getPollutant());
 
-            $box
-                ->setStation($data->getStation())
-                ->setPollutant($pollutant)
-                ->setPollutionLevel($level)
-            ;
+                $box
+                    ->setStation($data->getStation())
+                    ->setPollutant($pollutant);
+            }
         }
+
+        $this->airQualityCalculator->calculatePollutantList($this->pollutantList);
 
         return $this;
     }

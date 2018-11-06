@@ -2,8 +2,6 @@
 
 namespace App\Pollution\Pollutant;
 
-use App\Pollution\PollutionLevel\PollutionLevel;
-
 class O3 extends AbstractPollutant
 {
     public function __construct()
@@ -11,6 +9,5 @@ class O3 extends AbstractPollutant
         $this->unitHtml = 'µg/m<sup>3</sup>';
         $this->unitPlain = 'µg/m³';
         $this->name = 'Ozon';
-        $this->pollutionLevel = new PollutionLevel(54, 108, 180, 240);
     }
 }

@@ -5,7 +5,7 @@
         http://symfony.com/schema/routing/routing-1.0.xsd">
     
     <route id="station" path="/{stationCode}">
-        <default key="_controller">App\Controller\DisplayController::stationAction</default>
+        <default key="_controller">App\Controller\StationController::stationAction</default>
         <option key="expose">true</option>
         <requirement key="stationCode">^([A-Z]{4,4})([0-9]{3,3})$</requirement>
     </route>

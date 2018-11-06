@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\City;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class TemplateController extends AbstractController
