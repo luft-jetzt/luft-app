@@ -5,21 +5,22 @@ namespace App\Pollution\DataRetriever;
 use App\Entity\Data;
 use App\Entity\Station;
 use App\Repository\DataRepository;
-use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class DoctrineOrmDataRetriever implements DataRetrieverInterface
 {
-    protected $doctrine;
+    /** @var RegistryInterface $registry */
+    protected $registry;
 
-    public function __construct(Doctrine $doctrine)
+    public function __construct(RegistryInterface $registry)
     {
-        $this->doctrine = $doctrine;
+        $this->registry = $registry;
     }
 
     public function retrieveStationData(Station $station, int $pollutant): ?Data
     {
         /** @var DataRepository $repository */
-        $repository = $this->doctrine->getRepository(Data::class);
+        $repository = $this->registry->getRepository(Data::class);
 
         return $repository->findLatestDataForStationAndPollutant($station, $pollutant);
     }
