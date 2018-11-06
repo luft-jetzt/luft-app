@@ -2,64 +2,19 @@
 
 namespace App\Pollution\PollutionDataFactory;
 
+use App\Entity\Data;
 use App\Entity\Station;
 use App\Pollution\Box\Box;
-use App\Pollution\BoxDecorator\BoxDecoratorInterface;
-use App\Pollution\DataList\DataList;
-use App\Pollution\DataRetriever\DataRetrieverInterface;
-use App\Pollution\StationFinder\StationFinderInterface;
-use Caldera\GeoBasic\Coord\CoordInterface;
 
-class PollutionDataFactory
+class PollutionDataFactory extends AbstractPollutionDataFactory
 {
-    /** @var CoordInterface $coord */
-    protected $coord;
-
-    /** @var StationFinderInterface $stationFinder */
-    protected $stationFinder;
-
-    /** @var StationFinderInterface $boxDecorator */
-    protected $boxDecorator;
-
-    /** @var DataList $dataList */
-    protected $dataList;
-
-    /** @var DataRetrieverInterface */
-    protected $dataRetriever;
-
-    protected $stationList = [];
-
-    public function __construct(StationFinderInterface $stationFinder, BoxDecoratorInterface $boxDecorator, DataRetrieverInterface $dataRetriever)
-    {
-        $this->stationFinder = $stationFinder;
-        $this->dataList = new DataList();
-        $this->boxDecorator = $boxDecorator;
-        $this->dataRetriever = $dataRetriever;
-    }
-
-    public function setCoord(CoordInterface $coord): PollutionDataFactory
-    {
-        $this->coord = $coord;
-        $this->stationList = $this->stationFinder->setCoord($this->coord)->findNearestStations();
-
-        return $this;
-    }
-
-    public function setStation(Station $station): PollutionDataFactory
-    {
-        $this->coord = $station;
-        $this->stationList = [$station];
-
-        return $this;
-    }
-
-    public function createDecoratedBoxList(): array
+    public function createDecoratedPollutantList(): array
     {
         $dataList = $this->getDataListFromStationList($this->stationList);
 
         $boxList = $this->getBoxListFromDataList($dataList);
 
-        $boxList = $this->decorateBoxList($boxList);
+        $boxList = $this->decoratePollutantList($boxList);
 
         return $boxList;
     }
@@ -68,14 +23,22 @@ class PollutionDataFactory
     {
         $this->dataList->reset();
 
+        $missingPollutants = $this->strategy->getMissingPollutants($this->dataList);
+
         /** @var Station $station */
         foreach ($stationList as $station) {
-            foreach ($this->dataList->getMissingPollutants() as $pollutant) {
+            foreach ($missingPollutants as $pollutant) {
                 $data = $this->dataRetriever->retrieveStationData($station, $pollutant);
 
-                if ($data) {
-                    $this->dataList->addData($data);
+                if ($this->strategy->accepts($this->dataList, $data)) {
+                    $this->strategy->addDataToList($this->dataList, $data);
                 }
+            }
+
+            $missingPollutants = $this->strategy->getMissingPollutants($this->dataList);
+
+            if (0 === count($missingPollutants)) {
+                break;
             }
         }
 
@@ -84,32 +47,29 @@ class PollutionDataFactory
 
     protected function getBoxListFromDataList(array $dataList): array
     {
-        $boxList = [];
+        $pollutantList = [];
 
+        /** @var array $data */
         foreach ($dataList as $data) {
-            if ($data) {
-                $boxList[] = new Box($data);
+            /** @var Data $dataElement */
+            foreach ($data as $dataElement) {
+                if ($dataElement) {
+                    $pollutantList[$dataElement->getPollutant()][$dataElement->getId()] = new Box($dataElement);
+                }
             }
         }
 
-        return $boxList;
+        return $pollutantList;
     }
 
-    protected function decorateBoxList(array $boxList): array
+    protected function decoratePollutantList(array $pollutantList): array
     {
         return $this
             ->reset()
             ->boxDecorator
-            ->setBoxList($boxList)
+            ->setPollutantList($pollutantList)
             ->decorate()
-            ->getBoxList()
+            ->getPollutantList()
         ;
-    }
-
-    protected function reset(): PollutionDataFactory
-    {
-        $this->dataList->reset();
-
-        return $this;
     }
 }

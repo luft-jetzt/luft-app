@@ -4,7 +4,7 @@ namespace App\Pollution\BoxDecorator;
 
 interface BoxDecoratorInterface
 {
-    public function setBoxList(array $boxList): BoxDecoratorInterface;
-    public function getBoxList(): array;
+    public function setPollutantList(array $pollutantList): BoxDecoratorInterface;
+    public function getPollutantList(): array;
     public function decorate(): BoxDecoratorInterface;
 }

@@ -32,9 +32,10 @@ class ElasticStationFinder implements StationFinderInterface
     public function findNearestStations(float $maxDistance = 20.0, int $size = 25): array
     {
         $matchAll = new \Elastica\Query\MatchAll();
+
         $geoQuery = new \Elastica\Query\GeoDistance('pin', [
             'lat' => $this->coord->getLatitude(),
-            'lon' => $this->coord->getLongitude()
+            'lon' => $this->coord->getLongitude(),
         ],
         sprintf('%fkm', $maxDistance));
 
@@ -57,7 +58,7 @@ class ElasticStationFinder implements StationFinderInterface
                     'lon' => $this->coord->getLongitude()
                 ],
                 'order' => 'asc',
-                'unit' => 'km'
+                'unit' => 'km',
             ]
         ]);
 

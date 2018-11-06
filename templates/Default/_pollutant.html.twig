@@ -1,0 +1,8 @@
+<div class="row">
+    {% for box in pollutant %}
+        {% set col_width = 12 / pollutant|length %}
+        <div class="col-{{ col_width }}">
+            {% include 'Default/_box.html.twig' with { 'box': box, 'showStationTitle': showStationTitle, 'combined': combined } %}
+        </div>
+    {% endfor %}
+</div>
