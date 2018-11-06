@@ -8,6 +8,7 @@ use FOS\ElasticaBundle\Finder\FinderInterface;
 
 class ElasticDataRetriever implements DataRetrieverInterface
 {
+    /** @var FinderInterface $dataFinder */
     protected $dataFinder;
 
     public function __construct(FinderInterface $dataFinder)
@@ -15,7 +16,7 @@ class ElasticDataRetriever implements DataRetrieverInterface
         $this->dataFinder = $dataFinder;
     }
 
-    public function retrieveStationData(Station $station, int $pollutant): ?Data
+    public function retrieveStationData(Station $station, int $pollutant, \DateTime $dateTime = null): ?Data
     {
         $stationQuery = new \Elastica\Query\Term(['station' => $station->getId()]);
         $pollutantQuery = new \Elastica\Query\Term(['pollutant' => $pollutant]);
@@ -23,8 +24,14 @@ class ElasticDataRetriever implements DataRetrieverInterface
         $boolQuery = new \Elastica\Query\BoolQuery();
         $boolQuery
             ->addMust($pollutantQuery)
-            ->addMust($stationQuery)
-        ;
+            ->addMust($stationQuery);
+
+        if ($dateTime) {
+            // TODO Rangequery here
+            $dateTimeQuery = new \Elastica\Query\Range([]);
+
+            $boolQuery->addMust($dateTimeQuery);
+        }
 
         $query = new \Elastica\Query($boolQuery);
         $query
