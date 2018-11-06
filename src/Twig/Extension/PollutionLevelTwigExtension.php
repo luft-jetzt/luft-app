@@ -4,6 +4,7 @@ namespace App\Twig\Extension;
 
 use App\AirQuality\Calculator\AirQualityCalculatorInterface;
 use App\AirQuality\PollutionLevel\PollutionLevelInterface;
+use App\Pollution\Box\Box;
 
 class PollutionLevelTwigExtension extends \Twig_Extension
 {
@@ -38,10 +39,28 @@ class PollutionLevelTwigExtension extends \Twig_Extension
     public function getFunctions(): array
     {
         return [
+            new \Twig_SimpleFunction('max_pollution_level', [$this, 'maxPollutionLevel'], ['is_safe' => ['raw']]),
             new \Twig_SimpleFunction('pollution_color', [$this, 'pollutionColor'], ['is_safe' => ['raw']]),
             new \Twig_SimpleFunction('pollution_color_name', [$this, 'pollutionColorName'], ['is_safe' => ['raw']]),
             new \Twig_SimpleFunction('pollution_levels', [$this, 'getLevelsForPollutant'], ['is_safe' => ['raw']]),
         ];
+    }
+
+    public function maxPollutionLevel(array $pollutionList): int
+    {
+        $maxLevel = 0;
+
+        /** @var array $pollutant */
+        foreach ($pollutionList as $pollutant) {
+            /** @var Box $box */
+            foreach ($pollutant as $box) {
+                if ($maxLevel < $box->getPollutionLevel()) {
+                    $maxLevel = $box->getPollutionLevel();
+                }
+            }
+        }
+
+        return $maxLevel;
     }
 
     public function pollutionColor(int $pollutionLevel): string

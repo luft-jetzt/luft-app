@@ -32,9 +32,9 @@ class Twitter extends AbstractTwitter
 
                 $coord = $this->getCoord($twitterSchedule);
 
-                $boxList = $this->pollutionDataFactory->setCoord($coord)->createDecoratedBoxList();
+                $pollutantList = $this->pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();
 
-                $message = $this->createMessage($twitterSchedule, $boxList);
+                $message = $this->createMessage($twitterSchedule, $pollutantList);
 
                 $params = [
                     'status' => $message,
@@ -53,12 +53,12 @@ class Twitter extends AbstractTwitter
         }
     }
 
-    protected function createMessage(TwitterSchedule $twitterSchedule, array $boxList): string
+    protected function createMessage(TwitterSchedule $twitterSchedule, array $pollutantList): string
     {
         $this->messageFactory
             ->reset()
             ->setTitle($twitterSchedule->getTitle())
-            ->setBoxList($boxList);
+            ->setPollutantList($pollutantList);
 
         if ($this->dryRun) {
             $this->messageFactory->setLink('https://localhost/foobarbaz');

@@ -85,7 +85,7 @@ class FetchCommand extends Command
     {
         $output->writeln('PM10');
 
-        $reporting = new Uba1TMW($dateTime);
+        $reporting = new Uba1SMW($dateTime);
         $query = new UbaPM10Query($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_PM10);
@@ -125,7 +125,7 @@ class FetchCommand extends Command
     {
         $output->writeln('CO');
 
-        $reporting = new Uba8SMW($dateTime);
+        $reporting = new Uba1SMW($dateTime);
         $query = new UbaCOQuery($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_CO);

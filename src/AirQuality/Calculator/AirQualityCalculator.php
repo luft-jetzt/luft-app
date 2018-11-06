@@ -7,16 +7,19 @@ use App\Pollution\Box\Box;
 
 class AirQualityCalculator extends AbstractAirQualityCalculator
 {
-    public function calculateBoxList(array $boxList): int
+    public function calculatePollutantList(array $pollutantList): int
     {
         $maxLevel = 1;
 
-        /** @var Box $box */
-        foreach ($boxList as $box) {
-            $level = $this->calculateBox($box);
+        /** @var array $pollutant */
+        foreach ($pollutantList as $pollutant) {
+            /** @var Box $box */
+            foreach ($pollutant as $box) {
+                $level = $this->calculateBox($box);
 
-            if ($level > $maxLevel) {
-                $maxLevel = $level;
+                if ($level > $maxLevel) {
+                    $maxLevel = $level;
+                }
             }
         }
 

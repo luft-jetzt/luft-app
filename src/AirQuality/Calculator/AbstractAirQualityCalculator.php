@@ -6,6 +6,7 @@ use App\AirQuality\PollutionLevel\PollutionLevelInterface;
 
 abstract class AbstractAirQualityCalculator implements AirQualityCalculatorInterface
 {
+    /** @var array $pollutionLevels */
     protected $pollutionLevels = [];
 
     public function addPollutionLevel(PollutionLevelInterface $pollutionLevel): AirQualityCalculatorInterface

@@ -44,7 +44,7 @@
 
         <small>
             gemessen: {{ box.data.dateTime|date('d.m.Y H:i') }} Uhr
-            {% if box.data.station.network %}
+            {% if box.data.station.network and stationTitle %}
             <br />
             {{ box.data.station.network.name }}
             {% endif %}
