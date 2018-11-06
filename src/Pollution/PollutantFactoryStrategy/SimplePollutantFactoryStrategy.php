@@ -12,10 +12,14 @@ class SimplePollutantFactoryStrategy implements PollutantFactoryStrategyInterfac
         $list = $dataList->getList();
         $missingList = [];
 
-        array_walk($list, function(array $data, int $key) use (&$missingList) {
-            if (null === $data || 2 >= count($data)) { // || 1 >= count($data)) {
+        array_walk($list, function(array $list, int $key) use (&$missingList) {
+            if (null === $list || 0 === count($list)) { // || 1 >= count($data)) {
                 array_push($missingList, $key);
             }
+
+            echo "FOO:<br />";
+            var_dump(count($list));
+            echo "<br />";
         });
 
         var_dump($missingList);

@@ -23,11 +23,13 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
     {
         $this->dataList->reset();
 
+        $missingPollutants = $this->strategy->getMissingPollutants($this->dataList);
+
         /** @var Station $station */
         foreach ($stationList as $station) {
-            echo "STATION: ".$station->getStationCode()."<br />";
-            foreach ($this->strategy->getMissingPollutants($this->dataList) as $pollutant) {
-                echo "POLLUTANT: ".$pollutant."<br />";
+            echo "<br /><br /><br />STATION: ".$station->getStationCode()."<br />";
+            foreach ($missingPollutants as $pollutant) {
+                echo "<br />POLLUTANT: ".$pollutant."<br />";
 
                 $data = $this->dataRetriever->retrieveStationData($station, $pollutant);
 
@@ -35,6 +37,12 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
                 if ($this->strategy->accepts($this->dataList, $data)) {
                     $this->strategy->addDataToList($this->dataList, $data);
                 }
+            }
+
+            $missingPollutants = $this->strategy->getMissingPollutants($this->dataList);
+
+            if (0 === count($missingPollutants)) {
+                break;
             }
         }
 
