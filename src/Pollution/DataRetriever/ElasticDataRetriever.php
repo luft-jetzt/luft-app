@@ -36,8 +36,7 @@ class ElasticDataRetriever implements DataRetrieverInterface
         $query = new \Elastica\Query($boolQuery);
         $query
             ->setSort(['dateTime' => ['order' => 'desc']])
-            ->setSize(1)
-        ;
+            ->setSize(1);
 
         $results = $this->dataFinder->find($query);
 

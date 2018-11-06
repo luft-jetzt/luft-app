@@ -4,7 +4,7 @@ namespace App\Twitter\MessageFactory;
 
 interface MessageFactoryInterface
 {
-    public function setBoxList(array $boxList = []): MessageFactoryInterface;
+    public function setPollutantList(array $pollutantList = []): MessageFactoryInterface;
 
     public function setTitle(string $title = ''): MessageFactoryInterface;
 

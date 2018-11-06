@@ -27,7 +27,7 @@
     </route>
 
     <route id="api_station" path="/api/{stationCode}" methods="GET">
-        <default key="_controller">App\Controller\ApiController::stationAction</default>
+        <default key="_controller">App\Controller\ApiController::displayStationAction</default>
         <requirement key="stationCode">^([A-Z]{4,4})([0-9]{3,3})$</requirement>
     </route>
 

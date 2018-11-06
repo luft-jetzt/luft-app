@@ -64,12 +64,14 @@ class Station extends Coord
     /**
      * @ORM\Column(type="date", nullable=true)
      * @JMS\Expose()
+     * @JMS\Type("DateTime<'U'>")
      */
     protected $fromDate;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      * @JMS\Expose()
+     * @JMS\Type("DateTime<'U'>")
      */
     protected $untilDate;
 
@@ -90,6 +92,12 @@ class Station extends Coord
      * @DoctrineAssert\Enum(entity="App\DBAL\Types\AreaType")
      */
     protected $areaType;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Network", inversedBy="stations")
+     * @ORM\JoinColumn(name="network_id", referencedColumnName="id")
+     */
+    protected $network;
 
     public function __construct(float $latitude, float $longitude)
     {
@@ -211,6 +219,11 @@ class Station extends Coord
         return $this;
     }
 
+    public function getFromDateFormatted(): ?string
+    {
+        return $this->fromDate ? $this->fromDate->format('Y-m-d H:i:s') : null;
+    }
+
     public function getUntilDate(): ?\DateTime
     {
         return $this->untilDate;
@@ -221,6 +234,11 @@ class Station extends Coord
         $this->untilDate = $untilDate;
 
         return $this;
+    }
+
+    public function getUntilDateFormatted(): ?string
+    {
+        return $this->untilDate ? $this->untilDate->format('Y-m-d H:i:s') : null;
     }
 
     public function getAltitude(): ?int
@@ -255,6 +273,18 @@ class Station extends Coord
     public function setAreaType(string $areaType = null): Station
     {
         $this->areaType = $areaType;
+
+        return $this;
+    }
+
+    public function getNetwork(): ?Network
+    {
+        return $this->network;
+    }
+
+    public function setNetwork(Network $network): Station
+    {
+        $this->network = $network;
 
         return $this;
     }

@@ -24,7 +24,7 @@ abstract class AbstractController extends Controller
         foreach ($stationList as $station) {
             $stationsBoxList[$station->getStationCode()] = $pollutionDataFactory
                 ->setStation($station)
-                ->createDecoratedBoxList();
+                ->createDecoratedPollutantList();
         }
 
         return $stationsBoxList;
