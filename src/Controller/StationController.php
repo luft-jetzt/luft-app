@@ -30,7 +30,7 @@ class StationController extends AbstractController
 
         return $this->render('Default/station.html.twig', [
             'station' => $station,
-            'boxList' => $boxList,
+            'pollutantList' => $boxList,
         ]);
     }
 }
