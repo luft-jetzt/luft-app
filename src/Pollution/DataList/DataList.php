@@ -29,6 +29,11 @@ class DataList implements DataListInterface
         return 0 !== count($this->list[$pollutant]);
     }
 
+    public function countPollutant(int $pollutant): int
+    {
+        return count($this->list[$pollutant]);
+    }
+
     public function getList(): array
     {
         return $this->list;

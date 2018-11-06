@@ -34,6 +34,8 @@ class ElasticDataRetriever implements DataRetrieverInterface
 
         $results = $this->dataFinder->find($query);
 
+        echo "Ergebnisse: ";
+        var_dump(count($results));
         if (count($results) === 1) {
             return array_pop($results);
         }

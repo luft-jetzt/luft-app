@@ -37,7 +37,7 @@ class ElasticStationFinder implements StationFinderInterface
                 'lat' => $this->coord->getLatitude(),
                 'lon' => $this->coord->getLongitude()
             ],
-            '20km'
+            '50km'
         );
 
         $boolQuery = new \Elastica\Query\BoolQuery();
@@ -48,7 +48,7 @@ class ElasticStationFinder implements StationFinderInterface
 
         $query = new \Elastica\Query();
 
-        $query->setSize(15);
+        $query->setSize(50);
         $query->setSort(
             [
                 '_geo_distance' =>

@@ -3,6 +3,7 @@
 namespace App\Pollution\PollutionDataFactory;
 
 use App\Entity\Data;
+use App\Entity\Station;
 use App\Pollution\Box\Box;
 
 class PollutionDataFactory extends AbstractPollutionDataFactory
@@ -22,11 +23,16 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
     {
         $this->dataList->reset();
 
+        /** @var Station $station */
         foreach ($stationList as $station) {
+            echo "STATION: ".$station->getStationCode()."<br />";
             foreach ($this->strategy->getMissingPollutants($this->dataList) as $pollutant) {
+                echo "POLLUTANT: ".$pollutant."<br />";
+
                 $data = $this->dataRetriever->retrieveStationData($station, $pollutant);
 
-                if ($this->strategy->accepts($data)) {
+                var_dump($data !== null);
+                if ($this->strategy->accepts($this->dataList, $data)) {
                     $this->strategy->addDataToList($this->dataList, $data);
                 }
             }
