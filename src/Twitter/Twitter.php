@@ -76,9 +76,9 @@ class Twitter
 
                 $coord = $this->getCoord($twitterSchedule);
 
-                $boxList = $this->pollutionDataFactory->setCoord($coord)->createDecoratedBoxList();
+                $pollutantList = $this->pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();
 
-                $message = $this->createMessage($twitterSchedule, $boxList);
+                $message = $this->createMessage($twitterSchedule, $pollutantList);
 
                 $params = [
                     'status' => $message,
@@ -113,13 +113,13 @@ class Twitter
         return Codebird::getInstance();
     }
 
-    protected function createMessage(TwitterSchedule $twitterSchedule, array $boxList): string
+    protected function createMessage(TwitterSchedule $twitterSchedule, array $pollutantList): string
     {
         $message = $this->messageFactory
             ->reset()
             ->setTitle($twitterSchedule->getTitle())
             ->setLink($this->permalinkManager->createPermalinkForTweet($twitterSchedule))
-            ->setBoxList($boxList)
+            ->setPollutantList($pollutantList)
             ->compose()
             ->getMessage()
         ;

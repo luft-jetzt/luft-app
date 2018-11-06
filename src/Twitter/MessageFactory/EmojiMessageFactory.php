@@ -3,7 +3,6 @@
 namespace App\Twitter\MessageFactory;
 
 use App\Pollution\Box\Box;
-use App\Pollution\Pollutant\PollutantInterface;
 use App\Pollution\PollutionLevel\PollutionLevel;
 
 class EmojiMessageFactory extends AbstractMessageFactory
@@ -12,9 +11,12 @@ class EmojiMessageFactory extends AbstractMessageFactory
     {
         $this->message .= sprintf("%s\n", $this->title);
 
-        /** @var Box $box */
-        foreach ($this->boxList as $box) {
-            $this->message .= sprintf("%s %s: %.0f %s \n", $this->getEmoji($box), $box->getPollutant()->getName(), $box->getData()->getValue(), $box->getPollutant()->getUnitPlain());
+        /** @var array $pollutant */
+        foreach ($this->pollutantList as $pollutant) {
+            /** @var Box $box */
+            foreach ($pollutant as $box) {
+                $this->message .= sprintf("%s %s: %.0f %s \n", $this->getEmoji($box), $box->getPollutant()->getName(), $box->getData()->getValue(), $box->getPollutant()->getUnitPlain());
+            }
         }
 
         $this->message .= sprintf("%s", $this->link);
