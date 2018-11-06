@@ -29,7 +29,6 @@
             <div id="coord-map" class="coord-map card-img-top" style="height: 33.33vh;"></div>
         {% endif %}
 
-        {{ dump(pollutantList) }}
         {% for pollutant in pollutantList %}
             {% include 'Default/_pollutant.html.twig' with { 'pollutant': pollutant, 'showStationTitle': true, 'linkToStation': true, 'combined': true } %}
         {% endfor %}

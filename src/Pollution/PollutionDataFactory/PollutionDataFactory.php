@@ -27,13 +27,9 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
 
         /** @var Station $station */
         foreach ($stationList as $station) {
-            echo "<br /><br /><br />STATION: ".$station->getStationCode()."<br />";
             foreach ($missingPollutants as $pollutant) {
-                echo "<br />POLLUTANT: ".$pollutant."<br />";
-
                 $data = $this->dataRetriever->retrieveStationData($station, $pollutant);
 
-                var_dump($data !== null);
                 if ($this->strategy->accepts($this->dataList, $data)) {
                     $this->strategy->addDataToList($this->dataList, $data);
                 }

@@ -9,5 +9,5 @@ interface PollutantFactoryStrategyInterface
 {
     public function getMissingPollutants(DataListInterface $dataList): array;
     public function accepts(DataListInterface $dataList, Data $data = null): bool;
-    public function addDataToList(DataListInterface $dataList, Data $data): bool;
+    public function addDataToList(DataListInterface $dataList, Data $data = null): bool;
 }

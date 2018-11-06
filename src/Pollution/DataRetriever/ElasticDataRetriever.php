@@ -8,6 +8,7 @@ use FOS\ElasticaBundle\Finder\FinderInterface;
 
 class ElasticDataRetriever implements DataRetrieverInterface
 {
+    /** @var FinderInterface $dataFinder */
     protected $dataFinder;
 
     public function __construct(FinderInterface $dataFinder)
@@ -23,19 +24,15 @@ class ElasticDataRetriever implements DataRetrieverInterface
         $boolQuery = new \Elastica\Query\BoolQuery();
         $boolQuery
             ->addMust($pollutantQuery)
-            ->addMust($stationQuery)
-        ;
+            ->addMust($stationQuery);
 
         $query = new \Elastica\Query($boolQuery);
         $query
             ->setSort(['dateTime' => ['order' => 'desc']])
-            ->setSize(1)
-        ;
+            ->setSize(1);
 
         $results = $this->dataFinder->find($query);
 
-        echo "Ergebnisse: ";
-        var_dump(count($results));
         if (count($results) === 1) {
             return array_pop($results);
         }

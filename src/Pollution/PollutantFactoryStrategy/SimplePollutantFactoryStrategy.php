@@ -16,32 +16,28 @@ class SimplePollutantFactoryStrategy implements PollutantFactoryStrategyInterfac
             if (null === $list || 0 === count($list)) { // || 1 >= count($data)) {
                 array_push($missingList, $key);
             }
-
-            echo "FOO:<br />";
-            var_dump(count($list));
-            echo "<br />";
         });
-
-        var_dump($missingList);
 
         return $missingList;
     }
 
     public function accepts(DataListInterface $dataList, Data $data = null): bool
     {
-        //return $data && 1 >= $dataList->countPollutant($data->getPollutant());
-
-        return $data !== null;
-    }
-
-    public function addDataToList(DataListInterface $dataList, Data $data): bool
-    {
-        if (!$dataList->hasPollutant($data)) {
-            $dataList->addData($data);
-
-            return true;
+        if (!$data) {
+            return false;
         }
 
-        return false;
+        return $data && $dataList->countPollutant($data->getPollutant()) <= 1;
+    }
+
+    public function addDataToList(DataListInterface $dataList, Data $data = null): bool
+    {
+        if (!$data) {
+            return false;
+        }
+
+        $dataList->addData($data);
+
+        return true;
     }
 }
