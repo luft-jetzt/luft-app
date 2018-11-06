@@ -29,40 +29,38 @@ class ElasticStationFinder implements StationFinderInterface
         return $this;
     }
 
-    public function findNearestStations(float $maxDistance = 20.0): array
+    public function findNearestStations(float $maxDistance = 20.0, int $size = 25): array
     {
         $matchAll = new \Elastica\Query\MatchAll();
-        $geoQuery = new \Elastica\Query\GeoDistance('pin',
-            [
-                'lat' => $this->coord->getLatitude(),
-                'lon' => $this->coord->getLongitude()
-            ],
-            '50km'
-        );
+
+        $geoQuery = new \Elastica\Query\GeoDistance('pin', [
+            'lat' => $this->coord->getLatitude(),
+            'lon' => $this->coord->getLongitude(),
+        ],
+        sprintf('%fkm', $maxDistance));
+
+        $untilQuery = new \Elastica\Query\Exists('untilDate');
 
         $boolQuery = new \Elastica\Query\BoolQuery();
         $boolQuery
             ->addMust($matchAll)
-            ->addFilter($geoQuery)
-        ;
+            ->addMustNot($untilQuery)
+            ->addFilter($geoQuery);
 
         $query = new \Elastica\Query();
+        $query->setQuery($boolQuery);
 
-        $query->setSize(50);
-        $query->setSort(
-            [
-                '_geo_distance' =>
-                    [
-                        'pin' =>
-                            [
-                                'lat' => $this->coord->getLatitude(),
-                                'lon' => $this->coord->getLongitude()
-                            ],
-                        'order' => 'asc',
-                        'unit' => 'km'
-                    ]
+        $query->setSize($size);
+        $query->setSort([
+            '_geo_distance' => [
+                'pin' => [
+                    'lat' => $this->coord->getLatitude(),
+                    'lon' => $this->coord->getLongitude()
+                ],
+                'order' => 'asc',
+                'unit' => 'km',
             ]
-        );
+        ]);
 
         $results = $this->stationFinder->find($query);
 
