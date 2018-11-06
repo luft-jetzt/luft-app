@@ -68,6 +68,7 @@ class PollutionDataFactory
     {
         $this->dataList->reset();
 
+        /** @var Station $station */
         foreach ($stationList as $station) {
             foreach ($this->dataList->getMissingPollutants() as $pollutant) {
                 $data = $this->dataRetriever->retrieveStationData($station, $pollutant);
