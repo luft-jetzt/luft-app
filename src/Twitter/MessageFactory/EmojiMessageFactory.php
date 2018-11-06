@@ -4,9 +4,18 @@ namespace App\Twitter\MessageFactory;
 
 use App\Pollution\Box\Box;
 use App\Pollution\PollutionLevel\PollutionLevel;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class EmojiMessageFactory extends AbstractMessageFactory
 {
+    /** @var TranslatorInterface $translator */
+    protected $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     public function compose(): MessageFactoryInterface
     {
         $this->message .= sprintf("%s\n", $this->title);
@@ -26,19 +35,8 @@ class EmojiMessageFactory extends AbstractMessageFactory
 
     protected function getEmoji(Box $box): string
     {
-        $level = $box->getPollutionLevel();
+        $translationKey = sprintf('air_quality.index.%d.icon', $box->getPollutionLevel());
 
-        switch ($level) {
-            case PollutionLevel::LEVEL_ACCEPTABLE:
-                return '✅';
-            case PollutionLevel::LEVEL_WARNING:
-                return '⚠';
-            case PollutionLevel::LEVEL_DANGER:
-                return '❌';
-            case PollutionLevel::LEVEL_DEATH:
-                return '☠️';
-            default:
-                return '';
-        }
+        return $this->translator->trans($translationKey);
     }
 }
