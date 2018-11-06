@@ -12,8 +12,8 @@ use App\Pollution\Pollutant\SO2;
 
 abstract class AbstractBoxDecorator implements BoxDecoratorInterface
 {
-    /** @var array $boxList */
-    protected $boxList = [];
+    /** @var array $pollutantList */
+    protected $pollutantList = [];
 
     /** @var AirQualityCalculatorInterface $airQualityCalculator */
     protected $airQualityCalculator;
@@ -23,16 +23,16 @@ abstract class AbstractBoxDecorator implements BoxDecoratorInterface
         $this->airQualityCalculator = $airQualityCalculator;
     }
 
-    public function setBoxList(array $boxList): BoxDecoratorInterface
+    public function setPollutantList(array $pollutantList): BoxDecoratorInterface
     {
-        $this->boxList = $boxList;
+        $this->pollutantList = $pollutantList;
 
         return $this;
     }
 
-    public function getBoxList(): array
+    public function getPollutantList(): array
     {
-        return $this->boxList;
+        return $this->pollutantList;
     }
 
     protected function getPollutantById(int $pollutantId): PollutantInterface

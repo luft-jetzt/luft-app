@@ -12,7 +12,6 @@ use App\SourceFetcher\Query\UbO3Query;
 use App\SourceFetcher\Query\UbPM10Query;
 use App\SourceFetcher\Query\UbSO2Query;
 use App\SourceFetcher\Reporting\Ub1SMW;
-use App\SourceFetcher\Reporting\Ub1TMW;
 use App\SourceFetcher\Reporting\Ub8SMW;
 use App\SourceFetcher\SourceFetcher;
 use App\SourceFetcher\Value\Value;
@@ -85,7 +84,7 @@ class FetchCommand extends Command
     {
         $output->writeln('PM10');
 
-        $reporting = new Ub1TMW($dateTime);
+        $reporting = new Ub1SMW($dateTime);
         $query = new UbPM10Query($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_PM10);
@@ -125,7 +124,7 @@ class FetchCommand extends Command
     {
         $output->writeln('CO');
 
-        $reporting = new Ub8SMW($dateTime);
+        $reporting = new Ub1SMW($dateTime);
         $query = new UbCOQuery($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_CO);

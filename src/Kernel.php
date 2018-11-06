@@ -1,9 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App;
 
 use App\AirQuality\PollutionLevel\PollutionLevelInterface;
 use App\DependencyInjection\Compiler\PollutionLevelCompilerPass;
+use App\DependencyInjection\Compiler\PollutantCompilerPass;
+use App\Pollution\Pollutant\PollutantInterface;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -52,6 +54,9 @@ class Kernel extends BaseKernel
 
         $container->addCompilerPass(new PollutionLevelCompilerPass());
         $container->registerForAutoconfiguration(PollutionLevelInterface::class)->addTag('pollution_level');
+
+        $container->addCompilerPass(new PollutantCompilerPass());
+        $container->registerForAutoconfiguration(PollutantInterface::class)->addTag('pollutant');
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes)

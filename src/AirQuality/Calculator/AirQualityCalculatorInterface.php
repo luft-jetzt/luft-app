@@ -7,7 +7,7 @@ use App\Pollution\Box\Box;
 
 interface AirQualityCalculatorInterface
 {
-    public function calculateBoxList(array $boxList): int;
+    public function calculatePollutantList(array $pollutantList): int;
     public function calculateBox(Box $box): int;
     public function addPollutionLevel(PollutionLevelInterface $pollutionLevel): AirQualityCalculatorInterface;
     public function getPollutionLevels(): array;

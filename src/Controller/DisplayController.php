@@ -6,14 +6,14 @@ use App\Entity\City;
 use App\Geocoding\Guesser\CityGuesserInterface;
 use App\Geocoding\Query\GeoQueryInterface;
 use App\Geocoding\RequestConverter\RequestConverterInterface;
-use App\Pollution\PollutionDataFactory\PollutionDataFactory;
+use App\Pollution\PollutionDataFactory\PollutionDataFactoryInterface;
 use App\SeoPage\SeoPage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class DisplayController extends AbstractController
 {
-    public function indexAction(Request $request, RequestConverterInterface $requestConverter, SeoPage $seoPage, GeoQueryInterface $geoQuery, PollutionDataFactory $pollutionDataFactory, CityGuesserInterface $cityGuesser): Response
+    public function indexAction(Request $request, RequestConverterInterface $requestConverter, SeoPage $seoPage, PollutionDataFactoryInterface $pollutionDataFactory, CityGuesserInterface $cityGuesser): Response
     {
         $coord = $requestConverter->getCoordByRequest($request);
 
@@ -23,7 +23,7 @@ class DisplayController extends AbstractController
             return $this->render('Default/select.html.twig');
         }
 
-        $boxList = $pollutionDataFactory->setCoord($coord)->createDecoratedBoxList();
+        $boxList = $pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();
 
         if (0 === count($boxList)) {
             return $this->noStationAction();
@@ -40,7 +40,7 @@ class DisplayController extends AbstractController
         }
 
         return $this->render('Default/display.html.twig', [
-            'boxList' => $boxList,
+            'pollutantList' => $boxList,
             'cityName' => $cityName,
             'coord' => $coord,
             'city' => $city,
