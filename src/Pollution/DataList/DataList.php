@@ -42,12 +42,12 @@ class DataList implements DataListInterface
     public function reset(): DataListInterface
     {
         $this->list = [
-            PollutantInterface::POLLUTANT_PM10 => null,
-            PollutantInterface::POLLUTANT_PM25 => null,
-            PollutantInterface::POLLUTANT_O3 => null,
-            PollutantInterface::POLLUTANT_NO2 => null,
-            PollutantInterface::POLLUTANT_SO2 => null,
-            PollutantInterface::POLLUTANT_CO => null,
+            PollutantInterface::POLLUTANT_PM10 => [],
+            PollutantInterface::POLLUTANT_PM25 => [],
+            PollutantInterface::POLLUTANT_O3 => [],
+            PollutantInterface::POLLUTANT_NO2 => [],
+            PollutantInterface::POLLUTANT_SO2 => [],
+            PollutantInterface::POLLUTANT_CO => [],
         ];
 
         return $this;
