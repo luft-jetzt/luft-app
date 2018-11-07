@@ -16,7 +16,7 @@ class ElasticDataRetriever implements DataRetrieverInterface
         $this->dataFinder = $dataFinder;
     }
 
-    public function retrieveStationData(Station $station, int $pollutant, \DateTime $dateTime = null): ?Data
+    public function retrieveStationData(Station $station, int $pollutant, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null): ?Data
     {
         $stationQuery = new \Elastica\Query\Term(['station' => $station->getId()]);
         $pollutantQuery = new \Elastica\Query\Term(['pollutant' => $pollutant]);
@@ -26,8 +26,8 @@ class ElasticDataRetriever implements DataRetrieverInterface
             ->addMust($pollutantQuery)
             ->addMust($stationQuery);
 
-        if ($dateTime) {
-            // TODO Rangequery here
+        if ($fromDateTime && $dateInterval) {
+
             $dateTimeQuery = new \Elastica\Query\Range([]);
 
             $boolQuery->addMust($dateTimeQuery);

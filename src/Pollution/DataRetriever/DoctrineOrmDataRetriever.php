@@ -17,11 +17,11 @@ class DoctrineOrmDataRetriever implements DataRetrieverInterface
         $this->registry = $registry;
     }
 
-    public function retrieveStationData(Station $station, int $pollutant, \DateTime $dateTime = null): ?Data
+    public function retrieveStationData(Station $station, int $pollutant, \DateTime $dateTime = null, \DateInterval $dateInterval = null): ?Data
     {
         /** @var DataRepository $repository */
         $repository = $this->registry->getRepository(Data::class);
 
-        return $repository->findLatestDataForStationAndPollutant($station, $pollutant, $dateTime);
+        return $repository->findLatestDataForStationAndPollutant($station, $pollutant, $dateTime, $dateInterval);
     }
 }

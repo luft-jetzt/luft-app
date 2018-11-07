@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityRepository;
 
 class DataRepository extends EntityRepository
 {
-    public function findLatestDataForStationAndPollutant(Station $station, int $pollutant, \DateTime $dateTime = null): ?Data
+    public function findLatestDataForStationAndPollutant(Station $station, int $pollutant, \DateTime $fromDateTime = null, \DateInterval $dateInterval): ?Data
     {
         $qb = $this->createQueryBuilder('d');
 
@@ -21,12 +21,12 @@ class DataRepository extends EntityRepository
             ->setParameter('station', $station)
             ->setParameter('pollutant', $pollutant);
 
-        if ($dateTime) {
+        if ($fromDateTime && $dateInterval) {
             $qb
                 ->andWhere($qb->expr()->gte('d.dateTime', ':fromDateTime'))
                 ->andWhere($qb->expr()->lte('d.dateTime', ':untilDateTime'))
-                ->setParameter('fromDateTime', DateTimeUtil::getHourStartDateTime($dateTime))
-                ->setParameter('untilDateTime', DateTimeUtil::getHourEndDateTime($dateTime));
+                ->setParameter('fromDateTime', $fromDateTime)
+                ->setParameter('untilDateTime', $fromDateTime->add($dateInterval));
         }
 
         $query = $qb->getQuery();
