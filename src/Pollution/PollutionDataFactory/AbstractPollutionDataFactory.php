@@ -65,4 +65,11 @@ abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInter
 
         return $this;
     }
+
+    public function setStrategy(PollutantFactoryStrategyInterface $strategy): PollutionDataFactoryInterface
+    {
+        $this->strategy = $strategy;
+
+        return $this;
+    }
 }
