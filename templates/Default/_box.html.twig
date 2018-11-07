@@ -43,7 +43,7 @@
         {% endif %}
 
         <small>
-            gemessen: {{ box.data.dateTime|date('d.m.Y H:i') }} Uhr
+            gemessen: {{ box.data.dateTime|date('d.m.Y H:i', 'Europe/Berlin') }} Uhr
             {% if box.data.station.network and stationTitle %}
             <br />
             {{ box.data.station.network.name }}
