@@ -7,6 +7,7 @@ use App\Pollution\Pollutant\CO;
 use App\Pollution\Pollutant\NO2;
 use App\Pollution\Pollutant\O3;
 use App\Pollution\Pollutant\PM10;
+use App\Pollution\Pollutant\PM25;
 use App\Pollution\Pollutant\PollutantInterface;
 use App\Pollution\Pollutant\SO2;
 
@@ -39,6 +40,7 @@ abstract class AbstractBoxDecorator implements BoxDecoratorInterface
     {
         switch ($pollutantId) {
             case 1: return new PM10();
+            case 6: return new PM25();
             case 2: return new O3();
             case 3: return new NO2();
             case 4: return new SO2();

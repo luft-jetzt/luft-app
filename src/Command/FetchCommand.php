@@ -3,18 +3,19 @@
 namespace App\Command;
 
 use App\Pollution\Pollutant\PollutantInterface;
-use App\SourceFetcher\Parser\UbParser;
-use App\SourceFetcher\Persister\Persister;
-use App\SourceFetcher\Query\AbstractQuery;
-use App\SourceFetcher\Query\UbCOQuery;
-use App\SourceFetcher\Query\UbNO2Query;
-use App\SourceFetcher\Query\UbO3Query;
-use App\SourceFetcher\Query\UbPM10Query;
-use App\SourceFetcher\Query\UbSO2Query;
-use App\SourceFetcher\Reporting\Ub1SMW;
-use App\SourceFetcher\Reporting\Ub8SMW;
-use App\SourceFetcher\SourceFetcher;
-use App\SourceFetcher\Value\Value;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Parser\Parser;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Persister\PersisterInterface;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaCOQuery;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaNO2Query;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaO3Query;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaPM10Query;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaQueryInterface;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaSO2Query;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\Uba1SMW;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\Uba1TMW;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\Uba8SMW;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\SourceFetcher;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Value\Value;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
@@ -23,13 +24,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class FetchCommand extends Command
 {
-    /** @var Persister $persister */
+    /** @var PersisterInterface $persister */
     protected $persister;
 
     /** @var SourceFetcher $fetcher */
     protected $fetcher;
 
-    public function __construct(?string $name = null, Persister $persister, SourceFetcher $fetcher)
+    public function __construct(?string $name = null, PersisterInterface $persister, SourceFetcher $fetcher)
     {
         $this->persister = $persister;
         $this->fetcher = $fetcher;
@@ -84,8 +85,8 @@ class FetchCommand extends Command
     {
         $output->writeln('PM10');
 
-        $reporting = new Ub1SMW($dateTime);
-        $query = new UbPM10Query($reporting);
+        $reporting = new Uba1SMW($dateTime);
+        $query = new UbaPM10Query($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_PM10);
     }
@@ -94,8 +95,8 @@ class FetchCommand extends Command
     {
         $output->writeln('SO2');
 
-        $reporting = new Ub1SMW($dateTime);
-        $query = new UbSO2Query($reporting);
+        $reporting = new Uba1SMW($dateTime);
+        $query = new UbaSO2Query($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_SO2);
     }
@@ -104,8 +105,8 @@ class FetchCommand extends Command
     {
         $output->writeln('NO2');
 
-        $reporting = new Ub1SMW($dateTime);
-        $query = new UbNO2Query($reporting);
+        $reporting = new Uba1SMW($dateTime);
+        $query = new UbaNO2Query($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_NO2);
     }
@@ -114,8 +115,8 @@ class FetchCommand extends Command
     {
         $output->writeln('O3');
 
-        $reporting = new Ub1SMW($dateTime);
-        $query = new UbO3Query($reporting);
+        $reporting = new Uba1SMW($dateTime);
+        $query = new UbaO3Query($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_O3);
     }
@@ -124,17 +125,19 @@ class FetchCommand extends Command
     {
         $output->writeln('CO');
 
-        $reporting = new Ub1SMW($dateTime);
-        $query = new UbCOQuery($reporting);
+        $reporting = new Uba1SMW($dateTime);
+        $query = new UbaCOQuery($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_CO);
     }
 
-    protected function fetch(OutputInterface $output, AbstractQuery $query, int $pollutant)
+    protected function fetch(OutputInterface $output, UbaQueryInterface $query, int $pollutant)
     {
-        $response = $this->fetcher->query($query);
+        $sourceFetcher = new SourceFetcher();
 
-        $parser = new UbParser($query);
+        $response = $sourceFetcher->query($query);
+
+        $parser = new Parser($query);
         $tmpValueList = $parser->parse($response, $pollutant);
 
         $this->persister->persistValues($tmpValueList);
