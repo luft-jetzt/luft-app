@@ -13,7 +13,7 @@ class SimplePollutantFactoryStrategy implements PollutantFactoryStrategyInterfac
         $missingList = [];
 
         array_walk($list, function(array $list, int $key) use (&$missingList) {
-            if (null === $list || 0 === count($list)) { // || 1 >= count($data)) {
+            if (null === $list || 0 === count($list)) {
                 array_push($missingList, $key);
             }
         });

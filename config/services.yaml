@@ -48,6 +48,9 @@ services:
     App\Pollution\DataRetriever\DataRetrieverInterface:
         alias: App\Pollution\DataRetriever\ElasticDataRetriever
 
+    App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface:
+        alias: App\Pollution\PollutantFactoryStrategy\LuftdatenPollutantFactoryStrategy
+
     App\Pollution\DataRetriever\ElasticDataRetriever:
         arguments:
             $dataFinder: '@fos_elastica.finder.air_data.data'
