@@ -158,7 +158,7 @@ class Station extends Coord
         return $this->title;
     }
 
-    public function setTitle(string $title): Station
+    public function setTitle(string $title = null): Station
     {
         $this->title = $title;
 
