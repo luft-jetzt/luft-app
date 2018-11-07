@@ -3,6 +3,7 @@
 namespace App\Twitter;
 
 use App\Entity\TwitterSchedule;
+use App\Pollution\PollutantFactoryStrategy\SimplePollutantFactoryStrategy;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\Twitter\MessageFactory\MessageFactoryInterface;
 use App\YourlsApiManager\LuftYourlsApiManager;
@@ -44,13 +45,16 @@ abstract class AbstractTwitter implements TwitterInterface
     public function __construct(Doctrine $doctrine, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, LuftYourlsApiManager $permalinkManager, LoggerInterface $logger, string $twitterClientId, string $twitterClientSecret)
     {
         $this->doctrine = $doctrine;
-        $this->pollutionDataFactory = $pollutionDataFactory;
         $this->messageFactory = $messageFactory;
         $this->permalinkManager = $permalinkManager;
         $this->logger = $logger;
 
         $this->twitterClientId = $twitterClientId;
         $this->twitterClientSecret = $twitterClientSecret;
+
+        // @todo do this via services please!
+        $this->pollutionDataFactory = $pollutionDataFactory;
+        $this->pollutionDataFactory->setStrategy(new SimplePollutantFactoryStrategy());
     }
 
     protected function getCoord(TwitterSchedule $twitterSchedule): CoordInterface
