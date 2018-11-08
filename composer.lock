@@ -4,8 +4,255 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "606d334f899726d6996c5a0a350e9dec",
+    "content-hash": "07cfd7ef832c2db7b32ea438476440b7",
     "packages": [
+        {
+            "name": "cache/adapter-common",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-cache/adapter-common.git",
+                "reference": "6320bb5f5574cb88438059b59f8708da6b6f1d32"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-cache/adapter-common/zipball/6320bb5f5574cb88438059b59f8708da6b6f1d32",
+                "reference": "6320bb5f5574cb88438059b59f8708da6b6f1d32",
+                "shasum": ""
+            },
+            "require": {
+                "cache/tag-interop": "^1.0",
+                "php": "^5.6 || ^7.0",
+                "psr/cache": "^1.0",
+                "psr/log": "^1.0",
+                "psr/simple-cache": "^1.0"
+            },
+            "require-dev": {
+                "cache/integration-tests": "^0.16",
+                "phpunit/phpunit": "^5.7.21"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Cache\\Adapter\\Common\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aaron Scherer",
+                    "email": "aequasi@gmail.com",
+                    "homepage": "https://github.com/aequasi"
+                },
+                {
+                    "name": "Tobias Nyholm",
+                    "email": "tobias.nyholm@gmail.com",
+                    "homepage": "https://github.com/nyholm"
+                }
+            ],
+            "description": "Common classes for PSR-6 adapters",
+            "homepage": "http://www.php-cache.com/en/latest/",
+            "keywords": [
+                "cache",
+                "psr-6",
+                "tag"
+            ],
+            "time": "2018-07-08T13:04:33+00:00"
+        },
+        {
+            "name": "cache/array-adapter",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-cache/array-adapter.git",
+                "reference": "6e9ae7f8bbf1b07bdd6144cb944059f91ae65a14"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-cache/array-adapter/zipball/6e9ae7f8bbf1b07bdd6144cb944059f91ae65a14",
+                "reference": "6e9ae7f8bbf1b07bdd6144cb944059f91ae65a14",
+                "shasum": ""
+            },
+            "require": {
+                "cache/adapter-common": "^1.0",
+                "cache/hierarchical-cache": "^1.0",
+                "php": "^5.6 || ^7.0",
+                "psr/cache": "^1.0",
+                "psr/simple-cache": "^1.0"
+            },
+            "provide": {
+                "psr/cache-implementation": "^1.0",
+                "psr/simple-cache-implementation": "^1.0"
+            },
+            "require-dev": {
+                "cache/integration-tests": "^0.16",
+                "phpunit/phpunit": "^5.7.21"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Cache\\Adapter\\PHPArray\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aaron Scherer",
+                    "email": "aequasi@gmail.com",
+                    "homepage": "https://github.com/aequasi"
+                },
+                {
+                    "name": "Tobias Nyholm",
+                    "email": "tobias.nyholm@gmail.com",
+                    "homepage": "https://github.com/nyholm"
+                }
+            ],
+            "description": "A PSR-6 cache implementation using a php array. This implementation supports tags",
+            "homepage": "http://www.php-cache.com/en/latest/",
+            "keywords": [
+                "array",
+                "cache",
+                "psr-6",
+                "tag"
+            ],
+            "time": "2017-11-19T11:08:05+00:00"
+        },
+        {
+            "name": "cache/hierarchical-cache",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-cache/hierarchical-cache.git",
+                "reference": "97173a5115765f72ccdc90dbc01132a3786ef5fd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-cache/hierarchical-cache/zipball/97173a5115765f72ccdc90dbc01132a3786ef5fd",
+                "reference": "97173a5115765f72ccdc90dbc01132a3786ef5fd",
+                "shasum": ""
+            },
+            "require": {
+                "cache/adapter-common": "^1.0",
+                "php": "^5.6 || ^7.0",
+                "psr/cache": "^1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7.21"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Cache\\Hierarchy\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aaron Scherer",
+                    "email": "aequasi@gmail.com",
+                    "homepage": "https://github.com/aequasi"
+                },
+                {
+                    "name": "Tobias Nyholm",
+                    "email": "tobias.nyholm@gmail.com",
+                    "homepage": "https://github.com/nyholm"
+                }
+            ],
+            "description": "A helper trait and interface to your PSR-6 cache to support hierarchical keys.",
+            "homepage": "http://www.php-cache.com/en/latest/",
+            "keywords": [
+                "cache",
+                "hierarchical",
+                "hierarchy",
+                "psr-6"
+            ],
+            "time": "2017-07-16T21:58:17+00:00"
+        },
+        {
+            "name": "cache/tag-interop",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-cache/tag-interop.git",
+                "reference": "c7496dd81530f538af27b4f2713cde97bc292832"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-cache/tag-interop/zipball/c7496dd81530f538af27b4f2713cde97bc292832",
+                "reference": "c7496dd81530f538af27b4f2713cde97bc292832",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.5 || ^7.0",
+                "psr/cache": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Cache\\TagInterop\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tobias Nyholm",
+                    "email": "tobias.nyholm@gmail.com",
+                    "homepage": "https://github.com/nyholm"
+                },
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com",
+                    "homepage": "https://github.com/nicolas-grekas"
+                }
+            ],
+            "description": "Framework interoperable interfaces for tags",
+            "homepage": "http://www.php-cache.com/en/latest/",
+            "keywords": [
+                "cache",
+                "psr",
+                "psr6",
+                "tag"
+            ],
+            "time": "2017-03-13T09:14:27+00:00"
+        },
         {
             "name": "calderacc/geobasic",
             "version": "0.2",
@@ -3161,6 +3408,80 @@
             "time": "2018-05-01T18:32:48+00:00"
         },
         {
+            "name": "league/geotools",
+            "version": "0.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/geotools.git",
+                "reference": "ed02a15c76bbf793a87932d8c55b83a3783429ea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/geotools/zipball/ed02a15c76bbf793a87932d8c55b83a3783429ea",
+                "reference": "ed02a15c76bbf793a87932d8c55b83a3783429ea",
+                "shasum": ""
+            },
+            "require": {
+                "cache/array-adapter": "^1.0",
+                "php": "^7.0",
+                "php-http/discovery": "^1.0",
+                "psr/cache": "^1.0",
+                "react/event-loop": "0.4.*",
+                "react/promise": "^2.2",
+                "symfony/console": "^2.7 || ^3.0 || ^4.0",
+                "symfony/property-access": "^2.7 || ^3.0 || ^4.0",
+                "symfony/serializer": "^2.7 || ^3.0 || ^4.0",
+                "willdurand/geocoder": "^4.2"
+            },
+            "replace": {
+                "toin0u/geotools": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.5.5 || ^7.0"
+            },
+            "bin": [
+                "bin/geotools"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Geotools\\": "src",
+                    "League\\Geotools\\Tests\\": "tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Antoine Corcy",
+                    "email": "contact@sbin.dk",
+                    "homepage": "http://sbin.dk",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Geo-related tools PHP 7.0+ library",
+            "homepage": "http://geotools-php.org/",
+            "keywords": [
+                "async",
+                "batch",
+                "bounds",
+                "distance",
+                "geocoder",
+                "geocoding",
+                "geoip",
+                "geometry",
+                "geotools"
+            ],
+            "time": "2018-02-22T05:37:51+00:00"
+        },
+        {
             "name": "maxh/php-nominatim",
             "version": "1.2.3",
             "source": {
@@ -4840,6 +5161,48 @@
                 "simple-cache"
             ],
             "time": "2017-10-23T01:57:42+00:00"
+        },
+        {
+            "name": "react/event-loop",
+            "version": "v0.4.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/reactphp/event-loop.git",
+                "reference": "8bde03488ee897dc6bb3d91e4e17c353f9c5252f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/reactphp/event-loop/zipball/8bde03488ee897dc6bb3d91e4e17c353f9c5252f",
+                "reference": "8bde03488ee897dc6bb3d91e4e17c353f9c5252f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "suggest": {
+                "ext-event": "~1.0",
+                "ext-libev": "*",
+                "ext-libevent": ">=0.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "React\\EventLoop\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Event loop abstraction layer that libraries can use for evented I/O.",
+            "keywords": [
+                "asynchronous",
+                "event-loop"
+            ],
+            "time": "2017-04-27T10:56:23+00:00"
         },
         {
             "name": "react/promise",
