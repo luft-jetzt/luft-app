@@ -41,29 +41,13 @@
                                 Zeitpunkt
                             </th>
 
-                            <th class="pollutant" data-pollutant-identifier="pm10">
-                                PM<sub>10</sub>
-                            </th>
-
-                            <th class="pollutant" data-pollutant-identifier="pm25">
-                                PM<sub>25</sub>
-                            </th>
-
-                            <th class="pollutant" data-pollutant-identifier="o3">
-                                O<sub>3</sub>
-                            </th>
-
-                            <th class="pollutant" data-pollutant-identifier="no2">
-                                NO<sub>2</sub>
-                            </th>
-
-                            <th class="pollutant" data-pollutant-identifier="so2">
-                                SO<sub>2</sub>
-                            </th>
-
-                            <th class="pollutant" data-pollutant-identifier="co">
-                                CO
-                            </th>
+                            {% for pollutantId, pollutant in pollutant_list() %}
+                                {% if pollutantId in pollutantIdList %}
+                                <th class="pollutant" data-pollutant-identifier="{{ pollutant.identifier }}">
+                                    {{ pollutant.shortName }}
+                                </th>
+                                {% endif %}
+                            {% endfor %}
                         </tr>
                     </thead>
                     <tbody>
@@ -74,12 +58,9 @@
                                 {{ timestamp|date('d.m.Y H:i') }} Uhr
                             </td>
 
-                            {{ self.pollution_data(dataList, 1) }}
-                            {{ self.pollution_data(dataList, 6) }}
-                            {{ self.pollution_data(dataList, 2) }}
-                            {{ self.pollution_data(dataList, 3) }}
-                            {{ self.pollution_data(dataList, 4) }}
-                            {{ self.pollution_data(dataList, 5) }}
+                            {% for pollutantId in pollutantIdList %}
+                            {{ self.pollution_data(dataList, pollutantId) }}
+                            {% endfor %}
                         </tr>
                         {% endif %}
                         {% endfor %}

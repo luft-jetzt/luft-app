@@ -28,6 +28,13 @@ abstract class AbstractPollutant implements PollutantInterface
         return $this->name;
     }
 
+    public function getShortName(): string
+    {
+        $reflection = new \ReflectionClass($this);
+
+        return $reflection->getShortName();
+    }
+
     public function getIdentifier(): string
     {
         $reflection = new \ReflectionClass($this);

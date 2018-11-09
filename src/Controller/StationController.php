@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\HistoryDataFactory;
+use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
 use App\Util\DateTimeUtil;
@@ -36,7 +37,7 @@ class StationController extends AbstractController
         ]);
     }
 
-    public function historyAction(string $stationCode, HistoryDataFactory $historyDataFactory): Response
+    public function historyAction(string $stationCode, HistoryDataFactoryInterface $historyDataFactory): Response
     {
         $untilDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
         $fromDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
@@ -60,6 +61,18 @@ class StationController extends AbstractController
             'dataLists' => $dataLists,
             'fromDateTime' => $fromDateTime,
             'untilDateTime' => $untilDateTime,
+            'pollutantIdList' => $this->findPollutantsFromList($dataLists),
         ]);
+    }
+
+    protected function findPollutantsFromList(array $dataLists): array
+    {
+        $pollutantIdList = [];
+
+        foreach ($dataLists as $dataList) {
+            $pollutantIdList = array_merge($pollutantIdList, array_keys($dataList));
+        }
+
+        return array_unique($pollutantIdList);
     }
 }
