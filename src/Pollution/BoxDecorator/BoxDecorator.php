@@ -2,6 +2,7 @@
 
 namespace App\Pollution\BoxDecorator;
 
+use App\Entity\Station;
 use App\Pollution\Box\Box;
 
 class BoxDecorator extends AbstractBoxDecorator
@@ -18,12 +19,29 @@ class BoxDecorator extends AbstractBoxDecorator
 
                 $box
                     ->setStation($data->getStation())
-                    ->setPollutant($pollutant);
+                    ->setPollutant($pollutant)
+                    ->setDistance($this->calculateDistance($data->getStation()));
             }
         }
 
         $this->airQualityCalculator->calculatePollutantList($this->pollutantList);
 
         return $this;
+    }
+
+    protected function calculateDistance(Station $station): ?float
+    {
+        $geotools = new \League\Geotools\Geotools();
+
+        if (!$this->coord) {
+            return null;
+        }
+
+        $coordA = new \League\Geotools\Coordinate\Coordinate($this->coord->toArray());
+        $coordB = new \League\Geotools\Coordinate\Coordinate($station->toArray());
+
+        $distance = $geotools->distance()->setFrom($coordA)->setTo($coordB);
+
+        return $distance->in('km')->haversine();
     }
 }

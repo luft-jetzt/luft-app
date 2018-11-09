@@ -37,6 +37,11 @@ class Box
      */
     protected $caption;
 
+    /**
+     * @JMS\Expose()
+     */
+    protected $distance;
+
     public function __construct(Data $data)
     {
         $this->data = $data;
@@ -98,6 +103,18 @@ class Box
     public function setCaption(string $caption): Box
     {
         $this->caption = $caption;
+
+        return $this;
+    }
+
+    public function getDistance(): float
+    {
+        return $this->distance;
+    }
+
+    public function setDistance(float $distance): Box
+    {
+        $this->distance = $distance;
 
         return $this;
     }
