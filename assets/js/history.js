@@ -26,7 +26,7 @@ function getValues(pollutantIdentifier) {
 
     $('td.pollution-value.pollutant-' + pollutantIdentifier).each(function() {
         let value = $(this).data('value');
-        
+
         valueList.push(value);
     });
 
@@ -70,7 +70,13 @@ function createChart() {
                 yAxes: [{
                     ticks: {
                         beginAtZero:true
-                    }
+                    },
+                }],
+                xAxes: [{
+                    ticks: {
+                        minRotation: 90,
+                        maxRotation: 90,
+                    },
                 }]
             }
         }
