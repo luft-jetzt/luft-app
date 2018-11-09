@@ -1,4 +1,12 @@
 {% extends 'layout.html.twig' %}
+{% import _self as self %}
+
+{% macro pollution_data(dataList, pollutant) %}
+    {% if dataList[pollutant] is defined %}
+        {% set data = dataList[pollutant]|first %}
+        {{ data.data.value }} {{ data.pollutant.unitHtml|raw }}
+    {% endif %}
+{% endmacro %}
 
 {% block content %}
     <div class="container">
@@ -26,6 +34,26 @@
                             <th>
                                 PM<sub>10</sub>
                             </th>
+
+                            <th>
+                                PM<sub>25</sub>
+                            </th>
+
+                            <th>
+                                O<sub>3</sub>
+                            </th>
+
+                            <th>
+                                NO<sub>2</sub>
+                            </th>
+
+                            <th>
+                                SO<sub>2</sub>
+                            </th>
+
+                            <th>
+                                CO
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,7 +64,27 @@
                             </td>
 
                             <td>
+                                {{ self.pollution_data(dataList, 1) }}
+                            </td>
 
+                            <td>
+                                {{ self.pollution_data(dataList, 6) }}
+                            </td>
+
+                            <td>
+                                {{ self.pollution_data(dataList, 2) }}
+                            </td>
+
+                            <td>
+                                {{ self.pollution_data(dataList, 3) }}
+                            </td>
+
+                            <td>
+                                {{ self.pollution_data(dataList, 4) }}
+                            </td>
+
+                            <td>
+                                {{ self.pollution_data(dataList, 5) }}
                             </td>
                         </tr>
                         {% endfor %}
