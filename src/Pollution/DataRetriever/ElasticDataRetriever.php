@@ -30,7 +30,7 @@ class ElasticDataRetriever implements DataRetrieverInterface
             $untilDateTime = clone $fromDateTime;
             $untilDateTime->add($dateInterval);
 
-            $dateTimeQuery = new \Elastica\Query\Range('dateTime', ['gte' => $fromDateTime->format('Y-m-d H:i:s'), 'lte' => $untilDateTime->format('Y-m-d H:i:s'), 'format' => 'yyyy-MM-dd HH:mm:ss']);
+            $dateTimeQuery = new \Elastica\Query\Range('dateTime', ['gt' => $fromDateTime->format('Y-m-d H:i:s'), 'lte' => $untilDateTime->format('Y-m-d H:i:s'), 'format' => 'yyyy-MM-dd HH:mm:ss']);
 
             $boolQuery->addMust($dateTimeQuery);
         }

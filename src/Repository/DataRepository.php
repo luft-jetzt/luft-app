@@ -24,7 +24,7 @@ class DataRepository extends EntityRepository
 
         if ($fromDateTime && $dateInterval) {
             $qb
-                ->andWhere($qb->expr()->gte('d.dateTime', ':fromDateTime'))
+                ->andWhere($qb->expr()->gt('d.dateTime', ':fromDateTime'))
                 ->andWhere($qb->expr()->lte('d.dateTime', ':untilDateTime'))
                 ->setParameter('fromDateTime', $fromDateTime)
                 ->setParameter('untilDateTime', $fromDateTime->add($dateInterval));
