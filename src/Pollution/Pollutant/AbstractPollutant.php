@@ -13,6 +13,9 @@ abstract class AbstractPollutant implements PollutantInterface
     /** @var string $name */
     protected $name;
 
+    /** @var string $shortNameHtml */
+    protected $shortNameHtml;
+
     public function getUnitHtml(): string
     {
         return $this->unitHtml;
@@ -26,6 +29,11 @@ abstract class AbstractPollutant implements PollutantInterface
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getShortNameHtml(): string
+    {
+        return $this->shortNameHtml;
     }
 
     public function getShortName(): string

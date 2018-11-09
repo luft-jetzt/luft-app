@@ -44,7 +44,7 @@
                             {% for pollutantId, pollutant in pollutant_list() %}
                                 {% if pollutantId in pollutantIdList %}
                                 <th class="pollutant" data-pollutant-identifier="{{ pollutant.identifier }}">
-                                    {{ pollutant.shortName }}
+                                    {{ pollutant.shortNameHtml|raw }}
                                 </th>
                                 {% endif %}
                             {% endfor %}
