@@ -55,7 +55,7 @@
                         {% if dataList|length > 0 %}
                         <tr>
                             <td class="datetime">
-                                {{ timestamp|date('d.m.Y H:i') }} Uhr
+                                {{ timestamp|date('d.m.Y H:i', 'Europe/Berlin') }} Uhr
                             </td>
 
                             {% for pollutantId in pollutantIdList %}
