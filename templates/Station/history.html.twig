@@ -3,8 +3,12 @@
 
 {% macro pollution_data(dataList, pollutant) %}
     {% if dataList[pollutant] is defined %}
-        {% set data = dataList[pollutant]|first %}
+    {% set data = dataList[pollutant]|first %}
+    <td style="background-color: {{ pollution_color(data.pollutionLevel) }}">
         {{ data.data.value }} {{ data.pollutant.unitHtml|raw }}
+    </td>
+    {% else %}
+    <td></td>
     {% endif %}
 {% endmacro %}
 
@@ -63,29 +67,12 @@
                                 {{ timestamp|date('d.m.Y H:i') }} Uhr
                             </td>
 
-                            <td>
-                                {{ self.pollution_data(dataList, 1) }}
-                            </td>
-
-                            <td>
-                                {{ self.pollution_data(dataList, 6) }}
-                            </td>
-
-                            <td>
-                                {{ self.pollution_data(dataList, 2) }}
-                            </td>
-
-                            <td>
-                                {{ self.pollution_data(dataList, 3) }}
-                            </td>
-
-                            <td>
-                                {{ self.pollution_data(dataList, 4) }}
-                            </td>
-
-                            <td>
-                                {{ self.pollution_data(dataList, 5) }}
-                            </td>
+                            {{ self.pollution_data(dataList, 1) }}
+                            {{ self.pollution_data(dataList, 6) }}
+                            {{ self.pollution_data(dataList, 2) }}
+                            {{ self.pollution_data(dataList, 3) }}
+                            {{ self.pollution_data(dataList, 4) }}
+                            {{ self.pollution_data(dataList, 5) }}
                         </tr>
                         {% endfor %}
                     </tbody>
