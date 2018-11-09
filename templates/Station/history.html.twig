@@ -62,6 +62,7 @@
                     </thead>
                     <tbody>
                     {% for timestamp, dataList in dataLists %}
+                        {% if dataList|length > 0 %}
                         <tr>
                             <td>
                                 {{ timestamp|date('d.m.Y H:i') }} Uhr
@@ -74,6 +75,7 @@
                             {{ self.pollution_data(dataList, 4) }}
                             {{ self.pollution_data(dataList, 5) }}
                         </tr>
+                        {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>
