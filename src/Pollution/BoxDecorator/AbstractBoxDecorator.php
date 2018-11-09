@@ -10,6 +10,7 @@ use App\Pollution\Pollutant\PM10;
 use App\Pollution\Pollutant\PM25;
 use App\Pollution\Pollutant\PollutantInterface;
 use App\Pollution\Pollutant\SO2;
+use Caldera\GeoBasic\Coord\CoordInterface;
 
 abstract class AbstractBoxDecorator implements BoxDecoratorInterface
 {
@@ -18,6 +19,9 @@ abstract class AbstractBoxDecorator implements BoxDecoratorInterface
 
     /** @var AirQualityCalculatorInterface $airQualityCalculator */
     protected $airQualityCalculator;
+
+    /** @var CoordInterface $coord */
+    protected $coord;
 
     public function __construct(AirQualityCalculatorInterface $airQualityCalculator)
     {
@@ -46,6 +50,13 @@ abstract class AbstractBoxDecorator implements BoxDecoratorInterface
             case 4: return new SO2();
             case 5: return new CO();
         }
+    }
+
+    public function setCoord(CoordInterface $coord): BoxDecoratorInterface
+    {
+        $this->coord = $coord;
+
+        return $this;
     }
 
     abstract public function decorate(): BoxDecoratorInterface;

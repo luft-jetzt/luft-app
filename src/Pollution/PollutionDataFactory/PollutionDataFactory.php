@@ -67,6 +67,7 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
         return $this
             ->reset()
             ->boxDecorator
+            ->setCoord($this->coord)
             ->setPollutantList($pollutantList)
             ->decorate()
             ->getPollutantList()
