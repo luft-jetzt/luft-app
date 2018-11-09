@@ -18,7 +18,7 @@ function getTimestamps() {
         timestampList.push(timestamp);
     });
 
-    return timestampList;
+    return timestampList.reverse();
 }
 
 function getValues(pollutantIdentifier) {
@@ -30,7 +30,7 @@ function getValues(pollutantIdentifier) {
         valueList.push(value);
     });
 
-    return valueList;
+    return valueList.reverse();
 }
 
 function createDatasets() {
