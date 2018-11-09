@@ -1,14 +1,15 @@
 {% extends 'layout.html.twig' %}
 {% import _self as self %}
 
-{% macro pollution_data(dataList, pollutant) %}
-    {% if dataList[pollutant] is defined %}
-    {% set data = dataList[pollutant]|first %}
+{% macro pollution_data(dataList, pollutantId) %}
+    {% if dataList[pollutantId] is defined %}
+    {% set data = dataList[pollutantId]|first %}
     <td class="pollution-value pollutant-{{ data.pollutant.identifier }}" data-value="{{ data.data.value }}" style="background-color: {{ pollution_color(data.pollutionLevel) }}">
         {{ data.data.value }} {{ data.pollutant.unitHtml|raw }}
     </td>
     {% else %}
-    <td></td>
+        {% set pollutant = pollutant_by_id(pollutantId) %}
+    <td class="pollution-value pollutant-{{ pollutant.identifier }}" data-value="null"></td>
     {% endif %}
 {% endmacro %}
 
@@ -58,8 +59,10 @@
                                 {{ timestamp|date('d.m.Y H:i', 'Europe/Berlin') }} Uhr
                             </td>
 
-                            {% for pollutantId in pollutantIdList %}
-                            {{ self.pollution_data(dataList, pollutantId) }}
+                            {% for pollutantId, pollutant in pollutant_list() %}
+                                {% if pollutantId in pollutantIdList %}
+                                {{ self.pollution_data(dataList, pollutantId) }}
+                                {% endif %}
                             {% endfor %}
                         </tr>
                         {% endif %}

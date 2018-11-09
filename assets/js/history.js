@@ -26,7 +26,7 @@ function getValues(pollutantIdentifier) {
 
     $('td.pollution-value.pollutant-' + pollutantIdentifier).each(function() {
         let value = $(this).data('value');
-
+        
         valueList.push(value);
     });
 

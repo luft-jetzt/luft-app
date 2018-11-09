@@ -2,6 +2,7 @@
 
 namespace App\Twig\Extension;
 
+use App\Pollution\Pollutant\PollutantInterface;
 use App\Pollution\PollutantList\PollutantListInterface;
 
 class PollutantTwigExtension extends \Twig_Extension
@@ -18,12 +19,18 @@ class PollutantTwigExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('pollutant_list', [$this, 'pollutantList'], ['is_safe' => ['raw']]),
+            new \Twig_SimpleFunction('pollutant_by_id', [$this, 'pollutantById'], ['is_safe' => ['raw']]),
         ];
     }
 
     public function pollutantList(): array
     {
         return $this->pollutantList->getPollutantsWithIds();
+    }
+
+    public function pollutantById(int $pollutantId): PollutantInterface
+    {
+        return $this->pollutantList->getPollutantsWithIds()[$pollutantId];
     }
 
     public function getName(): string
