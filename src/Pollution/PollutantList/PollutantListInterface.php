@@ -8,4 +8,5 @@ interface PollutantListInterface
 {
     public function addPollutant(PollutantInterface $pollutant): PollutantListInterface;
     public function getPollutants(): array;
+    public function getPollutantsWithIds(): array;
 }
