@@ -1,10 +1,10 @@
 $(document).ready(createChart);
 
 function getTimestamps() {
-    var timestampList = [];
+    let timestampList = [];
 
     $('tr.datetime').each(function() {
-        var timestamp = $(this).data('timestamp');
+        let timestamp = $(this).data('timestamp');
 
         timestampList.push(timestamp);
     });
@@ -13,10 +13,10 @@ function getTimestamps() {
 }
 
 function getValues(pollutantIdentifier) {
-    var valueList = [];
+    let valueList = [];
 
     $('td.pollution-value.pollutant-' + pollutantIdentifier).each(function() {
-        var value = $(this).data('value');
+        let value = $(this).data('value');
 
         valueList.push(value);
     });
@@ -25,12 +25,11 @@ function getValues(pollutantIdentifier) {
 }
 
 function createDatasets() {
-    var datasetList = [];
+    let datasetList = [];
 
     $('th.pollutant').each(function() {
-        var pollutantIdentifier = $(this).data('pollutant-identifier');
-        var pollutantName = $(this).text().trim();
-        console.log(pollutantName);
+        let pollutantIdentifier = $(this).data('pollutant-identifier');
+        let pollutantName = $(this).text().trim();
 
         dataset = {
             label: pollutantName,
@@ -47,8 +46,8 @@ function createChart() {
     let timestampList = getTimestamps();
     let datasetList = createDatasets();
 
-    var ctx = document.getElementById('pollutionChart').getContext('2d');
-    var myChart = new Chart(ctx, {
+    let ctx = document.getElementById('pollutionChart').getContext('2d');
+    let myChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: timestampList,
