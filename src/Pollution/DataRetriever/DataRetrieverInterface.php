@@ -7,5 +7,5 @@ use App\Entity\Station;
 
 interface DataRetrieverInterface
 {
-    public function retrieveStationData(Station $station, int $pollutant, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null): ?Data;
+    public function retrieveStationData(Station $station, int $pollutant, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, string $order = 'DESC'): ?Data;
 }

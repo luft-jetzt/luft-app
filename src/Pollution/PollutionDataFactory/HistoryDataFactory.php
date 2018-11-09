@@ -12,7 +12,7 @@ class HistoryDataFactory extends PollutionDataFactory
         $dateTime = clone $fromDateTime;
 
         while ($dateTime < $untilDateTime) {
-            $dataListList[$dateTime->format('U')] = $this->getDataListFromStationList($this->stationList, $dateTime, $hour);
+            $dataListList[$dateTime->format('U')] = $this->getDataListFromStationList($this->stationList, $dateTime, $hour, 'ASC');
 
             $dateTime->add($hour);
         }
