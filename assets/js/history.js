@@ -34,6 +34,7 @@ function createDatasets() {
         dataset = {
             label: pollutantName,
             data: getValues(pollutantIdentifier),
+            cubicInterpolationMode: 'monotone',
         };
 
         datasetList.push(dataset);
