@@ -44,6 +44,9 @@
 
         <small>
             gemessen: {{ box.data.dateTime|date('d.m.Y H:i', 'Europe/Berlin') }} Uhr
+            {% if stationTitle %}
+            <br />Entfernung: {{ box.distance|number_format(2, ',', '.') }} km
+            {% endif %}
             {% if box.data.station.network and stationTitle %}
             <br />
             {{ box.data.station.network.name }}
