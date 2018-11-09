@@ -4,7 +4,7 @@
 {% macro pollution_data(dataList, pollutant) %}
     {% if dataList[pollutant] is defined %}
     {% set data = dataList[pollutant]|first %}
-    <td style="background-color: {{ pollution_color(data.pollutionLevel) }}">
+    <td class="pollution-value pollutant-{{ data.pollutant.identifier }}" data-value="{{ data.data.value }}" style="background-color: {{ pollution_color(data.pollutionLevel) }}">
         {{ data.data.value }} {{ data.pollutant.unitHtml|raw }}
     </td>
     {% else %}
@@ -28,6 +28,12 @@
 
         <div class="row">
             <div class="col-12">
+                <canvas id="pollutionChart" width="400" height="400"></canvas>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
                 <table class="table">
                     <thead>
                         <tr>
@@ -35,27 +41,27 @@
                                 Zeitpunkt
                             </th>
 
-                            <th>
+                            <th class="pollutant" data-pollutant-identifier="pm10">
                                 PM<sub>10</sub>
                             </th>
 
-                            <th>
+                            <th class="pollutant" data-pollutant-identifier="pm25">
                                 PM<sub>25</sub>
                             </th>
 
-                            <th>
+                            <th class="pollutant" data-pollutant-identifier="o3">
                                 O<sub>3</sub>
                             </th>
 
-                            <th>
+                            <th class="pollutant" data-pollutant-identifier="no2">
                                 NO<sub>2</sub>
                             </th>
 
-                            <th>
+                            <th class="pollutant" data-pollutant-identifier="so2">
                                 SO<sub>2</sub>
                             </th>
 
-                            <th>
+                            <th class="pollutant" data-pollutant-identifier="co">
                                 CO
                             </th>
                         </tr>
@@ -63,7 +69,7 @@
                     <tbody>
                     {% for timestamp, dataList in dataLists %}
                         {% if dataList|length > 0 %}
-                        <tr>
+                        <tr class="datetime" data-timestamp="{{ timestamp }}">
                             <td>
                                 {{ timestamp|date('d.m.Y H:i') }} Uhr
                             </td>
@@ -85,6 +91,8 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="/js/leaflet.extra-markers.min.js"></script>
-    <script src="/js/map.min.js"></script>
+    <script src="{{ asset('/js/leaflet.extra-markers.min.js') }}"></script>
+    <script src="{{ asset('/js/map.min.js') }}"></script>
+    <script src="{{ asset('/js/Chart.bundle.min.js') }}"></script>
+    <script src="{{ asset('/js/history.min.js') }}"></script>
 {% endblock %}
