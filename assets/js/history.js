@@ -1,5 +1,14 @@
 $(document).ready(createChart);
 
+const pollutantColors = {
+    pm10: 'red',
+    pm25: 'orange',
+    o3: 'green',
+    no2: 'blue',
+    so2: 'yellow',
+    co: 'black',
+};
+
 function getTimestamps() {
     let timestampList = [];
 
@@ -35,6 +44,8 @@ function createDatasets() {
             label: pollutantName,
             data: getValues(pollutantIdentifier),
             cubicInterpolationMode: 'monotone',
+            borderColor: pollutantColors[pollutantIdentifier],
+            fill: false,
         };
 
         datasetList.push(dataset);
