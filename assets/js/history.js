@@ -24,10 +24,17 @@ function getTimestamps() {
 function getValues(pollutantIdentifier) {
     let valueList = [];
 
+    let rowCounter = 0;
+
     $('td.pollution-value.pollutant-' + pollutantIdentifier).each(function() {
         let value = $(this).data('value');
 
-        valueList.push(value);
+        valueList.push({
+            x: rowCounter,
+            y: value,
+        });
+
+        ++rowCounter;
     });
 
     return valueList.reverse();
