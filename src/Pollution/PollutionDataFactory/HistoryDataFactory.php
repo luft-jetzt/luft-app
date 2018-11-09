@@ -6,15 +6,17 @@ class HistoryDataFactory extends PollutionDataFactory
 {
     public function getDataListsForInterval(\DateTime $fromDateTime, \DateTime $untilDateTime): array
     {
+        $dataListList = [];
+
         $hour = new \DateInterval('PT1H');
         $dateTime = clone $fromDateTime;
 
         while ($dateTime < $untilDateTime) {
-            $this->getDataListFromStationList($this->stationList, $dateTime, $hour);
+            $dataListList[$dateTime->format('U')] = $this->getDataListFromStationList($this->stationList, $dateTime, $hour);
 
             $dateTime->add($hour);
         }
 
+        return $dataListList;
     }
-
 }

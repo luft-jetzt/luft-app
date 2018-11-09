@@ -27,8 +27,10 @@ class ElasticDataRetriever implements DataRetrieverInterface
             ->addMust($stationQuery);
 
         if ($fromDateTime && $dateInterval) {
+            $untilDateTime = clone $fromDateTime;
+            $untilDateTime->add($dateInterval);
 
-            $dateTimeQuery = new \Elastica\Query\Range([]);
+            $dateTimeQuery = new \Elastica\Query\Range('dateTime', ['gte' => $fromDateTime->format('Y-m-d H:i:s'), 'lte' => $untilDateTime->format('Y-m-d H:i:s'), 'format' => 'yyyy-MM-dd HH:mm:ss']);
 
             $boolQuery->addMust($dateTimeQuery);
         }

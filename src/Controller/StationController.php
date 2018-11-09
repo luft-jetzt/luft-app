@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Station;
+use App\Pollution\PollutionDataFactory\HistoryDataFactory;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,8 +35,22 @@ class StationController extends AbstractController
         ]);
     }
 
-    public function historyAction(string $stationCode): Response
+    public function historyAction(string $stationCode, HistoryDataFactory $historyDataFactory): Response
     {
+        /** @var Station $station */
+        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
 
+        if (!$station) {
+            throw $this->createNotFoundException();
+        }
+
+        $dataLists = $historyDataFactory
+            ->setStation($station)
+            ->getDataListsForInterval(new \DateTime('2018-11-01'), new \DateTime());
+
+        return $this->render('Station/history.html.twig', [
+            'station' => $station,
+            'dataLists' => $dataLists,
+        ]);
     }
 }

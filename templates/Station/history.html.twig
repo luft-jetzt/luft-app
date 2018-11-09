@@ -1,0 +1,53 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="h3">
+                    Messwerte der Station {{ station.stationCode }}
+                </h2>
+
+                <p class="lead">
+                    An der Station {{ station.stationCode }}{% if station.city %} in <a href="{{ path('show_city', { citySlug: station.city.slug }) }}" title="Zeige weitere Schadstoff-Messwerte aus {{ station.city.name }} an">{{ station.city.name }}</a>{% endif %} wurden zuletzt die folgenden Werte gemessen:
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Zeitpunkt
+                            </th>
+
+                            <th>
+                                PM<sub>10</sub>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for timestamp, dataList in dataLists %}
+                        <tr>
+                            <td>
+                                {{ timestamp|date('d.m.Y H:i') }} Uhr
+                            </td>
+
+                            <td>
+
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/js/leaflet.extra-markers.min.js"></script>
+    <script src="/js/map.min.js"></script>
+{% endblock %}
