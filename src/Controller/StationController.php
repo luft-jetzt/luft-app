@@ -6,6 +6,7 @@ use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\HistoryDataFactory;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
+use App\Util\DateTimeUtil;
 use Symfony\Component\HttpFoundation\Response;
 
 class StationController extends AbstractController
@@ -37,6 +38,10 @@ class StationController extends AbstractController
 
     public function historyAction(string $stationCode, HistoryDataFactory $historyDataFactory): Response
     {
+        $untilDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
+        $fromDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
+        $fromDateTime->sub(new \DateInterval('P3D'));
+
         /** @var Station $station */
         $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
 
@@ -46,11 +51,15 @@ class StationController extends AbstractController
 
         $dataLists = $historyDataFactory
             ->setStation($station)
-            ->getDataListsForInterval(new \DateTime('2018-11-01'), new \DateTime());
+            ->createDecoratedPollutantListForInterval($fromDateTime, $untilDateTime);
+
+        krsort($dataLists);
 
         return $this->render('Station/history.html.twig', [
             'station' => $station,
             'dataLists' => $dataLists,
+            'fromDateTime' => $fromDateTime,
+            'untilDateTime' => $untilDateTime,
         ]);
     }
 }

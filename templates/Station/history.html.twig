@@ -17,11 +17,11 @@
         <div class="row">
             <div class="col-12 text-center">
                 <h2 class="h3">
-                    Messwerte der Station {{ station.stationCode }}
+                    Historische Messwerte der Station {{ station.stationCode }}
                 </h2>
 
                 <p class="lead">
-                    An der Station {{ station.stationCode }}{% if station.city %} in <a href="{{ path('show_city', { citySlug: station.city.slug }) }}" title="Zeige weitere Schadstoff-Messwerte aus {{ station.city.name }} an">{{ station.city.name }}</a>{% endif %} wurden zuletzt die folgenden Werte gemessen:
+                    An der Station {{ station.stationCode }}{% if station.city %} in <a href="{{ path('show_city', { citySlug: station.city.slug }) }}" title="Zeige weitere Schadstoff-Messwerte aus {{ station.city.name }} an">{{ station.city.name }}</a>{% endif %} wurden vom {{ fromDateTime|date('d.m.Y') }} bis zum {{ untilDateTime|date('d.m.Y') }} die folgenden Werte gemessen:
                 </p>
             </div>
         </div>
