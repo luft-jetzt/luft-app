@@ -53,8 +53,8 @@
                     <tbody>
                     {% for timestamp, dataList in dataLists %}
                         {% if dataList|length > 0 %}
-                        <tr class="datetime" data-timestamp="{{ timestamp }}">
-                            <td>
+                        <tr>
+                            <td class="datetime">
                                 {{ timestamp|date('d.m.Y H:i') }} Uhr
                             </td>
 

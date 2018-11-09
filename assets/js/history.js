@@ -12,8 +12,8 @@ const pollutantColors = {
 function getTimestamps() {
     let timestampList = [];
 
-    $('tr.datetime').each(function() {
-        let timestamp = $(this).data('timestamp');
+    $('td.datetime').each(function() {
+        let timestamp = $(this).text();
 
         timestampList.push(timestamp);
     });
