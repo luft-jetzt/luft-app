@@ -12,8 +12,8 @@ const pollutantColors = {
 function getTimestamps() {
     let timestampList = [];
 
-    $('td.datetime').each(function() {
-        let timestamp = $(this).text();
+    $('tr.datetime').each(function() {
+        let timestamp = $(this).data('timestamp');
 
         timestampList.push(timestamp);
     });
@@ -85,7 +85,7 @@ function createChart() {
                         maxRotation: 90,
                     },
                 }]
-            }
-        }
+            },
+        },
     });
 }
