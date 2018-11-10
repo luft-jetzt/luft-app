@@ -1,8 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Persister;
+namespace App\Pollution\DataPersister;
 
 use App\Entity\Station;
+use App\Provider\Luftdaten\LuftdatenProvider;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -30,12 +31,7 @@ abstract class AbstractPersister implements PersisterInterface
 
     protected function fetchStationList(): PersisterInterface
     {
-        $stations = $this->doctrine->getRepository(Station::class)->findAll();
-
-        /** @var Station $station */
-        foreach ($stations as $station) {
-            $this->stationList[$station->getStationCode()] = $station;
-        }
+        $this->stationList = $this->doctrine->getRepository(Station::class)->findIndexedByProvider(LuftdatenProvider::IDENTIFIER);
 
         return $this;
     }

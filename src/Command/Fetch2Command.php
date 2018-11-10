@@ -2,10 +2,8 @@
 
 namespace App\Command;
 
-use App\Pollution\Pollutant\PollutantInterface;
+use App\Pollution\DataPersister\PersisterInterface;
 use App\Provider\Luftdaten\SourceFetcher\Parser\Parser;
-use App\Provider\Luftdaten\SourceFetcher\Persister\Persister;
-use App\Provider\Luftdaten\SourceFetcher\Persister\PersisterInterface;
 use App\Provider\Luftdaten\SourceFetcher\SourceFetcher;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\Table;
