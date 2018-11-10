@@ -9,6 +9,8 @@ class Uba8SMW extends AbstractReporting
 {
     public function __construct(\DateTimeImmutable $dateTime)
     {
+        $this->interval = new \DateInterval('PT8H');
+
         $dateTime = $dateTime->sub(new \DateInterval('PT1H'));
 
         parent::__construct($dateTime);

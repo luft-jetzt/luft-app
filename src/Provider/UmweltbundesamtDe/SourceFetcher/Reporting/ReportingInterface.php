@@ -9,4 +9,5 @@ interface ReportingInterface
     public function getStartTimestamp(): int;
     public function getEndTimestamp(): int;
     public function getReportingIdentifier(): string;
+    public function getDateInterval(): \DateInterval;
 }

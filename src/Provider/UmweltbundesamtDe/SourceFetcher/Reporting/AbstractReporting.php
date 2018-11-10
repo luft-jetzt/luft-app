@@ -7,6 +7,9 @@ abstract class AbstractReporting implements ReportingInterface
     /** @var \DateTime $dateTime */
     protected $dateTime;
 
+    /** @var \DateInterval $interval */
+    protected $interval;
+
     public function __construct(\DateTimeImmutable $dateTime)
     {
         $this->dateTime = $dateTime;
@@ -52,6 +55,11 @@ abstract class AbstractReporting implements ReportingInterface
         $dateTimeSpec = $this->dateTime->format('Y-m-d 00:00:00');
 
         return new \DateTimeImmutable($dateTimeSpec);
+    }
+
+    public function getDateInterval(): \DateInterval
+    {
+        return $this->interval;
     }
 
     public function getReportingIdentifier(): string
