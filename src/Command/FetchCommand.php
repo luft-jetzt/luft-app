@@ -2,9 +2,10 @@
 
 namespace App\Command;
 
+use App\Pollution\DataPersister\UniquePersisterInterface;
 use App\Pollution\Pollutant\PollutantInterface;
+use App\Pollution\Value\Value;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Parser\Parser;
-use App\Provider\UmweltbundesamtDe\SourceFetcher\Persister\PersisterInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaCOQuery;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaNO2Query;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaO3Query;
@@ -12,10 +13,8 @@ use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaPM10Query;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaQueryInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaSO2Query;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\Uba1SMW;
-use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\Uba1TMW;
-use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\Uba8SMW;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\SourceFetcher;
-use App\Provider\UmweltbundesamtDe\SourceFetcher\Value\Value;
+use App\Provider\UmweltbundesamtDe\UmweltbundesamtDeProvider;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
@@ -24,15 +23,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class FetchCommand extends Command
 {
-    /** @var PersisterInterface $persister */
+    /** @var UniquePersisterInterface $persister */
     protected $persister;
 
     /** @var SourceFetcher $fetcher */
     protected $fetcher;
 
-    public function __construct(?string $name = null, PersisterInterface $persister, SourceFetcher $fetcher)
+    public function __construct(?string $name = null, UniquePersisterInterface $persister, SourceFetcher $fetcher, UmweltbundesamtDeProvider $umweltbundesamtDeProvider)
     {
         $this->persister = $persister;
+        $this->persister->setProvider($umweltbundesamtDeProvider);
         $this->fetcher = $fetcher;
 
         parent::__construct($name);
@@ -143,6 +143,8 @@ class FetchCommand extends Command
         $this->persister->persistValues($tmpValueList);
 
         $this->writeValueTable($output, $this->persister->getNewValueList());
+
+        $output->writeln(sprintf('Persisted <info>%d</info> new values, skipped <info>%d</info> existent values.', count($this->persister->getNewValueList()), count($this->persister->getDuplicateDataList())));
     }
 
     protected function writeValueTable(OutputInterface $output, array $newValueList): void

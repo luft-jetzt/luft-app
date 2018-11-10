@@ -2,10 +2,10 @@
 
 namespace App\Command;
 
-use App\Pollution\Pollutant\PollutantInterface;
+use App\Pollution\DataPersister\UniquePersisterInterface;
+use App\Pollution\Value\Value;
+use App\Provider\Luftdaten\LuftdatenProvider;
 use App\Provider\Luftdaten\SourceFetcher\Parser\Parser;
-use App\Provider\Luftdaten\SourceFetcher\Persister\Persister;
-use App\Provider\Luftdaten\SourceFetcher\Persister\PersisterInterface;
 use App\Provider\Luftdaten\SourceFetcher\SourceFetcher;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\Table;
@@ -14,12 +14,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Fetch2Command extends ContainerAwareCommand
 {
-    /** @var PersisterInterface */
+    /** @var UniquePersisterInterface */
     protected $persister;
 
-    public function __construct(?string $name = null, PersisterInterface $persister)
+    public function __construct(?string $name = null, UniquePersisterInterface $persister, LuftdatenProvider $luftdatenProvider)
     {
         $this->persister = $persister;
+        $this->persister->setProvider($luftdatenProvider);
 
         parent::__construct($name);
     }
@@ -43,6 +44,8 @@ class Fetch2Command extends ContainerAwareCommand
         $this->persister->persistValues($tmpValueList);
 
         $this->writeValueTable($output, $this->persister->getNewValueList());
+
+        $output->writeln(sprintf('Persisted <info>%d</info> new values, skipped <info>%d</info> existent values.', count($this->persister->getNewValueList()), count($this->persister->getDuplicateDataList())));
     }
 
     protected function writeValueTable(OutputInterface $output, array $newValueList): void
