@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Provider\Luftdaten\SourceFetcher\Value;
+namespace App\Pollution\Value;
 
 class Value
 {

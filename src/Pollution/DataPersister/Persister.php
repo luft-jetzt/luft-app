@@ -3,7 +3,7 @@
 namespace App\Pollution\DataPersister;
 
 use App\Entity\Data;
-use App\Provider\UmweltbundesamtDe\SourceFetcher\Value\Value;
+use App\Pollution\Value\Value;
 
 class Persister extends AbstractPersister
 {

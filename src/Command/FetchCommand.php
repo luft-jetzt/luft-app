@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Pollution\DataPersister\PersisterInterface;
 use App\Pollution\Pollutant\PollutantInterface;
+use App\Pollution\Value\Value;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Parser\Parser;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaCOQuery;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaNO2Query;
@@ -13,7 +14,6 @@ use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaQueryInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaSO2Query;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\Uba1SMW;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\SourceFetcher;
-use App\Provider\UmweltbundesamtDe\SourceFetcher\Value\Value;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
