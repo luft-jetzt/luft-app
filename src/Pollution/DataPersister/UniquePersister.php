@@ -7,8 +7,11 @@ use App\Pollution\Value\Value;
 
 class UniquePersister extends Persister implements UniquePersisterInterface
 {
-    /** @var array $existentData */
-    protected $existentData = [];
+    /** @var array $existentDataList */
+    protected $existentDataList = [];
+
+    /** @var array $duplicateDataList */
+    protected $duplicateDataList = [];
 
     protected function fetchExistentData(array $values): UniquePersister
     {
@@ -30,7 +33,7 @@ class UniquePersister extends Persister implements UniquePersisterInterface
 
         /** @var Data $data */
         foreach ($existentDataList as $data) {
-            $this->existentData[$this->hashData($data)] = $data;
+            $this->existentDataList[$this->hashData($data)] = $data;
         }
 
         return $this;
@@ -43,7 +46,7 @@ class UniquePersister extends Persister implements UniquePersisterInterface
 
     protected function dataExists(Data $data): bool
     {
-        return array_key_exists($this->hashData($data), $this->existentData);
+        return array_key_exists($this->hashData($data), $this->existentDataList);
     }
 
     public function persistValues(array $values): PersisterInterface
@@ -66,6 +69,8 @@ class UniquePersister extends Persister implements UniquePersisterInterface
             }
 
             if ($this->dataExists($data)) {
+                $this->duplicateDataList[] = $data;
+
                 continue;
             }
 
@@ -77,5 +82,10 @@ class UniquePersister extends Persister implements UniquePersisterInterface
         $this->entityManager->flush();
 
         return $this;
+    }
+
+    public function getDuplicateDataList(): array
+    {
+        return $this->duplicateDataList;
     }
 }

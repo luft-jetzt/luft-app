@@ -141,6 +141,8 @@ class FetchCommand extends Command
         $this->persister->persistValues($tmpValueList);
 
         $this->writeValueTable($output, $this->persister->getNewValueList());
+
+        $output->writeln(sprintf('Persisted <info>%d</info> new values, skipped <info>%d</info> existent values.', count($this->persister->getNewValueList()), count($this->persister->getDuplicateDataList())));
     }
 
     protected function writeValueTable(OutputInterface $output, array $newValueList): void

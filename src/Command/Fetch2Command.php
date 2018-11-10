@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Pollution\DataPersister\UniquePersisterInterface;
+use App\Pollution\Value\Value;
 use App\Provider\Luftdaten\SourceFetcher\Parser\Parser;
 use App\Provider\Luftdaten\SourceFetcher\SourceFetcher;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -41,6 +42,8 @@ class Fetch2Command extends ContainerAwareCommand
         $this->persister->persistValues($tmpValueList);
 
         $this->writeValueTable($output, $this->persister->getNewValueList());
+
+        $output->writeln(sprintf('Persisted <info>%d</info> new values, skipped <info>%d</info> existent values.', count($this->persister->getNewValueList()), count($this->persister->getDuplicateDataList())));
     }
 
     protected function writeValueTable(OutputInterface $output, array $newValueList): void
