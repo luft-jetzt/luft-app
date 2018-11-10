@@ -3,7 +3,7 @@
 namespace App\Provider\Luftdaten\SourceFetcher\Parser;
 
 use App\Pollution\Pollutant\PollutantInterface;
-use App\Provider\Luftdaten\SourceFetcher\Value\Value;
+use App\Pollution\Value\Value;
 
 class Parser implements ParserInterface
 {

@@ -2,8 +2,8 @@
 
 namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Parser;
 
+use App\Pollution\Value\Value;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaQueryInterface;
-use App\Provider\UmweltbundesamtDe\SourceFetcher\Value\Value;
 
 class Parser implements ParserInterface
 {

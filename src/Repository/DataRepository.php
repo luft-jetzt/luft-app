@@ -34,5 +34,20 @@ class DataRepository extends EntityRepository
 
         return $query->getOneOrNullResult();
     }
+
+    public function findInInterval(\DateTime $fromDateTime, \DateTime $untilDateTime): array
+    {
+        $qb = $this->createQueryBuilder('d');
+
+        $qb
+            ->where($qb->expr()->gte('d.dateTime', ':fromDateTime'))
+            ->andWhere($qb->expr()->lte('d.dateTime', ':untilDateTime'))
+            ->setParameter('fromDateTime', $fromDateTime)
+            ->setParameter('untilDateTime', $untilDateTime);
+
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
 }
 

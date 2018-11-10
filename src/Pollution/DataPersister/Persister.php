@@ -1,14 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace App\Provider\Luftdaten\SourceFetcher\Persister;
+namespace App\Pollution\DataPersister;
 
 use App\Entity\Data;
-use App\Provider\UmweltbundesamtDe\SourceFetcher\Value\Value;
+use App\Pollution\Value\Value;
 
 class Persister extends AbstractPersister
 {
     public function persistValues(array $values): PersisterInterface
     {
+        $this->fetchStationList();
+
         /** @var Value $value */
         foreach ($values as $value) {
             $data = new Data();
