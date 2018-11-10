@@ -14,6 +14,7 @@ use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaQueryInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaSO2Query;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\Uba1SMW;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\SourceFetcher;
+use App\Provider\UmweltbundesamtDe\UmweltbundesamtDeProvider;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
@@ -28,9 +29,10 @@ class FetchCommand extends Command
     /** @var SourceFetcher $fetcher */
     protected $fetcher;
 
-    public function __construct(?string $name = null, UniquePersisterInterface $persister, SourceFetcher $fetcher)
+    public function __construct(?string $name = null, UniquePersisterInterface $persister, SourceFetcher $fetcher, UmweltbundesamtDeProvider $umweltbundesamtDeProvider)
     {
         $this->persister = $persister;
+        $this->persister->setProvider($umweltbundesamtDeProvider);
         $this->fetcher = $fetcher;
 
         parent::__construct($name);

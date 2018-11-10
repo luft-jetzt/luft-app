@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Pollution\DataPersister\UniquePersisterInterface;
 use App\Pollution\Value\Value;
+use App\Provider\Luftdaten\LuftdatenProvider;
 use App\Provider\Luftdaten\SourceFetcher\Parser\Parser;
 use App\Provider\Luftdaten\SourceFetcher\SourceFetcher;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -16,9 +17,10 @@ class Fetch2Command extends ContainerAwareCommand
     /** @var UniquePersisterInterface */
     protected $persister;
 
-    public function __construct(?string $name = null, UniquePersisterInterface $persister)
+    public function __construct(?string $name = null, UniquePersisterInterface $persister, LuftdatenProvider $luftdatenProvider)
     {
         $this->persister = $persister;
+        $this->persister->setProvider($luftdatenProvider);
 
         parent::__construct($name);
     }
