@@ -43,9 +43,9 @@
         {% endif %}
 
         <small>
-            gemessen: {{ box.data.dateTime|date('d.m.Y H:i', 'Europe/Berlin') }} Uhr
+            <i class="fa fa-clock-o"></i> {{ box.data.dateTime|date('d.m.Y H:i', 'Europe/Berlin') }} Uhr
             {% if stationTitle %}
-            <br />Entfernung: {{ box.distance|number_format(2, ',', '.') }} km
+            <br /><i class="fa fa-compass"></i> {{ box.distance|number_format(2, ',', '.') }} km
             {% endif %}
             {% if box.data.station.network and stationTitle %}
             <br />
