@@ -7,7 +7,9 @@ use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DataRepository")
- * @ORM\Table(name="data")
+ * @ORM\Table(name="data", uniqueConstraints={
+ *   @ORM\UniqueConstraint(name="unique_data", columns={"station_id", "date_time", "value", "pollutant"})
+ * })
  * @JMS\ExclusionPolicy("ALL")
  */
 class Data
