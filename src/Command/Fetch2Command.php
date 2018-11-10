@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Pollution\DataPersister\PersisterInterface;
+use App\Pollution\DataPersister\UniquePersisterInterface;
 use App\Provider\Luftdaten\SourceFetcher\Parser\Parser;
 use App\Provider\Luftdaten\SourceFetcher\SourceFetcher;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -12,10 +12,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Fetch2Command extends ContainerAwareCommand
 {
-    /** @var PersisterInterface */
+    /** @var UniquePersisterInterface */
     protected $persister;
 
-    public function __construct(?string $name = null, PersisterInterface $persister)
+    public function __construct(?string $name = null, UniquePersisterInterface $persister)
     {
         $this->persister = $persister;
 

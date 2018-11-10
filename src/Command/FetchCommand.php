@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Pollution\DataPersister\PersisterInterface;
+use App\Pollution\DataPersister\UniquePersisterInterface;
 use App\Pollution\Pollutant\PollutantInterface;
 use App\Pollution\Value\Value;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Parser\Parser;
@@ -22,13 +22,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class FetchCommand extends Command
 {
-    /** @var PersisterInterface $persister */
+    /** @var UniquePersisterInterface $persister */
     protected $persister;
 
     /** @var SourceFetcher $fetcher */
     protected $fetcher;
 
-    public function __construct(?string $name = null, PersisterInterface $persister, SourceFetcher $fetcher)
+    public function __construct(?string $name = null, UniquePersisterInterface $persister, SourceFetcher $fetcher)
     {
         $this->persister = $persister;
         $this->fetcher = $fetcher;
