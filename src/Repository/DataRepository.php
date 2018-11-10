@@ -26,7 +26,7 @@ class DataRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
 
-    public function findInInterval(\DateTime $fromDateTime, \DateTime $untilDateTime): array
+    public function findInInterval(\DateTimeInterface $fromDateTime, \DateTimeInterface $untilDateTime): array
     {
         $qb = $this->createQueryBuilder('d');
 
