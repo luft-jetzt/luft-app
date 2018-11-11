@@ -5,7 +5,7 @@ namespace App\Command;
 use App\Pollution\DataPersister\UniquePersisterInterface;
 use App\Pollution\Value\Value;
 use App\Provider\Luftdaten\LuftdatenProvider;
-use App\Provider\Luftdaten\SourceFetcher\Parser\Parser;
+use App\Provider\Luftdaten\SourceFetcher\Parser\JsonParserInterface;
 use App\Provider\Luftdaten\SourceFetcher\SourceFetcher;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\Table;
@@ -20,10 +20,14 @@ class Fetch2Command extends ContainerAwareCommand
     /** @var LuftdatenProvider $provider */
     protected $provider;
 
-    public function __construct(?string $name = null, UniquePersisterInterface $persister, LuftdatenProvider $luftdatenProvider)
+    /** @var JsonParserInterface $parser */
+    protected $parser;
+
+    public function __construct(?string $name = null, UniquePersisterInterface $persister, LuftdatenProvider $luftdatenProvider, JsonParserInterface $parser)
     {
         $this->persister = $persister;
         $this->provider = $luftdatenProvider;
+        $this->parser = $parser;
 
         parent::__construct($name);
     }
@@ -43,8 +47,7 @@ class Fetch2Command extends ContainerAwareCommand
 
         $response = $sourceFetcher->query();
 
-        $parser = new Parser();
-        $tmpValueList = $parser->parse($response);
+        $tmpValueList = $this->parser->parse($response);
 
         $this->persister->persistValues($tmpValueList);
 
