@@ -15,12 +15,12 @@ class SourceFetcher
         $this->curl = new Curl();
     }
 
-    public function query(UbaQueryInterface $query): string
+    public function query(UbaQueryInterface $query): \stdClass
     {
-        $queryString = sprintf('https://www.umweltbundesamt.de/uaq/csv/stations/data?%s', $query->getQueryString());
+        $queryString = sprintf('https://www.umweltbundesamt.de/js/uaq/data/stations/measuring?%s', $query->getQueryString());
 
         $this->curl->get($queryString);
 
-        return (string) $this->curl->response;
+        return $this->curl->response;
     }
 }

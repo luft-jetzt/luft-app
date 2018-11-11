@@ -2,9 +2,7 @@
 
 namespace App\Provider;
 
-use App\SourceFetcher\Query\QueryInterface;
-
 interface SourceFetcherInterface
 {
-    public function query(QueryInterface $query = null): string;
+    public function query(QueryInterface $query = null);
 }

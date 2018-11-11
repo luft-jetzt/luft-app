@@ -2,9 +2,12 @@
 
 namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Query;
 
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\ReportingInterface;
+
 interface UbaQueryInterface
 {
     public function getQueryString(): string;
     public function getQueryOptions(): array;
     public function getDateTimeFormat(): string;
+    public function getReporting(): ReportingInterface;
 }

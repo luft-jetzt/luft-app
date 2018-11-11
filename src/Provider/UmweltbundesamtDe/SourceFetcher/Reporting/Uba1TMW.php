@@ -9,11 +9,6 @@ class Uba1TMW extends AbstractReporting
 {
     public function getStartDateTime(): \DateTimeImmutable
     {
-        return $this->calcLastDayStart();
-    }
-
-    public function getEndDateTime(): \DateTimeImmutable
-    {
-        return $this->calcLastDayEnd();
+        $this->interval = new \DateInterval('P1D');
     }
 }

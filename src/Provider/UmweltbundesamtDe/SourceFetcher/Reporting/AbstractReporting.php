@@ -2,18 +2,32 @@
 
 namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting;
 
+use App\Util\DateTimeUtil;
+
 abstract class AbstractReporting implements ReportingInterface
 {
-    /** @var \DateTimeInterface $fromDateTime */
-    protected $fromDateTime;
+    /** @var \DateTimeImmutable $startDateTime */
+    protected $startDateTime;
 
-    /** @var \DateTimeInterface $untilDateTime */
-    protected $untilDateTime;
+    /** @var \DateTimeImmutable $endDateTime */
+    protected $endDateTime;
 
-    public function __construct(\DateTimeImmutable $fromDateTime, \DateTimeImmutable $untilDateTime = null)
+    /** @var \DateInterval $interval */
+    protected $interval;
+
+    public function __construct(\DateTimeImmutable $endDateTime, \DateTimeImmutable $startDateTime = null)
     {
-        $this->fromDateTime = $fromDateTime;
-        $this->untilDateTime = $untilDateTime;
+        $this->startDateTime = $startDateTime;
+        $this->endDateTime = $endDateTime;
+    }
+
+    public function getStartDateTime(): \DateTimeImmutable
+    {
+        if ($this->startDateTime) {
+            return DateTimeUtil::getHourStartDateTime($this->startDateTime);
+        }
+
+        return DateTimeUtil::getHourStartDateTime($this->endDateTime->sub($this->interval));
     }
 
     public function getStartTimestamp(): int
@@ -21,41 +35,19 @@ abstract class AbstractReporting implements ReportingInterface
         return (int) $this->getStartDateTime()->format('U');
     }
 
+    public function getEndDateTime(): \DateTimeImmutable
+    {
+        return DateTimeUtil::getHourStartDateTime($this->endDateTime);
+    }
+
     public function getEndTimestamp(): int
     {
         return (int) $this->getEndDateTime()->format('U');
     }
 
-    protected function calcLastHourStart(): \DateTimeImmutable
+    public function getDateInterval(): \DateInterval
     {
-        $interval = new \DateInterval('PT1H');
-
-        $lastHourEnd = $this->calcLastHourEnd();
-
-        return $lastHourEnd->sub($interval);
-    }
-
-    protected function calcLastHourEnd(): \DateTimeImmutable
-    {
-        $dateTimeSpec = $this->dateTime->format('Y-m-d H:00:00');
-
-        return new \DateTimeImmutable($dateTimeSpec);
-    }
-
-    protected function calcLastDayStart(): \DateTimeImmutable
-    {
-        $interval = new \DateInterval('P1D');
-
-        $lastDayEnd = $this->calcLastDayEnd();
-
-        return $lastDayEnd->sub($interval);
-    }
-
-    protected function calcLastDayEnd(): \DateTimeImmutable
-    {
-        $dateTimeSpec = $this->dateTime->format('Y-m-d 00:00:00');
-
-        return new \DateTimeImmutable($dateTimeSpec);
+        return $this->interval;
     }
 
     public function getReportingIdentifier(): string
