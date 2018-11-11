@@ -3,7 +3,6 @@
 namespace App\Pollution\DataPersister;
 
 use App\Entity\Station;
-use App\Provider\Luftdaten\LuftdatenProvider;
 use App\Provider\ProviderInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -34,7 +33,7 @@ abstract class AbstractPersister implements PersisterInterface
     public function setProvider(ProviderInterface $provider): PersisterInterface
     {
         $this->provider = $provider;
-
+        
         return $this;
     }
 
