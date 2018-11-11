@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Pollution\DataPersister\UniquePersisterInterface;
 use App\Pollution\Pollutant\PollutantInterface;
 use App\Pollution\Value\Value;
+use App\Provider\ProviderInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Parser\Parser;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaCOQuery;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaNO2Query;
@@ -29,10 +30,13 @@ class FetchCommand extends Command
     /** @var SourceFetcher $fetcher */
     protected $fetcher;
 
+    /** @var ProviderInterface $provider */
+    protected $provider;
+
     public function __construct(?string $name = null, UniquePersisterInterface $persister, SourceFetcher $fetcher, UmweltbundesamtDeProvider $umweltbundesamtDeProvider)
     {
         $this->persister = $persister;
-        $this->persister->setProvider($umweltbundesamtDeProvider);
+        $this->provider = $umweltbundesamtDeProvider;
         $this->fetcher = $fetcher;
 
         parent::__construct($name);
@@ -54,6 +58,8 @@ class FetchCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->persister->setProvider($this->provider);
+
         if ($input->getArgument('dateTime')) {
             $dateTime = new \DateTimeImmutable($input->getArgument('dateTime'));
         } else {

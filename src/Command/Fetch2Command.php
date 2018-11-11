@@ -17,10 +17,13 @@ class Fetch2Command extends ContainerAwareCommand
     /** @var UniquePersisterInterface */
     protected $persister;
 
+    /** @var LuftdatenProvider $provider */
+    protected $provider;
+
     public function __construct(?string $name = null, UniquePersisterInterface $persister, LuftdatenProvider $luftdatenProvider)
     {
         $this->persister = $persister;
-        $this->persister->setProvider($luftdatenProvider);
+        $this->provider = $luftdatenProvider;
 
         parent::__construct($name);
     }
@@ -34,6 +37,8 @@ class Fetch2Command extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
+        $this->persister->setProvider($this->provider);
+
         $sourceFetcher = new SourceFetcher();
 
         $response = $sourceFetcher->query();
