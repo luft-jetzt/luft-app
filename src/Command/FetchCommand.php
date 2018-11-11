@@ -52,7 +52,8 @@ class FetchCommand extends Command
             ->addOption('no2')
             ->addOption('o3')
             ->addOption('co')
-            ->addArgument('dateTime', InputArgument::OPTIONAL);
+            ->addArgument('endDateTime', InputArgument::OPTIONAL)
+            ->addArgument('startDateTime', InputArgument::OPTIONAL);
         ;
     }
 
@@ -60,78 +61,84 @@ class FetchCommand extends Command
     {
         $this->persister->setProvider($this->provider);
 
-        if ($input->getArgument('dateTime')) {
-            $dateTime = new \DateTimeImmutable($input->getArgument('dateTime'));
+        if ($input->getArgument('endDateTime')) {
+            $endDateTime = new \DateTimeImmutable($input->getArgument('endDateTime'));
         } else {
-            $dateTime = (new \DateTimeImmutable())->sub(new \DateInterval('PT1H'));
+            $endDateTime = (new \DateTimeImmutable())->sub(new \DateInterval('PT1H'));
+        }
+
+        if ($input->getArgument('startDateTime')) {
+            $startDateTime = new \DateTimeImmutable($input->getArgument('startDateTime'));
+        } else {
+            $startDateTime = null;
         }
 
         if ($input->getOption('pm10')) {
-            $this->fetchPM10($output, $dateTime);
+            $this->fetchPM10($output, $endDateTime, $startDateTime);
         }
 
         if ($input->getOption('so2')) {
-            $this->fetchSO2($output, $dateTime);
+            $this->fetchSO2($output, $endDateTime, $startDateTime);
         }
 
         if ($input->getOption('no2')) {
-            $this->fetchNO2($output, $dateTime);
+            $this->fetchNO2($output, $endDateTime, $startDateTime);
         }
 
         if ($input->getOption('o3')) {
-            $this->fetchO3($output, $dateTime);
+            $this->fetchO3($output, $endDateTime, $startDateTime);
         }
 
         if ($input->getOption('co')) {
-            $this->fetchCO($output, $dateTime);
+            $this->fetchCO($output, $endDateTime, $startDateTime);
         }
     }
 
-    protected function fetchPM10(OutputInterface $output, \DateTimeInterface $dateTime)
+    protected function fetchPM10(OutputInterface $output, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
     {
         $output->writeln('PM10');
 
-        $reporting = new Uba1SMW($dateTime);
+        $reporting = new Uba1SMW($endDateTime, $startDateTime);
         $query = new UbaPM10Query($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_PM10);
     }
 
-    protected function fetchSO2(OutputInterface $output, \DateTimeInterface $dateTime)
+    protected function fetchSO2(OutputInterface $output, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
     {
         $output->writeln('SO2');
 
-        $reporting = new Uba1SMW($dateTime);
+        $reporting = new Uba1SMW($endDateTime, $startDateTime);
         $query = new UbaSO2Query($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_SO2);
     }
 
-    protected function fetchNO2(OutputInterface $output, \DateTimeInterface $dateTime)
+    protected function fetchNO2(OutputInterface $output, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
     {
         $output->writeln('NO2');
 
-        $reporting = new Uba1SMW($dateTime);
+        $reporting = new Uba1SMW($endDateTime, $startDateTime);
         $query = new UbaNO2Query($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_NO2);
     }
 
-    protected function fetchO3(OutputInterface $output, \DateTimeInterface $dateTime)
+    protected function fetchO3(OutputInterface $output, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
     {
         $output->writeln('O3');
 
-        $reporting = new Uba1SMW($dateTime);
+        $reporting = new Uba1SMW($endDateTime, $startDateTime);
         $query = new UbaO3Query($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_O3);
     }
 
-    protected function fetchCO(OutputInterface $output, \DateTimeInterface $dateTime)
+    protected function fetchCO(OutputInterface $output, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
     {
         $output->writeln('CO');
 
-        $reporting = new Uba1SMW($dateTime);
+        $reporting = new Uba1SMW($endDateTime, $startDateTime);
         $query = new UbaCOQuery($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_CO);
