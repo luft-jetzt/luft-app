@@ -147,7 +147,7 @@ class ArchiveFetcher
 
         foreach ($csvLinks as $csvLink) {
             if (!$this->checkSensorName($csvLink)) {
-                return [];
+                continue;
             }
 
             $csvFileContent = $this->loadCsvContent($csvLink);
