@@ -82,6 +82,11 @@ abstract class AbstractUbaQuery implements UbaQueryInterface
         return $queryString;
     }
 
+    public function getReporting(): ReportingInterface
+    {
+        return $this->reporting;
+    }
+
     public function getDateTimeFormat(): string
     {
         return 'd.m.Y H:i';

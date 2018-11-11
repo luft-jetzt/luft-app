@@ -4,5 +4,5 @@ namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Parser;
 
 interface ParserInterface
 {
-    public function parse(string $string, int $pollutant): array;
+    public function parse(\stdClass $string, int $pollutant): array;
 }
