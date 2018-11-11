@@ -33,12 +33,12 @@ class Value
         return $this;
     }
 
-    public function getDateTime(): \DateTime
+    public function getDateTime(): \DateTimeInterface
     {
         return $this->dateTime;
     }
 
-    public function setDateTime(\DateTime $dateTime): Value
+    public function setDateTime(\DateTimeInterface $dateTime): Value
     {
         $this->dateTime = $dateTime;
 

@@ -7,10 +7,7 @@ use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaQueryInterface;
 
 class Parser implements ParserInterface
 {
-    const STATION = 0;
-    const DATETIME = 5;
-    const VALUE = 6;
-
+    /** @var UbaQueryInterface $query */
     protected $query = null;
 
     public function __construct(UbaQueryInterface $query)
@@ -18,47 +15,28 @@ class Parser implements ParserInterface
         $this->query = $query;
     }
 
-    public function parse(string $string, int $pollutant): array
+    public function parse(\stdClass $response, int $pollutant): array
     {
-        $lines = explode(PHP_EOL, $string);
+        $data = array_pop($response->data);
+
         $valueList = [];
 
-        array_shift($lines); // remove column headlines
+        foreach ($data as $stationCode => $dataList) {
+            $dateTime = $this->query->getReporting()->getStartDateTime();
 
-        foreach ($lines as $line) {
-            $line = str_replace('"', '', $line);
-
-            $parts = explode(';', $line);
-
-            if (count($parts) <= 1) {
-                continue;
-            }
-
-            $dataValue = new Value();
-
-            try {
-                $dateTimeFormat = $this->query->getDateTimeFormat();
-
-                $station = $parts[self::STATION];
-                $dateTime = \DateTime::createFromFormat($dateTimeFormat, $parts[self::DATETIME]);
-                $value = (float) $parts[self::VALUE];
-
-                if (!$station || !$dateTime || !$value) {
-                    continue;
-                }
+            foreach ($dataList as $value) {
+                $dataValue = new Value();
 
                 $dataValue
-                    ->setStation($station)
+                    ->setStation($stationCode)
                     ->setDateTime($dateTime)
                     ->setPollutant($pollutant)
-                    ->setValue($value)
-                ;
+                    ->setValue($value);
 
-            } catch (\Exception $e) {
-                var_dump($e);
+                $valueList[] = $dataValue;
+
+                $dateTime->add($this->query->getReporting()->getDateInterval());
             }
-
-            $valueList[] = $dataValue;
         }
 
         return $valueList;

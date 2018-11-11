@@ -63,7 +63,7 @@ class FetchCommand extends Command
         if ($input->getArgument('dateTime')) {
             $dateTime = new \DateTimeImmutable($input->getArgument('dateTime'));
         } else {
-            $dateTime = new \DateTimeImmutable();
+            $dateTime = (new \DateTimeImmutable())->sub(new \DateInterval('PT1H'));
         }
 
         if ($input->getOption('pm10')) {

@@ -75,12 +75,12 @@ class Data
         return $this->dateTime->format('Y-m-d H:i:s');
     }
 
-    public function getDateTime(): \DateTime
+    public function getDateTime(): \DateTimeInterface
     {
         return $this->dateTime;
     }
 
-    public function setDateTime(\DateTime $dateTime): Data
+    public function setDateTime(\DateTimeInterface $dateTime): Data
     {
         $this->dateTime = $dateTime;
 

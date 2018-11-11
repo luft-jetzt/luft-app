@@ -4,73 +4,80 @@ namespace App\Util;
 
 class DateTimeUtil
 {
-    public static function getYearStartDateTime(\DateTime $year): \DateTime
+    protected static function createDateTimeObject(\DateTimeInterface $dateTime, string $dateTimeSpec): \DateTimeInterface
     {
-        $dateTime = sprintf('%d-01-01 00:00:00', $year->format('Y'));
+        $fqcn = get_class($dateTime);
 
-        return new \DateTime($dateTime);
+        return new $fqcn($dateTimeSpec);
     }
 
-    public static function getYearEndDateTime(\DateTime $year): \DateTime
+    public static function getYearStartDateTime(\DateTimeInterface $year): \DateTimeInterface
     {
-        $dateTime = sprintf('%d-12-31 23:59:59', $year->format('Y'));
+        $dateTimeSpec = sprintf('%d-01-01 00:00:00', $year->format('Y'));
 
-        return new \DateTime($dateTime);
+        return self::createDateTimeObject($year, $dateTimeSpec);
     }
 
-    public static function getMonthStartDateTime(\DateTime $month): \DateTime
+    public static function getYearEndDateTime(\DateTimeInterface $year): \DateTimeInterface
     {
-        $dateTime = sprintf('%d-%d-01 00:00:00', $month->format('Y'), $month->format('m'));
+        $dateTimeSpec = sprintf('%d-12-31 23:59:59', $year->format('Y'));
 
-        return new \DateTime($dateTime);
+        return self::createDateTimeObject($year, $dateTimeSpec);
     }
 
-    public static function getMonthEndDateTime(\DateTime $month): \DateTime
+    public static function getMonthStartDateTime(\DateTimeInterface $month): \DateTimeInterface
     {
-        $dateTime = sprintf('%d-%d-%d 23:59:59', $month->format('Y'), $month->format('m'), $month->format('t'));
+        $dateTimeSpec = sprintf('%d-%d-01 00:00:00', $month->format('Y'), $month->format('m'));
 
-        return new \DateTime($dateTime);
+        return self::createDateTimeObject($month, $dateTimeSpec);
     }
 
-    public static function getDayStartDateTime(\DateTime $day): \DateTime
+    public static function getMonthEndDateTime(\DateTimeInterface $month): \DateTimeInterface
     {
-        $dateTime = sprintf('%d-%d-%d 00:00:00', $day->format('Y'), $day->format('m'), $day->format('d'));
+        $dateTimeSpec = sprintf('%d-%d-%d 23:59:59', $month->format('Y'), $month->format('m'), $month->format('t'));
 
-        return new \DateTime($dateTime);
+        return self::createDateTimeObject($month, $dateTimeSpec);
     }
 
-    public static function getDayEndDateTime(\DateTime $day): \DateTime
+    public static function getDayStartDateTime(\DateTimeInterface $day): \DateTimeInterface
     {
-        $dateTime = sprintf('%d-%d-%d 23:59:59', $day->format('Y'), $day->format('m'), $day->format('d'));
+        $dateTimeSpec = sprintf('%d-%d-%d 00:00:00', $day->format('Y'), $day->format('m'), $day->format('d'));
 
-        return new \DateTime($dateTime);
+        return self::createDateTimeObject($day, $dateTimeSpec);
     }
 
-    public static function getHourStartDateTime(\DateTime $hour): \DateTime
+    public static function getDayEndDateTime(\DateTimeInterface $day): \DateTimeInterface
     {
-        $dateTime = sprintf('%d-%d-%d %d:00:00', $hour->format('Y'), $hour->format('m'), $hour->format('d'), $hour->format('H'));
+        $dateTimeSpec = sprintf('%d-%d-%d 23:59:59', $day->format('Y'), $day->format('m'), $day->format('d'));
 
-        return new \DateTime($dateTime);
+        return self::createDateTimeObject($day, $dateTimeSpec);
     }
 
-    public static function getHourEndDateTime(\DateTime $hour): \DateTime
+    public static function getHourStartDateTime(\DateTimeInterface $hour): \DateTimeInterface
     {
-        $dateTime = sprintf('%d-%d-%d %d:59:59', $hour->format('Y'), $hour->format('m'), $hour->format('d'), $hour->format('H'));
+        $dateTimeSpec = sprintf('%d-%d-%d %d:00:00', $hour->format('Y'), $hour->format('m'), $hour->format('d'), $hour->format('H'));
 
-        return new \DateTime($dateTime);
+        return self::createDateTimeObject($hour, $dateTimeSpec);
     }
 
-    public static function getMinuteStartDateTime(\DateTime $minute): \DateTime
+    public static function getHourEndDateTime(\DateTimeInterface $hour): \DateTimeInterface
     {
-        $dateTime = sprintf('%d-%d-%d %d:%d:00', $minute->format('Y'), $minute->format('m'), $minute->format('d'), $minute->format('H'), $minute->format('m'));
+        $dateTimeSpec = sprintf('%d-%d-%d %d:59:59', $hour->format('Y'), $hour->format('m'), $hour->format('d'), $hour->format('H'));
 
-        return new \DateTime($dateTime);
+        return self::createDateTimeObject($hour, $dateTimeSpec);
     }
 
-    public static function getMinuteEndDateTime(\DateTime $minute): \DateTime
+    public static function getMinuteStartDateTime(\DateTimeInterface $minute): \DateTimeInterface
     {
-        $dateTime = sprintf('%d-%d-%d %d:%d:59', $minute->format('Y'), $minute->format('m'), $minute->format('d'), $minute->format('H'), $minute->format('m'));
+        $dateTimeSpec = sprintf('%d-%d-%d %d:%d:00', $minute->format('Y'), $minute->format('m'), $minute->format('d'), $minute->format('H'), $minute->format('m'));
 
-        return new \DateTime($dateTime);
+        return self::createDateTimeObject($minute, $dateTimeSpec);
+    }
+
+    public static function getMinuteEndDateTime(\DateTimeInterface $minute): \DateTimeInterface
+    {
+        $dateTimeSpec = sprintf('%d-%d-%d %d:%d:59', $minute->format('Y'), $minute->format('m'), $minute->format('d'), $minute->format('H'), $minute->format('m'));
+
+        return self::createDateTimeObject($minute, $dateTimeSpec);
     }
 }
