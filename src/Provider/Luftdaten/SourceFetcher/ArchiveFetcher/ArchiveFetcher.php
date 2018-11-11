@@ -17,6 +17,9 @@ class ArchiveFetcher
     /** @var Curl $curl */
     protected $curl;
 
+    /** @var array $csvLinkList */
+    protected $csvLinkList = [];
+
     public function __construct()
     {
         $this->curl = new Curl();
@@ -39,7 +42,7 @@ class ArchiveFetcher
         return $this;
     }
 
-    protected function fetchStationCsvFiles(): array
+    public function fetchStationCsvFiles(): ArchiveFetcher
     {
         $this->curl->get($this->generateDirectoryUrl());
 
@@ -47,7 +50,9 @@ class ArchiveFetcher
 
         preg_match_All('/(?:href=\\")((.*?)(.csv))(?:\\")/', $response, $csvLinks);
 
-        return $csvLinks[1];
+        $this->csvLinkList = $csvLinks[1];
+
+        return $this;
     }
 
     protected function loadCsvContent(string $csvLink): string
@@ -85,10 +90,12 @@ class ArchiveFetcher
             'pms5003_sensor',
             'pms7003_sensor',
             'sds011_sensor',
+            'sds018_sensor',
+            'sds021_sensor',
             'ppd42ns_sensor',
             'hpm_sensor',
         ];
-
+        
         $result = false;
 
         foreach ($acceptedSensorNames as $acceptedSensorName) {
@@ -139,13 +146,18 @@ class ArchiveFetcher
         return $valueList;
     }
 
-    public function fetch(): array
+    public function getCsvLinkList(): array
+    {
+        return $this->csvLinkList;
+    }
+
+    public function fetch(callable $callback): array
     {
         $valueList = [];
 
-        $csvLinks = $this->fetchStationCsvFiles();
+        foreach ($this->csvLinkList as $csvLink) {
+            $callback();
 
-        foreach ($csvLinks as $csvLink) {
             if (!$this->checkSensorName($csvLink)) {
                 continue;
             }
@@ -157,5 +169,4 @@ class ArchiveFetcher
 
         return $valueList;
     }
-
 }

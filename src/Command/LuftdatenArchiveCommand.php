@@ -9,6 +9,7 @@ use App\Provider\Luftdaten\SourceFetcher\ArchiveFetcher\ArchiveFetcher;
 use App\Provider\Luftdaten\SourceFetcher\Parser\Parser;
 use App\Provider\Luftdaten\SourceFetcher\SourceFetcher;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -44,12 +45,25 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $valueList = $this->archiveFetcher
+         $this->archiveFetcher
             ->setDateTime(new \DateTime('2018-11-01'))
-            ->fetch();
+            ->fetchStationCsvFiles();
+
+        $stationCount = count($this->archiveFetcher->getCsvLinkList());
+
+        $progressBar = new ProgressBar($output, $stationCount);
+
+        $valueList = $this->archiveFetcher->fetch(function() use ($progressBar) {
+            $progressBar->advance();
+        });
 
         $this->uniquePersister
             ->setProvider($this->provider)
             ->persistValues($valueList);
+
+        $progressBar->finish();
+
+        $output->writeln(sprintf('Persisted values: <info>%d</info>', count($this->uniquePersister->getNewValueList())));
+        $output->writeln(sprintf('Skipped values: <info>%d</info>', count($this->uniquePersister->getDuplicateDataList())));
     }
 }
