@@ -11,8 +11,6 @@ class Uba1SMWMAX extends AbstractReporting
     {
         $this->interval = new \DateInterval('PT1H');
 
-        $dateTime = $dateTime->sub($this->interval);
-
         parent::__construct($dateTime);
     }
 

@@ -10,9 +10,7 @@ class Uba1SMW extends AbstractReporting
     public function __construct(\DateTimeImmutable $dateTime)
     {
         $this->interval = new \DateInterval('PT1H');
-
-        $dateTime = $dateTime->sub($this->interval);
-
+        
         parent::__construct($dateTime);
     }
 
