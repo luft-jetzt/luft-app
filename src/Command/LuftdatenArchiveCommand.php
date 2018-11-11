@@ -3,9 +3,9 @@
 namespace App\Command;
 
 use App\Pollution\DataPersister\UniquePersisterInterface;
-use App\Pollution\Value\Value;
 use App\Provider\Luftdaten\LuftdatenProvider;
-use App\Provider\Luftdaten\SourceFetcher\ArchiveFetcher\ArchiveFetcher;
+use App\Provider\Luftdaten\SourceFetcher\ArchiveFetcher\ArchiveFetcherInterface;
+use App\Provider\Luftdaten\SourceFetcher\ArchiveSourceFetcherInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -14,8 +14,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class LuftdatenArchiveCommand extends ContainerAwareCommand
 {
-    /** @var ArchiveFetcher $archiveFetcher */
+    /** @var ArchiveFetcherInterface $archiveFetcher */
     protected $archiveFetcher;
+
+    /** @var ArchiveSourceFetcherInterface $archiveSourceFetcher */
+    protected $archiveSourceFetcher;
 
     /** @var UniquePersisterInterface $uniquePersister */
     protected $uniquePersister;
@@ -23,9 +26,10 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
     /** @var LuftdatenProvider $provider */
     protected $provider;
 
-    public function __construct(?string $name = null, ArchiveFetcher $archiveFetcher, UniquePersisterInterface $uniquePersister, LuftdatenProvider $luftdatenProvider)
+    public function __construct(?string $name = null, ArchiveSourceFetcherInterface $archiveSourceFetcher,  ArchiveFetcherInterface $archiveFetcher, UniquePersisterInterface $uniquePersister, LuftdatenProvider $luftdatenProvider)
     {
         $this->archiveFetcher = $archiveFetcher;
+        $this->archiveSourceFetcher = $archiveSourceFetcher;
         $this->uniquePersister = $uniquePersister;
         $this->provider = $luftdatenProvider;
 
@@ -42,13 +46,17 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-         $this->archiveFetcher
-            ->setDateTime(new \DateTime('2018-11-01'))
+        $dateTime = new \DateTime($input->getArgument('date'));
+
+         $this->archiveSourceFetcher
+            ->setDateTime($dateTime)
             ->fetchStationCsvFiles();
 
-        $stationCount = count($this->archiveFetcher->getCsvLinkList());
+        $csvLinkList = $this->archiveSourceFetcher->getCsvLinkList();
 
-        $progressBar = new ProgressBar($output, $stationCount);
+        $progressBar = new ProgressBar($output, count($csvLinkList));
+
+        $this->archiveFetcher->setCsvLinkList($csvLinkList);
 
         $valueList = $this->archiveFetcher->fetch(function() use ($progressBar) {
             $progressBar->advance();
