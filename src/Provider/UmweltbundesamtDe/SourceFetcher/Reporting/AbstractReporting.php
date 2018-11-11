@@ -4,12 +4,16 @@ namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting;
 
 abstract class AbstractReporting implements ReportingInterface
 {
-    /** @var \DateTime $dateTime */
-    protected $dateTime;
+    /** @var \DateTimeInterface $fromDateTime */
+    protected $fromDateTime;
 
-    public function __construct(\DateTimeImmutable $dateTime)
+    /** @var \DateTimeInterface $untilDateTime */
+    protected $untilDateTime;
+
+    public function __construct(\DateTimeImmutable $fromDateTime, \DateTimeImmutable $untilDateTime = null)
     {
-        $this->dateTime = $dateTime;
+        $this->fromDateTime = $fromDateTime;
+        $this->untilDateTime = $untilDateTime;
     }
 
     public function getStartTimestamp(): int
