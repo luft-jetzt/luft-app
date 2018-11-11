@@ -7,10 +7,10 @@ namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting;
  */
 class Uba1SMW extends AbstractReporting
 {
-    public function __construct(\DateTimeImmutable $dateTime)
+    public function __construct(\DateTimeImmutable $endDateTime, \DateTimeImmutable $startDateTime = null)
     {
         $this->interval = new \DateInterval('PT1H');
 
-        parent::__construct($dateTime);
+        parent::__construct($endDateTime, $startDateTime);
     }
 }
