@@ -13,14 +13,4 @@ class Uba8SMW extends AbstractReporting
 
         parent::__construct($dateTime);
     }
-
-    public function getStartDateTime(): \DateTimeImmutable
-    {
-        return $this->calcLastHourStart();
-    }
-
-    public function getEndDateTime(): \DateTimeImmutable
-    {
-        return $this->calcLastHourEnd();
-    }
 }

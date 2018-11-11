@@ -10,17 +10,7 @@ class Uba1SMW extends AbstractReporting
     public function __construct(\DateTimeImmutable $dateTime)
     {
         $this->interval = new \DateInterval('PT1H');
-        
+
         parent::__construct($dateTime);
-    }
-
-    public function getStartDateTime(): \DateTimeImmutable
-    {
-        return $this->calcLastHourStart();
-    }
-
-    public function getEndDateTime(): \DateTimeImmutable
-    {
-        return $this->calcLastHourEnd();
     }
 }

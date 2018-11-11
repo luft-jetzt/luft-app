@@ -13,14 +13,4 @@ class Uba1SMWMAX extends AbstractReporting
 
         parent::__construct($dateTime);
     }
-
-    public function getStartDateTime(): \DateTimeImmutable
-    {
-        return $this->calcLastDayStart();
-    }
-
-    public function getEndDateTime(): \DateTimeImmutable
-    {
-        return $this->calcLastDayEnd();
-    }
 }
