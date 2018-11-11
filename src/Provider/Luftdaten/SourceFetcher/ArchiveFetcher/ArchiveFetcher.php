@@ -2,10 +2,8 @@
 
 namespace App\Provider\Luftdaten\SourceFetcher\ArchiveFetcher;
 
-use App\Pollution\Pollutant\PollutantInterface;
-use App\Pollution\Value\Value;
+use App\Provider\Luftdaten\SourceFetcher\Parser\CsvParserInterface;
 use Curl\Curl;
-use League\Csv\Reader;
 
 class ArchiveFetcher
 {
@@ -20,9 +18,13 @@ class ArchiveFetcher
     /** @var array $csvLinkList */
     protected $csvLinkList = [];
 
-    public function __construct()
+    /** @var CsvParserInterface $csvParser */
+    protected $csvParser;
+
+    public function __construct(CsvParserInterface $csvParser)
     {
         $this->curl = new Curl();
+        $this->csvParser = $csvParser;
     }
 
     protected function generateDirectoryUrl(): string
@@ -62,28 +64,6 @@ class ArchiveFetcher
         return (string) $this->curl->response;
     }
 
-    protected function checkHeaderColumns(array $headerColumns): bool
-    {
-        $requiredColumns = [
-            'timestamp',
-            'location',
-            'P1',
-            'P2',
-        ];
-
-        $result = true;
-
-        foreach ($requiredColumns as $requiredColumn) {
-            if (!in_array($requiredColumn, $headerColumns)) {
-                $result = false;
-
-                break;
-            }
-        }
-
-        return $result;
-    }
-
     protected function checkSensorName(string $csvFilename): bool
     {
         $acceptedSensorNames = [
@@ -109,43 +89,6 @@ class ArchiveFetcher
         return $result;
     }
 
-    protected function parseFile(string $csvFileContent): array
-    {
-        $valueList = [];
-
-        $csv = Reader::createFromString(utf8_decode($csvFileContent));
-
-        $csv
-            ->setDelimiter(';')
-            ->setHeaderOffset(0);
-
-        if (!$this->checkHeaderColumns($csv->getHeader())) {
-            return [];
-        }
-
-        foreach ($csv as $dataLine) {
-            $dateTime = new \DateTime($dataLine['timestamp']);
-            $stationCode = sprintf('LFTDTN%d', $dataLine['location']);
-
-            $pm10Value = new Value();
-            $pm10Value->setPollutant(PollutantInterface::POLLUTANT_PM10)
-                ->setDateTime($dateTime)
-                ->setStation($stationCode)
-                ->setValue((float) $dataLine['P1']);
-
-            $pm25Value = new Value();
-            $pm25Value->setPollutant(PollutantInterface::POLLUTANT_PM25)
-                ->setDateTime($dateTime)
-                ->setStation($stationCode)
-                ->setValue((float) $dataLine['P2']);
-
-            $valueList[] = $pm10Value;
-            $valueList[] = $pm25Value;
-        }
-
-        return $valueList;
-    }
-
     public function getCsvLinkList(): array
     {
         return $this->csvLinkList;
@@ -164,7 +107,7 @@ class ArchiveFetcher
 
             $csvFileContent = $this->loadCsvContent($csvLink);
 
-            $valueList = array_merge($this->parseFile($csvFileContent), $valueList);
+            $valueList = array_merge($this->csvParser->parse($csvFileContent), $valueList);
         }
 
         return $valueList;
