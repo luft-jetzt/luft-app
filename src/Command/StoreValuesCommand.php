@@ -47,13 +47,13 @@ class StoreValuesCommand extends Command
 
             $valueList = $item->get() ?? [];
 
+            $cache->deleteItem($key);
+
             $this->uniquePersister
                 ->setProvider($provider)
                 ->persistValues($valueList);
 
             $output->writeln(sprintf('Persisted <info>%d</info> new values, skipped <info>%d</info> existent values.', count($this->uniquePersister->getNewValueList()), count($this->uniquePersister->getDuplicateDataList())));
         }
-
-
     }
 }
