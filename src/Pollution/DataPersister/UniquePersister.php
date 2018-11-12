@@ -56,6 +56,14 @@ class UniquePersister extends Persister implements UniquePersisterInterface
         return array_key_exists($hash, $this->existentDataList);
     }
 
+    public function reset(): PersisterInterface
+    {
+        $this->existentDataList = [];
+        $this->duplicateDataList = [];
+
+        return parent::reset();
+    }
+
     public function persistValues(array $values): PersisterInterface
     {
         if (0 === count($values)) {
@@ -86,6 +94,8 @@ class UniquePersister extends Persister implements UniquePersisterInterface
                 continue;
             }
 
+            $this->existentDataList[$this->hashData($data)] = true;
+            
             $this->entityManager->persist($data);
 
             $this->newValueList[] = $data;
