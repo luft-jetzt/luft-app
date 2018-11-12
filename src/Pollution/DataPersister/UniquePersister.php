@@ -62,7 +62,11 @@ class UniquePersister extends Persister implements UniquePersisterInterface
             return $this;
         }
 
-        $this->fetchStationList();
+        if (0 === count($this->stationList)) {
+            $this->fetchStationList();
+        }
+
+        $this->existentDataList = [];
         $this->fetchExistentData($values);
 
         /** @var Value $value */

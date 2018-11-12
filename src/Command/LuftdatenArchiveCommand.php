@@ -42,8 +42,7 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
         $this
             ->setName('luft:luftdaten-archive')
             ->setDescription('')
-            ->addOption('offset', null, InputOption::VALUE_OPTIONAL)
-            ->addOption('length', null, InputOption::VALUE_OPTIONAL)
+            ->addOption('flush-after', null, InputOption::VALUE_OPTIONAL, '', 100)
             ->addArgument('date', InputArgument::REQUIRED, 'Date of data to fetch');
     }
 
@@ -51,27 +50,31 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
     {
         $dateTime = new \DateTime($input->getArgument('date'));
 
+        $this->uniquePersister->setProvider($this->provider);
+
          $this->archiveSourceFetcher
             ->setDateTime($dateTime)
             ->fetchStationCsvFiles();
 
         $csvLinkList = $this->archiveSourceFetcher->getCsvLinkList();
 
-        if ($input->getOption('offset') && $input->getOption('length')) {
-            $csvLinkList = array_splice($csvLinkList, (int) $input->getOption('offset'), (int) $input->getOption('length'));
-        }
-
         $progressBar = new ProgressBar($output, count($csvLinkList));
 
-        $this->archiveFetcher->setCsvLinkList($csvLinkList);
+        $offset = 0;
+        $length = (int) $input->getOption('flush-after');
+        $maxOffset = floor(count($csvLinkList) / $length);
 
-        $valueList = $this->archiveFetcher->fetch(function() use ($progressBar) {
-            $progressBar->advance();
-        });
+        for ($offset = 0; $offset <= $maxOffset; ++$offset) {
+            $offsetLinkList = array_slice($csvLinkList, $offset * $length, $length);
 
-        $this->uniquePersister
-            ->setProvider($this->provider)
-            ->persistValues($valueList);
+            $this->archiveFetcher->setCsvLinkList($offsetLinkList);
+
+            $valueList = $this->archiveFetcher->fetch(function () use ($progressBar) {
+                $progressBar->advance();
+            });
+
+            $this->uniquePersister->persistValues($valueList);
+        }
 
         $progressBar->finish();
 
