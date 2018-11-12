@@ -50,6 +50,7 @@ class StoreValuesCommand extends Command
             $cache->deleteItem($key);
 
             $this->uniquePersister
+                ->reset()
                 ->setProvider($provider)
                 ->persistValues($valueList);
 
