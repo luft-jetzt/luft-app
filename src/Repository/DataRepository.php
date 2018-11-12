@@ -40,5 +40,26 @@ class DataRepository extends EntityRepository
 
         return $query->getResult();
     }
+
+    public function findHashsInterval(\DateTimeInterface $fromDateTime, \DateTimeInterface $untilDateTime, array $stationList = []): array
+    {
+        $sql = 'SELECT CONCAT(d.station_id, UNIX_TIMESTAMP(d.date_time), d.pollutant, d.value) AS hash FROM data AS d';
+
+        if (0 !== count($stationList)) {
+            $sql.= ' JOIN station AS s ON d.station_id = s.id';
+        }
+
+        $sql.= ' WHERE d.date_time >= \''.$fromDateTime->format('Y-m-d H:i:s').'\' AND d.date_time <= \''.$untilDateTime->format('Y-m-d H:i:s').'\'';
+
+        if (0 !== count($stationList)) {
+            $sql.= ' AND s.station_code IN (\''.implode('\', \'', $stationList).'\')';
+        }
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+
+    }
 }
 
