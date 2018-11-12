@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class LuftdatenArchiveCommand extends ContainerAwareCommand
@@ -41,6 +42,8 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
         $this
             ->setName('luft:luftdaten-archive')
             ->setDescription('')
+            ->addOption('offset', null, InputOption::VALUE_OPTIONAL)
+            ->addOption('length', null, InputOption::VALUE_OPTIONAL)
             ->addArgument('date', InputArgument::REQUIRED, 'Date of data to fetch');
     }
 
@@ -53,6 +56,10 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
             ->fetchStationCsvFiles();
 
         $csvLinkList = $this->archiveSourceFetcher->getCsvLinkList();
+
+        if ($input->getOption('offset') && $input->getOption('length')) {
+            $csvLinkList = array_splice($csvLinkList, (int) $input->getOption('offset'), (int) $input->getOption('length'));
+        }
 
         $progressBar = new ProgressBar($output, count($csvLinkList));
 
