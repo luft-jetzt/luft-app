@@ -73,7 +73,7 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
                 $progressBar->advance();
             });
 
-            $this->uniquePersister->persistValues($valueList);
+            $this->uniquePersister->reset()->persistValues($valueList);
         }
 
         $progressBar->finish();

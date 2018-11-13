@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Pollution\DataPersister\UniquePersisterInterface;
+use App\Pollution\ValueCache\ValueCacheInterface;
 use App\Provider\ProviderInterface;
 use App\Provider\ProviderListInterface;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
@@ -18,10 +19,14 @@ class StoreValuesCommand extends Command
     /** @var ProviderListInterface $providerList */
     protected $providerList;
 
-    public function __construct(?string $name = null, UniquePersisterInterface $uniquePersister, ProviderListInterface $providerList)
+    /** @var ValueCacheInterface $valueCache */
+    protected $valueCache;
+
+    public function __construct(?string $name = null, ValueCacheInterface $valueCache, UniquePersisterInterface $uniquePersister, ProviderListInterface $providerList)
     {
         $this->uniquePersister = $uniquePersister;
         $this->providerList = $providerList;
+        $this->valueCache = $valueCache;
 
         parent::__construct($name);
     }
@@ -33,21 +38,11 @@ class StoreValuesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $client = RedisAdapter::createConnection('redis://localhost');
-
-        $cache = new RedisAdapter($client);
-
         /** @var ProviderInterface $provider */
         foreach ($this->providerList->getList() as $identifier => $provider) {
             $output->writeln(sprintf('Looking up cache for <info>%s</info>', get_class($provider)));
 
-            $key = sprintf('values-%s', $identifier);
-
-            $item = $cache->getItem($key);
-
-            $valueList = $item->get() ?? [];
-
-            $cache->deleteItem($key);
+            $valueList = $this->valueCache->getNewestPage($provider);
 
             $this->uniquePersister
                 ->reset()
