@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Data;
 use App\Entity\Station;
+use App\Provider\ProviderInterface;
 use Doctrine\ORM\EntityRepository;
 
 class DataRepository extends EntityRepository
@@ -26,15 +27,28 @@ class DataRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
 
-    public function findInInterval(\DateTimeInterface $fromDateTime, \DateTimeInterface $untilDateTime): array
+    public function findInInterval(\DateTimeInterface $fromDateTime = null, \DateTimeInterface $untilDateTime = null, ProviderInterface $provider = null): array
     {
         $qb = $this->createQueryBuilder('d');
 
-        $qb
-            ->where($qb->expr()->gte('d.dateTime', ':fromDateTime'))
-            ->andWhere($qb->expr()->lte('d.dateTime', ':untilDateTime'))
-            ->setParameter('fromDateTime', $fromDateTime)
-            ->setParameter('untilDateTime', $untilDateTime);
+        if ($fromDateTime) {
+            $qb
+                ->andWhere($qb->expr()->gte('d.dateTime', ':fromDateTime'))
+                ->setParameter('fromDateTime', $fromDateTime);
+        }
+
+        if ($untilDateTime) {
+            $qb
+                ->andWhere($qb->expr()->lte('d.dateTime', ':untilDateTime'))
+                ->setParameter('untilDateTime', $untilDateTime);
+        }
+
+        if ($provider) {
+            $qb
+                ->join('d.station', 's')
+                ->andWhere($qb->expr()->eq('s.provider', ':providerIdentifier'))
+                ->setParameter('providerIdentifier', $provider->getIdentifier());
+        }
 
         $query = $qb->getQuery();
 
