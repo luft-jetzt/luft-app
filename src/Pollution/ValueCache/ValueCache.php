@@ -36,18 +36,18 @@ class ValueCache implements ValueCacheInterface
         return $cache;
     }
 
-    protected function getPagination(ProviderInterface $provider): array
+    protected function getPagination(): array
     {
-        $key = sprintf('values-%s-list', $provider->getIdentifier());
+        $key = sprintf('values-%s-list', $this->provider->getIdentifier());
 
         $listItem = $this->cache->getItem($key);
 
         return $listItem->get() ?? [];
     }
 
-    protected function savePagination(ProviderInterface $provider, array $pagination): ValueCache
+    protected function savePagination(array $pagination): ValueCache
     {
-        $key = sprintf('values-%s-list', $provider->getIdentifier());
+        $key = sprintf('values-%s-list', $this->provider->getIdentifier());
 
         $listItem = $this->cache->getItem($key);
 
@@ -58,17 +58,17 @@ class ValueCache implements ValueCacheInterface
         return $this;
     }
 
-    protected function addPage(ProviderInterface $provider, array $valueList): int
+    protected function addPage(array $valueList): int
     {
-        $pagination = $this->getPagination($provider);
+        $pagination = $this->getPagination();
 
         $nextPage = 0 === count($pagination) ? 1 : max(array_keys($pagination)) + 1;
 
         $pagination[$nextPage] = count($valueList);
 
-        $this->savePagination($provider, $pagination);
+        $this->savePagination($pagination);
 
-        $key = sprintf('values-%s-%d', $provider->getIdentifier(), $nextPage);
+        $key = sprintf('values-%s-%d', $this->provider->getIdentifier(), $nextPage);
 
         $cacheItem = $this->cache->getItem($key);
         $cacheItem->set($valueList);
@@ -77,18 +77,18 @@ class ValueCache implements ValueCacheInterface
         return $nextPage;
     }
 
-    protected function getPage(ProviderInterface $provider, int $pageNumber): array
+    protected function getPage(int $pageNumber): array
     {
-        $key = sprintf('values-%s-%d', $provider->getIdentifier(), $pageNumber);
+        $key = sprintf('values-%s-%d', $this->provider->getIdentifier(), $pageNumber);
 
         $pageItem = $this->cache->getItem($key);
 
         return $pageItem->get() ?? [];
     }
 
-    public function getNewestPage(ProviderInterface $provider): array
+    public function getNewestPage(): array
     {
-        $pagination = $this->getPagination($provider);
+        $pagination = $this->getPagination();
 
         if (!$pagination) {
             return [];
@@ -98,17 +98,17 @@ class ValueCache implements ValueCacheInterface
 
         unset($pagination[$pageNumber]);
 
-        $this->savePagination($provider, $pagination);
+        $this->savePagination($pagination);
 
-        $page = $this->getPage($provider, $pageNumber);
+        $page = $this->getPage($pageNumber);
 
         return $page;
     }
 
-    public function addValuesToCache(ProviderInterface $provider, array $valueList): ValueCacheInterface
+    public function addValuesToCache(array $valueList): ValueCacheInterface
     {
         if (0 !== count($valueList)) {
-            $this->addPage($provider, $valueList);
+            $this->addPage($valueList);
         }
 
         return $this;

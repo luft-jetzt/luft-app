@@ -43,9 +43,10 @@ class StoreValuesCommand extends Command
             $output->writeln(sprintf('Looking up cache for <info>%s</info>', get_class($provider)));
 
             $this->uniquePersister->setProvider($provider);
+            $this->valueCache->setProvider($provider);
 
             do {
-                $valueList = $this->valueCache->getNewestPage($provider);
+                $valueList = $this->valueCache->getNewestPage();
 
                 $this->uniquePersister
                     ->reset()

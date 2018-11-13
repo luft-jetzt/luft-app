@@ -7,6 +7,6 @@ use App\Provider\ProviderInterface;
 interface ValueCacheInterface
 {
     public function setProvider(ProviderInterface $provider): ValueCacheInterface;
-    public function getNewestPage(ProviderInterface $provider): array;
-    public function addValuesToCache(ProviderInterface $provider, array $valueList): ValueCacheInterface;
+    public function getNewestPage(): array;
+    public function addValuesToCache(array $valueList): ValueCacheInterface;
 }
