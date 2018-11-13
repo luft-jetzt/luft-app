@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Station;
 use App\Provider\ProviderInterface;
+use App\Provider\ProviderListInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\Table;
@@ -14,11 +15,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class StationCommand extends Command
 {
-    protected $providerList = [];
+    /** @var ProviderListInterface $providerList */
+    protected $providerList;
 
-    public function addProvider(ProviderInterface $provider)
+    public function __construct(?string $name = null, ProviderListInterface $providerList)
     {
-        $this->providerList[$provider->getIdentifier()] = $provider;
+        $this->providerList = $providerList;
+
+        parent::__construct($name);
     }
 
     protected function configure(): void
@@ -34,7 +38,7 @@ class StationCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /** @var ProviderInterface $provider */
-        foreach ($this->providerList as $provider) {
+        foreach ($this->providerList->getList() as $provider) {
             if ($input->getArgument('provider') !== $provider->getIdentifier()) {
                 continue;
             }

@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Pollution\DataPersister\UniquePersisterInterface;
 use App\Pollution\Pollutant\PollutantInterface;
 use App\Pollution\Value\Value;
+use App\Pollution\ValueCache\ValueCacheInterface;
 use App\Provider\ProviderInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Parser\Parser;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaCOQuery;
@@ -24,8 +25,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class FetchCommand extends Command
 {
-    /** @var UniquePersisterInterface $persister */
-    protected $persister;
+    /** @var ValueCacheInterface $valueCache */
+    protected $valueCache;
 
     /** @var SourceFetcher $fetcher */
     protected $fetcher;
@@ -33,9 +34,9 @@ class FetchCommand extends Command
     /** @var ProviderInterface $provider */
     protected $provider;
 
-    public function __construct(?string $name = null, UniquePersisterInterface $persister, SourceFetcher $fetcher, UmweltbundesamtDeProvider $umweltbundesamtDeProvider)
+    public function __construct(?string $name = null, ValueCacheInterface $valueCache, SourceFetcher $fetcher, UmweltbundesamtDeProvider $umweltbundesamtDeProvider)
     {
-        $this->persister = $persister;
+        $this->valueCache = $valueCache;
         $this->provider = $umweltbundesamtDeProvider;
         $this->fetcher = $fetcher;
 
@@ -59,8 +60,6 @@ class FetchCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->persister->setProvider($this->provider);
-
         if ($input->getArgument('endDateTime')) {
             $endDateTime = new \DateTimeImmutable($input->getArgument('endDateTime'));
         } else {
@@ -151,25 +150,12 @@ class FetchCommand extends Command
         $response = $sourceFetcher->query($query);
 
         $parser = new Parser($query);
-        $tmpValueList = $parser->parse($response, $pollutant);
+        $valueList = $parser->parse($response, $pollutant);
 
-        $this->persister->persistValues($tmpValueList);
+        $this->valueCache
+            ->setProvider($this->provider)
+            ->addValuesToCache($valueList);
 
-        $this->writeValueTable($output, $this->persister->getNewValueList());
-
-        $output->writeln(sprintf('Persisted <info>%d</info> new values, skipped <info>%d</info> existent values.', count($this->persister->getNewValueList()), count($this->persister->getDuplicateDataList())));
-    }
-
-    protected function writeValueTable(OutputInterface $output, array $newValueList): void
-    {
-        $table = new Table($output);
-        $table->setHeaders(['Station', 'Title', 'Value', 'DateTime']);
-
-        /** @var Value $value */
-        foreach ($newValueList as $value) {
-            $table->addRow([$value->getStation()->getStationCode(), $value->getStation()->getTitle(), $value->getValue(), $value->getDateTime()->format('Y-m-d H:i:s')]);
-        }
-
-        $table->render();
+        $output->writeln(sprintf('Wrote <info>%d</info> values to cache.', count($valueList)));
     }
 }

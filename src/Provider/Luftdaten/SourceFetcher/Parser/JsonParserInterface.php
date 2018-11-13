@@ -2,7 +2,7 @@
 
 namespace App\Provider\Luftdaten\SourceFetcher\Parser;
 
-interface ParserInterface
+interface JsonParserInterface
 {
     public function parse(array $data): array;
 }
