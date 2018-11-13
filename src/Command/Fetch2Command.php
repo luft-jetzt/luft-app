@@ -2,8 +2,8 @@
 
 namespace App\Command;
 
-use App\Pollution\DataPersister\UniquePersisterInterface;
 use App\Pollution\Value\Value;
+use App\Pollution\ValueCache\ValueCacheInterface;
 use App\Provider\Luftdaten\LuftdatenProvider;
 use App\Provider\Luftdaten\SourceFetcher\Parser\JsonParserInterface;
 use App\Provider\Luftdaten\SourceFetcher\SourceFetcher;
@@ -14,18 +14,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Fetch2Command extends ContainerAwareCommand
 {
-    /** @var UniquePersisterInterface */
-    protected $persister;
-
     /** @var LuftdatenProvider $provider */
     protected $provider;
 
     /** @var JsonParserInterface $parser */
     protected $parser;
 
-    public function __construct(?string $name = null, UniquePersisterInterface $persister, LuftdatenProvider $luftdatenProvider, JsonParserInterface $parser)
+    /** @var ValueCacheInterface */
+    protected $valueCache;
+
+    public function __construct(?string $name = null, ValueCacheInterface $valueCache, LuftdatenProvider $luftdatenProvider, JsonParserInterface $parser)
     {
-        $this->persister = $persister;
+        $this->valueCache = $valueCache;
         $this->provider = $luftdatenProvider;
         $this->parser = $parser;
 
@@ -41,31 +41,14 @@ class Fetch2Command extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $this->persister->setProvider($this->provider);
-
         $sourceFetcher = new SourceFetcher();
 
         $response = $sourceFetcher->query();
 
-        $tmpValueList = $this->parser->parse($response);
+        $valueList = $this->parser->parse($response);
 
-        $this->persister->persistValues($tmpValueList);
+        $this->valueCache->addValuesToCache($this->provider, $valueList);
 
-        $this->writeValueTable($output, $this->persister->getNewValueList());
-
-        $output->writeln(sprintf('Persisted <info>%d</info> new values, skipped <info>%d</info> existent values.', count($this->persister->getNewValueList()), count($this->persister->getDuplicateDataList())));
-    }
-
-    protected function writeValueTable(OutputInterface $output, array $newValueList): void
-    {
-        $table = new Table($output);
-        $table->setHeaders(['Station', 'Title', 'Value', 'DateTime']);
-
-        /** @var Value $value */
-        foreach ($newValueList as $value) {
-            $table->addRow([$value->getStation()->getStationCode(), $value->getStation()->getTitle(), $value->getValue(), $value->getDateTime()->format('Y-m-d H:i:s')]);
-        }
-
-        $table->render();
+        $output->writeln(sprintf('Wrote <info>%d</info> values to cache.', count($valueList)));
     }
 }

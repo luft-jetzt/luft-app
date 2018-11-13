@@ -54,6 +54,14 @@ abstract class AbstractPersister implements PersisterInterface
         return $this->stationList[$stationCode];
     }
 
+    public function reset(): PersisterInterface
+    {
+        $this->stationList = [];
+        $this->newValueList = [];
+
+        return $this;
+    }
+
     public function getNewValueList(): array
     {
         return $this->newValueList;
