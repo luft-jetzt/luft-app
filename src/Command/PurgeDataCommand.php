@@ -10,6 +10,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class PurgeDataCommand extends Command
 {
@@ -42,6 +43,14 @@ class PurgeDataCommand extends Command
         $provider = $this->providerList->getProvider($input->getArgument('provider'));
 
         $dataList = $this->registry->getRepository(Data::class)->findInInterval(null, $untilDateTime, $provider);
+
+        $helper = $this->getHelper('question');
+        $question = new ConfirmationQuestion(sprintf('Purge <info>%d</info> values from <comment>%s</comment> before <info>%s</info>? [no] ', count($dataList), get_class($provider), $untilDateTime->format('Y-m-d H:i:s')), false);
+
+        if (!$helper->ask($input, $output, $question)) {
+            return;
+        }
+
         $em = $this->registry->getManager();
 
         foreach ($dataList as $data) {
