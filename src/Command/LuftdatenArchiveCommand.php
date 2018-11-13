@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Pollution\DataPersister\UniquePersisterInterface;
+use App\Pollution\ValueCache\ValueCacheInterface;
 use App\Provider\Luftdaten\LuftdatenProvider;
 use App\Provider\Luftdaten\SourceFetcher\ArchiveFetcher\ArchiveFetcherInterface;
 use App\Provider\Luftdaten\SourceFetcher\ArchiveSourceFetcherInterface;
@@ -21,17 +21,17 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
     /** @var ArchiveSourceFetcherInterface $archiveSourceFetcher */
     protected $archiveSourceFetcher;
 
-    /** @var UniquePersisterInterface $uniquePersister */
-    protected $uniquePersister;
+    /** @var ValueCacheInterface $valueCache */
+    protected $valueCache;
 
     /** @var LuftdatenProvider $provider */
     protected $provider;
 
-    public function __construct(?string $name = null, ArchiveSourceFetcherInterface $archiveSourceFetcher,  ArchiveFetcherInterface $archiveFetcher, UniquePersisterInterface $uniquePersister, LuftdatenProvider $luftdatenProvider)
+    public function __construct(?string $name = null, ArchiveSourceFetcherInterface $archiveSourceFetcher,  ArchiveFetcherInterface $archiveFetcher, ValueCacheInterface $valueCache, LuftdatenProvider $luftdatenProvider)
     {
         $this->archiveFetcher = $archiveFetcher;
         $this->archiveSourceFetcher = $archiveSourceFetcher;
-        $this->uniquePersister = $uniquePersister;
+        $this->valueCache = $valueCache;
         $this->provider = $luftdatenProvider;
 
         parent::__construct($name);
@@ -42,16 +42,14 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
         $this
             ->setName('luft:luftdaten-archive')
             ->setDescription('')
-            ->addOption('flush-after', null, InputOption::VALUE_OPTIONAL, '', 100)
+            ->addOption('page-size', null, InputOption::VALUE_OPTIONAL, '', 100)
             ->addArgument('date', InputArgument::REQUIRED, 'Date of data to fetch');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $dateTime = new \DateTime($input->getArgument('date'));
-
-        $this->uniquePersister->setProvider($this->provider);
-
+        
          $this->archiveSourceFetcher
             ->setDateTime($dateTime)
             ->fetchStationCsvFiles();
@@ -61,11 +59,12 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
         $progressBar = new ProgressBar($output, count($csvLinkList));
 
         $offset = 0;
-        $length = (int) $input->getOption('flush-after');
-        $maxOffset = floor(count($csvLinkList) / $length);
+        $pageSize = (int) $input->getOption('page-size');
+        $maxOffset = floor(count($csvLinkList) / $pageSize);
+        $counter = 0;
 
         for ($offset = 0; $offset <= $maxOffset; ++$offset) {
-            $offsetLinkList = array_slice($csvLinkList, $offset * $length, $length);
+            $offsetLinkList = array_slice($csvLinkList, $offset * $pageSize, $pageSize);
 
             $this->archiveFetcher->setCsvLinkList($offsetLinkList);
 
@@ -73,12 +72,13 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
                 $progressBar->advance();
             });
 
-            $this->uniquePersister->reset()->persistValues($valueList);
+            $this->valueCache->addValuesToCache($this->provider, $valueList);
+
+            $counter += count($valueList);
         }
 
         $progressBar->finish();
 
-        $output->writeln(sprintf('Persisted values: <info>%d</info>', count($this->uniquePersister->getNewValueList())));
-        $output->writeln(sprintf('Skipped values: <info>%d</info>', count($this->uniquePersister->getDuplicateDataList())));
+        $output->writeln(sprintf('Wrote <info>%d</info> to cache', $counter));
     }
 }

@@ -65,9 +65,9 @@ class ValueCache implements ValueCacheInterface
     {
         $pagination = $this->getPagination($provider);
 
-        $nextPage = 0 === count($pagination) ? 1 : max($pagination) + 1;
+        $nextPage = 0 === count($pagination) ? 1 : max(array_keys($pagination)) + 1;
 
-        $pagination[] = $nextPage;
+        $pagination[$nextPage] = count($valueList);
 
         $this->savePagination($provider, $pagination);
 
