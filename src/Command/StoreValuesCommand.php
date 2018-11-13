@@ -42,14 +42,17 @@ class StoreValuesCommand extends Command
         foreach ($this->providerList->getList() as $identifier => $provider) {
             $output->writeln(sprintf('Looking up cache for <info>%s</info>', get_class($provider)));
 
-            $valueList = $this->valueCache->getNewestPage($provider);
+            $this->uniquePersister->setProvider($provider);
 
-            $this->uniquePersister
-                ->reset()
-                ->setProvider($provider)
-                ->persistValues($valueList);
+            do {
+                $valueList = $this->valueCache->getNewestPage($provider);
 
-            $output->writeln(sprintf('Persisted <info>%d</info> new values, skipped <info>%d</info> existent values.', count($this->uniquePersister->getNewValueList()), count($this->uniquePersister->getDuplicateDataList())));
+                $this->uniquePersister
+                    ->reset()
+                    ->persistValues($valueList);
+
+                $output->writeln(sprintf('Persisted <info>%d</info> new values, skipped <info>%d</info> existent values.', count($this->uniquePersister->getNewValueList()), count($this->uniquePersister->getDuplicateDataList())));
+            } while (0 !== count($valueList));
         }
     }
 }

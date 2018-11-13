@@ -49,7 +49,7 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $dateTime = new \DateTime($input->getArgument('date'));
-        
+
          $this->archiveSourceFetcher
             ->setDateTime($dateTime)
             ->fetchStationCsvFiles();
@@ -79,6 +79,6 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
 
         $progressBar->finish();
 
-        $output->writeln(sprintf('Wrote <info>%d</info> to cache', $counter));
+        $output->writeln(sprintf('Wrote <info>%d</info> values to cache', $counter));
     }
 }

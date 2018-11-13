@@ -55,9 +55,6 @@ class ValueCache implements ValueCacheInterface
 
         $this->cache->save($listItem);
 
-        echo "New pagination: ";
-        var_dump($pagination);
-
         return $this;
     }
 
@@ -80,9 +77,9 @@ class ValueCache implements ValueCacheInterface
         return $nextPage;
     }
 
-    protected function getPage(ProviderInterface $provider, int $page): array
+    protected function getPage(ProviderInterface $provider, int $pageNumber): array
     {
-        $key = sprintf('values-%s-%d', $provider->getIdentifier(), $page);
+        $key = sprintf('values-%s-%d', $provider->getIdentifier(), $pageNumber);
 
         $pageItem = $this->cache->getItem($key);
 
@@ -93,15 +90,19 @@ class ValueCache implements ValueCacheInterface
     {
         $pagination = $this->getPagination($provider);
 
-        $pageNumber = array_pop($pagination);
-
-        if (!$pageNumber) {
+        if (!$pagination) {
             return [];
         }
 
+        $pageNumber = max(array_keys($pagination));
+
+        unset($pagination[$pageNumber]);
+
         $this->savePagination($provider, $pagination);
 
-        return $this->getPage($provider, $pageNumber);
+        $page = $this->getPage($provider, $pageNumber);
+
+        return $page;
     }
 
     public function addValuesToCache(ProviderInterface $provider, array $valueList): ValueCacheInterface
