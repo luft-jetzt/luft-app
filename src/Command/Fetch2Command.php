@@ -5,7 +5,7 @@ namespace App\Command;
 use App\Pollution\Value\Value;
 use App\Pollution\ValueCache\ValueCacheInterface;
 use App\Provider\Luftdaten\LuftdatenProvider;
-use App\Provider\Luftdaten\SourceFetcher\Parser\Parser;
+use App\Provider\Luftdaten\SourceFetcher\Parser\JsonParserInterface;
 use App\Provider\Luftdaten\SourceFetcher\SourceFetcher;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\Table;
@@ -17,12 +17,17 @@ class Fetch2Command extends ContainerAwareCommand
     /** @var LuftdatenProvider $provider */
     protected $provider;
 
+    /** @var JsonParserInterface $parser */
+    protected $parser;
+
+    /** @var ValueCacheInterface */
     protected $valueCache;
 
-    public function __construct(?string $name = null, ValueCacheInterface $valueCache, LuftdatenProvider $luftdatenProvider)
+    public function __construct(?string $name = null, ValueCacheInterface $valueCache, LuftdatenProvider $luftdatenProvider, JsonParserInterface $parser)
     {
         $this->valueCache = $valueCache;
         $this->provider = $luftdatenProvider;
+        $this->parser = $parser;
 
         parent::__construct($name);
     }
@@ -36,14 +41,15 @@ class Fetch2Command extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
+        $this->valueCache->setProvider($this->provider);
+
         $sourceFetcher = new SourceFetcher();
 
         $response = $sourceFetcher->query();
 
-        $parser = new Parser();
-        $valueList = $parser->parse($response);
+        $valueList = $this->parser->parse($response);
 
-        $this->valueCache->addValuesToCache($this->provider, $valueList);
+        $this->valueCache->setProvider($this->provider)->addValuesToCache($valueList);
 
         $output->writeln(sprintf('Wrote <info>%d</info> values to cache.', count($valueList)));
     }

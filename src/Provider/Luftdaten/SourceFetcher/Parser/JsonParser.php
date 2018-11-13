@@ -5,7 +5,7 @@ namespace App\Provider\Luftdaten\SourceFetcher\Parser;
 use App\Pollution\Pollutant\PollutantInterface;
 use App\Pollution\Value\Value;
 
-class Parser implements ParserInterface
+class JsonParser implements JsonParserInterface
 {
     protected $stationList = [];
 

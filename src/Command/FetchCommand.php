@@ -152,7 +152,9 @@ class FetchCommand extends Command
         $parser = new Parser($query);
         $valueList = $parser->parse($response, $pollutant);
 
-        $this->valueCache->addValuesToCache($this->provider, $valueList);
+        $this->valueCache
+            ->setProvider($this->provider)
+            ->addValuesToCache($valueList);
 
         $output->writeln(sprintf('Wrote <info>%d</info> values to cache.', count($valueList)));
     }
