@@ -15,6 +15,7 @@ use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaPM10Query;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaQueryInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaSO2Query;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\Uba1SMW;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\Uba8SMW;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\SourceFetcher;
 use App\Provider\UmweltbundesamtDe\UmweltbundesamtDeProvider;
 use Symfony\Component\Console\Command\Command;
@@ -137,7 +138,7 @@ class FetchCommand extends Command
     {
         $output->writeln('CO');
 
-        $reporting = new Uba1SMW($endDateTime, $startDateTime);
+        $reporting = new Uba8SMW($endDateTime, $startDateTime);
         $query = new UbaCOQuery($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_CO);
