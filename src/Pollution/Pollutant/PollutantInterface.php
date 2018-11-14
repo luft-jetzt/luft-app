@@ -2,7 +2,6 @@
 
 namespace App\Pollution\Pollutant;
 
-use App\Pollution\PollutionLevel\PollutionLevel;
 use JMS\Serializer\Annotation as JMS;
 
 interface PollutantInterface
