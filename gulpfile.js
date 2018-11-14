@@ -70,6 +70,7 @@ gulp.task('compress-css', ['leaflet-css', 'sass'], function () {
     gulp.src([
         'assets/css/app.css',
         'assets/css/leaflet-groupedlayercontrol.css',
+        'node_modules/leaflet.locatecontrol/dist/L.Control.Locate.min.css',
     ])
         .pipe(gulp.dest('public/css/'));
 
@@ -108,6 +109,7 @@ gulp.task('copy-js-external', function () {
         'node_modules/bootstrap/dist/js/bootstrap.min.js',
         'node_modules/leaflet/dist/leaflet.js',
         'node_modules/leaflet-extra-markers/dist/js/leaflet.extra-markers.min.js',
+        'node_modules/leaflet.locatecontrol/dist/L.Control.Locate.min.js',
         'node_modules/typeahead.js/dist/bloodhound.min.js',
         'node_modules/typeahead.js/dist/typeahead.jquery.min.js',
     ])
