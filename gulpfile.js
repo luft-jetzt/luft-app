@@ -67,18 +67,13 @@ gulp.task('sass', function () {
 });
 
 gulp.task('compress-css', ['leaflet-css', 'sass'], function () {
-    gulp.src([
-        'assets/css/app.css',
-        'assets/css/leaflet-groupedlayercontrol.css',
-        'node_modules/leaflet.locatecontrol/dist/L.Control.Locate.min.css',
-        'node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css',
-        'node_modules/leaflet.markercluster/dist/MarkerCluster.css',
-    ])
-        .pipe(gulp.dest('public/css/'));
-
     return gulp.src([
             'node_modules/bootstrap/dist/css/bootstrap.css',
             'node_modules/font-awesome/css/font-awesome.css',
+            'assets/css/leaflet-groupedlayercontrol.css',
+            'node_modules/leaflet.locatecontrol/dist/L.Control.Locate.min.css',
+            'node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css',
+            'node_modules/leaflet.markercluster/dist/MarkerCluster.css',
             'assets/css/*',
         ])
         .pipe(cleanCSS())
