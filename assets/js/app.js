@@ -152,22 +152,6 @@ function syncSidebar() {
     });
 }
 
-/* Basemap Layers */
-var cartoLight = L.tileLayer("https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://cartodb.com/attributions">CartoDB</a>'
-});
-var usgsImagery = L.layerGroup([L.tileLayer("http://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}", {
-    maxZoom: 15,
-}), L.tileLayer.wms("http://raster.nationalmap.gov/arcgis/services/Orthoimagery/USGS_EROS_Ortho_SCALE/ImageServer/WMSServer?", {
-    minZoom: 16,
-    maxZoom: 19,
-    layers: "0",
-    format: 'image/jpeg',
-    transparent: true,
-    attribution: "Aerial Imagery courtesy USGS"
-})]);
-
 /* Overlay Layers */
 var highlight = L.geoJson(null);
 var highlightStyle = {
@@ -347,10 +331,15 @@ $.getJSON("https://raw.githubusercontent.com/bmcbride/bootleaf/master/data/DOITT
 map = L.map('map', {
     zoom: 10,
     center: [53, 10],
-    layers: [cartoLight, boroughs, markerClusters, highlight, stationLayer],
+    layers: [boroughs, markerClusters, highlight, stationLayer],
     zoomControl: false,
-    attributionControl: false
+    attributionControl: false,
+    maxZoom: 18,
 });
+
+L.tileLayer('https://tiles.caldera.cc/wikimedia-intl/{z}/{x}/{y}.png', {
+    attribution: 'Wikimedia maps beta | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+}).addTo(map);
 
 /* Layer control listeners that allow for a single markerClusters layer */
 map.on("overlayadd", function(e) {
@@ -449,11 +438,6 @@ if (document.body.clientWidth <= 767) {
     var isCollapsed = false;
 }
 
-var baseLayers = {
-    "Street Map": cartoLight,
-    "Aerial Imagery": usgsImagery
-};
-
 var groupedOverlays = {
     "Points of Interest": {
         "<img src='assets/img/theater.png' width='24' height='28'>&nbsp;Theaters": theaterLayer,
@@ -466,7 +450,7 @@ var groupedOverlays = {
     }
 };
 
-var layerControl = L.control.groupedLayers(baseLayers, groupedOverlays, {
+var layerControl = L.control.groupedLayers(groupedOverlays, {
     collapsed: isCollapsed
 }).addTo(map);
 
