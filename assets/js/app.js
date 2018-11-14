@@ -88,9 +88,45 @@ function sidebarClick(id) {
     }
 }
 
+
+var stationLayer = L.featureGroup();
+
+$.get('http://luft.ct/api/station', function (result) {
+    var i;
+
+    for (i = 0; i < result.length; ++i) {
+        var station = result[i];
+
+        var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Name</th><td>" + station.station_code + "</td></tr><table>";
+
+        var marker = L.marker([station.latitude, station.longitude]).addTo(stationLayer);
+
+        marker.station = station;
+
+        marker.on({
+            click: function (e) {
+                $("#feature-title").html(station.station_code);
+                $("#feature-info").html(content);
+                $("#featureModal").modal("show");
+                highlight.clearLayers().addLayer(L.circleMarker([station.latitude, station.longitude], highlightStyle));
+            }
+        });
+
+        $("#feature-list tbody").append('<tr class="feature-row" id="' + L.stamp(marker) + '" lat="' + marker.getLatLng().lat + '" lng="' +marker.getLatLng().lng + '"><td style="vertical-align: middle;"><img width="16" height="18" src="assets/img/theater.png"></td><td class="feature-name">' + station.station_code + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
+    }
+});
+
 function syncSidebar() {
     /* Empty sidebar features */
     $("#feature-list tbody").empty();
+
+    stationLayer.eachLayer(function (layer) {
+        if (map.hasLayer(theaterLayer)) {
+            if (map.getBounds().contains(layer.getLatLng())) {
+                $("#feature-list tbody").append('<tr class="feature-row" id="' + L.stamp(layer) + '" lat="' + layer.getLatLng().lat + '" lng="' + layer.getLatLng().lng + '"><td style="vertical-align: middle;"><img width="16" height="18" src="assets/img/theater.png"></td><td class="feature-name">' + layer.station.station_code + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
+            }
+        }
+    });
     /* Loop through theaters layer and add only features which are in the map bounds */
     theaters.eachLayer(function (layer) {
         if (map.hasLayer(theaterLayer)) {
@@ -265,29 +301,6 @@ $.getJSON("https://raw.githubusercontent.com/bmcbride/bootleaf/master/data/DOITT
 });
 
 
-var stationLayer = L.layerGroup();
-
-$.get('http://luft.ct/api/station', function (result) {
-    var i;
-
-    for (i = 0; i < result.length; ++i) {
-        var station = result[i];
-
-        var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Name</th><td>" + station.station_code + "</td></tr><table>";
-
-
-        var marker = L.marker([station.latitude, station.longitude]).addTo(stationLayer);
-
-        marker.on({
-            click: function (e) {
-                $("#feature-title").html(station.station_code);
-                $("#feature-info").html(content);
-                $("#featureModal").modal("show");
-                highlight.clearLayers().addLayer(L.circleMarker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], highlightStyle));
-            }
-        });
-    }
-});
 
 /* Empty layer placeholder to add to layer control for listening when to add/remove museums to markerClusters layer */
 var museumLayer = L.geoJson(null);
