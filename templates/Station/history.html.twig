@@ -54,7 +54,7 @@
                     <tbody>
                     {% for timestamp, dataList in dataLists %}
                         {% if dataList|length > 0 %}
-                        <tr class="datetime" data-timestamp="{{ timestamp|date('H:i', 'Europe/Berlin') }}">
+                        <tr class="datetime" data-timestamp="{{ timestamp|date('d.m.Y H:i', 'Europe/Berlin') }}">
                             <td>
                                 {{ timestamp|date('d.m.Y H:i', 'Europe/Berlin') }} Uhr
                             </td>

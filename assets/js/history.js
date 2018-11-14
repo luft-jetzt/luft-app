@@ -83,6 +83,11 @@ function createChart() {
                     ticks: {
                         minRotation: 90,
                         maxRotation: 90,
+                        autoSkip: true,
+                        maxTicksLimit: 12,
+                        callback: function(value, index, values) {
+                            return value.split(' ')[1];
+                        },
                     },
                 }]
             },
