@@ -74,6 +74,7 @@ gulp.task('compress-css', ['leaflet-css', 'sass'], function () {
             'node_modules/leaflet.locatecontrol/dist/L.Control.Locate.min.css',
             'node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css',
             'node_modules/leaflet.markercluster/dist/MarkerCluster.css',
+            'node_modules/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.css',
             'assets/css/*',
         ])
         .pipe(cleanCSS())
@@ -111,6 +112,7 @@ gulp.task('copy-js-external', function () {
         'node_modules/typeahead.js/dist/typeahead.jquery.min.js',
         'node_modules/leaflet.markercluster/dist/leaflet.markercluster.js',
         'node_modules/list.js/dist/list.min.js',
+        'node_modules/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.js',
     ])
         .pipe(gulp.dest('public/js/'));
 });
