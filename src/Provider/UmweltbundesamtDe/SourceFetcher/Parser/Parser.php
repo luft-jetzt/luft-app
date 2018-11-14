@@ -27,7 +27,6 @@ class Parser implements ParserInterface
             foreach ($dataList as $value) {
                 $value = $this->query->getFilter()->filter($value);
 
-                var_dump($value);
                 if (!$value) {
                     $dateTime = $dateTime->add($this->query->getReporting()->getDateInterval());
 
