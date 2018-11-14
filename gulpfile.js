@@ -67,6 +67,12 @@ gulp.task('sass', function () {
 });
 
 gulp.task('compress-css', ['leaflet-css', 'sass'], function () {
+    gulp.src([
+        'assets/css/app.css',
+        'assets/css/leaflet-groupedlayercontrol.css',
+    ])
+        .pipe(gulp.dest('public/css/'));
+
     return gulp.src([
             'node_modules/bootstrap/dist/css/bootstrap.css',
             'node_modules/font-awesome/css/font-awesome.css',
