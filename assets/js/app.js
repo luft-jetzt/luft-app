@@ -264,6 +264,31 @@ $.getJSON("https://raw.githubusercontent.com/bmcbride/bootleaf/master/data/DOITT
     map.addLayer(theaterLayer);
 });
 
+
+var stationLayer = L.layerGroup();
+
+$.get('http://luft.ct/api/station', function (result) {
+    var i;
+
+    for (i = 0; i < result.length; ++i) {
+        var station = result[i];
+
+        var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Name</th><td>" + station.station_code + "</td></tr><table>";
+
+
+        var marker = L.marker([station.latitude, station.longitude]).addTo(stationLayer);
+
+        marker.on({
+            click: function (e) {
+                $("#feature-title").html(station.station_code);
+                $("#feature-info").html(content);
+                $("#featureModal").modal("show");
+                highlight.clearLayers().addLayer(L.circleMarker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], highlightStyle));
+            }
+        });
+    }
+});
+
 /* Empty layer placeholder to add to layer control for listening when to add/remove museums to markerClusters layer */
 var museumLayer = L.geoJson(null);
 var museums = L.geoJson(null, {
@@ -306,10 +331,10 @@ $.getJSON("https://raw.githubusercontent.com/bmcbride/bootleaf/master/data/DOITT
     museums.addData(data);
 });
 
-map = L.map("map", {
+map = L.map('map', {
     zoom: 10,
-    center: [40.702222, -73.979378],
-    layers: [cartoLight, boroughs, markerClusters, highlight],
+    center: [53, 10],
+    layers: [cartoLight, boroughs, markerClusters, highlight, stationLayer],
     zoomControl: false,
     attributionControl: false
 });
@@ -419,7 +444,8 @@ var baseLayers = {
 var groupedOverlays = {
     "Points of Interest": {
         "<img src='assets/img/theater.png' width='24' height='28'>&nbsp;Theaters": theaterLayer,
-        "<img src='assets/img/museum.png' width='24' height='28'>&nbsp;Museums": museumLayer
+        "<img src='assets/img/museum.png' width='24' height='28'>&nbsp;Museums": museumLayer,
+        'Messstationen': stationLayer,
     },
     "Reference": {
         "Boroughs": boroughs,
