@@ -8,6 +8,7 @@ use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
 use App\Util\DateTimeUtil;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class StationController extends AbstractController
@@ -37,11 +38,29 @@ class StationController extends AbstractController
         ]);
     }
 
-    public function historyAction(string $stationCode, HistoryDataFactoryInterface $historyDataFactory): Response
+    public function historyAction(Request $request, string $stationCode, HistoryDataFactoryInterface $historyDataFactory): Response
     {
-        $untilDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
-        $fromDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
-        $fromDateTime->sub(new \DateInterval('P3D'));
+        if ($untilDateTimeParam = $request->query->get('until')) {
+            try {
+                $untilDateTime = DateTimeUtil::getDayEndDateTime(new \DateTime($untilDateTimeParam));
+            } catch (\Exception $exception) {
+                $untilDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
+            }
+        } else {
+            $untilDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
+        }
+
+        if ($fromDateTimeParam = $request->query->get('from')) {
+            try {
+                $fromDateTime = DateTimeUtil::getDayStartDateTime(new \DateTime($fromDateTimeParam));
+            } catch (\Exception $exception) {
+                $fromDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
+                $fromDateTime->sub(new \DateInterval('P3D'));
+            }
+        } else {
+            $fromDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
+            $fromDateTime->sub(new \DateInterval('P3D'));
+        }
 
         /** @var Station $station */
         $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
