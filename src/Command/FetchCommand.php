@@ -22,6 +22,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class FetchCommand extends Command
@@ -48,15 +49,15 @@ class FetchCommand extends Command
     {
         $this
             ->setName('luft:fetch')
-            ->setDescription('')
+            ->setDescription('Load pollution data from Umweltbundesamt')
             ->addOption('pm10')
             ->addOption('so2')
             ->addOption('no2')
             ->addOption('o3')
             ->addOption('co')
+            ->addOption('interval', null, InputOption::VALUE_REQUIRED, 'Provide an interval in hours of data to fetch. Is overwritten by startDateTime argument')
             ->addArgument('endDateTime', InputArgument::OPTIONAL)
             ->addArgument('startDateTime', InputArgument::OPTIONAL);
-        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -64,14 +65,18 @@ class FetchCommand extends Command
         if ($input->getArgument('endDateTime')) {
             $endDateTime = new \DateTimeImmutable($input->getArgument('endDateTime'));
         } else {
-            $endDateTime = (new \DateTimeImmutable())->sub(new \DateInterval('PT1H'));
+            $endDateTime = new \DateTimeImmutable();
         }
 
         if ($input->getArgument('startDateTime')) {
             $startDateTime = new \DateTimeImmutable($input->getArgument('startDateTime'));
+        } elseif ($input->getOption('interval')) {
+            $startDateTime = $endDateTime->sub(new \DateInterval(sprintf('PT%dH', $input->getOption('interval'))));
         } else {
-            $startDateTime = null;
+            $startDateTime = $endDateTime->sub(new \DateInterval(sprintf('PT2H')));
         }
+
+        $output->writeln(sprintf('Fetching uba pollution data from <info>%s</info> to <info>%s</info>', $startDateTime->format('Y-m-d H:i:s'), $endDateTime->format('Y-m-d H:i:s')));
 
         if ($input->getOption('pm10')) {
             $this->fetchPM10($output, $endDateTime, $startDateTime);
