@@ -36,7 +36,7 @@
         <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
 
-    <route id="api_display" path="/api/" methods="GET">
+    <route id="api_display" path="/api" methods="GET">
         <default key="_controller">App\Controller\ApiController::displayAction</default>
     </route>
 </routes>
