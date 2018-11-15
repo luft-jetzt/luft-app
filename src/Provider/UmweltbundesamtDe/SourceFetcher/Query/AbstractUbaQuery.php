@@ -2,24 +2,35 @@
 
 namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Query;
 
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Filter\FilterInterface;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Filter\NoopFilter;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\ReportingInterface;
 
 abstract class AbstractUbaQuery implements UbaQueryInterface
 {
+    /** @var array $pollutant */
     protected $pollutant = [];
 
+    /** @var array $scope */
     protected $scope = [];
 
+    /** @var array $group */
     protected $group = ['station'];
 
+    /** @var array $range */
     protected $range = [];
 
     /** @var ReportingInterface $reporting */
     protected $reporting;
 
+    /** @var FilterInterface $filter */
+    protected $filter;
+
     public function __construct(ReportingInterface $reporting)
     {
         $this->reporting = $reporting;
+
+        $this->filter = new NoopFilter();
 
         $this
             ->calcRange()
@@ -90,5 +101,10 @@ abstract class AbstractUbaQuery implements UbaQueryInterface
     public function getDateTimeFormat(): string
     {
         return 'd.m.Y H:i';
+    }
+
+    public function getFilter(): FilterInterface
+    {
+        return $this->filter;
     }
 }
