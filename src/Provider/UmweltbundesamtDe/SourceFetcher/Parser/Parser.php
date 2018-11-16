@@ -28,11 +28,11 @@ class Parser implements ParserInterface
             $dateTime = $this->query->getReporting()->getStartDateTime();
 
             foreach ($dataList as $value) {
+                $dateTime = $dateTime->add($interval);
+
                 $value = $this->query->getFilter()->filter($value);
 
                 if (!$value) {
-                    $dateTime = $dateTime->add($interval);
-
                     continue;
                 }
 
@@ -45,8 +45,6 @@ class Parser implements ParserInterface
                     ->setValue($value);
 
                 $valueList[] = $dataValue;
-
-                $dateTime = $dateTime->add($interval);
             }
         }
 
