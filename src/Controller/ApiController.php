@@ -6,6 +6,9 @@ use App\Entity\City;
 use App\Entity\Station;
 use App\Geocoding\RequestConverter\RequestConverterInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
+use App\Pollution\StationFinder\ElasticStationFinder;
+use Caldera\GeoBasic\Bounds\Bounds;
+use Caldera\GeoBasic\Coord\Coord;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -183,7 +186,7 @@ class ApiController extends AbstractController
      *   @Model(type=App\Entity\Station::class)
      * )
      */
-    public function stationAction(Request $request, SerializerInterface $serializer, string $stationCode = null): Response
+    public function stationAction(Request $request, SerializerInterface $serializer, string $stationCode = null, ElasticStationFinder $stationFinder): Response
     {
         $providerIdentifier = $request->get('provider');
 
@@ -195,6 +198,11 @@ class ApiController extends AbstractController
             }
 
             return new JsonResponse($serializer->serialize($station, 'json'), 200, [], true);
+        } elseif ($request->get('north') && $request->get('east') && $request->get('south') && $request->get('west')) {
+            $northWest = new Coord((float) $request->get('north'), (float) $request->get('west'));
+            $southEast = new Coord((float) $request->get('south'), (float) $request->get('east'));
+
+            $stationList = $stationFinder->findStationsInBounds(new Bounds($northWest, $southEast));
         } elseif ($providerIdentifier) {
             $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStationsByProvider($providerIdentifier);
         } else {

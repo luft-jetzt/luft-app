@@ -2,6 +2,7 @@
 
 namespace App\Pollution\StationFinder;
 
+use Caldera\GeoBasic\Bounds\BoundsInterface;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use FOS\ElasticaBundle\Finder\FinderInterface;
 
@@ -61,6 +62,35 @@ class ElasticStationFinder implements StationFinderInterface
                 'unit' => 'km',
             ]
         ]);
+
+        $results = $this->stationFinder->find($query);
+
+        return $results;
+    }
+
+    public function findStationsInBounds(BoundsInterface $bounds, int $size = null): array
+    {
+        $matchAll = new \Elastica\Query\MatchAll();
+
+        $geoQuery = new \Elastica\Query\GeoBoundingBox('pin', [
+            '0' => $bounds->getNorthWest()->toInversedArray(),
+            '1' => $bounds->getSouthEast()->toInversedArray(),
+        ]);
+
+        $untilQuery = new \Elastica\Query\Exists('untilDate');
+
+        $boolQuery = new \Elastica\Query\BoolQuery();
+        $boolQuery
+            ->addMust($matchAll)
+            ->addMustNot($untilQuery)
+            ->addFilter($geoQuery);
+
+        $query = new \Elastica\Query();
+        $query->setQuery($boolQuery);
+
+        if ($size) {
+            $query->setSize($size);
+        }
 
         $results = $this->stationFinder->find($query);
 
