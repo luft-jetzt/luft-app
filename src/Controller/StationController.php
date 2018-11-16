@@ -33,4 +33,9 @@ class StationController extends AbstractController
             'pollutantList' => $boxList,
         ]);
     }
+
+    public function limitsAction(): Response
+    {
+        return $this->render('Station/limits.html.twig');
+    }
 }
