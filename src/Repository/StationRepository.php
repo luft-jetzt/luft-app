@@ -67,6 +67,7 @@ class StationRepository extends EntityRepository
             ->where($qb->expr()->isNull('s.untilDate'))
             ->andWhere($qb->expr()->eq('s.provider', ':provider'))
             ->setParameter('provider', $providerIdentifier)
+            ->setMaxResults(10)
             ->orderBy('s.stationCode');
 
         return $qb->getQuery()->getResult();

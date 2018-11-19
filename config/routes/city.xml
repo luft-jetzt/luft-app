@@ -19,3 +19,4 @@
         <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
 </routes>
+

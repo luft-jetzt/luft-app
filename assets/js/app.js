@@ -90,31 +90,52 @@ function sidebarClick(id) {
 
 
 var stationLayer = L.featureGroup();
+var stationList = [];
 
-$.get('http://luft.ct/api/station', function (result) {
-    var i;
+function loadStations() {
+    var bounds = map.getBounds();
 
-    for (i = 0; i < result.length; ++i) {
-        var station = result[i];
+    $.ajax({
+        url: 'http://luft.ct/api/station',
+        data: {
+            north: bounds.getNorth(),
+            east: bounds.getEast(),
+            south: bounds.getSouth(),
+            west: bounds.getWest(),
+            remember_stations: true,
+            provider_identifier: 'uba_de',
+        },
+        success: function (result) {
+            var i;
 
-        var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Name</th><td>" + station.station_code + "</td></tr><table>";
+            for (i = 0; i < result.length; ++i) {
+                var station = result[i];
+                var stationCode = station.station_code;
 
-        var marker = L.marker([station.latitude, station.longitude]).addTo(stationLayer);
+                if (!(stationCode in stationList)) {
+                    stationList[stationCode] = station;
 
-        marker.station = station;
+                    var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Name</th><td>" + station.station_code + "</td></tr><table>";
 
-        marker.on({
-            click: function (e) {
-                $("#feature-title").html(station.station_code);
-                $("#feature-info").html(content);
-                $("#featureModal").modal("show");
-                highlight.clearLayers().addLayer(L.circleMarker([station.latitude, station.longitude], highlightStyle));
+                    var marker = L.marker([station.latitude, station.longitude]).addTo(stationLayer);
+
+                    marker.station = station;
+
+                    marker.on({
+                        click: function (e) {
+                            $("#feature-title").html(station.station_code);
+                            $("#feature-info").html(content);
+                            $("#featureModal").modal("show");
+                            highlight.clearLayers().addLayer(L.circleMarker([station.latitude, station.longitude], highlightStyle));
+                        }
+                    });
+
+                    $("#feature-list tbody").append('<tr class="feature-row" id="' + L.stamp(marker) + '" lat="' + marker.getLatLng().lat + '" lng="' +marker.getLatLng().lng + '"><td style="vertical-align: middle;"><img width="16" height="18" src="assets/img/theater.png"></td><td class="feature-name">' + station.station_code + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
+                }
             }
-        });
-
-        $("#feature-list tbody").append('<tr class="feature-row" id="' + L.stamp(marker) + '" lat="' + marker.getLatLng().lat + '" lng="' +marker.getLatLng().lng + '"><td style="vertical-align: middle;"><img width="16" height="18" src="assets/img/theater.png"></td><td class="feature-name">' + station.station_code + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
-    }
-});
+        },
+    });
+}
 
 function syncSidebar() {
     /* Empty sidebar features */
@@ -156,7 +177,6 @@ var markerClusters = new L.MarkerClusterGroup({
 
 map = L.map('map', {
     zoom: 10,
-    center: [53, 10],
     layers: [markerClusters, highlight, stationLayer],
     zoomControl: false,
     attributionControl: false,
@@ -166,6 +186,12 @@ map = L.map('map', {
 L.tileLayer('https://tiles.caldera.cc/wikimedia-intl/{z}/{x}/{y}.png', {
     attribution: 'Wikimedia maps beta | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
 }).addTo(map);
+
+map.on('load', function(loadEvent) {
+    loadStations();
+});
+
+map.setView([53, 10]);
 
 /* Layer control listeners that allow for a single markerClusters layer */
 map.on("overlayadd", function(e) {
@@ -191,7 +217,13 @@ map.on("overlayremove", function(e) {
 });
 
 /* Filter sidebar feature list to only show features in current map bounds */
-map.on("moveend", function (e) {
+map.on('moveend', function (e) {
+    loadStations();
+    syncSidebar();
+});
+
+map.on('zoomend', function (e) {
+    loadStations();
     syncSidebar();
 });
 

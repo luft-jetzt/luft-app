@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Swagger\Annotations as SWG;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
@@ -186,9 +187,15 @@ class ApiController extends AbstractController
      *   @Model(type=App\Entity\Station::class)
      * )
      */
-    public function stationAction(Request $request, SerializerInterface $serializer, string $stationCode = null, ElasticStationFinder $stationFinder): Response
+    public function stationAction(Request $request, SessionInterface $session, SerializerInterface $serializer, string $stationCode = null, ElasticStationFinder $stationFinder): Response
     {
         $providerIdentifier = $request->get('provider');
+
+        if ($request->get('remember_stations')) {
+            $excludeStationIds = $this->getRememberedStations($session);
+        } else {
+            $excludeStationIds = [];
+        }
 
         if ($stationCode) {
             $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
@@ -202,14 +209,40 @@ class ApiController extends AbstractController
             $northWest = new Coord((float) $request->get('north'), (float) $request->get('west'));
             $southEast = new Coord((float) $request->get('south'), (float) $request->get('east'));
 
-            $stationList = $stationFinder->findStationsInBounds(new Bounds($northWest, $southEast));
+            $stationList = $stationFinder->findStationsInBounds(new Bounds($northWest, $southEast), null, $providerIdentifier, $excludeStationIds);
         } elseif ($providerIdentifier) {
             $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStationsByProvider($providerIdentifier);
         } else {
             $stationList = $this->getDoctrine()->getRepository(Station::class)->findAll();
         }
 
+        if ($request->get('remember_stations')) {
+            $this->rememberStations($session, $stationList);
+        } else {
+            $session->set('remember_stations', []);
+        }
+
         return new JsonResponse($serializer->serialize($stationList, 'json'), 200, [], true);
+    }
+
+    protected function rememberStations(SessionInterface $session, array $stationList): void
+    {
+        $cachedStationList = $this->getRememberedStations($session);
+
+        /** @var Station $station
+         */
+        foreach ($stationList as $station) {
+            $cachedStationList[] = $station->getId();
+        }
+
+        $session->set('station_list', []);//$cachedStationList);
+    }
+
+    protected function getRememberedStations(SessionInterface $session): array
+    {
+        $list = $session->get('station_list', []);
+
+        return $list;
     }
 
     protected function unpackPollutantList(array $pollutantList): array

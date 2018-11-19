@@ -2,6 +2,7 @@
 
 namespace App\Pollution\StationFinder;
 
+use App\Provider\ProviderInterface;
 use Caldera\GeoBasic\Bounds\BoundsInterface;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use FOS\ElasticaBundle\Finder\FinderInterface;
@@ -68,14 +69,11 @@ class ElasticStationFinder implements StationFinderInterface
         return $results;
     }
 
-    public function findStationsInBounds(BoundsInterface $bounds, int $size = null): array
+    public function findStationsInBounds(BoundsInterface $bounds, int $size = null, ProviderInterface $provider = null, array $ignoreIds = []): array
     {
         $matchAll = new \Elastica\Query\MatchAll();
 
-        $geoQuery = new \Elastica\Query\GeoBoundingBox('pin', [
-            '0' => $bounds->getNorthWest()->toInversedArray(),
-            '1' => $bounds->getSouthEast()->toInversedArray(),
-        ]);
+        $geoQuery = new \Elastica\Query\GeoBoundingBox('pin', $bounds->toLatLonArray());
 
         $untilQuery = new \Elastica\Query\Exists('untilDate');
 
@@ -85,13 +83,26 @@ class ElasticStationFinder implements StationFinderInterface
             ->addMustNot($untilQuery)
             ->addFilter($geoQuery);
 
+        if ($provider) {
+            $providerQuery = new \Elastica\Query\Term(['provider' => $provider->getIdentifier()]);
+
+            $boolQuery->addMust($providerQuery);
+        }
+
+        if (0 !== count($ignoreIds)) {
+            $boolQuery->addMustNot(new \Elastica\Query\Terms('_id', $ignoreIds));
+        }
+
         $query = new \Elastica\Query();
         $query->setQuery($boolQuery);
 
         if ($size) {
             $query->setSize($size);
+        } else {
+            $query->setSize(5000);
         }
 
+        //var_dump(json_encode($query->toArray()));die;
         $results = $this->stationFinder->find($query);
 
         return $results;
