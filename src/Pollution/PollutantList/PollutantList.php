@@ -38,4 +38,18 @@ class PollutantList implements PollutantListInterface
     {
         return $this->list;
     }
+
+    public function getPollutantsWithIds(): array
+    {
+        $pollutantIdList = [];
+
+        /** @var PollutantInterface $pollutant */
+        foreach ($this->list as $pollutant) {
+            $pollutantId = constant(sprintf('App\\Pollution\\Pollutant\\PollutantInterface::POLLUTANT_%s', strtoupper($pollutant->getIdentifier())));
+
+            $pollutantIdList[$pollutantId] = $pollutant;
+        }
+
+        return $pollutantIdList;
+    }
 }

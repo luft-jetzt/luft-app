@@ -10,4 +10,5 @@ interface PollutantListInterface
     public function getPollutants(): array;
     public function getPollutant(string $identifier): ?PollutantInterface;
     public function getPollutantId(string $identifier): ?int;
+    public function getPollutantsWithIds(): array;
 }

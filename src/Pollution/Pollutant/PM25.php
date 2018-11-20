@@ -9,5 +9,6 @@ class PM25 extends AbstractPollutant
         $this->unitHtml = 'µg/m<sup>3</sup>';
         $this->unitPlain = 'µg/m³';
         $this->name = 'Feinstaub PM25';
+        $this->shortNameHtml = 'PM<sub>25</sub>';
     }
 }

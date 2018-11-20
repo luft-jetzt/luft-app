@@ -19,7 +19,7 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
         return $boxList;
     }
 
-    protected function getDataListFromStationList(array $stationList): array
+    protected function getDataListFromStationList(array $stationList, \DateTime $dateTime = null, \DateInterval $interval = null): array
     {
         $this->dataList->reset();
 
@@ -28,7 +28,7 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
         /** @var Station $station */
         foreach ($stationList as $station) {
             foreach ($missingPollutants as $pollutant) {
-                $data = $this->dataRetriever->retrieveStationData($station, $pollutant);
+                $data = $this->dataRetriever->retrieveStationData($station, $pollutant, $dateTime, $interval);
 
                 if ($this->strategy->accepts($this->dataList, $data)) {
                     $this->strategy->addDataToList($this->dataList, $data);
