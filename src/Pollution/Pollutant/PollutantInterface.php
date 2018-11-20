@@ -32,4 +32,9 @@ interface PollutantInterface
      * @JMS\Expose()
      */
     public function getIdentifier(): string;
+
+    /**
+     * @JMS\Expose()
+     */
+    public function getShortNameHtml(): string;
 }
