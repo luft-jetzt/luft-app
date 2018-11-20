@@ -23,7 +23,6 @@ class SourceFetcher
 
     /** @var array $countryList */
     protected $countryList = ['ad', 'at', 'be', 'ch', 'cz', 'dk', 'es', 'fi', 'fr', 'gi', 'hr', 'hu', 'ie', 'lt', 'lu', 'lv', 'mk', 'mt', 'pt', 'rs', 'sk'];
-    
 
     public function __construct(Loader $loader, CsvParserInterface $parser, PollutantListInterface $pollutantList)
     {
@@ -32,16 +31,33 @@ class SourceFetcher
         $this->parser = $parser;
     }
 
-    public function process(): void
+    public function setCountryList(array $countryList = []): SourceFetcher
     {
-        /** @var PollutantInterface $pollutant */
-        foreach ($this->pollutantList->getPollutants() as $pollutant) {
-            $csvContent = $this->loader->query($pollutant, 'de');
+        $this->countryList = $countryList;
 
-            $valueList = $this->parser->parse($csvContent);
+        return $this;
+    }
+
+    public function process(callable $countryCallback = null, callable $pollutantCallback = null): void
+    {
+        foreach ($this->countryList as $countryCode) {
+            if ($countryCallback) {
+                $countryCallback($countryCode);
+            }
+
+            /** @var PollutantInterface $pollutant */
+            foreach ($this->pollutantList->getPollutants() as $pollutant) {
+                if ($pollutantCallback) {
+                    $pollutantCallback($countryCode, $pollutant);
+                }
+
+                $csvContent = $this->loader->query($pollutant, $countryCode);
+
+                $valueList = $this->parser->parse($csvContent);
+
+                $this->valueList += $valueList;
+            }
         }
-
-        $this->valueList += $valueList;
     }
 
     public function getValueList(): array
