@@ -21,6 +21,10 @@ class SourceFetcher
     /** @var CsvParserInterface $parser */
     protected $parser;
 
+    /** @var array $countryList */
+    protected $countryList = ['ad', 'at', 'be', 'ch', 'cz', 'dk', 'es', 'fi', 'fr', 'gi', 'hr', 'hu', 'ie', 'lt', 'lu', 'lv', 'mk', 'mt', 'pt', 'rs', 'sk'];
+    
+
     public function __construct(Loader $loader, CsvParserInterface $parser, PollutantListInterface $pollutantList)
     {
         $this->loader = $loader;
