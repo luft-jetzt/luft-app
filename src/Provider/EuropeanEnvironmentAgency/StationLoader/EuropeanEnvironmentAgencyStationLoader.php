@@ -36,7 +36,7 @@ class EuropeanEnvironmentAgencyStationLoader extends AbstractStationLoader
 
                 $em->merge($station);
 
-                $this->newStationList[] = $station;
+                $this->newStationList[$station->getStationCode()] = $station;
             } elseif ($this->update === true) {
                 $station = $this->existingStationList[$stationData->stationId];
 
@@ -44,7 +44,7 @@ class EuropeanEnvironmentAgencyStationLoader extends AbstractStationLoader
             }
         }
 
-        //$em->flush();
+        $em->flush();
 
         return $this;
     }
@@ -62,7 +62,7 @@ class EuropeanEnvironmentAgencyStationLoader extends AbstractStationLoader
 
     public function load(): StationLoaderInterface
     {
-        $this->existingStationList = $this->getExistingStationList('eea');
+        $this->existingStationList = $this->getExistingStationList();
 
         $this->stationDataList = $this->fetchStationList();
 
@@ -102,6 +102,6 @@ class EuropeanEnvironmentAgencyStationLoader extends AbstractStationLoader
 
     public function getExistingStationList(): array
     {
-        return $this->registry->getRepository(Station::class)->findIndexedByProvider(EuropeanEnvironmentAgencyProvider::IDENTIFIER);
+        return $this->registry->getRepository(Station::class)->findAllIndexed();
     }
 }
