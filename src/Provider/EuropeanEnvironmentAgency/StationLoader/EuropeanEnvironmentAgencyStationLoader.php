@@ -55,7 +55,8 @@ class EuropeanEnvironmentAgencyStationLoader extends AbstractStationLoader
             ->setTitle($stationData->location)
             ->setStationCode($stationData->stationId)
             ->setLatitude(floatval($stationData->latitude))
-            ->setLongitude(floatval($stationData->longitude));
+            ->setLongitude(floatval($stationData->longitude))
+            ->setProvider(EuropeanEnvironmentAgencyProvider::IDENTIFIER);
 
         return $station;
     }
