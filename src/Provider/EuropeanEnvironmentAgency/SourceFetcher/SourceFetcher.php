@@ -38,8 +38,10 @@ class SourceFetcher
         foreach ($this->pollutantList->getPollutants() as $pollutant) {
             $csvContent = $this->loader->query($pollutant, 'de');
 
-            $this->parser->parse($csvContent);
+            $valueList = $this->parser->parse($csvContent);
         }
+
+        $this->valueList += $valueList;
     }
 
     public function getValueList(): array
