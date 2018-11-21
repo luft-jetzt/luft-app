@@ -3,32 +3,39 @@
 namespace App\Consumer;
 
 use App\Pollution\DataPersister\UniquePersisterInterface;
-use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
+use App\Provider\ProviderInterface;
+use App\Provider\UmweltbundesamtDe\UmweltbundesamtDeProvider;
+use OldSound\RabbitMqBundle\RabbitMq\BatchConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
-use Psr\Log\LoggerInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class ValueConsumer implements ConsumerInterface
+class ValueConsumer implements BatchConsumerInterface
 {
-    /** @var LoggerInterface $logger */
-    protected $logger;
-
     /** @var UniquePersisterInterface  */
     protected $persister;
 
-    public function __construct(RegistryInterface $registry, UniquePersisterInterface $persister, LoggerInterface $logger)
-    {
-        $this->logger = $logger;
+    /** @var ProviderInterface $provider */
+    protected $provider;
 
+    public function __construct(UniquePersisterInterface $persister, UmweltbundesamtDeProvider $provider)
+    {
         $this->persister = $persister;
+        $this->provider = $provider;
     }
 
-    public function execute(AMQPMessage $msg): bool
+    public function batchExecute(array $messages): array
     {
-        $this->persister->persistValues([$msg->getBody()]);
+        $valueList = [];
+        $resultList = [];
 
-        $this->logger->log('FOO ', serialize($msg->getBody()));
+        /** @var AMQPMessage $message */
+        foreach ($messages as $message) {
+            $valueList[] = unserialize($message->getBody());
 
-        return false;
+            $resultList[(int)$message->delivery_info['delivery_tag']] = true;
+        }
+
+        $this->persister->setProvider($this->provider)->persistValues($valueList);
+
+        return $resultList;
     }
 }

@@ -6,9 +6,16 @@ old_sound_rabbit_mq:
         value:
             connection:       default
             exchange_options: { name: 'value', type: direct }
-    consumers:
+    batch_consumers:
         value:
             connection:       default
-            exchange_options: { name: 'value', type: direct }
-            queue_options:    { name: 'value'}
+            exchange_options: {name: 'value', type: fanout}
+            queue_options:    {name: 'value'}
             callback:         App\Consumer\ValueConsumer
+            qos_options:      {prefetch_size: 0, prefetch_count: 2, global: false}
+            timeout_wait:     5
+            auto_setup_fabric: false
+            idle_timeout_exit_code: -2
+            keep_alive: false
+            graceful_max_execution:
+                timeout: 60
