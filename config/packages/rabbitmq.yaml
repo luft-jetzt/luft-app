@@ -2,11 +2,11 @@ old_sound_rabbit_mq:
     connections:
         default:
             url: '%env(RABBITMQ_URL)%'
-#    producers:
+    producers:
 #        # use 'old_sound_rabbit_mq.task_producer' service to send data.
-#        task:
-#            connection:       default
-#            exchange_options: { name: 'task', type: direct }
+        value:
+            connection:       default
+            exchange_options: { name: 'value', type: direct }
 #    consumers:
 #        task:
 #            connection:       default

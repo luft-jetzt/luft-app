@@ -24,9 +24,14 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class FetchCommand extends Command
+class FetchCommand extends Command implements ContainerAwareInterface
 {
+    /** @var ContainerInterface */
+    protected $container;
+
     /** @var ValueCacheInterface $valueCache */
     protected $valueCache;
 
@@ -158,10 +163,23 @@ class FetchCommand extends Command
         $parser = new Parser($query);
         $valueList = $parser->parse($response, $pollutant);
 
+        foreach ($valueList as $value) {
+            $this->container->get('old_sound_rabbit_mq.value_producer')->publish(serialize($value));
+        }
+
+        /*
         $this->valueCache
             ->setProvider($this->provider)
             ->addValuesToCache($valueList);
-
+*/
         $output->writeln(sprintf('Wrote <info>%d</info> values to cache.', count($valueList)));
+    }
+
+    /**
+     * Sets the container.
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
     }
 }
