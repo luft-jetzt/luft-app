@@ -54,6 +54,8 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
             ->setDateTime($dateTime)
             ->fetchStationCsvFiles();
 
+        $this->valueCache->setProvider($this->provider);
+
         $csvLinkList = $this->archiveSourceFetcher->getCsvLinkList();
 
         $progressBar = new ProgressBar($output, count($csvLinkList));
@@ -72,7 +74,7 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
                 $progressBar->advance();
             });
 
-            $this->valueCache->addValuesToCache($this->provider, $valueList);
+            $this->valueCache->addValuesToCache($valueList);
 
             $counter += count($valueList);
         }
