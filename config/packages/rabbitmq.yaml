@@ -16,6 +16,6 @@ old_sound_rabbit_mq:
             timeout_wait:     5
             auto_setup_fabric: false
             idle_timeout_exit_code: -2
-            keep_alive: false
+            keep_alive: true
             graceful_max_execution:
-                timeout: 60
+                timeout: 600
