@@ -74,7 +74,11 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
                 $progressBar->advance();
             });
 
-            $this->valueCache->addValuesToCache($valueList);
+            foreach ($valueList as $value) {
+                $this->getContainer()->get('old_sound_rabbit_mq.value_producer')->publish(serialize($value));
+            }
+
+            //$this->valueCache->addValuesToCache($valueList);
 
             $counter += count($valueList);
         }

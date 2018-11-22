@@ -18,6 +18,7 @@ use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\Uba1SMW;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\Uba8SMW;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\SourceFetcher;
 use App\Provider\UmweltbundesamtDe\UmweltbundesamtDeProvider;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
@@ -27,11 +28,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class FetchCommand extends Command implements ContainerAwareInterface
+class FetchCommand extends ContainerAwareCommand
 {
-    /** @var ContainerInterface */
-    protected $container;
-
     /** @var ValueCacheInterface $valueCache */
     protected $valueCache;
 
@@ -164,7 +162,7 @@ class FetchCommand extends Command implements ContainerAwareInterface
         $valueList = $parser->parse($response, $pollutant);
 
         foreach ($valueList as $value) {
-            $this->container->get('old_sound_rabbit_mq.value_producer')->publish(serialize($value));
+            $this->getContainer()->get('old_sound_rabbit_mq.value_producer')->publish(serialize($value));
         }
 
         /*
@@ -173,13 +171,5 @@ class FetchCommand extends Command implements ContainerAwareInterface
             ->addValuesToCache($valueList);
 */
         $output->writeln(sprintf('Wrote <info>%d</info> values to cache.', count($valueList)));
-    }
-
-    /**
-     * Sets the container.
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
     }
 }
