@@ -4,8 +4,6 @@ namespace App\Command;
 
 use App\Pollution\DataPersister\UniquePersisterInterface;
 use App\Pollution\Pollutant\PollutantInterface;
-use App\Pollution\Value\Value;
-use App\Pollution\ValueCache\ValueCacheInterface;
 use App\Provider\ProviderInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Parser\Parser;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaCOQuery;
@@ -19,29 +17,21 @@ use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\Uba8SMW;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\SourceFetcher;
 use App\Provider\UmweltbundesamtDe\UmweltbundesamtDeProvider;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class FetchCommand extends ContainerAwareCommand
 {
-    /** @var ValueCacheInterface $valueCache */
-    protected $valueCache;
-
     /** @var SourceFetcher $fetcher */
     protected $fetcher;
 
     /** @var ProviderInterface $provider */
     protected $provider;
 
-    public function __construct(?string $name = null, ValueCacheInterface $valueCache, SourceFetcher $fetcher, UmweltbundesamtDeProvider $umweltbundesamtDeProvider)
+    public function __construct(?string $name = null, SourceFetcher $fetcher, UmweltbundesamtDeProvider $umweltbundesamtDeProvider)
     {
-        $this->valueCache = $valueCache;
         $this->provider = $umweltbundesamtDeProvider;
         $this->fetcher = $fetcher;
 
@@ -165,11 +155,6 @@ class FetchCommand extends ContainerAwareCommand
             $this->getContainer()->get('old_sound_rabbit_mq.value_producer')->publish(serialize($value));
         }
 
-        /*
-        $this->valueCache
-            ->setProvider($this->provider)
-            ->addValuesToCache($valueList);
-*/
         $output->writeln(sprintf('Wrote <info>%d</info> values to cache.', count($valueList)));
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Pollution\ValueCache\ValueCacheInterface;
 use App\Provider\Luftdaten\LuftdatenProvider;
 use App\Provider\Luftdaten\SourceFetcher\ArchiveFetcher\ArchiveFetcherInterface;
 use App\Provider\Luftdaten\SourceFetcher\ArchiveSourceFetcherInterface;
@@ -21,17 +20,13 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
     /** @var ArchiveSourceFetcherInterface $archiveSourceFetcher */
     protected $archiveSourceFetcher;
 
-    /** @var ValueCacheInterface $valueCache */
-    protected $valueCache;
-
     /** @var LuftdatenProvider $provider */
     protected $provider;
 
-    public function __construct(?string $name = null, ArchiveSourceFetcherInterface $archiveSourceFetcher,  ArchiveFetcherInterface $archiveFetcher, ValueCacheInterface $valueCache, LuftdatenProvider $luftdatenProvider)
+    public function __construct(?string $name = null, ArchiveSourceFetcherInterface $archiveSourceFetcher,  ArchiveFetcherInterface $archiveFetcher, LuftdatenProvider $luftdatenProvider)
     {
         $this->archiveFetcher = $archiveFetcher;
         $this->archiveSourceFetcher = $archiveSourceFetcher;
-        $this->valueCache = $valueCache;
         $this->provider = $luftdatenProvider;
 
         parent::__construct($name);
@@ -54,8 +49,6 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
             ->setDateTime($dateTime)
             ->fetchStationCsvFiles();
 
-        $this->valueCache->setProvider($this->provider);
-
         $csvLinkList = $this->archiveSourceFetcher->getCsvLinkList();
 
         $progressBar = new ProgressBar($output, count($csvLinkList));
@@ -77,8 +70,6 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
             foreach ($valueList as $value) {
                 $this->getContainer()->get('old_sound_rabbit_mq.value_producer')->publish(serialize($value));
             }
-
-            //$this->valueCache->addValuesToCache($valueList);
 
             $counter += count($valueList);
         }
