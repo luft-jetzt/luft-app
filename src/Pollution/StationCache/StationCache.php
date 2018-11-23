@@ -28,6 +28,8 @@ class StationCache implements StationCacheInterface
         $this->cache = $this->createConnection();
 
         $this->list = $this->loadFromCache() ?? $this->loadFromDatabase();
+
+        $this->cacheStationList();
     }
 
     public function getList(): array
@@ -37,11 +39,16 @@ class StationCache implements StationCacheInterface
 
     public function getStationByCode(string $stationCode): ?Station
     {
-        if (!array_key_exists($stationCode, $this->list)) {
+        if (!$this->stationExists($stationCode)) {
             return null;
         }
 
         return $this->list[$stationCode];
+    }
+
+    public function stationExists(string $stationCode): bool
+    {
+        return array_key_exists($stationCode, $this->list);
     }
 
     protected function createConnection(): AbstractAdapter
