@@ -2,13 +2,10 @@
 
 namespace App\Command;
 
-use App\Pollution\Value\Value;
-use App\Pollution\ValueCache\ValueCacheInterface;
 use App\Provider\Luftdaten\LuftdatenProvider;
 use App\Provider\Luftdaten\SourceFetcher\Parser\JsonParserInterface;
 use App\Provider\Luftdaten\SourceFetcher\SourceFetcher;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -20,12 +17,8 @@ class Fetch2Command extends ContainerAwareCommand
     /** @var JsonParserInterface $parser */
     protected $parser;
 
-    /** @var ValueCacheInterface */
-    protected $valueCache;
-
-    public function __construct(?string $name = null, ValueCacheInterface $valueCache, LuftdatenProvider $luftdatenProvider, JsonParserInterface $parser)
+    public function __construct(?string $name = null, LuftdatenProvider $luftdatenProvider, JsonParserInterface $parser)
     {
-        $this->valueCache = $valueCache;
         $this->provider = $luftdatenProvider;
         $this->parser = $parser;
 
@@ -47,7 +40,9 @@ class Fetch2Command extends ContainerAwareCommand
 
         $valueList = $this->parser->parse($response);
 
-        $this->valueCache->addValuesToCache($valueList);
+        foreach ($valueList as $value) {
+            $this->getContainer()->get('old_sound_rabbit_mq.value_producer')->publish(serialize($value));
+        }
 
         $output->writeln(sprintf('Wrote <info>%d</info> values to cache.', count($valueList)));
     }
