@@ -9,4 +9,5 @@ interface StationCacheInterface
     public function getList(): array;
     public function getStationByCode(string $stationCode): ?Station;
     public function stationExists(string $stationCode): bool;
+    public function getStationReferenceByCode(string $stationCode): ?Station;
 }

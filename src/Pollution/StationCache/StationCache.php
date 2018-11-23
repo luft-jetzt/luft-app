@@ -27,14 +27,27 @@ class StationCache implements StationCacheInterface
         $this->registry = $registry;
         $this->cache = $this->createConnection();
 
-        $this->list = $this->loadFromCache() ?? $this->loadFromDatabase();
+        if (!$this->list = $this->loadFromCache()) {
+            $this->list = $this->loadFromDatabase();
 
-        $this->cacheStationList();
+            $this->cacheStationList();
+        }
     }
 
     public function getList(): array
     {
         return $this->list;
+    }
+
+    public function getStationReferenceByCode(string $stationCode): ?Station
+    {
+        if (!$this->stationExists($stationCode)) {
+            return null;
+        }
+
+        $reference = $this->registry->getEntityManager()->getReference(Station::class, $this->getStationByCode($stationCode)->getId());
+
+        return $reference;
     }
 
     public function getStationByCode(string $stationCode): ?Station
@@ -79,6 +92,10 @@ class StationCache implements StationCacheInterface
     protected function cacheStationList(): void
     {
         $cacheItem = $this->cache->getItem(self::CACHE_KEY);
+
+        foreach ($this->list as $station) {
+            $this->registry->getEntityManager()->detach($station);
+        }
 
         $cacheItem
             ->set($this->list)

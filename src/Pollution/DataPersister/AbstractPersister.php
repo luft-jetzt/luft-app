@@ -38,7 +38,7 @@ abstract class AbstractPersister implements PersisterInterface
 
     protected function getStationByCode(string $stationCode): Station
     {
-        return $this->stationCache->getStationByCode($stationCode);
+        return $this->stationCache->getStationReferenceByCode($stationCode);
     }
 
     public function reset(): PersisterInterface
