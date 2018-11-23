@@ -9,5 +9,6 @@ class O3 extends AbstractPollutant
         $this->unitHtml = 'µg/m<sup>3</sup>';
         $this->unitPlain = 'µg/m³';
         $this->name = 'Ozon';
+        $this->shortNameHtml = 'O<sub>3</sub>';
     }
 }
