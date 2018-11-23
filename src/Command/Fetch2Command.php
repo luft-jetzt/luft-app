@@ -41,15 +41,13 @@ class Fetch2Command extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $this->valueCache->setProvider($this->provider);
-
         $sourceFetcher = new SourceFetcher();
 
         $response = $sourceFetcher->query();
 
         $valueList = $this->parser->parse($response);
 
-        $this->valueCache->setProvider($this->provider)->addValuesToCache($valueList);
+        $this->valueCache->addValuesToCache($valueList);
 
         $output->writeln(sprintf('Wrote <info>%d</info> values to cache.', count($valueList)));
     }
