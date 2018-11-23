@@ -4,7 +4,6 @@ namespace App\Pollution\DataPersister;
 
 use App\Entity\Station;
 use App\Pollution\StationCache\StationCacheInterface;
-use App\Provider\ProviderInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -22,9 +21,6 @@ abstract class AbstractPersister implements PersisterInterface
     /** @var array $newValueList */
     protected $newValueList = [];
 
-    /** @var ProviderInterface $provider */
-    protected $provider;
-
     /** @var StationCacheInterface $stationCache */
     protected $stationCache;
 
@@ -33,13 +29,6 @@ abstract class AbstractPersister implements PersisterInterface
         $this->doctrine = $doctrine;
         $this->entityManager = $doctrine->getManager();
         $this->stationCache = $stationCache;
-    }
-
-    public function setProvider(ProviderInterface $provider): PersisterInterface
-    {
-        $this->provider = $provider;
-        
-        return $this;
     }
 
     protected function stationExists(string $stationCode): bool
