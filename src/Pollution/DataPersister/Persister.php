@@ -9,8 +9,6 @@ class Persister extends AbstractPersister
 {
     public function persistValues(array $values): PersisterInterface
     {
-        $this->fetchStationList();
-
         /** @var Value $value */
         foreach ($values as $value) {
             $data = new Data();

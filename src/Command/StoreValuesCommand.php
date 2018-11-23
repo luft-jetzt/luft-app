@@ -6,7 +6,6 @@ use App\Pollution\DataPersister\UniquePersisterInterface;
 use App\Pollution\ValueCache\ValueCacheInterface;
 use App\Provider\ProviderInterface;
 use App\Provider\ProviderListInterface;
-use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

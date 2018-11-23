@@ -3,6 +3,7 @@
 namespace App\Pollution\DataPersister;
 
 use App\Entity\Station;
+use App\Pollution\StationCache\StationCacheInterface;
 use App\Provider\ProviderInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -24,10 +25,14 @@ abstract class AbstractPersister implements PersisterInterface
     /** @var ProviderInterface $provider */
     protected $provider;
 
-    public function __construct(RegistryInterface $doctrine)
+    /** @var StationCacheInterface $stationCache */
+    protected $stationCache;
+
+    public function __construct(RegistryInterface $doctrine, StationCacheInterface $stationCache)
     {
         $this->doctrine = $doctrine;
         $this->entityManager = $doctrine->getManager();
+        $this->stationCache = $stationCache;
     }
 
     public function setProvider(ProviderInterface $provider): PersisterInterface
@@ -37,21 +42,14 @@ abstract class AbstractPersister implements PersisterInterface
         return $this;
     }
 
-    protected function fetchStationList(): PersisterInterface
-    {
-        $this->stationList = $this->doctrine->getRepository(Station::class)->findIndexedByProvider($this->provider->getIdentifier());
-
-        return $this;
-    }
-
     protected function stationExists(string $stationCode): bool
     {
-        return array_key_exists($stationCode, $this->stationList);
+        return $this->stationCache->stationExists($stationCode);
     }
 
     protected function getStationByCode(string $stationCode): Station
     {
-        return $this->stationList[$stationCode];
+        return $this->stationCache->getStationByCode($stationCode);
     }
 
     public function reset(): PersisterInterface
