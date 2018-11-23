@@ -2,29 +2,17 @@
 
 namespace App\Pollution\ValueCache;
 
-use App\Provider\ProviderInterface;
 use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
-use Symfony\Component\Cache\CacheItem;
 
 class ValueCache implements ValueCacheInterface
 {
     /** @var AbstractAdapter $cache */
     protected $cache;
 
-    /** @var ProviderInterface $provider */
-    protected $provider;
-
     public function __construct()
     {
         $this->cache = $this->createConnection();
-    }
-
-    public function setProvider(ProviderInterface $provider): ValueCacheInterface
-    {
-        $this->provider = $provider;
-
-        return $this;
     }
 
     protected function createConnection(): AbstractAdapter
@@ -38,7 +26,7 @@ class ValueCache implements ValueCacheInterface
 
     protected function getPagination(): array
     {
-        $key = sprintf('values-%s-list', $this->provider->getIdentifier());
+        $key = sprintf('values-list');
 
         $listItem = $this->cache->getItem($key);
 
@@ -47,7 +35,7 @@ class ValueCache implements ValueCacheInterface
 
     protected function savePagination(array $pagination): ValueCache
     {
-        $key = sprintf('values-%s-list', $this->provider->getIdentifier());
+        $key = sprintf('values-list');
 
         $listItem = $this->cache->getItem($key);
 
@@ -68,7 +56,7 @@ class ValueCache implements ValueCacheInterface
 
         $this->savePagination($pagination);
 
-        $key = sprintf('values-%s-%d', $this->provider->getIdentifier(), $nextPage);
+        $key = sprintf('values-%d', $nextPage);
 
         $cacheItem = $this->cache->getItem($key);
         $cacheItem->set($valueList);
@@ -79,7 +67,7 @@ class ValueCache implements ValueCacheInterface
 
     protected function getPage(int $pageNumber): array
     {
-        $key = sprintf('values-%s-%d', $this->provider->getIdentifier(), $pageNumber);
+        $key = sprintf('values-%d', $pageNumber);
 
         $pageItem = $this->cache->getItem($key);
 

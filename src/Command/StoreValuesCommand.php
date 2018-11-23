@@ -6,7 +6,6 @@ use App\Pollution\DataPersister\UniquePersisterInterface;
 use App\Pollution\ValueCache\ValueCacheInterface;
 use App\Provider\ProviderInterface;
 use App\Provider\ProviderListInterface;
-use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,16 +15,12 @@ class StoreValuesCommand extends Command
     /** @var UniquePersisterInterface $uniquePersister */
     protected $uniquePersister;
 
-    /** @var ProviderListInterface $providerList */
-    protected $providerList;
-
     /** @var ValueCacheInterface $valueCache */
     protected $valueCache;
 
-    public function __construct(?string $name = null, ValueCacheInterface $valueCache, UniquePersisterInterface $uniquePersister, ProviderListInterface $providerList)
+    public function __construct(?string $name = null, ValueCacheInterface $valueCache, UniquePersisterInterface $uniquePersister)
     {
         $this->uniquePersister = $uniquePersister;
-        $this->providerList = $providerList;
         $this->valueCache = $valueCache;
 
         parent::__construct($name);
@@ -38,22 +33,14 @@ class StoreValuesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        /** @var ProviderInterface $provider */
-        foreach ($this->providerList->getList() as $identifier => $provider) {
-            $output->writeln(sprintf('Looking up cache for <info>%s</info>', get_class($provider)));
+        do {
+            $valueList = $this->valueCache->getNewestPage();
 
-            $this->uniquePersister->setProvider($provider);
-            $this->valueCache->setProvider($provider);
+            $this->uniquePersister
+                ->reset()
+                ->persistValues($valueList);
 
-            do {
-                $valueList = $this->valueCache->getNewestPage();
-
-                $this->uniquePersister
-                    ->reset()
-                    ->persistValues($valueList);
-
-                $output->writeln(sprintf('Persisted <info>%d</info> new values, skipped <info>%d</info> existent values.', count($this->uniquePersister->getNewValueList()), count($this->uniquePersister->getDuplicateDataList())));
-            } while (0 !== count($valueList));
-        }
+            $output->writeln(sprintf('Persisted <info>%d</info> new values, skipped <info>%d</info> existent values.', count($this->uniquePersister->getNewValueList()), count($this->uniquePersister->getDuplicateDataList())));
+        } while (0 !== count($valueList));
     }
 }
