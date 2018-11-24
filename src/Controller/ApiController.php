@@ -51,7 +51,7 @@ class ApiController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $pollutantList = $pollutionDataFactory->setCoord($station)->createDecoratedPollutantList();
+        $pollutantList = $pollutionDataFactory->setStation($station)->createDecoratedPollutantList();
 
         return new JsonResponse($serializer->serialize($this->unpackPollutantList($pollutantList), 'json'), 200, [], true);
     }
@@ -190,12 +190,6 @@ class ApiController extends AbstractController
     public function stationAction(Request $request, SessionInterface $session, SerializerInterface $serializer, string $stationCode = null, ElasticStationFinder $stationFinder): Response
     {
         $providerIdentifier = $request->get('provider');
-
-        if ($request->get('remember_stations')) {
-            $excludeStationIds = $this->getRememberedStations($session);
-        } else {
-            $excludeStationIds = [];
-        }
 
         if ($stationCode) {
             $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
