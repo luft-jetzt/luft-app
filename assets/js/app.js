@@ -115,25 +115,36 @@ function loadStations() {
                 if (!(stationCode in stationList)) {
                     stationList[stationCode] = station;
 
-                    var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Name</th><td>" + station.station_code + "</td></tr><table>";
-
                     var marker = L.marker([station.latitude, station.longitude]).addTo(stationLayer);
 
                     marker.station = station;
 
-                    marker.on({
-                        click: function (e) {
-                            $("#feature-title").html(station.station_code);
-                            $("#feature-info").html(content);
-                            $("#featureModal").modal("show");
-                            highlight.clearLayers().addLayer(L.circleMarker([station.latitude, station.longitude], highlightStyle));
-                        }
-                    });
+                    marker.on('click', showStationModal);
 
                     $("#feature-list tbody").append('<tr class="feature-row" id="' + L.stamp(marker) + '" lat="' + marker.getLatLng().lat + '" lng="' +marker.getLatLng().lng + '"><td style="vertical-align: middle;"><img width="16" height="18" src="assets/img/theater.png"></td><td class="feature-name">' + station.station_code + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
                 }
             }
         },
+    });
+}
+
+function showStationModal(e) {
+    const $marker = e.target;
+
+    $.get('http://luft.ct/api/' + $marker.station.station_code, {}, function(dataList) {
+        let content = '<table class="table table-striped table-bordered table-condensed">';
+
+        for (let i = 0; i < dataList.length; ++i) {
+            const data = dataList[i];
+
+            content += '<tr><td>' + data.pollutant.short_name_html +'</td><td>' + data.data.value + ' ' + data.pollutant.unit_html + '</td></tr>';
+        }
+        content += '</table>';
+
+        $('#feature-title').html($marker.station.station_code);
+        $('#feature-info').html(content);
+        $('#featureModal').modal("show");
+        highlight.clearLayers().addLayer(L.circleMarker($marker.getLatLng(), highlightStyle));
     });
 }
 
@@ -176,7 +187,7 @@ var markerClusters = new L.MarkerClusterGroup({
 });
 
 map = L.map('map', {
-    zoom: 10,
+    zoom: 15,
     layers: [markerClusters, highlight, stationLayer],
     zoomControl: false,
     attributionControl: false,
@@ -191,7 +202,7 @@ map.on('load', function(loadEvent) {
     loadStations();
 });
 
-map.setView([53, 10]);
+map.setView([53.56414, 9.967882]);
 
 /* Layer control listeners that allow for a single markerClusters layer */
 map.on("overlayadd", function(e) {
