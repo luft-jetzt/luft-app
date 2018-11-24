@@ -73,7 +73,9 @@
         <div class="col-12">
             <div class="card-columns">
             {% for station in stationList %}
-            {% include 'Default/_station.html.twig' with { linkToStation: true, station: station, boxList: stationBoxList[station.stationCode], showMap: false } %}
+            {% if stationBoxList[station.stationCode]|length > 0 %}
+            {% include 'Default/_station.html.twig' with { 'linkToStation': true, 'station': station, 'pollutantList': stationBoxList[station.stationCode], 'showMap': false } %}
+            {% endif %}
             {% endfor %}
             </div>
         </div>
@@ -82,7 +84,8 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-    <script src="/js/map.js"></script>
+    <script src="{{ asset('/js/map.min.js') }}"></script>
+    <script src="{{ asset('/js/leaflet.extra-markers.min.js') }}"></script>
 {% endblock %}

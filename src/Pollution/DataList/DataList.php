@@ -5,20 +5,19 @@ namespace App\Pollution\DataList;
 use App\Entity\Data;
 use App\Pollution\Pollutant\PollutantInterface;
 
-class DataList
+class DataList implements DataListInterface
 {
-    protected $list;
+    /** @var array $list */
+    protected $list = [];
 
     public function __construct()
     {
         $this->reset();
     }
 
-    public function addData(Data $data, bool $overwrite = false): DataList
+    public function addData(Data $data): DataListInterface
     {
-        if ($overwrite || !$this->hasPollutant($data)) {
-            $this->list[$data->getPollutant()] = $data;
-        }
+        $this->list[$data->getPollutant()][$data->getId()] = $data;
 
         return $this;
     }
@@ -27,20 +26,12 @@ class DataList
     {
         $pollutant = $data->getPollutant();
 
-        return $this->list[$pollutant] !== null;
+        return 0 !== count($this->list[$pollutant]);
     }
 
-    public function getMissingPollutants(): array
+    public function countPollutant(int $pollutant): int
     {
-        $missingList = [];
-
-        array_walk($this->list, function(Data $data = null, int $key) use (&$missingList) {
-            if ($data === null) {
-                array_push($missingList, $key);
-            }
-        });
-
-        return $missingList;
+        return count($this->list[$pollutant]);
     }
 
     public function getList(): array
@@ -48,14 +39,15 @@ class DataList
         return $this->list;
     }
 
-    public function reset(): DataList
+    public function reset(): DataListInterface
     {
         $this->list = [
-            PollutantInterface::POLLUTANT_PM10 => null,
-            PollutantInterface::POLLUTANT_O3 => null,
-            PollutantInterface::POLLUTANT_NO2 => null,
-            PollutantInterface::POLLUTANT_SO2 => null,
-            PollutantInterface::POLLUTANT_CO => null,
+            PollutantInterface::POLLUTANT_PM10 => [],
+            PollutantInterface::POLLUTANT_PM25 => [],
+            PollutantInterface::POLLUTANT_O3 => [],
+            PollutantInterface::POLLUTANT_NO2 => [],
+            PollutantInterface::POLLUTANT_SO2 => [],
+            PollutantInterface::POLLUTANT_CO => [],
         ];
 
         return $this;

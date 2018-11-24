@@ -2,37 +2,37 @@
 
 namespace App\Command;
 
+use App\Pollution\DataPersister\UniquePersisterInterface;
 use App\Pollution\Pollutant\PollutantInterface;
-use App\SourceFetcher\Parser\UbParser;
-use App\SourceFetcher\Persister\Persister;
-use App\SourceFetcher\Query\AbstractQuery;
-use App\SourceFetcher\Query\UbCOQuery;
-use App\SourceFetcher\Query\UbNO2Query;
-use App\SourceFetcher\Query\UbO3Query;
-use App\SourceFetcher\Query\UbPM10Query;
-use App\SourceFetcher\Query\UbSO2Query;
-use App\SourceFetcher\Reporting\Ub1SMW;
-use App\SourceFetcher\Reporting\Ub1TMW;
-use App\SourceFetcher\Reporting\Ub8SMW;
-use App\SourceFetcher\SourceFetcher;
-use App\SourceFetcher\Value\Value;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\Table;
+use App\Provider\ProviderInterface;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Parser\Parser;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaCOQuery;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaNO2Query;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaO3Query;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaPM10Query;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaQueryInterface;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaSO2Query;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\Uba1SMW;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\Uba8SMW;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\SourceFetcher;
+use App\Provider\UmweltbundesamtDe\UmweltbundesamtDeProvider;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class FetchCommand extends Command
+class FetchCommand extends ContainerAwareCommand
 {
-    /** @var Persister $persister */
-    protected $persister;
-
     /** @var SourceFetcher $fetcher */
     protected $fetcher;
 
-    public function __construct(?string $name = null, Persister $persister, SourceFetcher $fetcher)
+    /** @var ProviderInterface $provider */
+    protected $provider;
+
+    public function __construct(?string $name = null, SourceFetcher $fetcher, UmweltbundesamtDeProvider $umweltbundesamtDeProvider)
     {
-        $this->persister = $persister;
+        $this->provider = $umweltbundesamtDeProvider;
         $this->fetcher = $fetcher;
 
         parent::__construct($name);
@@ -42,117 +42,119 @@ class FetchCommand extends Command
     {
         $this
             ->setName('luft:fetch')
-            ->setDescription('')
+            ->setDescription('Load pollution data from Umweltbundesamt')
             ->addOption('pm10')
             ->addOption('so2')
             ->addOption('no2')
             ->addOption('o3')
             ->addOption('co')
-            ->addArgument('dateTime', InputArgument::OPTIONAL);
-        ;
+            ->addOption('interval', null, InputOption::VALUE_REQUIRED, 'Provide an interval in hours of data to fetch. Is overwritten by startDateTime argument')
+            ->addArgument('endDateTime', InputArgument::OPTIONAL)
+            ->addArgument('startDateTime', InputArgument::OPTIONAL);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($input->getArgument('dateTime')) {
-            $dateTime = new \DateTimeImmutable($input->getArgument('dateTime'));
+        if ($input->getArgument('endDateTime')) {
+            $endDateTime = new \DateTimeImmutable($input->getArgument('endDateTime'));
         } else {
-            $dateTime = new \DateTimeImmutable();
+            $endDateTime = new \DateTimeImmutable();
         }
 
+        if ($input->getArgument('startDateTime')) {
+            $startDateTime = new \DateTimeImmutable($input->getArgument('startDateTime'));
+        } elseif ($input->getOption('interval')) {
+            $startDateTime = $endDateTime->sub(new \DateInterval(sprintf('PT%dH', $input->getOption('interval'))));
+        } else {
+            $startDateTime = $endDateTime->sub(new \DateInterval(sprintf('PT2H')));
+        }
+
+        $output->writeln(sprintf('Fetching uba pollution data from <info>%s</info> to <info>%s</info>', $startDateTime->format('Y-m-d H:i:s'), $endDateTime->format('Y-m-d H:i:s')));
+
         if ($input->getOption('pm10')) {
-            $this->fetchPM10($output, $dateTime);
+            $this->fetchPM10($output, $endDateTime, $startDateTime);
         }
 
         if ($input->getOption('so2')) {
-            $this->fetchSO2($output, $dateTime);
+            $this->fetchSO2($output, $endDateTime, $startDateTime);
         }
 
         if ($input->getOption('no2')) {
-            $this->fetchNO2($output, $dateTime);
+            $this->fetchNO2($output, $endDateTime, $startDateTime);
         }
 
         if ($input->getOption('o3')) {
-            $this->fetchO3($output, $dateTime);
+            $this->fetchO3($output, $endDateTime, $startDateTime);
         }
 
         if ($input->getOption('co')) {
-            $this->fetchCO($output, $dateTime);
+            $this->fetchCO($output, $endDateTime, $startDateTime);
         }
     }
 
-    protected function fetchPM10(OutputInterface $output, \DateTimeInterface $dateTime)
+    protected function fetchPM10(OutputInterface $output, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
     {
         $output->writeln('PM10');
 
-        $reporting = new Ub1TMW($dateTime);
-        $query = new UbPM10Query($reporting);
+        $reporting = new Uba1SMW($endDateTime, $startDateTime);
+        $query = new UbaPM10Query($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_PM10);
     }
 
-    protected function fetchSO2(OutputInterface $output, \DateTimeInterface $dateTime)
+    protected function fetchSO2(OutputInterface $output, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
     {
         $output->writeln('SO2');
 
-        $reporting = new Ub1SMW($dateTime);
-        $query = new UbSO2Query($reporting);
+        $reporting = new Uba1SMW($endDateTime, $startDateTime);
+        $query = new UbaSO2Query($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_SO2);
     }
 
-    protected function fetchNO2(OutputInterface $output, \DateTimeInterface $dateTime)
+    protected function fetchNO2(OutputInterface $output, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
     {
         $output->writeln('NO2');
 
-        $reporting = new Ub1SMW($dateTime);
-        $query = new UbNO2Query($reporting);
+        $reporting = new Uba1SMW($endDateTime, $startDateTime);
+        $query = new UbaNO2Query($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_NO2);
     }
 
-    protected function fetchO3(OutputInterface $output, \DateTimeInterface $dateTime)
+    protected function fetchO3(OutputInterface $output, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
     {
         $output->writeln('O3');
 
-        $reporting = new Ub1SMW($dateTime);
-        $query = new UbO3Query($reporting);
+        $reporting = new Uba1SMW($endDateTime, $startDateTime);
+        $query = new UbaO3Query($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_O3);
     }
 
-    protected function fetchCO(OutputInterface $output, \DateTimeInterface $dateTime)
+    protected function fetchCO(OutputInterface $output, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
     {
         $output->writeln('CO');
 
-        $reporting = new Ub8SMW($dateTime);
-        $query = new UbCOQuery($reporting);
+        $reporting = new Uba8SMW($endDateTime, $startDateTime);
+        $query = new UbaCOQuery($reporting);
 
         $this->fetch($output, $query, PollutantInterface::POLLUTANT_CO);
     }
 
-    protected function fetch(OutputInterface $output, AbstractQuery $query, int $pollutant)
+    protected function fetch(OutputInterface $output, UbaQueryInterface $query, int $pollutant)
     {
-        $response = $this->fetcher->query($query);
+        $sourceFetcher = new SourceFetcher();
 
-        $parser = new UbParser($query);
-        $tmpValueList = $parser->parse($response, $pollutant);
+        $response = $sourceFetcher->query($query);
 
-        $this->persister->persistValues($tmpValueList);
+        $parser = new Parser($query);
+        $valueList = $parser->parse($response, $pollutant);
 
-        $this->writeValueTable($output, $this->persister->getNewValueList());
-    }
-
-    protected function writeValueTable(OutputInterface $output, array $newValueList): void
-    {
-        $table = new Table($output);
-        $table->setHeaders(['Station', 'Title', 'Value', 'DateTime']);
-
-        /** @var Value $value */
-        foreach ($newValueList as $value) {
-            $table->addRow([$value->getStation()->getStationCode(), $value->getStation()->getTitle(), $value->getValue(), $value->getDateTime()->format('Y-m-d H:i:s')]);
+        foreach ($valueList as $value) {
+            $this->getContainer()->get('old_sound_rabbit_mq.value_producer')->publish(serialize($value));
         }
 
-        $table->render();
+        $output->writeln(sprintf('Wrote <info>%d</info> values to cache.', count($valueList)));
     }
 }

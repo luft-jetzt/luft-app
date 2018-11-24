@@ -1,20 +1,4 @@
 {% if box %}
-    {% if box.pollutionLevel == constant('LEVEL_ACCEPTABLE', box.pollutant.pollutionLevel) %}
-        {% set levelClass = 'bg-success' %}
-    {% endif %}
-
-    {% if box.pollutionLevel == constant('LEVEL_WARNING', box.pollutant.pollutionLevel) %}
-      {% set levelClass = 'bg-warning' %}
-    {% endif %}
-
-    {% if box.pollutionLevel == constant('LEVEL_DANGER', box.pollutant.pollutionLevel) %}
-      {% set levelClass = 'bg-danger' %}
-    {% endif %}
-
-    {% if box.pollutionLevel == constant('LEVEL_DEATH', box.pollutant.pollutionLevel) %}
-      {% set levelClass = 'bg-dark' %}
-    {% endif %}
-
     {% if combined is defined and combined == true %}
      {% set combined = true %}
     {% else %}
@@ -38,10 +22,10 @@
     <div class="card card-inverse mb-2">
     {% endif %}
 
-    <div class="card-body {{ levelClass }} text-white text-center">
+    <div class="card-body text-white text-center box h-100" style="background-color: {{ pollution_color(box.pollutionLevel) }}" data-station-code="{{ box.station.stationCode }}" data-station-latitude="{{ box.station.latitude }}" data-station-longitude="{{ box.station.longitude }}" data-station-color="{{ pollution_color_name(box.pollutionLevel) }}">
         {% if stationLink %}<a href="{{ path('station', { 'stationCode': box.station.stationCode }) }}" class="no-underline text-white" title="Weitere Luftmesswerte der Station {{ box.station.stationCode }}{% if box.station.city %} aus {{ box.station.city.name }}{% endif %}">{% endif %}
         <h4 class="card-title">
-            {{ box.data.value }} {{ box.pollutant.unitHtml|raw }}
+            {{ box.data.value|number_format }} {{ box.pollutant.unitHtml|raw }}
         </h4>
         {% if stationLink %}</a>{% endif %}
 
@@ -59,7 +43,14 @@
         {% endif %}
 
         <small>
-            gemessen: {{ box.data.dateTime|date('d.m.Y H:i') }} Uhr
+            <i class="fa fa-clock-o"></i> {{ box.data.dateTime|time_ago_in_words }}
+            {% if stationTitle %}
+            <br /><i class="fa fa-compass"></i> {{ box.distance|number_format(2, ',', '.') }} km entfernt
+            {% endif %}
+            {% if box.data.station.network and stationTitle %}
+            <br />
+            {{ box.data.station.network.name }}
+            {% endif %}
         </small>
 
         </p>

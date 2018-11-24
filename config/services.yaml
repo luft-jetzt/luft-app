@@ -7,6 +7,9 @@ parameters:
     yourls.api_url: '%env(YOURLS_HOSTNAME)%'
     yourls.api_username: '%env(YOURLS_USERNAME)%'
     yourls.api_password: '%env(YOURLS_PASSWORD)%'
+    assets_version: '%env(ASSETS_VERSION)%'
+    router.request_context.host: 'luft.jetzt'
+    router.request_context.scheme: 'https'
 
 services:
     # default configuration for services in *this* file
@@ -22,6 +25,7 @@ services:
             $apiUrl: '%env(YOURLS_API_URL)%'
             $apiUsername: '%env(YOURLS_API_USERNAME)%'
             $apiPassword: '%env(YOURLS_API_PASSWORD)%'
+            $assetsVersion: '%assets_version%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -38,13 +42,17 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\StationLoader\StationLoader: ~
-
     App\Twitter\MessageFactory\MessageFactoryInterface:
         alias: App\Twitter\MessageFactory\EmojiMessageFactory
 
     App\Pollution\DataRetriever\DataRetrieverInterface:
         alias: App\Pollution\DataRetriever\ElasticDataRetriever
+
+    App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface:
+        alias: App\Pollution\PollutantFactoryStrategy\LuftdatenPollutantFactoryStrategy
+
+    App\Pollution\PollutionDataFactory\PollutionDataFactoryInterface:
+        alias: App\Pollution\PollutionDataFactory\PollutionDataFactory
 
     App\Pollution\DataRetriever\ElasticDataRetriever:
         arguments:

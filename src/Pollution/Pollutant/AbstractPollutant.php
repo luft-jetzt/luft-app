@@ -2,29 +2,19 @@
 
 namespace App\Pollution\Pollutant;
 
-use App\Pollution\PollutionLevel\PollutionLevel;
-
 abstract class AbstractPollutant implements PollutantInterface
 {
-    /**
-     * @var string $unitHtml
-     */
+    /** @var string $unitHtml */
     protected $unitHtml;
 
-    /**
-     * @var string $unitHtml
-     */
+    /** @var string $unitHtml */
     protected $unitPlain;
 
-    /**
-     * @var string $name
-     */
+    /** @var string $name */
     protected $name;
 
-    /**
-     * @var PollutionLevel $pollutionLevel
-     */
-    protected $pollutionLevel;
+    /** @var string $shortNameHtml */
+    protected $shortNameHtml;
 
     public function getUnitHtml(): string
     {
@@ -41,14 +31,21 @@ abstract class AbstractPollutant implements PollutantInterface
         return $this->name;
     }
 
+    public function getShortNameHtml(): string
+    {
+        return $this->shortNameHtml;
+    }
+
+    public function getShortName(): string
+    {
+        $reflection = new \ReflectionClass($this);
+
+        return $reflection->getShortName();
+    }
+
     public function getIdentifier(): string
     {
         $reflection = new \ReflectionClass($this);
         return strtolower($reflection->getShortName());
-    }
-
-    public function getPollutionLevel(): PollutionLevel
-    {
-        return $this->pollutionLevel;
     }
 }
