@@ -10,6 +10,7 @@
         {{ knp_menu_render('main_menu') }}
     </div>
 
+    {% if app.request.pathinfo == '/' %}
     <form method="get" class="form-inline">
         <div class="input-group mb-3">
             <input type="text" class="form-control typeahead" id="query" name="query" placeholder="Suchbegriff, Postleitzahl, Stadtname…" />
@@ -23,4 +24,5 @@
             </div>
         </div>
     </form>
+    {% endif %}
 </nav>
