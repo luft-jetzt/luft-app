@@ -229,7 +229,7 @@ class ApiController extends AbstractController
             $cachedStationList[] = $station->getId();
         }
 
-        $session->set('station_list', []);//$cachedStationList);
+        $session->set('station_list', $cachedStationList);
     }
 
     protected function getRememberedStations(SessionInterface $session): array
