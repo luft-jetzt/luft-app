@@ -12,21 +12,35 @@ class MainMenuBuilder extends AbstractBuilder
 
         $menu->setChildrenAttribute('class', 'nav navbar-nav');
 
-        $menu
-            ->addChild('Critical Mass', ['uri' => '#', 'class' => 'dropdown'])
-            ->setExtra('dropdown', true);
+        $pollutantDropdown = $menu->addChild('Schadstoffe', [
+            'attributes' => [
+                'dropdown' => true,
+            ],
+        ]);
 
-        $menu['Critical Mass']
-            ->addChild('Über die Critical Mass');
+        $pollutantDropdown->addChild('Feinstaub PM<sub>10</sub>');
+        $pollutantDropdown->addChild('Stickstoffdioxid NO<sub>2</sub>');
+        $pollutantDropdown->addChild('Schwefeldioxid SO<sub>2</sub>');
+        $pollutantDropdown->addChild('Kohlenmonoxid CO');
+        $pollutantDropdown->addChild('Ozon O<sub>3</sub>');
 
-        $menu['Critical Mass']
-            ->addChild('Häufig gestellte Fragen');
+        $aboutDropdown = $menu->addChild('Über', [
+            'attributes' => [
+                'dropdown' => true,
+            ],
+        ]);
 
-        $menu['Critical Mass']
-            ->addChild('Hilfe');
+        $aboutDropdown->addChild('Impressum', ['route' => 'impress']);
+        $aboutDropdown->addChild('Datenschutz', ['route' => 'privacy']);
 
-        $menu['Critical Mass']
-            ->addChild('Über criticalmass.in');
+        $pollutantDropdown = $menu->addChild('Api', [
+            'attributes' => [
+                'dropdown' => true,
+            ],
+        ]);
+
+        $pollutantDropdown->addChild('Api-Dokumentation', ['route' => 'app.swagger_ui']);
+        $pollutantDropdown->addChild('GitHub-Repository', ['uri' => 'https://sqi.be/ed94a']);
 
         return $menu;
     }

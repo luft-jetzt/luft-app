@@ -7,57 +7,6 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Schadstoffe
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">
-                        Feinstaub PM<sub>10</sub>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        Stickstoffdioxid NO<sub>2</sub>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        Schwefeldioxid SO<sub>2</sub>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        Kohlenmonoxid CO
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        Ozon O<sub>3</sub>
-                    </a>
-                </div>
-            </li>
-
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Über
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{{ path('impress') }}">
-                        Impressum
-                    </a>
-                    <a class="dropdown-item" href="{{ path('privacy') }}">
-                        Datenschutz
-                    </a>
-                </div>
-            </li>
-
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Api
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{{ path('app.swagger_ui') }}">
-                        Api-Dokumentation
-                    </a>
-                    <a class="dropdown-item" href="http://sqi.be/ed94a">
-                        GitHub-Repository
-                    </a>
-                </div>
-            </li>
-        </ul>
+        {{ knp_menu_render('main_menu') }}
     </div>
 </nav>

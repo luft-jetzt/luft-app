@@ -19,16 +19,7 @@
         <link rel="stylesheet" href="{{ asset('/css/luft.min.css') }}" />
     </head>
     <body>
-    <nav id="navigation" class="navbar navbar-default">
-        <div class="container">
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                {{ knp_menu_render('main_menu') }}
-            </div>
-        </div>
-    </nav>
-
-
-    {#{% include 'Includes/menu.html.twig' %}#}
+        {% include 'Includes/menu.html.twig' %}
 
         <a href="http://sqi.be/ed94a">
             <img style="position: absolute; top: 0; right: 0; border: 0;" src="{{ asset('/img/github/black-topright.png') }}" />
