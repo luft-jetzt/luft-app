@@ -7,5 +7,11 @@
             <tag name="twig.extension" />
             <argument type="service" id="translator" />
         </service>
+
+        <service id="App\Menu\MainMenuBuilder">
+            <argument type="service" id="knp_menu.factory" />
+            <argument type="service" id="security.token_storage" />
+            <tag name="knp_menu.menu_builder" method="mainMenu" alias="main_menu" />
+        </service>
     </services>
 </container>
