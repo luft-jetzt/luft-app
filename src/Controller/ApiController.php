@@ -47,7 +47,7 @@ class ApiController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $pollutantList = $pollutionDataFactory->setCoord($station)->createDecoratedPollutantList();
+        $pollutantList = $pollutionDataFactory->setStation($station)->createDecoratedPollutantList();
 
         return new JsonResponse($serializer->serialize($this->unpackPollutantList($pollutantList), 'json'), 200, [], true);
     }
