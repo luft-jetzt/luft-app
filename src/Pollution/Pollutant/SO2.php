@@ -9,5 +9,6 @@ class SO2 extends AbstractPollutant
         $this->unitHtml = 'µg/m<sup>3</sup>';
         $this->unitPlain = 'µg/m³';
         $this->name = 'Schwefeldioxid';
+        $this->shortNameHtml = 'SO<sub>2</sub>';
     }
 }

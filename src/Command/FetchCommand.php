@@ -4,8 +4,6 @@ namespace App\Command;
 
 use App\Pollution\DataPersister\UniquePersisterInterface;
 use App\Pollution\Pollutant\PollutantInterface;
-use App\Pollution\Value\Value;
-use App\Pollution\ValueCache\ValueCacheInterface;
 use App\Provider\ProviderInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Parser\Parser;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaCOQuery;
@@ -18,26 +16,22 @@ use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\Uba1SMW;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\Uba8SMW;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\SourceFetcher;
 use App\Provider\UmweltbundesamtDe\UmweltbundesamtDeProvider;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\Table;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class FetchCommand extends Command
+class FetchCommand extends ContainerAwareCommand
 {
-    /** @var ValueCacheInterface $valueCache */
-    protected $valueCache;
-
     /** @var SourceFetcher $fetcher */
     protected $fetcher;
 
     /** @var ProviderInterface $provider */
     protected $provider;
 
-    public function __construct(?string $name = null, ValueCacheInterface $valueCache, SourceFetcher $fetcher, UmweltbundesamtDeProvider $umweltbundesamtDeProvider)
+    public function __construct(?string $name = null, SourceFetcher $fetcher, UmweltbundesamtDeProvider $umweltbundesamtDeProvider)
     {
-        $this->valueCache = $valueCache;
         $this->provider = $umweltbundesamtDeProvider;
         $this->fetcher = $fetcher;
 
@@ -48,15 +42,15 @@ class FetchCommand extends Command
     {
         $this
             ->setName('luft:fetch')
-            ->setDescription('')
+            ->setDescription('Load pollution data from Umweltbundesamt')
             ->addOption('pm10')
             ->addOption('so2')
             ->addOption('no2')
             ->addOption('o3')
             ->addOption('co')
+            ->addOption('interval', null, InputOption::VALUE_REQUIRED, 'Provide an interval in hours of data to fetch. Is overwritten by startDateTime argument')
             ->addArgument('endDateTime', InputArgument::OPTIONAL)
             ->addArgument('startDateTime', InputArgument::OPTIONAL);
-        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -64,14 +58,18 @@ class FetchCommand extends Command
         if ($input->getArgument('endDateTime')) {
             $endDateTime = new \DateTimeImmutable($input->getArgument('endDateTime'));
         } else {
-            $endDateTime = (new \DateTimeImmutable())->sub(new \DateInterval('PT1H'));
+            $endDateTime = new \DateTimeImmutable();
         }
 
         if ($input->getArgument('startDateTime')) {
             $startDateTime = new \DateTimeImmutable($input->getArgument('startDateTime'));
+        } elseif ($input->getOption('interval')) {
+            $startDateTime = $endDateTime->sub(new \DateInterval(sprintf('PT%dH', $input->getOption('interval'))));
         } else {
-            $startDateTime = null;
+            $startDateTime = $endDateTime->sub(new \DateInterval(sprintf('PT2H')));
         }
+
+        $output->writeln(sprintf('Fetching uba pollution data from <info>%s</info> to <info>%s</info>', $startDateTime->format('Y-m-d H:i:s'), $endDateTime->format('Y-m-d H:i:s')));
 
         if ($input->getOption('pm10')) {
             $this->fetchPM10($output, $endDateTime, $startDateTime);
@@ -153,9 +151,9 @@ class FetchCommand extends Command
         $parser = new Parser($query);
         $valueList = $parser->parse($response, $pollutant);
 
-        $this->valueCache
-            ->setProvider($this->provider)
-            ->addValuesToCache($valueList);
+        foreach ($valueList as $value) {
+            $this->getContainer()->get('old_sound_rabbit_mq.value_producer')->publish(serialize($value));
+        }
 
         $output->writeln(sprintf('Wrote <info>%d</info> values to cache.', count($valueList)));
     }
