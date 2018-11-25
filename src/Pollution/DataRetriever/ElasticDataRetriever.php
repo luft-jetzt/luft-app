@@ -16,7 +16,7 @@ class ElasticDataRetriever implements DataRetrieverInterface
         $this->dataFinder = $dataFinder;
     }
 
-    public function retrieveStationData(Station $station, int $pollutant): ?Data
+    public function retrieveStationData(Station $station, int $pollutant, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, string $order = 'DESC'): ?Data
     {
         $stationQuery = new \Elastica\Query\Term(['station' => $station->getId()]);
         $pollutantQuery = new \Elastica\Query\Term(['pollutant' => $pollutant]);
@@ -26,9 +26,18 @@ class ElasticDataRetriever implements DataRetrieverInterface
             ->addMust($pollutantQuery)
             ->addMust($stationQuery);
 
+        if ($fromDateTime && $dateInterval) {
+            $untilDateTime = clone $fromDateTime;
+            $untilDateTime->add($dateInterval);
+
+            $dateTimeQuery = new \Elastica\Query\Range('dateTime', ['gt' => $fromDateTime->format('Y-m-d H:i:s'), 'lte' => $untilDateTime->format('Y-m-d H:i:s'), 'format' => 'yyyy-MM-dd HH:mm:ss']);
+
+            $boolQuery->addMust($dateTimeQuery);
+        }
+
         $query = new \Elastica\Query($boolQuery);
         $query
-            ->setSort(['dateTime' => ['order' => 'desc']])
+            ->setSort(['dateTime' => ['order' => strtolower($order)]])
             ->setSize(1);
 
         $results = $this->dataFinder->find($query);

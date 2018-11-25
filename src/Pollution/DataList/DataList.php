@@ -43,6 +43,7 @@ class DataList implements DataListInterface
     {
         $this->list = [
             PollutantInterface::POLLUTANT_PM10 => [],
+            PollutantInterface::POLLUTANT_PM25 => [],
             PollutantInterface::POLLUTANT_O3 => [],
             PollutantInterface::POLLUTANT_NO2 => [],
             PollutantInterface::POLLUTANT_SO2 => [],

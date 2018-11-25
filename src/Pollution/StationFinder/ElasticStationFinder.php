@@ -29,7 +29,7 @@ class ElasticStationFinder implements StationFinderInterface
         return $this;
     }
 
-    public function findNearestStations(float $maxDistance = 20.0, int $size = 25): array
+    public function findNearestStations(float $maxDistance = 20.0, int $size = 100): array
     {
         $matchAll = new \Elastica\Query\MatchAll();
 

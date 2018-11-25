@@ -4,6 +4,8 @@ namespace App;
 
 use App\AirQuality\PollutionLevel\PollutionLevelInterface;
 use App\DependencyInjection\Compiler\PollutionLevelCompilerPass;
+use App\DependencyInjection\Compiler\ProviderCompilerPass;
+use App\Provider\ProviderInterface;
 use App\DependencyInjection\Compiler\PollutantCompilerPass;
 use App\Pollution\Pollutant\PollutantInterface;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -54,6 +56,9 @@ class Kernel extends BaseKernel
 
         $container->addCompilerPass(new PollutionLevelCompilerPass());
         $container->registerForAutoconfiguration(PollutionLevelInterface::class)->addTag('pollution_level');
+
+        $container->addCompilerPass(new ProviderCompilerPass());
+        $container->registerForAutoconfiguration(ProviderInterface::class)->addTag('air_provider');
 
         $container->addCompilerPass(new PollutantCompilerPass());
         $container->registerForAutoconfiguration(PollutantInterface::class)->addTag('pollutant');

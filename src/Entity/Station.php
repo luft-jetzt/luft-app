@@ -33,7 +33,7 @@ class Station extends Coord
     protected $stationCode;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string", nullable=true)
      * @JMS\Expose()
      */
     protected $title;
@@ -94,6 +94,12 @@ class Station extends Coord
     protected $areaType;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     * @JMS\Expose()
+     */
+    protected $provider;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Network", inversedBy="stations")
      * @ORM\JoinColumn(name="network_id", referencedColumnName="id")
      */
@@ -147,12 +153,12 @@ class Station extends Coord
         return $this;
     }
 
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function setTitle(string $title): Station
+    public function setTitle(string $title = null): Station
     {
         $this->title = $title;
 
@@ -273,6 +279,18 @@ class Station extends Coord
     public function setAreaType(string $areaType = null): Station
     {
         $this->areaType = $areaType;
+
+        return $this;
+    }
+
+    public function getProvider(): ?string
+    {
+        return $this->provider;
+    }
+
+    public function setProvider(string $provider): Station
+    {
+        $this->provider = $provider;
 
         return $this;
     }

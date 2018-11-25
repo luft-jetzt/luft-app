@@ -23,9 +23,17 @@
         {% if station.city %}
         <div class="row mt-2">
             <div class="col-12 text-center">
-                <a href="{{ path('show_city', { citySlug: station.city.slug }) }}" class="btn btn-primary" title="Zeige weitere Schadstoff-Messwerte aus {{ station.city.name }} an">
-                    Weitere Messwerte aus {{ station.city.name }}
-                </a>
+                <div class="btn-group btn-group-vertical">
+                    <a href="{{ path('show_city', { citySlug: station.city.slug }) }}" class="btn btn-primary" title="Zeige weitere Schadstoff-Messwerte aus {{ station.city.name }} an">
+                        <i class="fa fa-university"></i>
+                        Weitere Messwerte aus {{ station.city.name }}
+                    </a>
+
+                    <a href="{{ path('station_history', { stationCode: station.stationCode }) }}" class="btn btn-primary" title="Frühere Messwerte dieser Station">
+                        <i class="fa fa-line-chart"></i>
+                        Frühere Messwerte dieser Station
+                    </a>
+                </div>
             </div>
         </div>
         {% endif %}
@@ -33,6 +41,6 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="/js/leaflet.extra-markers.min.js"></script>
-    <script src="/js/map.min.js"></script>
+    <script src="{{ asset('/js/leaflet.extra-markers.min.js') }}"></script>
+    <script src="{{ asset('/js/map.min.js') }}"></script>
 {% endblock %}
