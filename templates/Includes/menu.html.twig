@@ -10,7 +10,7 @@
         {{ knp_menu_render('main_menu') }}
     </div>
 
-    {% if app.request.pathinfo == '/' %}
+    {% if app.request.get('_route') != 'frontpage' %}
     <form method="get" class="form-inline">
         <div class="input-group">
             <input type="text" class="form-control typeahead" id="query" name="query" placeholder="Suchbegriff, Postleitzahl, Stadtname…" />
