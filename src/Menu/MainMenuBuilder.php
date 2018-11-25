@@ -18,11 +18,11 @@ class MainMenuBuilder extends AbstractBuilder
             ],
         ]);
 
-        $pollutantDropdown->addChild('Feinstaub PM<sub>10</sub>');
-        $pollutantDropdown->addChild('Stickstoffdioxid NO<sub>2</sub>');
-        $pollutantDropdown->addChild('Schwefeldioxid SO<sub>2</sub>');
-        $pollutantDropdown->addChild('Kohlenmonoxid CO');
-        $pollutantDropdown->addChild('Ozon O<sub>3</sub>', ['attributes' => ['divider_append' => true,],]);
+        $pollutantDropdown->addChild('Feinstaub PM<sub>10</sub>', ['route' => 'pollutant_pm10']);
+        $pollutantDropdown->addChild('Stickstoffdioxid NO<sub>2</sub>', ['route' => 'pollutant_no2']);
+        $pollutantDropdown->addChild('Schwefeldioxid SO<sub>2</sub>', ['route' => 'pollutant_so2']);
+        $pollutantDropdown->addChild('Kohlenmonoxid CO', ['route' => 'pollutant_co']);
+        $pollutantDropdown->addChild('Ozon O<sub>3</sub>', ['route' => 'pollutant_o3', 'attributes' => ['divider_append' => true,],]);
         $pollutantDropdown->addChild('Grenzwerte', ['route' => 'limits']);
         $pollutantDropdown->addChild('Fahrverbote', ['uri' => 'https://sqi.be/i7vfr']);
 
