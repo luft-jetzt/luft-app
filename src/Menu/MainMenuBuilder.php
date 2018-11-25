@@ -65,8 +65,18 @@ class MainMenuBuilder extends AbstractBuilder
 
     protected function buildPollutantMenuItems(ItemInterface $pollutantDropdown): ItemInterface
     {
+        $pollutants = $this->pollutantList->getPollutants();
+
+        usort($pollutants, function(PollutantInterface $a, PollutantInterface $b): int {
+            if ($a->getName() === $b->getName()) {
+                return 0;
+            }
+
+            return ($a->getName() < $b->getName()) ? -1 : 1;
+        });
+
         /** @var PollutantInterface $pollutant */
-        foreach ($this->pollutantList->getPollutants() as $pollutant) {
+        foreach ($pollutants as $pollutant) {
             $routeName = sprintf('pollutant_%s', strtolower($pollutant->getIdentifier()));
 
             if ($this->router->getRouteCollection()->get($routeName)) {
