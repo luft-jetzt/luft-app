@@ -22,7 +22,9 @@ class MainMenuBuilder extends AbstractBuilder
         $pollutantDropdown->addChild('Stickstoffdioxid NO<sub>2</sub>');
         $pollutantDropdown->addChild('Schwefeldioxid SO<sub>2</sub>');
         $pollutantDropdown->addChild('Kohlenmonoxid CO');
-        $pollutantDropdown->addChild('Ozon O<sub>3</sub>');
+        $pollutantDropdown->addChild('Ozon O<sub>3</sub>', ['attributes' => ['divider_append' => true,],]);
+        $pollutantDropdown->addChild('Grenzwerte', ['route' => 'limits']);
+        $pollutantDropdown->addChild('Fahrverbote', ['uri' => 'https://sqi.be/i7vfr']);
 
         $aboutDropdown = $menu->addChild('Über', [
             'attributes' => [
