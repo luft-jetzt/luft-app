@@ -34,6 +34,11 @@
         <script src="{{ asset('/js/bloodhound.min.js') }}"></script>
         <script src="{{ asset('/js/typeahead.jquery.min.js') }}"></script>
         <script src="{{ asset('/js/leaflet.js') }}"></script>
+        <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+        <script src="{{ asset('/js/geolocation.min.js') }}"></script>
+        <script src="{{ asset('/js/typeahead.min.js') }}"></script>
+        <script src="{{ asset('/js/search.min.js') }}"></script>
 
         {% block scripts %}{% endblock %}
 
