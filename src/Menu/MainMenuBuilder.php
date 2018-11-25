@@ -2,10 +2,29 @@
 
 namespace App\Menu;
 
+use App\Pollution\Pollutant\PollutantInterface;
+use App\Pollution\PollutantList\PollutantListInterface;
+use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class MainMenuBuilder extends AbstractBuilder
 {
+    /** @var PollutantListInterface $pollutantList */
+    protected $pollutantList;
+
+    /** @var RouterInterface $router */
+    protected $router;
+
+    public function __construct(FactoryInterface $factory, TokenStorageInterface $tokenStorage, PollutantListInterface $pollutantList, RouterInterface $router)
+    {
+        $this->pollutantList = $pollutantList;
+        $this->router = $router;
+
+        parent::__construct($factory, $tokenStorage);
+    }
+
     public function mainMenu(array $options = []): ItemInterface
     {
         $menu = $this->factory->createItem('root');
@@ -18,12 +37,9 @@ class MainMenuBuilder extends AbstractBuilder
             ],
         ]);
 
-        $pollutantDropdown->addChild('Feinstaub PM<sub>10</sub>', ['route' => 'pollutant_pm10']);
-        $pollutantDropdown->addChild('Stickstoffdioxid NO<sub>2</sub>', ['route' => 'pollutant_no2']);
-        $pollutantDropdown->addChild('Schwefeldioxid SO<sub>2</sub>', ['route' => 'pollutant_so2']);
-        $pollutantDropdown->addChild('Kohlenmonoxid CO', ['route' => 'pollutant_co']);
-        $pollutantDropdown->addChild('Ozon O<sub>3</sub>', ['route' => 'pollutant_o3', 'attributes' => ['divider_append' => true,],]);
-        $pollutantDropdown->addChild('Grenzwerte', ['route' => 'limits']);
+        $this->buildPollutantMenuItems($pollutantDropdown);
+
+        $pollutantDropdown->addChild('Grenzwerte', ['route' => 'limits', 'attributes' => ['divider_prepend' => true]]);
         $pollutantDropdown->addChild('Fahrverbote', ['uri' => 'https://sqi.be/i7vfr']);
 
         $aboutDropdown = $menu->addChild('Über', [
@@ -45,5 +61,21 @@ class MainMenuBuilder extends AbstractBuilder
         $pollutantDropdown->addChild('GitHub-Repository', ['uri' => 'https://sqi.be/ed94a']);
 
         return $menu;
+    }
+
+    protected function buildPollutantMenuItems(ItemInterface $pollutantDropdown): ItemInterface
+    {
+        /** @var PollutantInterface $pollutant */
+        foreach ($this->pollutantList->getPollutants() as $pollutant) {
+            $routeName = sprintf('pollutant_%s', strtolower($pollutant->getIdentifier()));
+
+            if ($this->router->getRouteCollection()->get($routeName)) {
+                $label = sprintf('%s (%s)', $pollutant->getName(), $pollutant->getShortNameHtml());
+
+                $pollutantDropdown->addChild($label, ['route' => $routeName, 'attributes' => ['title' => sprintf('Erfahre mehr über %s', $label)]]);
+            }
+        }
+
+        return $pollutantDropdown;
     }
 }
