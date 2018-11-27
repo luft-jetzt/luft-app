@@ -29,7 +29,7 @@ class MainMenuBuilder extends AbstractBuilder
     {
         $menu = $this->factory->createItem('root');
 
-        $menu->setChildrenAttribute('class', 'nav navbar-nav');
+        $menu->setChildrenAttribute('class', 'nav navbar-nav mr-auto');
 
         $pollutantDropdown = $menu->addChild('Schadstoffe', [
             'attributes' => [
