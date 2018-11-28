@@ -24,12 +24,12 @@
                 Ortsangabe
             </h4>
 
-            <form method="get">
+            <form method="get" action="{{ path('display') }}">
                 <div class="input-group mb-3">
                     <input type="text" class="form-control form-control-lg typeahead" id="query" name="query" placeholder="Suchbegriff, Postleitzahl, Stadtname…" />
                     <div class="input-group-append">
                         <button class="btn btn-primary btn-lg" type="button" id="locate-button" title="Deinen Aufenthaltsort automatisch bestimmen">
-                            <i class="fa fa-map-pin"></i>
+                            <i class="fa fa-location-arrow"></i>
                         </button>
                     </div>
                 </div>
@@ -43,12 +43,4 @@
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block scripts %}
-<script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
-<script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-<script src="{{ asset('/js/geolocation.min.js') }}"></script>
-<script src="{{ asset('/js/typeahead.min.js') }}"></script>
-<script src="{{ asset('/js/search.min.js') }}"></script>
 {% endblock %}
