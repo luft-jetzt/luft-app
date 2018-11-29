@@ -22,7 +22,7 @@
                 </h2>
 
                 <p class="lead">
-                    An der Station <a href="{{ path('station', { stationCode: station.stationCode } ) }}">{{ station.stationCode }}</a>{% if station.city %} in <a href="{{ path('show_city', { citySlug: station.city.slug }) }}" title="Zeige weitere Schadstoff-Messwerte aus {{ station.city.name }} an">{{ station.city.name }}</a>{% endif %} wurden vom {{ fromDateTime|date('d.m.Y') }} bis zum {{ untilDateTime|date('d.m.Y') }} die folgenden Werte gemessen:
+                    An der Station <a href="{{ path('station', { stationCode: station.stationCode } ) }}" title="Mehr Informationen über die Luftmessstation {{ station.stationCode }}{% if station.city %} in {{ station.city.name }}{% endif %}">{{ station.stationCode }}</a>{% if station.city %} in <a href="{{ path('show_city', { citySlug: station.city.slug }) }}" title="Zeige weitere Schadstoff-Messwerte aus {{ station.city.name }} an">{{ station.city.name }}</a>{% endif %} wurden vom {{ fromDateTime|date('d.m.Y') }} bis zum {{ untilDateTime|date('d.m.Y') }} die folgenden Werte gemessen:
                 </p>
             </div>
         </div>
