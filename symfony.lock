@@ -1,4 +1,16 @@
 {
+    "cache/adapter-common": {
+        "version": "1.1.0"
+    },
+    "cache/array-adapter": {
+        "version": "1.0.1"
+    },
+    "cache/hierarchical-cache": {
+        "version": "1.0.0"
+    },
+    "cache/tag-interop": {
+        "version": "1.0.0"
+    },
     "calderacc/geobasic": {
         "version": "0.2"
     },
@@ -191,6 +203,9 @@
     "league/csv": {
         "version": "9.1.4"
     },
+    "league/geotools": {
+        "version": "0.8.0"
+    },
     "maxh/php-nominatim": {
         "version": "1.2.3"
     },
@@ -293,11 +308,17 @@
     "psr/simple-cache": {
         "version": "1.0.1"
     },
+    "react/event-loop": {
+        "version": "v0.4.3"
+    },
     "react/promise": {
         "version": "v2.5.1"
     },
     "ruflin/elastica": {
         "version": "6.0.1"
+    },
+    "salavert/time-ago-in-words": {
+        "version": "v1.7"
     },
     "sensio/framework-extra-bundle": {
         "version": "4.0",

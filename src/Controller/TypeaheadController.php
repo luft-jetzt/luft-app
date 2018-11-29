@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\City;
+use App\Entity\Station;
 use App\Geocoding\Query\GeoQueryInterface;
-use Curl\Curl;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +12,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 class TypeaheadController extends AbstractController
 {
-    public function prefetchAction(RouterInterface $router): Response
+    public function prefetchCitiesAction(RouterInterface $router): Response
     {
         $cityList = $this->getDoctrine()->getRepository(City::class)->findAll();
 
@@ -27,6 +27,32 @@ class TypeaheadController extends AbstractController
                 'name' => $city->getName(),
                 'icon' => 'university',
             ]];
+        }
+
+        return new JsonResponse($data);
+    }
+
+    public function prefetchStationsAction(RouterInterface $router): Response
+    {
+        $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStations();
+
+        $data = [];
+
+        /** @var Station $station */
+        foreach ($stationList as $station) {
+            $url = $router->generate('station', ['stationCode' => $station->getStationCode()]);
+
+            $value = [
+                'url' => $url,
+                'name' => $station->getStationCode(),
+                'icon' => 'thermometer-half',
+            ];
+
+            if ($station->getCity()) {
+                $value['city'] = $station->getCity()->getName();
+            }
+
+            $data[] = ['value' => $value];
         }
 
         return new JsonResponse($data);

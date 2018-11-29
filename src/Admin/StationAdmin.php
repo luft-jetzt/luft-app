@@ -28,19 +28,19 @@ class StationAdmin extends AbstractAdmin
         $formMapper
             ->with('City', ['class' => 'col-md-6'])
             ->add('city', EntityType::class, [
-                'required' => true,
+                'required' => false,
                 'class' => City::class,
+                'empty_data' => null,
                 'query_builder' => function (CityRepository $cr) {
                     return $cr->createQueryBuilder('c')
                         ->orderBy('c.name', 'ASC');
                 },
             ])
-            ->add('title', TextType::class, ['required' => true])
+            ->add('title', TextType::class, ['required' => false])
             ->end()
 
             ->with('Code', ['class' => 'col-md-6'])
             ->add('stationCode', TextType::class, ['required' => true])
-            ->add('stateCode', TextType::class, ['required' => true])
             ->end()
 
             ->with('Coord', ['class' => 'col-md-6'])
@@ -51,12 +51,12 @@ class StationAdmin extends AbstractAdmin
 
             ->with('Type', ['class' => 'col-md-6'])
             ->add('stationType', ChoiceType::class, [
-                'required' => true,
+                'required' => false,
                 'choices' => StationType::getChoices(),
                 'choice_translation_domain' => 'messages',
             ])
             ->add('areaType', ChoiceType::class, [
-                'required' => true,
+                'required' => false,
                 'choices' => AreaType::getChoices(),
                 'choice_translation_domain' => 'messages',
             ])
@@ -64,7 +64,7 @@ class StationAdmin extends AbstractAdmin
 
             ->with('DateTime', ['class' => 'col-md-6'])
             ->add('fromDate', DateType::class, [
-                'required' => true,
+                'required' => false,
                 'widget' => 'single_text',
             ])
             ->add('untilDate', DateType::class, [
@@ -80,7 +80,6 @@ class StationAdmin extends AbstractAdmin
         $datagridMapper
             ->add('city')
             ->add('stationCode')
-            ->add('stateCode')
             ->add('title')
             ->add('latitude')
             ->add('longitude')

@@ -10,6 +10,13 @@
             <tag name="sonata.admin" manager-type="orm" group="Luft" label="City"/>
         </service>
 
+        <service id="App\Admin\NetworkAdmin">
+            <argument/>
+            <argument type="string">App\Entity\Network</argument>
+            <argument/>
+            <tag name="sonata.admin" manager-type="orm" group="Luft" label="Network"/>
+        </service>
+
         <service id="App\Admin\StationAdmin">
             <argument/>
             <argument type="string">App\Entity\Station</argument>

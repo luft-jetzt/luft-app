@@ -62,7 +62,7 @@ function createCityMap(id) {
         var color = $(this).data('station-color');
 
         var markerIcon = L.ExtraMarkers.icon({
-            icon: 'fa-circle-o',
+            icon: 'fa-thermometer-half',
             markerColor: color,
             shape: 'circle',
             prefix: 'fa'
@@ -112,7 +112,7 @@ function createCoordMap(id) {
             var color = $(this).data('station-color');
 
             var markerIcon = L.ExtraMarkers.icon({
-                icon: 'fa-circle-o',
+                icon: 'fa-thermometer-half',
                 markerColor: color,
                 shape: 'circle',
                 prefix: 'fa'

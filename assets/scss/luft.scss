@@ -6,3 +6,7 @@ a.no-underline {
 header #logo a {
   color: black;
 }
+
+.dropdown-menu, span.twitter-typeahead .tt-menu {
+  z-index: 5000 !important;
+}

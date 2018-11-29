@@ -35,17 +35,20 @@ class ApiController extends AbstractController
      *     description="station code"
      * )
      */
-    public function displayStationAction(SerializerInterface $serializer, string $stationCode, PollutionDataFactory $pollutionDataFactory): Response
-    {
+    public function displayStationAction(
+        SerializerInterface $serializer,
+        string $stationCode,
+        PollutionDataFactory $pollutionDataFactory
+    ): Response {
         $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
 
         if (!$station) {
             throw $this->createNotFoundException();
         }
 
-        $boxList = $pollutionDataFactory->setCoord($station)->createDecoratedBoxList();
+        $pollutantList = $pollutionDataFactory->setCoord($station)->createDecoratedPollutantList();
 
-        return new JsonResponse($serializer->serialize($boxList, 'json'), 200, [], true);
+        return new JsonResponse($serializer->serialize($this->unpackPollutantList($pollutantList), 'json'), 200, [], true);
     }
 
     /**
@@ -61,8 +64,11 @@ class ApiController extends AbstractController
      *   )
      * )
      */
-    public function displayCityAction(SerializerInterface $serializer, PollutionDataFactory $pollutionDataFactory, string $citySlug): Response
-    {
+    public function displayCityAction(
+        SerializerInterface $serializer,
+        PollutionDataFactory $pollutionDataFactory,
+        string $citySlug
+    ): Response {
         $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
 
         if (!$city) {
@@ -106,17 +112,20 @@ class ApiController extends AbstractController
      *   )
      * )
      */
-    public function displayAction(Request $request, SerializerInterface $serializer, PollutionDataFactory $pollutionDataFactory): Response
-    {
+    public function displayAction(
+        Request $request,
+        SerializerInterface $serializer,
+        PollutionDataFactory $pollutionDataFactory
+    ): Response {
         $coord = $this->getCoordByRequest($request);
 
         if (!$coord) {
             throw $this->createNotFoundException();
         }
 
-        $boxList = $pollutionDataFactory->setCoord($coord)->createDecoratedBoxList();
+        $pollutantList = $pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();
 
-        return new JsonResponse($serializer->serialize($boxList, 'json'), 200, [], true);
+        return new JsonResponse($serializer->serialize($this->unpackPollutantList($pollutantList), 'json'), 200, [], true);
     }
 
     /**
@@ -187,5 +196,16 @@ class ApiController extends AbstractController
         }
 
         return new JsonResponse($serializer->serialize($stationList, 'json'), 200, [], true);
+    }
+
+    protected function unpackPollutantList(array $pollutantList): array
+    {
+        $boxList = [];
+
+        foreach ($pollutantList as $pollutant) {
+            $boxList = array_merge($boxList, $pollutant);
+        }
+
+        return $boxList;
     }
 }

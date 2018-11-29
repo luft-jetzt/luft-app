@@ -10,7 +10,7 @@
 
     <route id="api_station_station" path="/api/station/{stationCode}" methods="GET">
         <default key="_controller">App\Controller\ApiController::stationAction</default>
-        <requirement key="stationCode">^([A-Z]{4,4})([0-9]{3,3})$</requirement>
+        <requirement key="stationCode">^([A-Z]{2,6})([A-Z0-9]{0,8})$</requirement>
     </route>
 
     <route id="api_station_all" path="/api/station" methods="GET">
@@ -27,8 +27,8 @@
     </route>
 
     <route id="api_station" path="/api/{stationCode}" methods="GET">
-        <default key="_controller">App\Controller\ApiController::stationAction</default>
-        <requirement key="stationCode">^([A-Z]{4,4})([0-9]{3,3})$</requirement>
+        <default key="_controller">App\Controller\ApiController::displayStationAction</default>
+        <requirement key="stationCode">^([A-Z]{2,6})([A-Z0-9]{0,8})$</requirement>
     </route>
 
     <route id="api_city" path="/api/{citySlug}" methods="GET">

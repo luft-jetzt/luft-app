@@ -4,8 +4,13 @@
         xsi:schemaLocation="http://symfony.com/schema/routing
         http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="prefetch" path="/search/prefetch">
-        <default key="_controller">App\Controller\TypeaheadController::prefetchAction</default>
+    <route id="prefetch_cities" path="/search/prefetch-cities">
+        <default key="_controller">App\Controller\TypeaheadController::prefetchCitiesAction</default>
+        <option key="expose">true</option>
+    </route>
+
+    <route id="prefetch_stations" path="/search/prefetch-stations">
+        <default key="_controller">App\Controller\TypeaheadController::prefetchStationsAction</default>
         <option key="expose">true</option>
     </route>
 
