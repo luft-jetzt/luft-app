@@ -8,6 +8,9 @@ use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
 use App\Util\DateTimeUtil;
+use Elastica\Aggregation\DateHistogram;
+use FOS\ElasticaBundle\Finder\FinderInterface;
+use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -40,9 +43,45 @@ class StationController extends AbstractController
 
     public function limitsAction(): Response
     {
-        return $this->render('Station/limits.html.twig');
+        /** @var PaginatedFinderInterface $finder */
+        $finder = $this->get('fos_elastica.finder.air_data.data');
+
+        $stationQuery = new \Elastica\Query\Term(['station' => 157]);
+        $pollutantQuery = new \Elastica\Query\Term(['pollutant' => 1]);
+
+        $boolQuery = new \Elastica\Query\BoolQuery();
+        $boolQuery
+            ->addMust($pollutantQuery)
+            ->addMust($stationQuery);
+
+        $fromDateTime = new \DateTime('2018-10-01');
+        $untilDateTime = new \DateTime('2018-10-10');
+
+        $dateTimeQuery = new \Elastica\Query\Range('dateTime', ['gt' => $fromDateTime->format('Y-m-d H:i:s'), 'lte' => $untilDateTime->format('Y-m-d H:i:s'), 'format' => 'yyyy-MM-dd HH:mm:ss']);
+
+        $boolQuery->addMust($dateTimeQuery);
+
+        $histogram = new \Elastica\Aggregation\DateHistogram('value', 'dateTime', '1D');
+        $histogram->setTimezone('Europe/Berlin');
+        $histogram->setFormat('yyyy-MM-dd');
+
+        $max = new \Elastica\Aggregation\Max('maxValue');
+        $max->setField('value');
+
+        $histogram->addAggregation($max);
+
+        $query = new \Elastica\Query($boolQuery);
+        $query->addAggregation($histogram);
+
+        $results = $finder->findPaginated($query);
+
+        $aggregations = $results->getAdapter()->getAggregations();
+
+        return $this->render('Station/limits.html.twig', [
+            'results' => $aggregations,
+        ]);
     }
-    
+
     public function historyAction(Request $request, string $stationCode, HistoryDataFactoryInterface $historyDataFactory): Response
     {
         if ($untilDateTimeParam = $request->query->get('until')) {
