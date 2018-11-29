@@ -60,17 +60,16 @@ class StationController extends AbstractController
 
         $boolQuery->addMust($dateTimeQuery);
 
-        $histogram = new \Elastica\Aggregation\DateHistogram('value', 'dateTime', '1D');
+        $histogram = new \Elastica\Aggregation\DateHistogram('value_bucket', 'dateTime', '1D');
         $histogram->setTimezone('Europe/Berlin');
         $histogram->setFormat('yyyy-MM-dd');
 
-        $max = new \Elastica\Aggregation\Max('maxValue');
+        $max = new \Elastica\Aggregation\Max('max_value');
         $max->setField('value');
-
-        $histogram->addAggregation($max);
 
         $query = new \Elastica\Query($boolQuery);
         $query->addAggregation($histogram);
+        $histogram->addAggregation($max);
 
         $results = $finder->findPaginated($query);
 
