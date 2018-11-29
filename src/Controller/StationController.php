@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Station;
-use App\Pollution\PollutionDataFactory\HistoryDataFactory;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
@@ -27,7 +26,7 @@ class StationController extends AbstractController
             ->createDecoratedPollutantList();
 
         if ($station->getCity()) {
-            $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s in %s', $station->getStationCode(), $station->getCity()->getName()));
+            $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s — Feinstaub, Stickstoffdioxid und Ozon in %s', $station->getStationCode(), $station->getCity()->getName()));
         } else {
             $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s', $station->getStationCode()));
         }
