@@ -47,15 +47,17 @@ class StationController extends AbstractController
             throw $this->createNotFoundException();
         }
 
+        $now = new \DateTime();
+
         $limitAnalysis
             ->setStation($station)
-            ->setFromDateTime(new \DateTime('2018-10-01 00:00:00'))
-            ->setUntilDateTime(new \DateTime('2018-10-31 23:59:59'));
+            ->setFromDateTime(DateTimeUtil::getYearStartDateTime($now))
+            ->setUntilDateTime(DateTimeUtil::getYearEndDateTime($now));
 
-        $aggregations = $limitAnalysis->analyze();
+        $exceedance = $limitAnalysis->analyze();
 
         return $this->render('Station/limits.html.twig', [
-            'results' => $aggregations,
+            'exceedanceJson' => json_encode($exceedance),
         ]);
     }
 

@@ -9,11 +9,15 @@
         </div>
     </div>
 
-    {{ dump(results) }}
-
 {% endblock %}
 
 {% block scripts %}
+    <script>
+        var exceedanceData = {{ exceedanceJson|raw }};
+    </script>
+
     <script src="{{ asset('/js/calendar_heatmap.bundle.js') }}"></script>
     <script src="{{ asset('/js/limit-violation.min.js') }}"></script>
+
+
 {% endblock %}

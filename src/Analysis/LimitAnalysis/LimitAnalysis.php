@@ -56,6 +56,18 @@ class LimitAnalysis implements LimitAnalysisInterface
         return $this;
     }
 
+    protected function convertToList(array $buckets): array
+    {
+        $resultList = [];
+
+        /** @var array $bucket */
+        foreach ($buckets as $bucket) {
+            $resultList[] = ['date' => $bucket['key_as_string'], 'value' => array_pop($bucket['max_value'])];
+        }
+
+        return $resultList;
+    }
+
     public function analyze(): array
     {
         $stationQuery = new \Elastica\Query\Term(['station' => $this->station->getId()]);
@@ -87,6 +99,8 @@ class LimitAnalysis implements LimitAnalysisInterface
 
         $results = $this->finder->findPaginated($query);
 
-        return $results->getAdapter()->getAggregations();
+        $buckets = $results->getAdapter()->getAggregations();
+
+        return $this->convertToList($buckets['value_bucket']['buckets']);
     }
 }
