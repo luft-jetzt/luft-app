@@ -2,14 +2,12 @@
 
 namespace App\Controller;
 
+use App\Analysis\LimitAnalysis\LimitAnalysis;
 use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
 use App\Util\DateTimeUtil;
-use Elastica\Aggregation\DateHistogram;
-use FOS\ElasticaBundle\Finder\FinderInterface;
-use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -40,40 +38,21 @@ class StationController extends AbstractController
         ]);
     }
 
-    public function limitsAction(): Response
+    public function limitsAction(LimitAnalysis $limitAnalysis, string $stationCode): Response
     {
-        /** @var PaginatedFinderInterface $finder */
-        $finder = $this->get('fos_elastica.finder.air_data.data');
+        /** @var Station $station */
+        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
 
-        $stationQuery = new \Elastica\Query\Term(['station' => 157]);
-        $pollutantQuery = new \Elastica\Query\Term(['pollutant' => 1]);
+        if (!$station) {
+            throw $this->createNotFoundException();
+        }
 
-        $boolQuery = new \Elastica\Query\BoolQuery();
-        $boolQuery
-            ->addMust($pollutantQuery)
-            ->addMust($stationQuery);
+        $limitAnalysis
+            ->setStation($station)
+            ->setFromDateTime(new \DateTime('2018-10-01 00:00:00'))
+            ->setUntilDateTime(new \DateTime('2018-10-31 23:59:59'));
 
-        $fromDateTime = new \DateTime('2018-10-01');
-        $untilDateTime = new \DateTime('2018-10-10');
-
-        $dateTimeQuery = new \Elastica\Query\Range('dateTime', ['gt' => $fromDateTime->format('Y-m-d H:i:s'), 'lte' => $untilDateTime->format('Y-m-d H:i:s'), 'format' => 'yyyy-MM-dd HH:mm:ss']);
-
-        $boolQuery->addMust($dateTimeQuery);
-
-        $histogram = new \Elastica\Aggregation\DateHistogram('value_bucket', 'dateTime', '1D');
-        $histogram->setTimezone('Europe/Berlin');
-        $histogram->setFormat('yyyy-MM-dd');
-
-        $max = new \Elastica\Aggregation\Max('max_value');
-        $max->setField('value');
-
-        $query = new \Elastica\Query($boolQuery);
-        $query->addAggregation($histogram);
-        $histogram->addAggregation($max);
-
-        $results = $finder->findPaginated($query);
-
-        $aggregations = $results->getAdapter()->getAggregations();
+        $aggregations = $limitAnalysis->analyze();
 
         return $this->render('Station/limits.html.twig', [
             'results' => $aggregations,
