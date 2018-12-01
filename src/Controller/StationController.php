@@ -51,8 +51,8 @@ class StationController extends AbstractController
 
         $limitAnalysis
             ->setStation($station)
-            ->setFromDateTime(DateTimeUtil::getYearStartDateTime($now))
-            ->setUntilDateTime(DateTimeUtil::getYearEndDateTime($now));
+            ->setFromDateTime(DateTimeUtil::getMonthStartDateTime($now))
+            ->setUntilDateTime(DateTimeUtil::getMonthEndDateTime($now));
 
         $exceedance = $limitAnalysis->analyze();
 

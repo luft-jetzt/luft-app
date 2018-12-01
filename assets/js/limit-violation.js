@@ -8,4 +8,5 @@ calendar_heatmap.create({
     date_format: '%Y-%m-%d',
     missing_as_zero: true,
     title: 'Daily Measurements of Something Interesting',
+    show_toggle: false,
 });
