@@ -47,7 +47,7 @@ class StationController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $now = new \DateTime();
+        $now = new \DateTime('2018-11-30');
 
         $limitAnalysis
             ->setStation($station)
