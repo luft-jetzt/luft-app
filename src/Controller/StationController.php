@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Analysis\LimitAnalysis\LimitAnalysis;
+use App\Analysis\KomfortofenAnalysis\KomfortofenAnalysis;
 use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
@@ -38,7 +38,7 @@ class StationController extends AbstractController
         ]);
     }
 
-    public function limitsAction(LimitAnalysis $limitAnalysis, string $stationCode): Response
+    public function limitsAction(KomfortofenAnalysis $limitAnalysis, string $stationCode): Response
     {
         /** @var Station $station */
         $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
@@ -56,6 +56,7 @@ class StationController extends AbstractController
 
         $exceedance = $limitAnalysis->analyze();
 
+        var_dump($exceedance);
         return $this->render('Station/limits.html.twig', [
             'exceedanceJson' => json_encode($exceedance),
         ]);
