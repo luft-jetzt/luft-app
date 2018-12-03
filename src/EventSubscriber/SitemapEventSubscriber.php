@@ -2,6 +2,7 @@
 
 namespace App\EventSubscriber;
 
+use App\Entity\City;
 use App\Entity\Station;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -35,6 +36,7 @@ class SitemapEventSubscriber implements EventSubscriberInterface
     public function populate(SitemapPopulateEvent $event): void
     {
         $this->registerStationUrls($event->getUrlContainer());
+        $this->registerCityUrls($event->getUrlContainer());
     }
 
     public function registerStationUrls(UrlContainerInterface $urlContainer): void
@@ -46,6 +48,18 @@ class SitemapEventSubscriber implements EventSubscriberInterface
             $url = $this->urlGenerator->generate('station', ['stationCode' => $station->getStationCode()], UrlGeneratorInterface::ABSOLUTE_URL);
 
             $urlContainer->addUrl(new UrlConcrete($url), 'station');
+        }
+    }
+
+    public function registerCityUrls(UrlContainerInterface $urlContainer): void
+    {
+        $cityList = $this->registry->getRepository(City::class)->findCitiesWithActiveStations();
+
+        /** @var City $city */
+        foreach ($cityList as $city) {
+            $url = $this->urlGenerator->generate('show_city', ['citySlug' => $city->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
+
+            $urlContainer->addUrl(new UrlConcrete($url), 'city');
         }
     }
 }
