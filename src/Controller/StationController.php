@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Analysis\KomfortofenAnalysis\KomfortofenAnalysis;
+use App\Analysis\LimitAnalysis\LimitAnalysisInterface;
 use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
@@ -38,7 +38,7 @@ class StationController extends AbstractController
         ]);
     }
 
-    public function limitsAction(KomfortofenAnalysis $limitAnalysis, string $stationCode): Response
+    public function limitsAction(LimitAnalysisInterface $limitAnalysis, string $stationCode): Response
     {
         /** @var Station $station */
         $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
