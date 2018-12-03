@@ -4,26 +4,36 @@ namespace App\EventSubscriber;
 
 use App\Entity\City;
 use App\Entity\Station;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use App\Pollution\Pollutant\PollutantInterface;
+use App\Pollution\PollutantList\PollutantListInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
 use Presta\SitemapBundle\Service\UrlContainerInterface;
 use Presta\SitemapBundle\Sitemap\Url\UrlConcrete;
+use Symfony\Component\Routing\RouterInterface;
 
 class SitemapEventSubscriber implements EventSubscriberInterface
 {
     /** @var UrlGeneratorInterface $urlGenerator */
-    private $urlGenerator;
+    protected $urlGenerator;
+
+    /** @var RouterInterface $router */
+    protected $router;
 
     /** @var RegistryInterface $registry */
-    private $registry;
+    protected $registry;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, RegistryInterface $registry)
+    /** @var PollutantListInterface $pollutantList */
+    protected $pollutantList;
+
+    public function __construct(UrlGeneratorInterface $urlGenerator, RouterInterface $router, RegistryInterface $registry, PollutantListInterface $pollutantList)
     {
         $this->urlGenerator = $urlGenerator;
+        $this->router = $router;
         $this->registry = $registry;
+        $this->pollutantList = $pollutantList;
     }
 
     public static function getSubscribedEvents(): array
@@ -37,6 +47,7 @@ class SitemapEventSubscriber implements EventSubscriberInterface
     {
         $this->registerStationUrls($event->getUrlContainer());
         $this->registerCityUrls($event->getUrlContainer());
+        $this->registerPollutantUrls($event->getUrlContainer());
     }
 
     public function registerStationUrls(UrlContainerInterface $urlContainer): void
@@ -60,6 +71,20 @@ class SitemapEventSubscriber implements EventSubscriberInterface
             $url = $this->urlGenerator->generate('show_city', ['citySlug' => $city->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
 
             $urlContainer->addUrl(new UrlConcrete($url), 'city');
+        }
+    }
+
+    public function registerPollutantUrls(UrlContainerInterface $urlContainer): void
+    {
+        /** @var PollutantInterface $pollutant */
+        foreach ($this->pollutantList->getPollutants() as $pollutant) {
+            $routeName = sprintf('pollutant_%s', $pollutant->getIdentifier());
+
+            if ($this->router->getRouteCollection()->get($routeName)) {
+                $url = $this->urlGenerator->generate($routeName, [], UrlGeneratorInterface::ABSOLUTE_URL);
+
+                $urlContainer->addUrl(new UrlConcrete($url), 'pollutant');
+            }
         }
     }
 }
