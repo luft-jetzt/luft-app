@@ -62,7 +62,13 @@ class KomfortofenAnalysis implements KomfortofenAnalysisInterface
 
         /** @var array $bucket */
         foreach ($buckets as $bucket) {
-            $resultList[] = ['date' => $bucket['key_as_string'], 'value' => array_pop($bucket['max_value'])];
+            if (array_key_exists('derivative', $bucket)) {
+                $resultList[] = [
+                    'dateTime' => $bucket['key_as_string'],
+                    'value' => array_pop($bucket['max_agg']),
+                    'derivative' => array_pop($bucket['derivative'])
+                ];
+            }
         }
 
         return $resultList;
@@ -86,21 +92,25 @@ class KomfortofenAnalysis implements KomfortofenAnalysisInterface
 
         $boolQuery->addMust($dateTimeQuery);
 
-        $histogram = new \Elastica\Aggregation\DateHistogram('value_bucket', 'dateTime', '1D');
+        $histogram = new \Elastica\Aggregation\DateHistogram('value_agg', 'dateTime', '1H');
         $histogram->setTimezone('Europe/Berlin');
-        $histogram->setFormat('yyyy-MM-dd');
+        $histogram->setFormat('yyyy-MM-dd HH:mm:ss');
 
-        $max = new \Elastica\Aggregation\Max('max_value');
+        $max = new \Elastica\Aggregation\Max('max_agg');
         $max->setField('value');
+        $histogram->addAggregation($max);
+
+        $derive = new \Elastica\Aggregation\Derivative('derivative');
+        $derive->setBucketsPath('max_agg');
+        $histogram->addAggregation($derive);
 
         $query = new \Elastica\Query($boolQuery);
         $query->addAggregation($histogram);
-        $histogram->addAggregation($max);
 
         $results = $this->finder->findPaginated($query);
 
         $buckets = $results->getAdapter()->getAggregations();
 
-        return $this->convertToList($buckets['value_bucket']['buckets']);
+        return $this->convertToList($buckets['value_agg']['buckets']);
     }
 }
