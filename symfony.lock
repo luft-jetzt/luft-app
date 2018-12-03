@@ -290,6 +290,9 @@
     "phpoption/phpoption": {
         "version": "1.5.0"
     },
+    "presta/sitemap-bundle": {
+        "version": "v1.5.3"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
