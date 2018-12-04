@@ -8,7 +8,8 @@ fos_elastica:
             types:
                 station:
                     properties:
-                        pin: { type: geo_point }
+                        pin:
+                            type: geo_point
                         fromDate:
                             type: date
                             format: "yyyy-MM-dd HH:mm:ss"
