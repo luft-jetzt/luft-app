@@ -29,11 +29,13 @@ fos_elastica:
             types:
                 data:
                     properties:
-                        pollutant: ~
                         value:
                             type: float
+                        pollutant:
+                            type: integer
                         station:
                             property_path: stationId
+                            type: float
                         dateTime:
                             type: date
                             format: "yyyy-MM-dd HH:mm:ss"
