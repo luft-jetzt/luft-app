@@ -3,8 +3,6 @@
 namespace App\Analysis\KomfortofenAnalysis;
 
 use App\Entity\Data;
-use App\Entity\Station;
-use App\Pollution\StationCache\StationCacheInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class KomfortofenModelFactory implements KomfortofenModelFactoryInterface
@@ -31,6 +29,22 @@ class KomfortofenModelFactory implements KomfortofenModelFactoryInterface
                 $resultList[] = new KomfortofenModel($data->getStation(), $data, $slope);
             }
         }
+
+        return $this->sortResultList($resultList);
+    }
+
+    /**
+     * @TODO this should be done in elasticsearch
+     */
+    protected function sortResultList(array $resultList = []): array
+    {
+        usort($resultList, function(KomfortofenModel $a, KomfortofenModel $b): int
+        {
+            if ($a->getSlope() === $b->getSlope()) {
+                return 0;
+            }
+            return ($a->getSlope() > $b->getSlope()) ? -1 : 1;
+        });
 
         return $resultList;
     }

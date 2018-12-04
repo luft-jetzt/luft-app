@@ -1,0 +1,47 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2>
+                    Komfortofen-Finder
+                </h2>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Station
+                            </th>
+
+                            <th>
+                                PM<sub>10</sub>
+                            </th>
+                            
+                            <th>
+                                Zeitpunkt
+                            </th>
+                        </tr>
+                    </thead>
+                    {% for ofen in ofenList %}
+                        <tr>
+                            <td>
+                                {{ ofen.station.stationCode }}
+                            </td>
+
+                            <td>
+                                {{ ofen.data.value }} <span class="text-danger">+ {{ ofen.slope }}</span>
+                            </td>
+
+                            <td>
+                                {{ ofen.data.dateTime|date('d.m.Y H:i') }} Uhr
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

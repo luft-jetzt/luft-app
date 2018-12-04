@@ -8,7 +8,7 @@ use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 class KomfortofenAnalysis implements KomfortofenAnalysisInterface
 {
     /** @var float $minSlope */
-    protected $minSlope = 50.0;
+    protected $minSlope = 2.0;
 
     /** @var PollutantInterface $pollutant */
     protected $pollutant;
@@ -79,9 +79,14 @@ class KomfortofenAnalysis implements KomfortofenAnalysisInterface
             ->addMust($pollutantQuery)
             ->addMust($dateTimeQuery);
 
+
         $histogram = new \Elastica\Aggregation\DateHistogram('histogram_agg', 'dateTime', '1H');
         $histogram->setTimezone('Europe/Berlin');
         $histogram->setFormat('yyyy-MM-dd HH:mm:ss');
+
+        $termAgg = new \Elastica\Aggregation\Terms('station_agg');
+        $termAgg->setField('station');
+        $termAgg->addAggregation($histogram);
 
         $max = new \Elastica\Aggregation\Max('max_agg');
         $max->setField('value');
@@ -98,16 +103,14 @@ class KomfortofenAnalysis implements KomfortofenAnalysisInterface
         $histogram->addAggregation($bucketSelector);
 
         $topHistsAgg = new \Elastica\Aggregation\TopHits('top_hits_agg');
+        $topHistsAgg->setSize(1);
         $histogram->addAggregation($topHistsAgg);
 
         $query = new \Elastica\Query($boolQuery);
         $query->addAggregation($histogram);
 
-        //echo json_encode($query->toArray());
-
         $results = $this->finder->findPaginated($query);
 
-        //var_dump(count($results));
         $buckets = $results->getAdapter()->getAggregations();
 
         return $this->convertToList($buckets['histogram_agg']['buckets']);

@@ -32,6 +32,7 @@ fos_elastica:
                         pollutant: ~
                         station:
                             property_path: stationId
+                            type: integer
                         dateTime:
                             type: date
                             format: "yyyy-MM-dd HH:mm:ss"

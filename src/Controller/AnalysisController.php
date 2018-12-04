@@ -18,10 +18,8 @@ class AnalysisController extends AbstractController
 
         $ofens = $komfortofenAnalysis->analyze();
 
-        foreach ($ofens as $ofen) {
-            var_dump($ofen);
-        }
-
-        return new Response('foo');
+        return $this->render('Analysis/komfortofen.html.twig', [
+            'ofenList' => $ofens,
+        ]);
     }
 }

@@ -22,4 +22,19 @@ class KomfortofenModel
         $this->station = $station;
         $this->slope = $slope;
     }
+
+    public function getStation(): Station
+    {
+        return $this->station;
+    }
+
+    public function getData(): Data
+    {
+        return $this->data;
+    }
+
+    public function getSlope(): float
+    {
+        return $this->slope;
+    }
 }
