@@ -30,6 +30,8 @@ fos_elastica:
                 data:
                     properties:
                         pollutant: ~
+                        value:
+                            type: float
                         station:
                             property_path: stationId
                         dateTime:
