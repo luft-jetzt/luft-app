@@ -16,9 +16,11 @@ class AnalysisController extends AbstractController
             ->setFromDateTime(DateTimeUtil::getMonthStartDateTime($now))
             ->setUntilDateTime(DateTimeUtil::getMonthEndDateTime($now));
 
-        $exceedance = $komfortofenAnalysis->analyze();
+        $ofens = $komfortofenAnalysis->analyze();
 
-        var_dump($exceedance);
+        foreach ($ofens as $ofen) {
+            var_dump($ofen);
+        }
 
         return new Response('foo');
     }

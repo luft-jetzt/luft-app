@@ -2,14 +2,13 @@
 
 namespace App\Analysis\KomfortofenAnalysis;
 
-use App\Entity\Station;
 use App\Pollution\Pollutant\PollutantInterface;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 
 class KomfortofenAnalysis implements KomfortofenAnalysisInterface
 {
-    /** @var Station $station */
-    protected $station;
+    /** @var float $minSlope */
+    protected $minSlope = 50.0;
 
     /** @var PollutantInterface $pollutant */
     protected $pollutant;
@@ -23,14 +22,18 @@ class KomfortofenAnalysis implements KomfortofenAnalysisInterface
     /** @var \DateTimeInterface $untilDateTime */
     protected $untilDateTime;
 
-    public function __construct(PaginatedFinderInterface $finder)
+    /** @var KomfortofenModelFactoryInterface $komfortofenModelFactory */
+    protected $komfortofenModelFactory;
+
+    public function __construct(PaginatedFinderInterface $finder, KomfortofenModelFactoryInterface $komfortofenModelFactory)
     {
         $this->finder = $finder;
+        $this->komfortofenModelFactory = $komfortofenModelFactory;
     }
 
-    public function setStation(Station $station): KomfortofenAnalysisInterface
+    public function setMinSlope(float $minSlope): KomfortofenAnalysisInterface
     {
-        $this->station = $station;
+        $this->minSlope = $minSlope;
 
         return $this;
     }
@@ -58,25 +61,11 @@ class KomfortofenAnalysis implements KomfortofenAnalysisInterface
 
     protected function convertToList(array $buckets): array
     {
-        $resultList = [];
-
-        /** @var array $bucket */
-        foreach ($buckets as $bucket) {
-            if (array_key_exists('derivative_agg', $bucket)) {
-                $resultList[] = [
-                    'dateTime' => $bucket['key_as_string'],
-                    'value' => array_pop($bucket['max_agg']),
-                    'derivative' => array_pop($bucket['derivative_agg'])
-                ];
-            }
-        }
-
-        return $resultList;
+        return $this->komfortofenModelFactory->convert($buckets);
     }
 
     public function analyze(): array
     {
-        $stationQuery = new \Elastica\Query\Term(['station' => $this->station->getId()]);
         $pollutantQuery = new \Elastica\Query\Term(['pollutant' => 1]);
 
         $dateTimeQuery = new \Elastica\Query\Range('dateTime', [
@@ -88,7 +77,6 @@ class KomfortofenAnalysis implements KomfortofenAnalysisInterface
         $boolQuery = new \Elastica\Query\BoolQuery();
         $boolQuery
             ->addMust($pollutantQuery)
-            ->addMust($stationQuery)
             ->addMust($dateTimeQuery);
 
         $histogram = new \Elastica\Aggregation\DateHistogram('histogram_agg', 'dateTime', '1H');
@@ -106,8 +94,11 @@ class KomfortofenAnalysis implements KomfortofenAnalysisInterface
         $bucketSelector = new \Elastica\Aggregation\BucketSelector('bucket_selector');
         $bucketSelector->setBucketsPath(['my_var' => 'derivative_agg']);
         $bucketSelector->setGapPolicy('skip');
-        $bucketSelector->setScript('params.my_var != null && params.my_var > 10');
+        $bucketSelector->setScript(sprintf('params.my_var != null && params.my_var > %f', $this->minSlope));
         $histogram->addAggregation($bucketSelector);
+
+        $topHistsAgg = new \Elastica\Aggregation\TopHits('top_hits_agg');
+        $histogram->addAggregation($topHistsAgg);
 
         $query = new \Elastica\Query($boolQuery);
         $query->addAggregation($histogram);
@@ -116,6 +107,7 @@ class KomfortofenAnalysis implements KomfortofenAnalysisInterface
 
         $results = $this->finder->findPaginated($query);
 
+        //var_dump(count($results));
         $buckets = $results->getAdapter()->getAggregations();
 
         return $this->convertToList($buckets['histogram_agg']['buckets']);

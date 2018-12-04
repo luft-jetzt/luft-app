@@ -2,12 +2,11 @@
 
 namespace App\Analysis\KomfortofenAnalysis;
 
-use App\Entity\Station;
 use App\Pollution\Pollutant\PollutantInterface;
 
 interface KomfortofenAnalysisInterface
 {
-    public function setStation(Station $station): KomfortofenAnalysisInterface;
+    public function setMinSlope(float $minSlope): KomfortofenAnalysisInterface;
     public function setPollutant(PollutantInterface $pollutant): KomfortofenAnalysisInterface;
     public function setFromDateTime(\DateTimeInterface $fromDateTime): KomfortofenAnalysisInterface;
     public function setUntilDateTime(\DateTimeInterface $untilDateTime): KomfortofenAnalysisInterface;
