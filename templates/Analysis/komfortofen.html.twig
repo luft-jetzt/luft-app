@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-12 text-center">
                 <h2>
-                    Komfortofen-Finder
+                    Komfortofen-Finder<sup class="text-primary">beta</sup>
                 </h2>
 
                 <table class="table">
@@ -27,7 +27,9 @@
                     {% for ofen in ofenList %}
                         <tr>
                             <td>
-                                {{ ofen.station.stationCode }}
+                                <a href="{{ path('station', { stationCode: ofen.station.stationCode }) }}">
+                                    {{ ofen.station.stationCode }}
+                                </a>
                             </td>
 
                             <td>
@@ -35,7 +37,9 @@
                             </td>
 
                             <td>
-                                {{ ofen.data.dateTime|date('d.m.Y H:i') }} Uhr
+                                <a href="{{ path('station_history', { stationCode: ofen.station.stationCode }) }}">
+                                    {{ ofen.data.dateTime|date('d.m.Y H:i') }} Uhr
+                                </a>
                             </td>
                         </tr>
 
