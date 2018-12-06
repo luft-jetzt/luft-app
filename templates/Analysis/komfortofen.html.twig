@@ -8,7 +8,7 @@
                     Komfortofen-Finder<sup class="text-primary">beta</sup>
                 </h2>
 
-                <table class="table">
+                <table class="table table-sm">
                     <thead>
                         <tr>
                             <th>
@@ -30,15 +30,33 @@
                                 <a href="{{ path('station', { stationCode: ofen.station.stationCode }) }}">
                                     {{ ofen.station.stationCode }}
                                 </a>
+                                {% if ofen.station.city %}
+                                    <a href="{{ path('show_city', { citySlug: ofen.station.city.slug }) }}" title="Zeige weitere Luftmessstationen aus {{ ofen.station.city.name }}">
+                                        <small class="text-muted">
+                                            {{ ofen.station.city.name }}
+                                        </small>
+                                    </a>
+                                {% endif %}
+
+                                {% if ofen.station.stationType and ofen.station.areaType %}
+                                <br />
+                                <small class="text-muted">
+                                    {{ ofen.station.stationType|readable_enum|trans({}, 'messages', 'de') }}, {{ ofen.station.areaType|readable_enum|trans({}, 'messages', 'de') }}
+                                </small>
+                                {% endif %}
                             </td>
 
                             <td>
-                                {{ ofen.data.value }} <span class="text-danger">+ {{ ofen.slope }}</span>
+                                {{ ofen.data.value }}
+                                <br />
+                                <span class="text-danger">+ {{ ofen.slope }}</span>
                             </td>
 
                             <td>
                                 <a href="{{ path('station_history', { stationCode: ofen.station.stationCode, from: ofen.data.dateTime|date('Y-m-d'), until: ofen.data.dateTime|date('Y-m-d') }) }}">
-                                    {{ ofen.data.dateTime|date('d.m.Y H:i') }} Uhr
+                                    {{ ofen.data.dateTime|date('d.m.Y') }}
+                                    <br />
+                                    {{ ofen.data.dateTime|date('H:i') }} Uhr
                                 </a>
                             </td>
                         </tr>
