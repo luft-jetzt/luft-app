@@ -10,6 +10,9 @@ class KomfortofenAnalysis implements KomfortofenAnalysisInterface
     /** @var float $minSlope */
     protected $minSlope = 80.0;
 
+    /** @var float $maxSlope */
+    protected $maxSlope = 300.0;
+
     /** @var PollutantInterface $pollutant */
     protected $pollutant;
 
@@ -98,7 +101,7 @@ class KomfortofenAnalysis implements KomfortofenAnalysisInterface
         $bucketSelector = new \Elastica\Aggregation\BucketSelector('bucket_selector');
         $bucketSelector->setBucketsPath(['my_var' => 'derivative_agg']);
         $bucketSelector->setGapPolicy('skip');
-        $bucketSelector->setScript(sprintf('params.my_var != null && params.my_var > %f', $this->minSlope));
+        $bucketSelector->setScript(sprintf('params.my_var != null && params.my_var > %f && params.my_var < %f', $this->minSlope, $this->maxSlope));
         $histogram->addAggregation($bucketSelector);
 
         $topHistsAgg = new \Elastica\Aggregation\TopHits('top_hits_agg');
