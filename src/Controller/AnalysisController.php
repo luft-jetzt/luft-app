@@ -3,18 +3,19 @@
 namespace App\Controller;
 
 use App\Analysis\KomfortofenAnalysis\KomfortofenAnalysisInterface;
-use App\Util\DateTimeUtil;
 use Symfony\Component\HttpFoundation\Response;
 
 class AnalysisController extends AbstractController
 {
     public function komfortofenAction(KomfortofenAnalysisInterface $komfortofenAnalysis): Response
     {
-        $now = new \DateTime('2018-11-15');
+        $interval = new \DateInterval('P3D');
+        $untilDateTime = new \DateTimeImmutable();
+        $fromDateTime = $untilDateTime->sub($interval);
 
         $komfortofenAnalysis
-            ->setFromDateTime(DateTimeUtil::getMonthStartDateTime($now))
-            ->setUntilDateTime(DateTimeUtil::getMonthEndDateTime($now));
+            ->setFromDateTime($fromDateTime)
+            ->setUntilDateTime($untilDateTime);
 
         $ofens = $komfortofenAnalysis->analyze();
 

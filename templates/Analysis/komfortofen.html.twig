@@ -37,7 +37,7 @@
                             </td>
 
                             <td>
-                                <a href="{{ path('station_history', { stationCode: ofen.station.stationCode }) }}">
+                                <a href="{{ path('station_history', { stationCode: ofen.station.stationCode, from: ofen.data.dateTime|date('Y-m-d'), until: ofen.data.dateTime|date('Y-m-d') }) }}">
                                     {{ ofen.data.dateTime|date('d.m.Y H:i') }} Uhr
                                 </a>
                             </td>
