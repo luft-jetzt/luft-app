@@ -8,7 +8,7 @@ use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 class KomfortofenAnalysis implements KomfortofenAnalysisInterface
 {
     /** @var float $minSlope */
-    protected $minSlope = 75.0;
+    protected $minSlope = 80.0;
 
     /** @var PollutantInterface $pollutant */
     protected $pollutant;
@@ -79,8 +79,7 @@ class KomfortofenAnalysis implements KomfortofenAnalysisInterface
             ->addMust($pollutantQuery)
             ->addMust($dateTimeQuery);
 
-
-        $histogram = new \Elastica\Aggregation\DateHistogram('histogram_agg', 'dateTime', '1H');
+        $histogram = new \Elastica\Aggregation\DateHistogram('histogram_agg', 'dateTime', 'hour');
         $histogram->setTimezone('Europe/Berlin');
         $histogram->setFormat('yyyy-MM-dd HH:mm:ss');
 
@@ -104,6 +103,7 @@ class KomfortofenAnalysis implements KomfortofenAnalysisInterface
 
         $topHistsAgg = new \Elastica\Aggregation\TopHits('top_hits_agg');
         $topHistsAgg->setSize(1);
+        $topHistsAgg->setSort(['value' => ['order' => 'desc']]);
         $histogram->addAggregation($topHistsAgg);
 
         $query = new \Elastica\Query($boolQuery);

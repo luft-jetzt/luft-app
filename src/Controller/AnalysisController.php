@@ -10,13 +10,11 @@ class AnalysisController extends AbstractController
 {
     public function komfortofenAction(KomfortofenAnalysisInterface $komfortofenAnalysis): Response
     {
-        $until = new \DateTimeImmutable();
-        $interval = new \DateInterval('PT48H');
-        $from = $until->sub($interval);
+        $now = new \DateTime('2018-11-15');
 
         $komfortofenAnalysis
-            ->setFromDateTime($from)
-            ->setUntilDateTime($until);
+            ->setFromDateTime(DateTimeUtil::getMonthStartDateTime($now))
+            ->setUntilDateTime(DateTimeUtil::getMonthEndDateTime($now));
 
         $ofens = $komfortofenAnalysis->analyze();
 
