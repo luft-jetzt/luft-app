@@ -62,6 +62,13 @@ class KomfortofenAnalysis implements KomfortofenAnalysisInterface
         return $this;
     }
 
+    public function setMaxSlope(float $maxSlope): KomfortofenAnalysisInterface
+    {
+        $this->maxSlope = $maxSlope;
+
+        return $this;
+    }
+
     protected function convertToList(array $buckets): array
     {
         return $this->komfortofenModelFactory->convert($buckets);

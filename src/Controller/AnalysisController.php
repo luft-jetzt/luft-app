@@ -9,7 +9,7 @@ class AnalysisController extends AbstractController
 {
     public function komfortofenAction(KomfortofenAnalysisInterface $komfortofenAnalysis): Response
     {
-        $interval = new \DateInterval('P3D');
+        $interval = new \DateInterval('P30D');
         $untilDateTime = new \DateTimeImmutable();
         $fromDateTime = $untilDateTime->sub($interval);
 
