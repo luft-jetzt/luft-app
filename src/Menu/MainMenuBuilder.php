@@ -42,6 +42,14 @@ class MainMenuBuilder extends AbstractBuilder
         $pollutantDropdown->addChild('Grenzwerte', ['route' => 'limits', 'attributes' => ['divider_prepend' => true]]);
         $pollutantDropdown->addChild('Fahrverbote', ['uri' => 'https://sqi.be/i7vfr']);
 
+        $analysisDropdown = $menu->addChild('Analyse', [
+            'attributes' => [
+                'dropdown' => true,
+            ],
+        ]);
+
+        $analysisDropdown->addChild('Komfortofen-Finder', ['route' => 'analysis_komfortofen']);
+
         $aboutDropdown = $menu->addChild('Über', [
             'attributes' => [
                 'dropdown' => true,

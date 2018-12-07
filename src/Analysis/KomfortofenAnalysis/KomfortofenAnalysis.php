@@ -8,7 +8,7 @@ use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 class KomfortofenAnalysis implements KomfortofenAnalysisInterface
 {
     /** @var float $minSlope */
-    protected $minSlope = 80.0;
+    protected $minSlope = 50.0;
 
     /** @var float $maxSlope */
     protected $maxSlope = 300.0;

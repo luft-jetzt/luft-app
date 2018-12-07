@@ -4,7 +4,11 @@
         xsi:schemaLocation="http://symfony.com/schema/routing
         http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="komfortofen_analysis" path="/komfortofen">
+    <route id="komfortofen_analysis_old" path="/komfortofen">
+        <default key="_controller">App\Controller\AnalysisController::komfortofenAction</default>
+    </route>
+
+    <route id="analysis_komfortofen" path="/analysis/komfortofen">
         <default key="_controller">App\Controller\AnalysisController::komfortofenAction</default>
     </route>
 </routes>
