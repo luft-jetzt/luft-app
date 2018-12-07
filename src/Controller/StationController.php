@@ -6,14 +6,14 @@ use App\Analysis\LimitAnalysis\LimitAnalysisInterface;
 use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
-use App\SeoPage\SeoPage;
+use App\SeoPage\SeoPageInterface;
 use App\Util\DateTimeUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class StationController extends AbstractController
 {
-    public function stationAction(SeoPage $seoPage, string $stationCode, PollutionDataFactory $pollutionDataFactory): Response
+    public function stationAction(SeoPageInterface $seoPage, string $stationCode, PollutionDataFactory $pollutionDataFactory): Response
     {
         /** @var Station $station */
         $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
@@ -62,7 +62,7 @@ class StationController extends AbstractController
         ]);
     }
 
-    public function historyAction(Request $request, string $stationCode, HistoryDataFactoryInterface $historyDataFactory): Response
+    public function historyAction(Request $request, string $stationCode, SeoPageInterface $seoPage, HistoryDataFactoryInterface $historyDataFactory): Response
     {
         if ($untilDateTimeParam = $request->query->get('until')) {
             try {
@@ -91,6 +91,12 @@ class StationController extends AbstractController
 
         if (!$station) {
             throw $this->createNotFoundException();
+        }
+
+        if ($station->getCity()) {
+            $seoPage->setTitle(sprintf('Frühere Luftmesswerte für die Station %s — Feinstaub, Stickstoffdioxid und Ozon in %s', $station->getStationCode(), $station->getCity()->getName()));
+        } else {
+            $seoPage->setTitle(sprintf('Frühere Luftmesswerte für die Station %s', $station->getStationCode()));
         }
 
         $dataLists = $historyDataFactory
