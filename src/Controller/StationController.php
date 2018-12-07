@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use Amenadiel\JpGraph\Graph;
+use Amenadiel\JpGraph\Plot;
 use App\Analysis\LimitAnalysis\LimitAnalysisInterface;
 use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
@@ -117,5 +119,25 @@ class StationController extends AbstractController
         }
 
         return array_unique($pollutantIdList);
+    }
+
+    public function plotHistoryAction()
+    {
+        $graph    = new Graph\Graph(800, 400);
+        $graph->title->Set('Foo');
+        $graph->SetBox(true);
+        $graph->SetScale('intlin', 0, 50, 0, 5);
+
+        $linePlot1   = new Plot\LinePlot([40, 21, 17, 14, 23]);
+        $linePlot1->SetColor('black');
+
+        $linePlot2   = new Plot\LinePlot([10, 11, 17, 14, 13]);
+        $linePlot2->SetColor('red');
+
+        $graph->Add($linePlot1);
+        $graph->Add($linePlot2);
+
+        $graph->Stroke();
+
     }
 }
