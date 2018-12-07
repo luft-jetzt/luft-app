@@ -155,43 +155,45 @@ class StationController extends AbstractController
 
         $dataLists = $historyDataFactory
             ->setStation($station)
-            ->createDecoratedPollutantList($fromDateTime, $untilDateTime);
+            ->createDecoratedPollutantListForInterval($fromDateTime, $untilDateTime);
 
         krsort($dataLists);
 
         $graph    = new Graph\Graph(800, 400);
         $graph->title->Set('Foo');
         $graph->SetBox(true);
-        $graph->SetScale('intlin', 0, 50, 0, 5);
 
         $plotData = [];
 
         /** @var array $dataList */
         foreach ($dataLists as $timestamp => $dataList) {
-            var_dump($timestamp);
             foreach ($dataList as $pollutantId => $boxList) {
                 /** @var Box $box */
                 foreach ($boxList as $box) {
-                    $key = $box->getPollutant()->getIdentifier();
-
-                    var_dump($key);
-                    if (!array_key_exists($key, $plotData)) {
-                        $plotData[$key] = [];
+                    if (!array_key_exists($pollutantId, $plotData)) {
+                        $plotData[$pollutantId] = [];
                     }
 
-                    $plotData[$key][] = $box->getData()->getValue();
+                    array_unshift($plotData[$pollutantId], $box->getData()->getValue());
                 }
             }
         }
-die;
+
+        $maxDataListLength = null;
+
         foreach ($plotData as $pollutantIdentifier => $valueList) {
-            var_dump($pollutantIdentifier, $valueList);
+            if (count($valueList) > $maxDataListLength) {
+                $maxDataListLength = count($valueList);
+            }
+
             $linePlot   = new Plot\LinePlot($valueList);
             $linePlot->SetColor('red');
 
             $graph->Add($linePlot);
         }
-die;
+
+        $graph->SetScale('intlin', 0, 50, 0, $maxDataListLength);
+
         $graph->Stroke();
 
     }
