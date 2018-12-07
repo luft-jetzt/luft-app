@@ -20,5 +20,10 @@
             <argument type="service" id="fos_elastica.finder.air_data.data" />
             <argument type="service" id="App\Pollution\PollutantList\PollutantListInterface" />
         </service>
+
+        <service id="App\Analysis\KomfortofenAnalysis\KomfortofenAnalysis">
+            <argument type="service" id="fos_elastica.finder.air_data.data" />
+            <argument type="service" id="App\Analysis\KomfortofenAnalysis\KomfortofenModelFactoryInterface" />
+        </service>
     </services>
 </container>
