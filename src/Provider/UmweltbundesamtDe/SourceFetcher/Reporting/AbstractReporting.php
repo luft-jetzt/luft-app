@@ -2,7 +2,7 @@
 
 namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting;
 
-use App\Util\DateTimeUtil;
+use Carbon\Carbon;
 
 abstract class AbstractReporting implements ReportingInterface
 {
@@ -24,10 +24,10 @@ abstract class AbstractReporting implements ReportingInterface
     public function getStartDateTime(): \DateTimeImmutable
     {
         if ($this->startDateTime) {
-            return DateTimeUtil::getHourStartDateTime($this->startDateTime);
+            return Carbon::instance($this->startDateTime)->startOfHour()->toImmutable();
         }
 
-        return DateTimeUtil::getHourStartDateTime($this->endDateTime->sub($this->interval));
+        return Carbon::instance($this->endDateTime)->sub($this->interval)->startOfHour()->toImmutable();
     }
 
     public function getStartTimestamp(): int
@@ -37,7 +37,7 @@ abstract class AbstractReporting implements ReportingInterface
 
     public function getEndDateTime(): \DateTimeImmutable
     {
-        return DateTimeUtil::getHourStartDateTime($this->endDateTime);
+        return Carbon::instance($this->endDateTime)->startOfHour()->toImmutable();;
     }
 
     public function getEndTimestamp(): int

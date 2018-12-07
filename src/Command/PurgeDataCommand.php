@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Entity\Data;
 use App\Provider\ProviderListInterface;
-use App\Util\DateTimeUtil;
+use Carbon\CarbonImmutable;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -38,7 +38,7 @@ class PurgeDataCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $interval = new \DateInterval(sprintf('P%dD', $input->getArgument('days')));
-        $untilDateTime = DateTimeUtil::getDayEndDateTime((new \DateTimeImmutable())->sub($interval));
+        $untilDateTime = CarbonImmutable::now()->sub($interval);
 
         $provider = $this->providerList->getProvider($input->getArgument('provider'));
 

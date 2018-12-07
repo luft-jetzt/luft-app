@@ -7,7 +7,7 @@ use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
-use App\Util\DateTimeUtil;
+use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -47,12 +47,10 @@ class StationController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $now = new \DateTime('2018-11-30');
-
         $limitAnalysis
             ->setStation($station)
-            ->setFromDateTime(DateTimeUtil::getMonthStartDateTime($now))
-            ->setUntilDateTime(DateTimeUtil::getMonthEndDateTime($now));
+            ->setFromDateTime(Carbon::now()->startOfMonth())
+            ->setUntilDateTime(Carbon::now()->endOfMonth());
 
         $exceedance = $limitAnalysis->analyze();
 
@@ -66,23 +64,23 @@ class StationController extends AbstractController
     {
         if ($untilDateTimeParam = $request->query->get('until')) {
             try {
-                $untilDateTime = DateTimeUtil::getDayEndDateTime(new \DateTime($untilDateTimeParam));
+                $untilDateTime = Carbon::parse($untilDateTimeParam)->endOfDay();
             } catch (\Exception $exception) {
-                $untilDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
+                $untilDateTime = Carbon::now()->endOfHour();
             }
         } else {
-            $untilDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
+            $untilDateTime = Carbon::now()->endOfHour();
         }
 
         if ($fromDateTimeParam = $request->query->get('from')) {
             try {
-                $fromDateTime = DateTimeUtil::getDayStartDateTime(new \DateTime($fromDateTimeParam));
+                $fromDateTime = Carbon::parse($fromDateTimeParam)->startOfDay();
             } catch (\Exception $exception) {
-                $fromDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
+                $fromDateTime = Carbon::now()->startOfHour();
                 $fromDateTime->sub(new \DateInterval('P3D'));
             }
         } else {
-            $fromDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
+            $fromDateTime = Carbon::now()->startOfHour();
             $fromDateTime->sub(new \DateInterval('P3D'));
         }
 
