@@ -3,80 +3,12 @@
 namespace App\Analysis\KomfortofenAnalysis;
 
 use App\Pollution\Pollutant\PollutantInterface;
-use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 
-class KomfortofenAnalysis implements KomfortofenAnalysisInterface
+class KomfortofenAnalysis extends AbstractKomfortofenAnalysis
 {
-    /** @var float $minSlope */
-    protected $minSlope = 50.0;
-
-    /** @var float $maxSlope */
-    protected $maxSlope = 300.0;
-
-    /** @var PollutantInterface $pollutant */
-    protected $pollutant;
-
-    /** @var PaginatedFinderInterface $finder */
-    protected $finder;
-
-    /** @var \DateTimeInterface $fromDateTime */
-    protected $fromDateTime;
-
-    /** @var \DateTimeInterface $untilDateTime */
-    protected $untilDateTime;
-
-    /** @var KomfortofenModelFactoryInterface $komfortofenModelFactory */
-    protected $komfortofenModelFactory;
-
-    public function __construct(PaginatedFinderInterface $finder, KomfortofenModelFactoryInterface $komfortofenModelFactory)
-    {
-        $this->finder = $finder;
-        $this->komfortofenModelFactory = $komfortofenModelFactory;
-    }
-
-    public function setMinSlope(float $minSlope): KomfortofenAnalysisInterface
-    {
-        $this->minSlope = $minSlope;
-
-        return $this;
-    }
-
-    public function setPollutant(PollutantInterface $pollutant): KomfortofenAnalysisInterface
-    {
-        $this->pollutant = $pollutant;
-
-        return $this;
-    }
-
-    public function setFromDateTime(\DateTimeInterface $fromDateTime): KomfortofenAnalysisInterface
-    {
-        $this->fromDateTime = $fromDateTime;
-
-        return $this;
-    }
-
-    public function setUntilDateTime(\DateTimeInterface $untilDateTime): KomfortofenAnalysisInterface
-    {
-        $this->untilDateTime = $untilDateTime;
-
-        return $this;
-    }
-
-    public function setMaxSlope(float $maxSlope): KomfortofenAnalysisInterface
-    {
-        $this->maxSlope = $maxSlope;
-
-        return $this;
-    }
-
-    protected function convertToList(array $buckets): array
-    {
-        return $this->komfortofenModelFactory->convert($buckets);
-    }
-
     public function analyze(): array
     {
-        $pollutantQuery = new \Elastica\Query\Term(['pollutant' => 1]);
+        $pollutantQuery = new \Elastica\Query\Term(['pollutant' => PollutantInterface::POLLUTANT_PM10]);
 
         $dateTimeQuery = new \Elastica\Query\Range('dateTime', [
             'gt' => $this->fromDateTime->format('Y-m-d H:i:s'),
@@ -106,9 +38,9 @@ class KomfortofenAnalysis implements KomfortofenAnalysisInterface
         $histogram->addAggregation($derive);
 
         $bucketSelector = new \Elastica\Aggregation\BucketSelector('bucket_selector');
-        $bucketSelector->setBucketsPath(['my_var' => 'derivative_agg']);
+        $bucketSelector->setBucketsPath(['derivative' => 'derivative_agg']);
         $bucketSelector->setGapPolicy('skip');
-        $bucketSelector->setScript(sprintf('params.my_var != null && params.my_var > %f && params.my_var < %f', $this->minSlope, $this->maxSlope));
+        $bucketSelector->setScript(sprintf('params.derivative != null && params.derivative > %f && params.derivative < %f', $this->minSlope, $this->maxSlope));
         $histogram->addAggregation($bucketSelector);
 
         $topHistsAgg = new \Elastica\Aggregation\TopHits('top_hits_agg');
@@ -123,6 +55,6 @@ class KomfortofenAnalysis implements KomfortofenAnalysisInterface
 
         $buckets = $results->getAdapter()->getAggregations();
 
-        return $this->convertToList($buckets['histogram_agg']['buckets']);
+        return $this->komfortofenModelFactory->convert($buckets['histogram_agg']['buckets']);
     }
 }
