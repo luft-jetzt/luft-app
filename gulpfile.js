@@ -104,6 +104,7 @@ gulp.task('copy-js-external', function () {
         'node_modules/leaflet-extra-markers/dist/js/leaflet.extra-markers.min.js',
         'node_modules/typeahead.js/dist/bloodhound.min.js',
         'node_modules/typeahead.js/dist/typeahead.jquery.min.js',
+        'node_modules/calendar_heatmap/calendar_heatmap.bundle.js',
         'node_modules/chart.js/dist/Chart.bundle.min.js',
     ])
         .pipe(gulp.dest('public/js/'));

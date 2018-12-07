@@ -81,7 +81,30 @@ class DataRepository extends EntityRepository
         $stmt->execute();
 
         return $stmt->fetchAll();
+    }
 
+    public function findForAnalysis(Station $station, int $pollutant, \DateTimeInterface $fromDateTime = null, \DateTimeInterface $untilDateTime = null): array
+    {
+        $qb = $this->createQueryBuilder('d');
+
+        $qb
+            ->where($qb->expr()->eq('d.station', ':station'))
+            ->setParameter('station', $station)
+            ->andWhere($qb->expr()->eq('d.pollutant', ':pollutant'))
+            ->setParameter('pollutant', $pollutant)
+            ->leftJoin(
+                'App\Entity\Data',
+                'd2',
+                'WITH',
+                'd2.pollutant = d.pollutant AND d2.station = d.station AND d2.value > d.value'
+            )
+            ->andWhere($qb->expr()->isNull('d2.value'))
+            ->orderBy('d.dateTime','ASC');
+
+
+        $query = $qb->getQuery();
+
+        return $query->getResult();
     }
 }
 

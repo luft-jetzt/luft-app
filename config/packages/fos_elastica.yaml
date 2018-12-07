@@ -36,7 +36,7 @@ fos_elastica:
                             type: integer
                         station:
                             property_path: stationId
-                            type: float
+                            type: integer
                         dateTime:
                             type: date
                             format: "yyyy-MM-dd HH:mm:ss"

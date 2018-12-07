@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Analysis\LimitAnalysis\LimitAnalysis;
 use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
@@ -34,6 +35,29 @@ class StationController extends AbstractController
         return $this->render('Default/station.html.twig', [
             'station' => $station,
             'pollutantList' => $boxList,
+        ]);
+    }
+
+    public function limitsAction(LimitAnalysis $limitAnalysis, string $stationCode): Response
+    {
+        /** @var Station $station */
+        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
+
+        if (!$station) {
+            throw $this->createNotFoundException();
+        }
+
+        $now = new \DateTime('2018-11-30');
+
+        $limitAnalysis
+            ->setStation($station)
+            ->setFromDateTime(DateTimeUtil::getMonthStartDateTime($now))
+            ->setUntilDateTime(DateTimeUtil::getMonthEndDateTime($now));
+
+        $exceedance = $limitAnalysis->analyze();
+
+        return $this->render('Station/limits.html.twig', [
+            'exceedanceJson' => json_encode($exceedance),
         ]);
     }
 
