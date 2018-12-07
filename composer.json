@@ -20,6 +20,7 @@
         "league/geotools": "^0.8.0",
         "maxh/php-nominatim": "^1.2",
         "nelmio/api-doc-bundle": "^3.1",
+        "nesbot/carbon": "^2.7",
         "php-amqplib/rabbitmq-bundle": "^1.14",
         "php-curl-class/php-curl-class": "^8.0",
         "php-http/guzzle6-adapter": "^1.1",
