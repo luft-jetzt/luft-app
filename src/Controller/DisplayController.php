@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\City;
 use App\Geocoding\Guesser\CityGuesserInterface;
-use App\Geocoding\Query\GeoQueryInterface;
 use App\Geocoding\RequestConverter\RequestConverterInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactoryInterface;
 use App\SeoPage\SeoPage;
@@ -18,9 +17,7 @@ class DisplayController extends AbstractController
         $coord = $requestConverter->getCoordByRequest($request);
 
         if (!$coord) {
-            $seoPage->setStandardPreviewPhoto();
-            
-            return $this->render('Default/select.html.twig');
+            return $this->redirectToRoute('frontpage');
         }
 
         $boxList = $pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();

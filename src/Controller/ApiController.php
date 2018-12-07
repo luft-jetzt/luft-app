@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\City;
+use App\Entity\Data;
 use App\Entity\Station;
 use App\Geocoding\RequestConverter\RequestConverterInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
@@ -237,6 +238,22 @@ class ApiController extends AbstractController
         $list = $session->get('station_list', []);
 
         return $list;
+    }
+
+    public function stationAnalysisAction(
+        SerializerInterface $serializer,
+        string $stationCode,
+        PollutionDataFactory $pollutionDataFactory
+    ): Response {
+        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
+
+        if (!$station) {
+            throw $this->createNotFoundException();
+        }
+
+        $valueList = $this->getDoctrine()->getRepository(Data::class)->findForAnalysis($station, 1);
+
+        return new JsonResponse($serializer->serialize($valueList, 'json'), 200, [], true);
     }
 
     protected function unpackPollutantList(array $pollutantList): array

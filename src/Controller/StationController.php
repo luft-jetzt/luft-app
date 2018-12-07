@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
+use App\Analysis\LimitAnalysis\LimitAnalysisInterface;
 use App\Entity\Station;
-use App\Pollution\PollutionDataFactory\HistoryDataFactory;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
@@ -27,7 +27,7 @@ class StationController extends AbstractController
             ->createDecoratedPollutantList();
 
         if ($station->getCity()) {
-            $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s in %s', $station->getStationCode(), $station->getCity()->getName()));
+            $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s — Feinstaub, Stickstoffdioxid und Ozon in %s', $station->getStationCode(), $station->getCity()->getName()));
         } else {
             $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s', $station->getStationCode()));
         }
@@ -35,6 +35,30 @@ class StationController extends AbstractController
         return $this->render('Default/station.html.twig', [
             'station' => $station,
             'pollutantList' => $boxList,
+        ]);
+    }
+
+    public function limitsAction(LimitAnalysisInterface $limitAnalysis, string $stationCode): Response
+    {
+        /** @var Station $station */
+        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
+
+        if (!$station) {
+            throw $this->createNotFoundException();
+        }
+
+        $now = new \DateTime('2018-11-30');
+
+        $limitAnalysis
+            ->setStation($station)
+            ->setFromDateTime(DateTimeUtil::getMonthStartDateTime($now))
+            ->setUntilDateTime(DateTimeUtil::getMonthEndDateTime($now));
+
+        $exceedance = $limitAnalysis->analyze();
+
+        var_dump($exceedance);
+        return $this->render('Station/limits.html.twig', [
+            'exceedanceJson' => json_encode($exceedance),
         ]);
     }
 

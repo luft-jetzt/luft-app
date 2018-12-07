@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1745a835ca8471033bea55694870a689",
+    "content-hash": "050ffa1c34e5580057e33b5b74685c08",
     "packages": [
         {
             "name": "cache/adapter-common",
@@ -5018,6 +5018,69 @@
             "time": "2015-07-25T16:39:46+00:00"
         },
         {
+            "name": "presta/sitemap-bundle",
+            "version": "v1.5.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/prestaconcept/PrestaSitemapBundle.git",
+                "reference": "16a2c0eae7320e3647013e48026a6a6bd14f75df"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/prestaconcept/PrestaSitemapBundle/zipball/16a2c0eae7320e3647013e48026a6a6bd14f75df",
+                "reference": "16a2c0eae7320e3647013e48026a6a6bd14f75df",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "symfony/console": "~2.2|~3.0|~4.0",
+                "symfony/framework-bundle": "~2.2|~3.0|~4.0"
+            },
+            "require-dev": {
+                "doctrine/annotations": "~1.0",
+                "phpunit/phpunit": "5.*",
+                "symfony/browser-kit": "~2.2|~3.0|~4.0",
+                "symfony/form": "~2.2|~3.0|~4.0",
+                "symfony/phpunit-bridge": "~2.7|~3.0|~4.0",
+                "symfony/security-bundle": "~2.2|~3.0|~4.0",
+                "symfony/translation": "~2.2|~3.0|~4.0",
+                "symfony/validator": "~2.2|~3.0|~4.0"
+            },
+            "suggest": {
+                "doctrine/doctrine-cache-bundle": "Allows to store sitemaps in cache"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Presta\\SitemapBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Prestaconcept",
+                    "homepage": "http://www.prestaconcept.net/"
+                }
+            ],
+            "description": "A Symfony bundle that provides tools to build your application sitemap.",
+            "keywords": [
+                "Sitemap",
+                "bundle",
+                "prestaconcept",
+                "symfony",
+                "xml"
+            ],
+            "time": "2018-02-20T11:33:33+00:00"
+        },
+        {
             "name": "psr/cache",
             "version": "1.0.1",
             "source": {
@@ -6128,6 +6191,78 @@
                 "xls"
             ],
             "time": "2018-07-04T16:52:00+00:00"
+        },
+        {
+            "name": "sonata-project/intl-bundle",
+            "version": "2.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sonata-project/SonataIntlBundle.git",
+                "reference": "1548e0eef68841088867e3a7c5d90a625922c14e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sonata-project/SonataIntlBundle/zipball/1548e0eef68841088867e3a7c5d90a625922c14e",
+                "reference": "1548e0eef68841088867e3a7c5d90a625922c14e",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.6 || ^7.0",
+                "symfony/config": "^2.8 || ^3.2 || ^4.0",
+                "symfony/dependency-injection": "^2.8 || ^3.2 || ^4.0",
+                "symfony/http-foundation": "^2.8 || ^3.2 || ^4.0",
+                "symfony/http-kernel": "^2.8 || ^3.2 || ^4.0",
+                "symfony/intl": "^2.8 || ^3.2 || ^4.0",
+                "symfony/templating": "^2.8 || ^3.2 || ^4.0",
+                "twig/twig": "^1.12 || ^2.0"
+            },
+            "conflict": {
+                "sonata-project/user-bundle": "<2.0 || >=5.0"
+            },
+            "require-dev": {
+                "matthiasnoback/symfony-dependency-injection-test": "^1.0",
+                "sonata-project/user-bundle": "^3.6 || ^4.0",
+                "symfony/phpunit-bridge": "^4.0",
+                "symfony/security-core": "^2.8 || ^3.2 || ^4.0"
+            },
+            "suggest": {
+                "sonata-project/user-bundle": "For user timezone detection"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Sonata\\IntlBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sonata Community",
+                    "homepage": "https://github.com/sonata-project/SonataIntlBundle/contributors"
+                },
+                {
+                    "name": "Thomas Rabaix",
+                    "email": "thomas.rabaix@sonata-project.org"
+                }
+            ],
+            "description": "Symfony SonataIntlBundle",
+            "homepage": "https://sonata-project.org/bundles/intl",
+            "keywords": [
+                "date",
+                "intl",
+                "number",
+                "sonata",
+                "time"
+            ],
+            "time": "2018-06-16T16:09:27+00:00"
         },
         {
             "name": "sonata-project/seo-bundle",

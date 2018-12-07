@@ -113,6 +113,7 @@ gulp.task('copy-js-external', function () {
         'node_modules/leaflet.markercluster/dist/leaflet.markercluster.js',
         'node_modules/list.js/dist/list.min.js',
         'node_modules/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.js',
+        'node_modules/calendar_heatmap/calendar_heatmap.bundle.js',
         'node_modules/chart.js/dist/Chart.bundle.min.js',
     ])
         .pipe(gulp.dest('public/js/'));
