@@ -7,6 +7,7 @@ use Amenadiel\JpGraph\Plot;
 use App\Analysis\LimitAnalysis\LimitAnalysisInterface;
 use App\Entity\Station;
 use App\Pollution\Box\Box;
+use App\Pollution\PollutantList\PollutantListInterface;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
@@ -122,7 +123,7 @@ class StationController extends AbstractController
         return array_unique($pollutantIdList);
     }
 
-    public function plotHistoryAction(Request $request, string $stationCode, HistoryDataFactoryInterface $historyDataFactory): void
+    public function plotHistoryAction(Request $request, string $stationCode, PollutantListInterface $pollutantList, HistoryDataFactoryInterface $historyDataFactory): void
     {
         if ($untilDateTimeParam = $request->query->get('until')) {
             try {
@@ -160,10 +161,11 @@ class StationController extends AbstractController
         krsort($dataLists);
 
         $graph    = new Graph\Graph(800, 400);
-        $graph->title->Set('Foo');
+        $graph->title->Set(sprintf('Messwerte der Station %s', $station->getStationCode()));
         $graph->SetBox(true);
 
         $plotData = [];
+        $maxValue = 0;
 
         /** @var array $dataList */
         foreach ($dataLists as $timestamp => $dataList) {
@@ -174,25 +176,33 @@ class StationController extends AbstractController
                         $plotData[$pollutantId] = [];
                     }
 
-                    array_unshift($plotData[$pollutantId], $box->getData()->getValue());
+                    $value = $box->getData()->getValue();
+
+                    if ($value > $maxValue) {
+                        $maxValue = $value;
+                    }
+
+                    array_unshift($plotData[$pollutantId], $value);
                 }
             }
         }
 
-        $maxDataListLength = null;
+        $maxDataListLength = 0;
 
-        foreach ($plotData as $pollutantIdentifier => $valueList) {
+        foreach ($plotData as $pollutantId => $valueList) {
             if (count($valueList) > $maxDataListLength) {
                 $maxDataListLength = count($valueList);
             }
 
             $linePlot   = new Plot\LinePlot($valueList);
             $linePlot->SetColor('red');
+            $linePlot->SetLegend($pollutantList->getPollutantsWithIds()[$pollutantId]->getName());
 
             $graph->Add($linePlot);
         }
 
-        $graph->SetScale('intlin', 0, 50, 0, $maxDataListLength);
+        $tickPositions[$i] = $i/2*M_PI;
+        $graph->SetScale('intlin', 0, ceil($maxValue * 1.1), 0, $maxDataListLength);
 
         $graph->Stroke();
 
