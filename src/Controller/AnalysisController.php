@@ -23,4 +23,21 @@ class AnalysisController extends AbstractController
             'ofenList' => $ofens,
         ]);
     }
+
+    public function fireworksAction(KomfortofenAnalysisInterface $komfortofenAnalysis): Response
+    {
+        $interval = new \DateInterval('P30D');
+        $untilDateTime = new \DateTimeImmutable();
+        $fromDateTime = $untilDateTime->sub($interval);
+
+        $komfortofenAnalysis
+            ->setFromDateTime($fromDateTime)
+            ->setUntilDateTime($untilDateTime);
+
+        $ofens = $komfortofenAnalysis->analyze();
+
+        return $this->render('Analysis/komfortofen.html.twig', [
+            'ofenList' => $ofens,
+        ]);
+    }
 }
