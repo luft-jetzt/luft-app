@@ -40,10 +40,10 @@ class FireworksModelFactory implements FireworksModelFactoryInterface
     {
         usort($resultList, function(FireworksModel $a, FireworksModel $b): int
         {
-            if ($a->getSlope() === $b->getSlope()) {
+            if ($a->getData()->getDateTime() === $b->getData()->getDateTime()) {
                 return 0;
             }
-            return ($a->getSlope() > $b->getSlope()) ? -1 : 1;
+            return ($a->getData()->getDateTime() > $b->getData()->getDateTime()) ? -1 : 1;
         });
 
         return $resultList;
