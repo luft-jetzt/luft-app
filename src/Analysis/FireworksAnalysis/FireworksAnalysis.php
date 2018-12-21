@@ -62,7 +62,8 @@ class FireworksAnalysis extends AbstractFireworksAnalysis
 
     protected function createDateTimeQuery(): BoolQuery
     {
-        $years = range(2015, 2019);
+        $currentYear = (new \DateTime())->format('Y');
+        $years = range($currentYear - 4, $currentYear + 1);
 
         $dateTimeQuery = new BoolQuery();
 
