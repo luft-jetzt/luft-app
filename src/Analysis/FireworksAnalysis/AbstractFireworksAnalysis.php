@@ -1,17 +1,18 @@
 <?php declare(strict_types=1);
 
-namespace App\Analysis\FireworksAnalylsis;
+namespace App\Analysis\FireworksAnalysis;
 
+use App\Pollution\Pollutant\PM10;
 use App\Pollution\Pollutant\PollutantInterface;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 
 abstract class AbstractFireworksAnalysis implements FireworksAnalysisInterface
 {
     /** @var float $minSlope */
-    protected $minSlope = 50.0;
+    protected $minSlope = 10.0;
 
     /** @var float $maxSlope */
-    protected $maxSlope = 300.0;
+    protected $maxSlope = 5000.0;
 
     /** @var PollutantInterface $pollutant */
     protected $pollutant;
@@ -32,40 +33,9 @@ abstract class AbstractFireworksAnalysis implements FireworksAnalysisInterface
     {
         $this->finder = $finder;
         $this->komfortofenModelFactory = $komfortofenModelFactory;
-    }
 
-    public function setMinSlope(float $minSlope): FireworksAnalysisInterface
-    {
-        $this->minSlope = $minSlope;
-
-        return $this;
-    }
-
-    public function setPollutant(PollutantInterface $pollutant): FireworksAnalysisInterface
-    {
-        $this->pollutant = $pollutant;
-
-        return $this;
-    }
-
-    public function setFromDateTime(\DateTimeInterface $fromDateTime): FireworksAnalysisInterface
-    {
-        $this->fromDateTime = $fromDateTime;
-
-        return $this;
-    }
-
-    public function setUntilDateTime(\DateTimeInterface $untilDateTime): FireworksAnalysisInterface
-    {
-        $this->untilDateTime = $untilDateTime;
-
-        return $this;
-    }
-
-    public function setMaxSlope(float $maxSlope): FireworksAnalysisInterface
-    {
-        $this->maxSlope = $maxSlope;
-
-        return $this;
+        $this->pollutant = new PM10();
+        $this->fromDateTime = new \DateTime('2017-12-31 12:00:00');
+        $this->untilDateTime = new \DateTime('2018-01-01 12:00:00');
     }
 }

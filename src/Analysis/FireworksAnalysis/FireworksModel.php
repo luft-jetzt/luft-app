@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Analysis\FireworksAnalylsis;
+namespace App\Analysis\FireworksAnalysis;
 
 use App\Entity\Data;
 use App\Entity\Station;

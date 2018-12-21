@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Analysis\FireworksAnalysis\FireworksAnalysisInterface;
 use App\Analysis\KomfortofenAnalysis\KomfortofenAnalysisInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -24,17 +25,9 @@ class AnalysisController extends AbstractController
         ]);
     }
 
-    public function fireworksAction(KomfortofenAnalysisInterface $komfortofenAnalysis): Response
+    public function fireworksAction(FireworksAnalysisInterface $fireworksAnalysis): Response
     {
-        $interval = new \DateInterval('P30D');
-        $untilDateTime = new \DateTimeImmutable();
-        $fromDateTime = $untilDateTime->sub($interval);
-
-        $komfortofenAnalysis
-            ->setFromDateTime($fromDateTime)
-            ->setUntilDateTime($untilDateTime);
-
-        $ofens = $komfortofenAnalysis->analyze();
+        $ofens = $fireworksAnalysis->analyze();
 
         return $this->render('Analysis/komfortofen.html.twig', [
             'ofenList' => $ofens,

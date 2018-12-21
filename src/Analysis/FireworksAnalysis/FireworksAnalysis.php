@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\Analysis\FireworksAnalylsis;
+namespace App\Analysis\FireworksAnalysis;
 
 use App\Pollution\Pollutant\PollutantInterface;
 
-class FireworksAnalysis extends AbstractKomfortofenAnalysis
+class FireworksAnalysis extends AbstractFireworksAnalysis
 {
     public function analyze(): array
     {
