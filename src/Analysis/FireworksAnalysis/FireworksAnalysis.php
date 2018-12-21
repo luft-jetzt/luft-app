@@ -3,18 +3,20 @@
 namespace App\Analysis\FireworksAnalysis;
 
 use App\Pollution\Pollutant\PollutantInterface;
+use Elastica\Query\BoolQuery;
 
 class FireworksAnalysis extends AbstractFireworksAnalysis
 {
     public function analyze(): array
     {
-        $pollutantQuery = new \Elastica\Query\Term(['pollutant' => PollutantInterface::POLLUTANT_PM10]);
+        $pm10Query = new \Elastica\Query\Term(['pollutant' => PollutantInterface::POLLUTANT_PM10]);
+        $pm25Query = new \Elastica\Query\Term(['pollutant' => PollutantInterface::POLLUTANT_PM25]);
 
-        $dateTimeQuery = new \Elastica\Query\Range('dateTime', [
-            'gt' => $this->fromDateTime->format('Y-m-d H:i:s'),
-            'lte' => $this->untilDateTime->format('Y-m-d H:i:s'),
-            'format' => 'yyyy-MM-dd HH:mm:ss'
-        ]);
+        $pollutantQuery = new BoolQuery();
+        $pollutantQuery->addShould($pm10Query);
+        $pollutantQuery->addShould($pm25Query);
+
+        $dateTimeQuery = $this->createDateTimeQuery();
 
         $boolQuery = new \Elastica\Query\BoolQuery();
         $boolQuery
@@ -56,5 +58,27 @@ class FireworksAnalysis extends AbstractFireworksAnalysis
         $buckets = $results->getAdapter()->getAggregations();
 
         return $this->komfortofenModelFactory->convert($buckets['histogram_agg']['buckets']);
+    }
+
+    protected function createDateTimeQuery(): BoolQuery
+    {
+        $years = range(2015, 2019);
+
+        $dateTimeQuery = new BoolQuery();
+
+        foreach ($years as $year) {
+            $fromDateTime = new \DateTimeImmutable(sprintf('%d-12-28 12:00:00', $year));
+            $untilDateTime = $fromDateTime->add(new \DateInterval('P5D'));
+
+            $rangeQuery = new \Elastica\Query\Range('dateTime', [
+                'gt' => $fromDateTime->format('Y-m-d H:i:s'),
+                'lte' => $untilDateTime->format('Y-m-d H:i:s'),
+                'format' => 'yyyy-MM-dd HH:mm:ss'
+            ]);
+
+            $dateTimeQuery->addShould($rangeQuery);
+        }
+
+        return $dateTimeQuery;
     }
 }

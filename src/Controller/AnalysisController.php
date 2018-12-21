@@ -27,10 +27,10 @@ class AnalysisController extends AbstractController
 
     public function fireworksAction(FireworksAnalysisInterface $fireworksAnalysis): Response
     {
-        $ofens = $fireworksAnalysis->analyze();
+        $fireworksAnalysis = $fireworksAnalysis->analyze();
 
-        return $this->render('Analysis/komfortofen.html.twig', [
-            'ofenList' => $ofens,
+        return $this->render('Analysis/fireworks.html.twig', [
+            'fireworksList' => $fireworksAnalysis,
         ]);
     }
 }
