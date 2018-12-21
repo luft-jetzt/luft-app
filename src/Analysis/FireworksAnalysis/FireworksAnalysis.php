@@ -10,11 +10,11 @@ class FireworksAnalysis extends AbstractFireworksAnalysis
     public function analyze(): array
     {
         $pm10Query = new \Elastica\Query\Term(['pollutant' => PollutantInterface::POLLUTANT_PM10]);
-        $pm25Query = new \Elastica\Query\Term(['pollutant' => PollutantInterface::POLLUTANT_PM25]);
+        //$pm25Query = new \Elastica\Query\Term(['pollutant' => PollutantInterface::POLLUTANT_PM25]);
 
         $pollutantQuery = new BoolQuery();
         $pollutantQuery->addShould($pm10Query);
-        $pollutantQuery->addShould($pm25Query);
+        //$pollutantQuery->addShould($pm25Query);
 
         $dateTimeQuery = $this->createDateTimeQuery();
 
