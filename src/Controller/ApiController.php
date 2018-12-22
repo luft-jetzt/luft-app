@@ -8,6 +8,10 @@ use App\Entity\Station;
 use App\Geocoding\RequestConverter\RequestConverterInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\Pollution\StationFinder\ElasticStationFinder;
+use App\Provider\ProviderInterface;
+use App\Provider\ProviderList;
+use App\Provider\ProviderListInterface;
+use App\Provider\UmweltbundesamtDe\UmweltbundesamtDeProvider;
 use Caldera\GeoBasic\Bounds\Bounds;
 use Caldera\GeoBasic\Coord\Coord;
 use JMS\Serializer\SerializerInterface;
@@ -188,9 +192,9 @@ class ApiController extends AbstractController
      *   @Model(type=App\Entity\Station::class)
      * )
      */
-    public function stationAction(Request $request, SessionInterface $session, SerializerInterface $serializer, string $stationCode = null, ElasticStationFinder $stationFinder): Response
+    public function stationAction(Request $request, SessionInterface $session, SerializerInterface $serializer, string $stationCode = null, ElasticStationFinder $stationFinder, ProviderListInterface $providerList): Response
     {
-        $providerIdentifier = $request->get('provider');
+        $provider = $this->getProvider($providerList, $request);
 
         if ($stationCode) {
             $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
@@ -204,9 +208,9 @@ class ApiController extends AbstractController
             $northWest = new Coord((float) $request->get('north'), (float) $request->get('west'));
             $southEast = new Coord((float) $request->get('south'), (float) $request->get('east'));
 
-            $stationList = $stationFinder->findStationsInBounds(new Bounds($northWest, $southEast), null, $providerIdentifier, $excludeStationIds);
-        } elseif ($providerIdentifier) {
-            $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStationsByProvider($providerIdentifier);
+            $stationList = $stationFinder->findStationsInBounds(new Bounds($northWest, $southEast), null, $provider, $this->getRememberedStations($session));
+        } elseif ($provider) {
+            $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStationsByProvider($provider);
         } else {
             $stationList = $this->getDoctrine()->getRepository(Station::class)->findAll();
         }
@@ -218,6 +222,13 @@ class ApiController extends AbstractController
         }
 
         return new JsonResponse($serializer->serialize($stationList, 'json'), 200, [], true);
+    }
+
+    protected function getProvider(ProviderListInterface $providerList, Request $request): ?ProviderInterface
+    {
+        $providerIdentifier = $request->get('provider_identifier');
+
+        return $providerList->getProvider($providerIdentifier);
     }
 
     protected function rememberStations(SessionInterface $session, array $stationList): void
