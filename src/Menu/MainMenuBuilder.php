@@ -49,6 +49,7 @@ class MainMenuBuilder extends AbstractBuilder
         ]);
 
         $analysisDropdown->addChild('Komfortofen-Finder', ['route' => 'analysis_komfortofen']);
+        $analysisDropdown->addChild('Silvester-Feuerwerk', ['route' => 'analysis_fireworks']);
 
         $aboutDropdown = $menu->addChild('Über', [
             'attributes' => [

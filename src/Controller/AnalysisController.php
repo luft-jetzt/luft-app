@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Analysis\FireworksAnalysis\FireworksAnalysisInterface;
 use App\Analysis\KomfortofenAnalysis\KomfortofenAnalysisInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,6 +22,15 @@ class AnalysisController extends AbstractController
 
         return $this->render('Analysis/komfortofen.html.twig', [
             'ofenList' => $ofens,
+        ]);
+    }
+
+    public function fireworksAction(FireworksAnalysisInterface $fireworksAnalysis): Response
+    {
+        $fireworksAnalysis = $fireworksAnalysis->analyze();
+
+        return $this->render('Analysis/fireworks.html.twig', [
+            'fireworksList' => $fireworksAnalysis,
         ]);
     }
 }

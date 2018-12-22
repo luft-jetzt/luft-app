@@ -1,0 +1,85 @@
+<?php declare(strict_types=1);
+
+namespace App\Analysis\FireworksAnalysis;
+
+use App\Pollution\Pollutant\PollutantInterface;
+use Elastica\Query\BoolQuery;
+
+class FireworksAnalysis extends AbstractFireworksAnalysis
+{
+    public function analyze(): array
+    {
+        $pm10Query = new \Elastica\Query\Term(['pollutant' => PollutantInterface::POLLUTANT_PM10]);
+        //$pm25Query = new \Elastica\Query\Term(['pollutant' => PollutantInterface::POLLUTANT_PM25]);
+
+        $pollutantQuery = new BoolQuery();
+        $pollutantQuery->addShould($pm10Query);
+        //$pollutantQuery->addShould($pm25Query);
+
+        $dateTimeQuery = $this->createDateTimeQuery();
+
+        $boolQuery = new \Elastica\Query\BoolQuery();
+        $boolQuery
+            ->addMust($pollutantQuery)
+            ->addMust($dateTimeQuery);
+
+        $histogram = new \Elastica\Aggregation\DateHistogram('histogram_agg', 'dateTime', 'hour');
+        $histogram->setTimezone('Europe/Berlin');
+        $histogram->setFormat('yyyy-MM-dd HH:mm:ss');
+
+        $termAgg = new \Elastica\Aggregation\Terms('station_agg');
+        $termAgg->setField('station');
+        $termAgg->addAggregation($histogram);
+
+        $max = new \Elastica\Aggregation\Max('max_agg');
+        $max->setField('value');
+        $histogram->addAggregation($max);
+
+        $derive = new \Elastica\Aggregation\Derivative('derivative_agg');
+        $derive->setBucketsPath('max_agg');
+        $histogram->addAggregation($derive);
+
+        $bucketSelector = new \Elastica\Aggregation\BucketSelector('bucket_selector');
+        $bucketSelector->setBucketsPath(['derivative' => 'derivative_agg']);
+        $bucketSelector->setGapPolicy('skip');
+        $bucketSelector->setScript(sprintf('params.derivative != null && params.derivative > %f && params.derivative < %f', $this->minSlope, $this->maxSlope));
+        $histogram->addAggregation($bucketSelector);
+
+        $topHistsAgg = new \Elastica\Aggregation\TopHits('top_hits_agg');
+        $topHistsAgg->setSize(1);
+        $topHistsAgg->setSort(['value' => ['order' => 'desc']]);
+        $histogram->addAggregation($topHistsAgg);
+
+        $query = new \Elastica\Query($boolQuery);
+        $query->addAggregation($histogram);
+
+        $results = $this->finder->findPaginated($query);
+
+        $buckets = $results->getAdapter()->getAggregations();
+
+        return $this->komfortofenModelFactory->convert($buckets['histogram_agg']['buckets']);
+    }
+
+    protected function createDateTimeQuery(): BoolQuery
+    {
+        $currentYear = (new \DateTime())->format('Y');
+        $years = range($currentYear - 4, $currentYear + 1);
+
+        $dateTimeQuery = new BoolQuery();
+
+        foreach ($years as $year) {
+            $fromDateTime = new \DateTimeImmutable(sprintf('%d-12-28 12:00:00', $year));
+            $untilDateTime = $fromDateTime->add(new \DateInterval('P5D'));
+
+            $rangeQuery = new \Elastica\Query\Range('dateTime', [
+                'gt' => $fromDateTime->format('Y-m-d H:i:s'),
+                'lte' => $untilDateTime->format('Y-m-d H:i:s'),
+                'format' => 'yyyy-MM-dd HH:mm:ss'
+            ]);
+
+            $dateTimeQuery->addShould($rangeQuery);
+        }
+
+        return $dateTimeQuery;
+    }
+}
