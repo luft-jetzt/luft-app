@@ -25,5 +25,10 @@
             <argument type="service" id="fos_elastica.finder.air_data.data" />
             <argument type="service" id="App\Analysis\KomfortofenAnalysis\KomfortofenModelFactoryInterface" />
         </service>
+
+        <service id="App\Analysis\FireworksAnalysis\FireworksAnalysis">
+            <argument type="service" id="fos_elastica.finder.air_data.data" />
+            <argument type="service" id="App\Analysis\FireworksAnalysis\FireworksModelFactoryInterface" />
+        </service>
     </services>
 </container>

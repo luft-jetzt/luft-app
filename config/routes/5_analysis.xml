@@ -11,4 +11,8 @@
     <route id="analysis_komfortofen" path="/analysis/komfortofen">
         <default key="_controller">App\Controller\AnalysisController::komfortofenAction</default>
     </route>
+
+    <route id="analysis_fireworks" path="/analysis/silvester">
+        <default key="_controller">App\Controller\AnalysisController::fireworksAction</default>
+    </route>
 </routes>
