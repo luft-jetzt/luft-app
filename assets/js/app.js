@@ -94,6 +94,7 @@ var stationList = [];
 
 function loadStations() {
     var bounds = map.getBounds();
+    var defaultStationIcon = this.createStandardStationIcon();
 
     $.ajax({
         url: 'http://luft.ct/api/station',
@@ -115,7 +116,7 @@ function loadStations() {
                 if (!(stationCode in stationList)) {
                     stationList[stationCode] = station;
 
-                    var marker = L.marker([station.latitude, station.longitude]).addTo(stationLayer);
+                    var marker = L.marker([station.latitude, station.longitude], { icon: defaultStationIcon }).addTo(stationLayer);
 
                     marker.station = station;
 
@@ -126,6 +127,17 @@ function loadStations() {
             }
         },
     });
+}
+
+function createStandardStationIcon() {
+    var redMarker = L.ExtraMarkers.icon({
+        icon: 'fa-thermometer',
+        markerColor: 'blue-dark',
+        shape: 'circle',
+        prefix: 'fa'
+    });
+
+    return redMarker;
 }
 
 function showStationModal(e) {
