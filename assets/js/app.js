@@ -72,7 +72,7 @@ function showStationModal(e) {
 
         $('#feature-title').html($marker.station.station_code);
         $('#feature-info').html(content);
-        $('#featureModal').modal("show");
+        $('#featureModal').modal('show');
 
         highlightLayer.clearLayers().addLayer(L.circleMarker($marker.getLatLng(), highlightStyle));
     });
@@ -86,17 +86,12 @@ function syncSidebar() {
     stationLayer.eachLayer(function (layer) {
         if (map.hasLayer(stationLayer)) {
             if (map.getBounds().contains(layer.getLatLng())) {
-                $tbody.append('<tr class="feature-row" id="' + L.stamp(layer) + '" lat="' + layer.getLatLng().lat + '" lng="' + layer.getLatLng().lng + '"><td style="vertical-align: middle;"><img width="16" height="18" src="assets/img/theater.png"></td><td class="feature-name">' + layer.station.station_code + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
+                $tbody.append('<tr class="feature-row" id="' + L.stamp(layer) + '" lat="' + layer.getLatLng().lat + '" lng="' + layer.getLatLng().lng + '"><td class="feature-name">' + layer.station.station_code + '</td><td style="vertical-align: middle;"><i class="fa fa-chevron-right pull-right"></i></td></tr>');
             }
         }
     });
 
-    featureList = new List('features', {
-        valueNames: ['feature-name']
-    });
-    featureList.sort('feature-name', {
-        order: 'asc'
-    });
+    refreshList();
 }
 
 function createMap() {
@@ -192,13 +187,20 @@ function sidebarClick(id) {
 
     layer.fire('click');
 
-
     if (document.body.clientWidth <= 767) {
         $('#sidebar').hide();
         map.invalidateSize();
     }
 }
 
+function refreshList() {
+    featureList = new List('station-sidebar', {
+        valueNames: ['feature-name']
+    });
+    featureList.sort('feature-name', {
+        order: 'asc'
+    });
+}
 
 createMap();
 adjustHeight();
@@ -206,19 +208,20 @@ loadStations();
 installLocateControl();
 installZoomControl();
 
-
 map.on('load', function(loadEvent) {
     loadStations();
+    syncSidebar();
 });
 
 map.on('moveend', function (e) {
     loadStations();
+    syncSidebar();
 });
 
 map.on('zoomend', function (e) {
     loadStations();
+    syncSidebar();
 });
-
 
 $(document).on('mouseout', '.feature-row', function() {
     highlightLayer.clearLayers();
