@@ -1,21 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#000000">
-    <meta name="description" content="">
-    <meta name="author" content="">
+{% extends 'base.html.twig' %}
 
-    <title>Luft.jetzt</title>
+{% set bodyClass = 'map' %}
 
-    <link rel="stylesheet" href="{{ asset('/css/luft.min.css') }}">
-</head>
-
-<body class="map">
+{% block body %}
 {% include 'Map/menu.html.twig' %}
 
 <div id="container">
@@ -70,14 +57,13 @@
         </div>
     </div>
 </div>
-<script src="{{ asset('/js/jquery.min.js') }}"></script>
-<script src="{{ asset('/js/bootstrap.min.js') }}"></script>
+{% endblock body %}
+
+{% block scripts %}
 <script src="{{ asset('/js/list.min.js') }}"></script>
-<script src="{{ asset('/js/leaflet.js') }}"></script>
 <script src="{{ asset('/js/leaflet.markercluster.js') }}"></script>
 <script src="{{ asset('/js/L.Control.Locate.min.js') }}"></script>
 <!--<script src="{{ asset('/js/leaflet-groupedlayercontrol.min.js') }}"></script>-->
 <script src="{{ asset('/js/leaflet.extra-markers.min.js') }}"></script>
 <script src="{{ asset('/js/app.min.js') }}"></script>
-</body>
-</html>
+{% endblock scripts %}
