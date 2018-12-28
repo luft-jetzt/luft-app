@@ -30,7 +30,9 @@ class AnalysisController extends AbstractController
     {
         $seoPage
             ->setTwitterPreviewPhoto('/img/share/silvester/twitter.jpg')
-            ->setOpenGraphPreviewPhoto('/img/share/silvester/facebook.jpg');
+            ->setOpenGraphPreviewPhoto('/img/share/silvester/facebook.jpg')
+            ->setTitle('Feinstaub aus Silvester-Feuerwerken')
+            ->setDescription('Finde erhöhte Feinstaub-Konzentrationen aus Silvester-Feuerwerken');
 
         $fireworksAnalysis = $fireworksAnalysis->analyze();
 
