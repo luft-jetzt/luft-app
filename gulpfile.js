@@ -46,7 +46,7 @@ gulp.task('build-leaflet-extramarkers', ['extramarkers-images', 'extramarkers-cs
 /* Assets */
 
 gulp.task('copy-asset-images', function () {
-    return gulp.src('assets/img/*/*')
+    return gulp.src('assets/img/**/*')
         .pipe(gulp.dest('public/img/'));
 });
 
