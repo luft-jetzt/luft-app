@@ -15,19 +15,12 @@ class FireworksModelFactory implements FireworksModelFactoryInterface
         $this->registry = $registry;
     }
 
-    public function convert(array $buckets): array
+    public function convert(array $dataResult): array
     {
         $resultList = [];
 
-        foreach ($buckets as $bucket) {
-            $slope = array_pop($bucket['derivative_agg']);
-
-            foreach ($bucket['top_hits_agg']['hits']['hits'] as $hit) {
-                /** @var Data $data */
-                $data = $this->registry->getRepository(Data::class)->find(intval($hit['_id']));
-
-                $resultList[] = new FireworksModel($data->getStation(), $data, $slope);
-            }
+        foreach ($dataResult as $data) {
+           $resultList[] = new FireworksModel($data->getStation(), $data, 0);
         }
 
         return $this->sortResultList($resultList);

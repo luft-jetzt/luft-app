@@ -18,46 +18,19 @@ class FireworksAnalysis extends AbstractFireworksAnalysis
 
         $dateTimeQuery = $this->createDateTimeQuery();
 
+        $pollutionQuery = new \Elastica\Query\Range('value', ['gte' => 80]);
+
         $boolQuery = new \Elastica\Query\BoolQuery();
         $boolQuery
             ->addMust($pollutantQuery)
-            ->addMust($dateTimeQuery);
-
-        $histogram = new \Elastica\Aggregation\DateHistogram('histogram_agg', 'dateTime', 'hour');
-        $histogram->setTimezone('Europe/Berlin');
-        $histogram->setFormat('yyyy-MM-dd HH:mm:ss');
-
-        $termAgg = new \Elastica\Aggregation\Terms('station_agg');
-        $termAgg->setField('station');
-        $termAgg->addAggregation($histogram);
-
-        $max = new \Elastica\Aggregation\Max('max_agg');
-        $max->setField('value');
-        $histogram->addAggregation($max);
-
-        $derive = new \Elastica\Aggregation\Derivative('derivative_agg');
-        $derive->setBucketsPath('max_agg');
-        $histogram->addAggregation($derive);
-
-        $bucketSelector = new \Elastica\Aggregation\BucketSelector('bucket_selector');
-        $bucketSelector->setBucketsPath(['derivative' => 'derivative_agg']);
-        $bucketSelector->setGapPolicy('skip');
-        $bucketSelector->setScript(sprintf('params.derivative != null && params.derivative > %f && params.derivative < %f', $this->minSlope, $this->maxSlope));
-        $histogram->addAggregation($bucketSelector);
-
-        $topHistsAgg = new \Elastica\Aggregation\TopHits('top_hits_agg');
-        $topHistsAgg->setSize(1);
-        $topHistsAgg->setSort(['value' => ['order' => 'desc']]);
-        $histogram->addAggregation($topHistsAgg);
+            ->addMust($dateTimeQuery)
+            ->addMust($pollutionQuery);
 
         $query = new \Elastica\Query($boolQuery);
-        $query->addAggregation($histogram);
 
-        $results = $this->finder->findPaginated($query);
+        $results = $this->finder->find($query, 5000);
 
-        $buckets = $results->getAdapter()->getAggregations();
-
-        return $this->komfortofenModelFactory->convert($buckets['histogram_agg']['buckets']);
+        return $this->fireworksModelFactory->convert($results);
     }
 
     protected function createDateTimeQuery(): BoolQuery
