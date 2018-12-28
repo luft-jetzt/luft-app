@@ -19,8 +19,13 @@ class FireworksModelFactory implements FireworksModelFactoryInterface
     {
         $resultList = [];
 
+        /** @var Data $data */
         foreach ($dataResult as $data) {
-           $resultList[] = new FireworksModel($data->getStation(), $data, 0);
+            $stationId = $data->getStation()->getId();
+
+            if (!array_key_exists($stationId, $resultList) || $resultList[$stationId]->getData()->getValue() < $data->getValue()) {
+                $resultList[$stationId] = new FireworksModel($data->getStation(), $data, 0);
+            }
         }
 
         return $this->sortResultList($resultList);
