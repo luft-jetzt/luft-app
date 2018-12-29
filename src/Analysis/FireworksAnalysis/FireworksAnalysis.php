@@ -20,11 +20,14 @@ class FireworksAnalysis extends AbstractFireworksAnalysis
 
         $pollutionQuery = new \Elastica\Query\Range('value', ['gte' => 80]);
 
+        $providerQuery = new \Elastica\Query\Term(['provider' => 'uba_de']);
+
         $boolQuery = new \Elastica\Query\BoolQuery();
         $boolQuery
             ->addMust($pollutantQuery)
             ->addMust($dateTimeQuery)
-            ->addMust($pollutionQuery);
+            ->addMust($pollutionQuery)
+            ->addMust($providerQuery);
 
         $query = new \Elastica\Query($boolQuery);
 
