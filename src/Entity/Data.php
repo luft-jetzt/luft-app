@@ -20,6 +20,7 @@ class Data
     protected $id;
 
     /**
+     * @var Station $station
      * @ORM\ManyToOne(targetEntity="Station", inversedBy="datas")
      * @ORM\JoinColumn(name="station_id", referencedColumnName="id")
      */
@@ -109,6 +110,11 @@ class Data
         $this->pollutant = $pollutant;
 
         return $this;
+    }
+
+    public function getProvider(): string
+    {
+        return $this->station->getProvider();
     }
 
     public function isIndexable(): bool
