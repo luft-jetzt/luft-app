@@ -44,8 +44,8 @@ class FireworksAnalysis extends AbstractFireworksAnalysis
         $dateTimeQuery = new BoolQuery();
 
         foreach ($years as $year) {
-            $fromDateTime = new \DateTimeImmutable(sprintf('%d-12-27 00:00:00', $year));
-            $untilDateTime = $fromDateTime->add(new \DateInterval('P7D'));
+            $fromDateTime = new \DateTimeImmutable(sprintf('%d-12-31 12:00:00', $year));
+            $untilDateTime = $fromDateTime->add(new \DateInterval('P1D'));
 
             $rangeQuery = new \Elastica\Query\Range('dateTime', [
                 'gt' => $fromDateTime->format('Y-m-d H:i:s'),
