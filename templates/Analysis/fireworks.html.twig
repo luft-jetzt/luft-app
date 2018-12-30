@@ -5,11 +5,11 @@
         <div class="row">
             <div class="col-12 text-center">
                 <h2>
-                    Komfortofen-Finder
+                    Silvester-Feuerwerke
                 </h2>
 
                 <p class="lead">
-                    Als so genannte Komfortöfen getarnte Holzöfen erleben momentan eine beispiellose Renaissance. Die Kehrseite der Gemütlichkeit sind stark erhöhte Feinstaub-Werte in Wohngebieten, zu denen sich allerhand gefährliche Giftstoffe gesellen, die bei der unsachgemäßen Befeuerung eines Ofens und der Verbrennung von Müll oder behandeltem Holzmaterial entstehen können. Diese Öfen lassen sich an einem rapiden Anstieg der Feinstaub-Werte erkennen — typischerweise an den Wochenenden und vor Feiertagen ab etwa 16 Uhr.
+                    Direkt am Neujahrsmorgen werden in Deutschland rund 17 Prozent der jährlich ausgestoßenen Feinstaubmenge in Form von Silvesterfeuerwerken emittiert. Die folgende Liste zeigt Messstationen an, in denen die Werte für Feinstaub <a href="{{ path('pollutant_pm10') }}" title="Erfahre mehr über Feinstaub">PM<sub>10</sub></a> und PM<sub>25</sub> am Jahresende und Neujahrstag plötzlich angestiegen sind.
                 </p>
             </div>
         </div>
@@ -26,52 +26,60 @@
                             <th>
                                 PM<sub>10</sub>
                             </th>
-                            
+
+                            {#<th>
+                                PM<sub>25</sub>
+                            </th>#}
+
                             <th>
                                 Zeitpunkt
                             </th>
                         </tr>
                     </thead>
-                    {% for ofen in ofenList %}
+                    {% for firework in fireworksList %}
                         <tr>
-                            <td data-order="{{ ofen.station.stationCode }}">
-                                <a href="{{ path('station', { stationCode: ofen.station.stationCode }) }}">
-                                    {{ ofen.station.stationCode }}
+                            <td data-order="{{ firework.station.stationCode }}">
+                                <a href="{{ path('station', { stationCode: firework.station.stationCode }) }}">
+                                    {{ firework.station.stationCode }}
                                 </a>
-                                {% if ofen.station.city %}
-                                    <a href="{{ path('show_city', { citySlug: ofen.station.city.slug }) }}" title="Zeige weitere Luftmessstationen aus {{ ofen.station.city.name }}">
+                                {% if firework.station.city %}
+                                    <a href="{{ path('show_city', { citySlug: firework.station.city.slug }) }}" title="Zeige weitere Luftmessstationen aus {{ firework.station.city.name }}">
                                         <small class="text-muted">
-                                            {{ ofen.station.city.name }}
+                                            {{ firework.station.city.name }}
                                         </small>
                                     </a>
                                 {% endif %}
 
-                                {% if ofen.station.stationType and ofen.station.areaType %}
+                                {% if firework.station.stationType and firework.station.areaType %}
                                 <br />
                                 <small class="text-muted">
-                                    {{ ofen.station.stationType|readable_enum|trans({}, 'messages', 'de') }}, {{ ofen.station.areaType|readable_enum|trans({}, 'messages', 'de') }}
+                                    {{ firework.station.stationType|readable_enum|trans({}, 'messages', 'de') }}, {{ firework.station.areaType|readable_enum|trans({}, 'messages', 'de') }}
                                 </small>
                                 {% endif %}
                             </td>
 
-                            <td data-order="{{ ofen.data.value }}">
-                                {{ ofen.data.value }}
-                                <br />
-                                <span class="text-danger">+{{ ofen.slope }}</span>
+                            <td data-order="{{ firework.data.value }}">
+                                <span class="text-danger">
+                                    {{ firework.data.value }}
+                                </span>
                             </td>
 
-                            <td data-order="{{ ofen.data.dateTime|date('U') }}">
-                                <a href="{{ path('station_history', { stationCode: ofen.station.stationCode, from: ofen.data.dateTime|date('Y-m-d'), until: ofen.data.dateTime|date('Y-m-d') }) }}">
+                            {#<td>
+
+                            </td>#}
+
+                            <td data-order="{{ firework.data.dateTime|date('U') }}">
+                                <a href="{{ path('station_history', { stationCode: firework.station.stationCode, from: firework.data.dateTime|date_modify('-1 day')|date('Y-m-d'), until: firework.data.dateTime|date_modify('+6 hour')|date('Y-m-d') }) }}">
                                     <time class="d-none d-md-inline-block">
-                                        {{ ofen.data.dateTime|format_date('eeee, dd. MMMM YYYY') }}
+                                        {{ firework.data.dateTime|format_date('eeee, dd. MMMM YYYY') }}
                                         <br />
-                                        {{ ofen.data.dateTime|date('H:i') }} Uhr
+                                        {{ firework.data.dateTime|date('H:i') }} Uhr
                                     </time>
 
                                     <time class="d-md-none">
-                                        {{ ofen.data.dateTime|date('d.m.Y') }}
+                                        {{ firework.data.dateTime|date('d.m.Y') }}
                                         <br />
-                                        {{ ofen.data.dateTime|date('H:i') }} Uhr
+                                        {{ firework.data.dateTime|date('H:i') }} Uhr
                                     </time>
                                 </a>
                             </td>

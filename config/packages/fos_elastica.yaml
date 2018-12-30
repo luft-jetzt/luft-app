@@ -30,6 +30,9 @@ fos_elastica:
             types:
                 data:
                     properties:
+                        provider:
+                            type: string
+                            property_path: provider
                         value:
                             type: float
                         pollutant:
