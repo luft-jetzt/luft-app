@@ -166,6 +166,7 @@ class StationController extends AbstractController
 
         $plotData = [];
         $maxValue = 0;
+        $i = count($dataLists);
 
         /** @var array $dataList */
         foreach ($dataLists as $timestamp => $dataList) {
@@ -183,6 +184,18 @@ class StationController extends AbstractController
                     }
 
                     array_unshift($plotData[$pollutantId], $value);
+
+                    $dateTime = $box->getData()->getDateTime();
+
+                    $tickPositions[$i] = $i;
+
+                    if ($dateTime->format('H') % 4 === 0) {
+                        $tickLabels[$i] = $dateTime->format('H:i');
+                    } else {
+                        $tickLabels[$i] = null;
+                    }
+
+                    --$i;
                 }
             }
         }
@@ -201,10 +214,9 @@ class StationController extends AbstractController
             $graph->Add($linePlot);
         }
 
-        $tickPositions[$i] = $i/2*M_PI;
         $graph->SetScale('intlin', 0, ceil($maxValue * 1.1), 0, $maxDataListLength);
+        $graph->xaxis->SetTickPositions($tickPositions, $tickPositions, $tickLabels);
 
         $graph->Stroke();
-
     }
 }
