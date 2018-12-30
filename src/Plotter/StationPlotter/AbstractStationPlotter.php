@@ -90,7 +90,4 @@ abstract class AbstractStationPlotter implements StationPlotterInterface
 
         return $dataLists;
     }
-
-    abstract public function plot(): void;
-
 }

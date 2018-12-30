@@ -9,6 +9,7 @@ use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
 use App\Util\DateTimeUtil;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -120,7 +121,7 @@ class StationController extends AbstractController
         return array_unique($pollutantIdList);
     }
 
-    public function plotHistoryAction(Request $request, string $stationCode, StationPlotterInterface $stationPlotter): void
+    public function plotHistoryAction(Request $request, string $stationCode, StationPlotterInterface $stationPlotter, string $graphCacheDirectory): BinaryFileResponse
     {
         if ($untilDateTimeParam = $request->query->get('until')) {
             try {
@@ -151,13 +152,21 @@ class StationController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $stationPlotter
-            ->setWidth(800)
-            ->setHeight(400)
-            ->setTitle(sprintf('Messwerte der Station %s', $station->getStationCode()))
-            ->setStation($station)
-            ->setFromDateTime($fromDateTime)
-            ->setUntilDateTime($untilDateTime)
-            ->plot();
+        $filename = sprintf('%s/%s-%d-%d-800x400.png', $graphCacheDirectory, $station->getStationCode(), $fromDateTime->format('U'), $untilDateTime->format('U'));
+
+        if (!file_exists($filename)) {
+            $stationPlotter
+                ->setWidth(800)
+                ->setHeight(400)
+                ->setTitle(sprintf('Messwerte der Station %s', $station->getStationCode()))
+                ->setStation($station)
+                ->setFromDateTime($fromDateTime)
+                ->setUntilDateTime($untilDateTime)
+                ->plot($filename);
+        }
+
+        $response = new BinaryFileResponse($filename);
+
+        return $response;
     }
 }

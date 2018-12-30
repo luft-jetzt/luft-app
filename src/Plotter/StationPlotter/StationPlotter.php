@@ -8,7 +8,7 @@ use App\Pollution\Box\Box;
 
 class StationPlotter extends AbstractStationPlotter
 {
-    public function plot(): void
+    public function plot(string $filename): void
     {
         $dataLists = $this->getDataLists();
 
@@ -69,6 +69,7 @@ class StationPlotter extends AbstractStationPlotter
         $graph->SetScale('intlin', 0, ceil($maxValue * 1.1), 0, $maxDataListLength);
         $graph->xaxis->SetTickPositions($tickPositions, $tickPositions, $tickLabels);
 
-        $graph->Stroke();
+        $graph->Stroke(_IMG_HANDLER);
+        $graph->img->Stream($filename);
     }
 }

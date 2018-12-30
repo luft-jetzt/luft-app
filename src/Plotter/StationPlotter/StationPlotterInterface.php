@@ -12,5 +12,5 @@ interface StationPlotterInterface
     public function setWidth(int $width): StationPlotterInterface;
     public function setHeight(int $height): StationPlotterInterface;
     public function setTitle(string $title): StationPlotterInterface;
-    public function plot(): void;
+    public function plot(string $filename): void;
 }
