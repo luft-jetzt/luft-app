@@ -16,7 +16,7 @@
 
         <div class="row">
             <div class="col-12">
-                <table class="table table-sm">
+                <table class="table table-sm datatable">
                     <thead>
                         <tr>
                             <th>
@@ -97,4 +97,13 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.datatable').DataTable();
+        } );
+    </script>
 {% endblock %}
