@@ -4,8 +4,7 @@ namespace App\Controller;
 
 use App\Analysis\LimitAnalysis\LimitAnalysisInterface;
 use App\Entity\Station;
-use App\Plotter\StationPlotter;
-use App\Pollution\PollutantList\PollutantListInterface;
+use App\Plotter\StationPlotter\StationPlotterInterface;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
@@ -121,7 +120,7 @@ class StationController extends AbstractController
         return array_unique($pollutantIdList);
     }
 
-    public function plotHistoryAction(Request $request, string $stationCode, StationPlotter $stationPlotter): void
+    public function plotHistoryAction(Request $request, string $stationCode, StationPlotterInterface $stationPlotter): void
     {
         if ($untilDateTimeParam = $request->query->get('until')) {
             try {

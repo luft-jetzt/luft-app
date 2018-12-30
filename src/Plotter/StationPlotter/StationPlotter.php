@@ -1,88 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace App\Plotter;
+namespace App\Plotter\StationPlotter;
 
 use Amenadiel\JpGraph\Graph;
 use Amenadiel\JpGraph\Plot;
-use App\Entity\Station;
 use App\Pollution\Box\Box;
-use App\Pollution\PollutantList\PollutantListInterface;
-use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 
-class StationPlotter
+class StationPlotter extends AbstractStationPlotter
 {
-    /** @var Station $station */
-    protected $station;
-
-    /** @var PollutantListInterface $pollutantList */
-    protected $pollutantList;
-
-    /** @var HistoryDataFactoryInterface $historyDataFactory */
-    protected $historyDataFactory;
-
-    /** @var \DateTime $fromDateTime */
-    protected $fromDateTime;
-
-    /** @var \DateTime $untilDateTime */
-    protected $untilDateTime;
-
-    /** @var int $width */
-    protected $width;
-
-    /** @var int $height */
-    protected $height;
-
-    /** @var string $title */
-    protected $title;
-
-    public function __construct(PollutantListInterface $pollutantList, HistoryDataFactoryInterface $historyDataFactory)
-    {
-        $this->pollutantList = $pollutantList;
-        $this->historyDataFactory = $historyDataFactory;
-    }
-
-    public function setFromDateTime(\DateTime $fromDateTime): StationPlotter
-    {
-        $this->fromDateTime = $fromDateTime;
-
-        return $this;
-    }
-
-    public function setUntilDateTime(\DateTime $untilDateTime): StationPlotter
-    {
-        $this->untilDateTime = $untilDateTime;
-
-        return $this;
-    }
-
-    public function setStation(Station $station): StationPlotter
-    {
-        $this->station = $station;
-
-        return $this;
-    }
-
-    public function setWidth(int $width): StationPlotter
-    {
-        $this->width = $width;
-
-        return $this;
-    }
-
-    public function setHeight(int $height): StationPlotter
-    {
-        $this->height = $height;
-
-        return $this;
-    }
-
-    public function setTitle(string $title): StationPlotter
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
     public function plot(): void
     {
         $dataLists = $this->getDataLists();
@@ -145,16 +70,5 @@ class StationPlotter
         $graph->xaxis->SetTickPositions($tickPositions, $tickPositions, $tickLabels);
 
         $graph->Stroke();
-    }
-
-    protected function getDataLists(): array
-    {
-        $dataLists = $this->historyDataFactory
-            ->setStation($this->station)
-            ->createDecoratedPollutantListForInterval($this->fromDateTime, $this->untilDateTime);
-
-        krsort($dataLists);
-
-        return $dataLists;
     }
 }
