@@ -8,10 +8,12 @@ use App\Plotter\StationPlotter\StationPlotterInterface;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
+use App\SeoPage\SeoPageInterface;
 use App\Util\DateTimeUtil;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 
 class StationController extends AbstractController
 {
@@ -64,7 +66,7 @@ class StationController extends AbstractController
         ]);
     }
 
-    public function historyAction(Request $request, string $stationCode, HistoryDataFactoryInterface $historyDataFactory): Response
+    public function historyAction(Request $request, string $stationCode, HistoryDataFactoryInterface $historyDataFactory, SeoPageInterface $seoPage, RouterInterface $router): Response
     {
         if ($untilDateTimeParam = $request->query->get('until')) {
             try {
@@ -94,6 +96,22 @@ class StationController extends AbstractController
         if (!$station) {
             throw $this->createNotFoundException();
         }
+
+        $seoPage->setOpenGraphPreviewPhoto($router->generate('station_history_plot', [
+            'stationCode' => $station->getStationCode(),
+            'fromDateTime' => $fromDateTime->format('Y-m-d'),
+            'untilDateTime' => $untilDateTime->format('Y-m-d'),
+            'width' => 1200,
+            'height' => 630,
+        ]));
+
+        $seoPage->setTwitterPreviewPhoto($router->generate('station_history_plot', [
+            'stationCode' => $station->getStationCode(),
+            'fromDateTime' => $fromDateTime->format('Y-m-d'),
+            'untilDateTime' => $untilDateTime->format('Y-m-d'),
+            'width' => 900,
+            'height' => 450,
+        ]));
 
         $dataLists = $historyDataFactory
             ->setStation($station)
