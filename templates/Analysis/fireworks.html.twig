@@ -38,7 +38,7 @@
                     </thead>
                     {% for firework in fireworksList %}
                         <tr>
-                            <td>
+                            <td data-order="{{ firework.station.stationCode }}">
                                 <a href="{{ path('station', { stationCode: firework.station.stationCode }) }}">
                                     {{ firework.station.stationCode }}
                                 </a>
@@ -58,7 +58,7 @@
                                 {% endif %}
                             </td>
 
-                            <td>
+                            <td data-order="{{ firework.data.value }}">
                                 <span class="text-danger">
                                     {{ firework.data.value }}
                                 </span>
@@ -68,7 +68,7 @@
 
                             </td>#}
 
-                            <td>
+                            <td data-order="{{ firework.data.dateTime|date('U') }}">
                                 <a href="{{ path('station_history', { stationCode: firework.station.stationCode, from: firework.data.dateTime|date_modify('-1 day')|date('Y-m-d'), until: firework.data.dateTime|date_modify('+6 hour')|date('Y-m-d') }) }}">
                                     <time class="d-none d-md-inline-block">
                                         {{ firework.data.dateTime|format_date('eeee, dd. MMMM YYYY') }}
