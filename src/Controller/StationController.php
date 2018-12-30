@@ -152,8 +152,13 @@ class StationController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $stationPlotter->setStation($station)->setFromDateTime($fromDateTime)->setUntilDateTime($untilDateTime)->plot();
-
-
+        $stationPlotter
+            ->setWidth(800)
+            ->setHeight(400)
+            ->setTitle(sprintf('Messwerte der Station %s', $station->getStationCode()))
+            ->setStation($station)
+            ->setFromDateTime($fromDateTime)
+            ->setUntilDateTime($untilDateTime)
+            ->plot();
     }
 }

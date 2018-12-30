@@ -26,6 +26,15 @@ class StationPlotter
     /** @var \DateTime $untilDateTime */
     protected $untilDateTime;
 
+    /** @var int $width */
+    protected $width;
+
+    /** @var int $height */
+    protected $height;
+
+    /** @var string $title */
+    protected $title;
+
     public function __construct(PollutantListInterface $pollutantList, HistoryDataFactoryInterface $historyDataFactory)
     {
         $this->pollutantList = $pollutantList;
@@ -53,11 +62,32 @@ class StationPlotter
         return $this;
     }
 
+    public function setWidth(int $width): StationPlotter
+    {
+        $this->width = $width;
+
+        return $this;
+    }
+
+    public function setHeight(int $height): StationPlotter
+    {
+        $this->height = $height;
+
+        return $this;
+    }
+
+    public function setTitle(string $title): StationPlotter
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
     public function plot(): void
     {
         $dataLists = $this->getDataLists();
 
-        $graph    = new Graph\Graph(800, 400);
+        $graph    = new Graph\Graph($this->width, $this->height);
         $graph->title->Set(sprintf('Messwerte der Station %s', $this->station->getStationCode()));
         $graph->SetBox(true);
 
