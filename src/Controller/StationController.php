@@ -170,12 +170,13 @@ class StationController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $filename = sprintf('%s/%s-%d-%d-800x400.png', $graphCacheDirectory, $station->getStationCode(), $fromDateTime->format('U'), $untilDateTime->format('U'));
+        $width = (int) $request->get('width', 800);
+        $height = (int) $request->get('height', 400);
 
-        if (!file_exists($filename)) {
+        $filename = sprintf('%s/%s-%d-%d-%dx%d.png', $graphCacheDirectory, $station->getStationCode(), $fromDateTime->format('U'), $untilDateTime->format('U'), $width, $height);
             $stationPlotter
-                ->setWidth(800)
-                ->setHeight(400)
+                ->setWidth($width)
+                ->setHeight($height)
                 ->setTitle(sprintf('Messwerte der Station %s', $station->getStationCode()))
                 ->setStation($station)
                 ->setFromDateTime($fromDateTime)
