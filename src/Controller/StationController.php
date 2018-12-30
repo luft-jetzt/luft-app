@@ -99,16 +99,16 @@ class StationController extends AbstractController
 
         $seoPage->setOpenGraphPreviewPhoto($router->generate('station_history_plot', [
             'stationCode' => $station->getStationCode(),
-            'fromDateTime' => $fromDateTime->format('Y-m-d'),
-            'untilDateTime' => $untilDateTime->format('Y-m-d'),
+            'from' => $fromDateTime->format('Y-m-d'),
+            'until' => $untilDateTime->format('Y-m-d'),
             'width' => 1200,
             'height' => 630,
         ]));
 
         $seoPage->setTwitterPreviewPhoto($router->generate('station_history_plot', [
             'stationCode' => $station->getStationCode(),
-            'fromDateTime' => $fromDateTime->format('Y-m-d'),
-            'untilDateTime' => $untilDateTime->format('Y-m-d'),
+            'from' => $fromDateTime->format('Y-m-d'),
+            'until' => $untilDateTime->format('Y-m-d'),
             'width' => 900,
             'height' => 450,
         ]));
