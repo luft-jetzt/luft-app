@@ -174,6 +174,8 @@ class StationController extends AbstractController
         $height = (int) $request->get('height', 400);
 
         $filename = sprintf('%s/%s-%d-%d-%dx%d.png', $graphCacheDirectory, $station->getStationCode(), $fromDateTime->format('U'), $untilDateTime->format('U'), $width, $height);
+
+        if (!file_exists($filename)) {
             $stationPlotter
                 ->setWidth($width)
                 ->setHeight($height)
