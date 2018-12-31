@@ -18,7 +18,7 @@ class FireworksAnalysis extends AbstractFireworksAnalysis
 
         $dateTimeQuery = $this->createDateTimeQuery();
 
-        $pollutionQuery = new \Elastica\Query\Range('value', ['gte' => 80]);
+        $pollutionQuery = new \Elastica\Query\Range('value', ['gte' => 100]);
 
         $providerQuery = new \Elastica\Query\Term(['provider' => 'uba_de']);
 
