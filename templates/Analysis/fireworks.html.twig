@@ -27,10 +27,6 @@
                                 PM<sub>10</sub>
                             </th>
 
-                            {#<th>
-                                PM<sub>25</sub>
-                            </th>#}
-
                             <th>
                                 Zeitpunkt
                             </th>
@@ -63,10 +59,6 @@
                                     {{ firework.data.value }}
                                 </span>
                             </td>
-
-                            {#<td>
-
-                            </td>#}
 
                             <td data-order="{{ firework.data.dateTime|date('U') }}">
                                 <a href="{{ path('station_history', { stationCode: firework.station.stationCode, from: firework.data.dateTime|date_modify('-1 day')|date('Y-m-d'), until: firework.data.dateTime|date_modify('+6 hour')|date('Y-m-d') }) }}">
@@ -107,6 +99,7 @@
             $('.datatable').DataTable({
                 'paging':   false,
                 'info':     false,
+                'order': [[ 2, 'desc' ]],
                 'language': {
                     'search': 'Suche:'
                 }
