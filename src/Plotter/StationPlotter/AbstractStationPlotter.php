@@ -32,6 +32,16 @@ abstract class AbstractStationPlotter implements StationPlotterInterface
     /** @var string $title */
     protected $title;
 
+    /** @var array $colorMap */
+    protected $colorMap = [
+        1 => 'red',
+        2 => 'blue',
+        3 => 'yellow',
+        4 => 'orange',
+        5 => 'green',
+        6 => 'purple',
+    ];
+
     public function __construct(PollutantListInterface $pollutantList, HistoryDataFactoryInterface $historyDataFactory)
     {
         $this->pollutantList = $pollutantList;
@@ -89,5 +99,10 @@ abstract class AbstractStationPlotter implements StationPlotterInterface
         krsort($dataLists);
 
         return $dataLists;
+    }
+
+    protected function getColorForPollutantId(int $pollutantId): string
+    {
+        return $this->colorMap[$pollutantId];
     }
 }

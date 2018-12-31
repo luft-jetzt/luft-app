@@ -60,7 +60,7 @@ class StationPlotter extends AbstractStationPlotter
             }
 
             $linePlot   = new Plot\LinePlot($valueList);
-            $linePlot->SetColor('red');
+            $linePlot->SetColor($this->getColorForPollutantId($pollutantId));
             $linePlot->SetLegend($this->pollutantList->getPollutantsWithIds()[$pollutantId]->getName());
 
             $graph->Add($linePlot);
