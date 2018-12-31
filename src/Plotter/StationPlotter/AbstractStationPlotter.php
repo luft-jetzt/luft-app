@@ -3,6 +3,7 @@
 namespace App\Plotter\StationPlotter;
 
 use App\Entity\Station;
+use App\Pollution\Pollutant\PollutantInterface;
 use App\Pollution\PollutantList\PollutantListInterface;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 
@@ -34,14 +35,14 @@ abstract class AbstractStationPlotter implements StationPlotterInterface
 
     /** @var array $colorMap */
     protected $colorMap = [
-        1 => 'red',
-        2 => 'blue',
-        3 => 'yellow',
-        4 => 'orange',
-        5 => 'green',
-        6 => 'purple',
+        PollutantInterface::POLLUTANT_PM10 => 'red',
+        PollutantInterface::POLLUTANT_PM25 => 'orange',
+        PollutantInterface::POLLUTANT_O3 => 'green',
+        PollutantInterface::POLLUTANT_NO2 => 'blue',
+        PollutantInterface::POLLUTANT_SO2 => 'yellow',
+        PollutantInterface::POLLUTANT_CO => 'back',
     ];
-
+    
     public function __construct(PollutantListInterface $pollutantList, HistoryDataFactoryInterface $historyDataFactory)
     {
         $this->pollutantList = $pollutantList;
