@@ -69,9 +69,9 @@
                                     </time>
 
                                     <time class="d-md-none">
-                                        {{ firework.data.dateTime|date('d.m.Y') }}
+                                        {{ firework.data.dateTime|date('d.m.Y', 'Europe/Berlin') }}
                                         <br />
-                                        {{ firework.data.dateTime|date('H:i') }} Uhr
+                                        {{ firework.data.dateTime|date('H:i', 'Europe/Berlin') }} Uhr
                                     </time>
                                 </a>
                             </td>
