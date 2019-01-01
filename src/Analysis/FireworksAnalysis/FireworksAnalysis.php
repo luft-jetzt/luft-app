@@ -26,8 +26,8 @@ class FireworksAnalysis extends AbstractFireworksAnalysis
         $boolQuery
             ->addMust($pollutantQuery)
             ->addMust($dateTimeQuery)
-            ->addMust($pollutionQuery);
-            //->addMust($providerQuery);
+            ->addMust($pollutionQuery)
+            ->addMust($providerQuery);
 
         $query = new \Elastica\Query($boolQuery);
 
