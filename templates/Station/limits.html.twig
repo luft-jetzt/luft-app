@@ -4,7 +4,49 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                {{ dump(resultList) }}
+                <table>
+                    <thead>
+                    <tr>
+                        <th colspan="7" class="center">
+                            {{ time|date('F') }}
+                        </th>
+                    </tr>
+                    <tr>
+                        <th width="12%">Mo</th>
+                        <th width="15%">Di</th>
+                        <th width="15%">Mi</th>
+                        <th width="16%">Do</th>
+                        <th width="15%">Fr</th>
+                        <th width="15%">Sa</th>
+                        <th width="12%">So</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        {% set daysInMonth = time|date('t') %}
+                        {% set startDow = time|date('F 1\\s\\t Y')|date('N') - 1 %}
+                        {% set dow = startDow %}
+                        {% for day,data in resultList %}
+                        {% if loop.first and startDow != 0 %}
+                            <td colspan="{{ startDow }}"></td>
+                        {% endif %}
+                        <td title="{{ day }}">
+                            {{ data.value|round }}
+                        </td>
+                        {% if loop.last and dow != 6 %}
+                            <td colspan="{{ 6 - dow }}">&nbsp;</td>
+                        {% endif %}
+                        {% if dow == 6 %}
+                        {% set dow = 0 %}
+                    </tr>
+                    <tr>
+                        {% else %}
+                            {% set dow = dow + 1 %}
+                        {% endif %}
+                        {% endfor %}
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

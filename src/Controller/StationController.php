@@ -53,13 +53,14 @@ class StationController extends AbstractController
 
         $limitAnalysis
             ->setStation($station)
-            ->setFromDateTime(new \DateTime('2018-01-01'))
-            ->setUntilDateTime(new \DateTime('2018-01-31'));
+            ->setFromDateTime(new \DateTime('2018-11-01'))
+            ->setUntilDateTime(new \DateTime('2018-11-30'));
 
         $resultList = $limitAnalysis->analyze();
 
         return $this->render('Station/limits.html.twig', [
             'resultList' => $resultList,
+            'time' => new \DateTime('2018-11-01'),
         ]);
     }
 

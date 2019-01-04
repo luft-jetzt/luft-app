@@ -62,7 +62,7 @@ class LimitAnalysis implements LimitAnalysisInterface
 
         /** @var array $bucket */
         foreach ($buckets as $bucket) {
-            $resultList[] = ['date' => $bucket['key_as_string'], 'value' => array_pop($bucket['avg_agg'])];
+            $resultList[$bucket['key_as_string']] = ['date' => $bucket['key_as_string'], 'value' => array_pop($bucket['avg_agg'])];
         }
 
         return $resultList;
