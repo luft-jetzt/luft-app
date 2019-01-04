@@ -4,20 +4,9 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div id="calendar" style="width: 100%;"></div>
+                {{ dump(resultList) }}
             </div>
         </div>
     </div>
-
-{% endblock %}
-
-{% block scripts %}
-    <script>
-        var exceedanceData = {{ exceedanceJson|raw }};
-    </script>
-
-    <script src="{{ asset('/js/calendar_heatmap.bundle.js') }}"></script>
-    <script src="{{ asset('/js/limit-violation.min.js') }}"></script>
-
 
 {% endblock %}

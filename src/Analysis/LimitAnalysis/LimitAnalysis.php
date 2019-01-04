@@ -62,7 +62,7 @@ class LimitAnalysis implements LimitAnalysisInterface
 
         /** @var array $bucket */
         foreach ($buckets as $bucket) {
-            $resultList[] = ['date' => $bucket['key_as_string'], 'value' => array_pop($bucket['max_value'])];
+            $resultList[] = ['date' => $bucket['key_as_string'], 'value' => array_pop($bucket['avg_agg'])];
         }
 
         return $resultList;
@@ -71,7 +71,7 @@ class LimitAnalysis implements LimitAnalysisInterface
     public function analyze(): array
     {
         $stationQuery = new \Elastica\Query\Term(['station' => $this->station->getId()]);
-        $pollutantQuery = new \Elastica\Query\Term(['pollutant' => 1]);
+        $pollutantQuery = new \Elastica\Query\Term(['pollutant' => PollutantInterface::POLLUTANT_PM10]);
 
         $boolQuery = new \Elastica\Query\BoolQuery();
         $boolQuery
@@ -86,21 +86,20 @@ class LimitAnalysis implements LimitAnalysisInterface
 
         $boolQuery->addMust($dateTimeQuery);
 
-        $histogram = new \Elastica\Aggregation\DateHistogram('value_bucket', 'dateTime', '1D');
+        $histogram = new \Elastica\Aggregation\DateHistogram('histogram_agg', 'dateTime', '1D');
         $histogram->setTimezone('Europe/Berlin');
         $histogram->setFormat('yyyy-MM-dd');
 
-        $max = new \Elastica\Aggregation\Max('max_value');
-        $max->setField('value');
+        $avgAgg = new \Elastica\Aggregation\Avg('avg_agg');
+        $avgAgg->setField('value');
+        $histogram->addAggregation($avgAgg);
 
         $query = new \Elastica\Query($boolQuery);
         $query->addAggregation($histogram);
-        $histogram->addAggregation($max);
 
         $results = $this->finder->findPaginated($query);
-
         $buckets = $results->getAdapter()->getAggregations();
 
-        return $this->convertToList($buckets['value_bucket']['buckets']);
+        return $this->convertToList($buckets['histogram_agg']['buckets']);
     }
 }
