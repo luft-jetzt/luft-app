@@ -10,7 +10,11 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
 {
     public function createDecoratedPollutantList(): array
     {
-        $dataList = $this->getDataListFromStationList($this->stationList);
+        $dateTime = new \DateTime();
+        $interval = new \DateInterval('PT8H');
+        $dateTime->sub($interval);
+
+        $dataList = $this->getDataListFromStationList($this->stationList, $dateTime, $interval);
 
         $boxList = $this->getBoxListFromDataList($dataList);
 
@@ -19,14 +23,14 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
         return $boxList;
     }
 
-    protected function getDataListFromStationList(array $stationList, \DateTime $dateTime = null, \DateInterval $interval = null): array
+    protected function getDataListFromStationList(array $stationList, \DateTime $fromDateTime = null, \DateInterval $interval = null): array
     {
         $this->dataList->reset();
 
         $missingPollutants = $this->strategy->getMissingPollutants($this->dataList);
 
         foreach ($missingPollutants as $pollutant) {
-            $dataList = $this->dataRetriever->retrieveDataForCoord($this->coord, $pollutant, $dateTime, $interval);
+            $dataList = $this->dataRetriever->retrieveDataForCoord($this->coord, $pollutant, $fromDateTime, $interval);
 
             /** @var Data $data */
             foreach ($dataList as $data) {
