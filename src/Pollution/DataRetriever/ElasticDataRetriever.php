@@ -18,7 +18,10 @@ class ElasticDataRetriever implements DataRetrieverInterface
 
     public function retrieveStationData(Station $station, int $pollutant, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, string $order = 'DESC'): ?Data
     {
-        $stationQuery = new \Elastica\Query\Term(['station' => $station->getId()]);
+        $stationQuery = new \Elastica\Query\Nested();
+        $stationQuery->setPath('station');
+        $stationQuery->setQuery(new \Elastica\Query\Term(['station.id' => $station->getId()]));
+
         $pollutantQuery = new \Elastica\Query\Term(['pollutant' => $pollutant]);
 
         $boolQuery = new \Elastica\Query\BoolQuery();
