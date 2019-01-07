@@ -17,9 +17,9 @@ class TweakedElasticDataRetriever implements TweakedElasticDataRetrieverInterfac
         $this->dataFinder = $dataFinder;
     }
 
-    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, string $order = 'DESC', float $maxDistance = 20.0, int $maxResults): array
+    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, string $order = 'DESC', float $maxDistance = 20.0, int $maxResults = 100): array
     {
-        $stationGeoQuery = new \Elastica\Query\GeoDistance('pin', [
+        $stationGeoQuery = new \Elastica\Query\GeoDistance('station.pin', [
             'lat' => $coord->getLatitude(),
             'lon' => $coord->getLongitude(),
         ],

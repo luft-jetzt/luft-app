@@ -25,11 +25,11 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
 
         $missingPollutants = $this->strategy->getMissingPollutants($this->dataList);
 
-        /** @var Station $station */
-        foreach ($stationList as $station) {
-            foreach ($missingPollutants as $pollutant) {
-                $data = $this->dataRetriever->retrieveStationData($station, $pollutant, $dateTime, $interval);
+        foreach ($missingPollutants as $pollutant) {
+            $dataList = $this->dataRetriever->retrieveDataForCoord($this->coord, $pollutant, $dateTime, $interval);
 
+            /** @var Data $data */
+            foreach ($dataList as $data) {
                 if ($this->strategy->accepts($this->dataList, $data)) {
                     $this->strategy->addDataToList($this->dataList, $data);
                 }
