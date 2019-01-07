@@ -50,8 +50,22 @@ class TweakedElasticDataRetriever implements TweakedElasticDataRetrieverInterfac
         }
 
         $query = new \Elastica\Query($boolQuery);
+
         $query
-            ->setSort(['dateTime' => ['order' => strtolower($order)]])
+            ->addSort([
+            '_geo_distance' => [
+                'station.pin' => [
+                    'lat' => $coord->getLatitude(),
+                    'lon' => $coord->getLongitude()
+                ],
+                'order' => strtolower($order),
+                'unit' => 'km',
+            ]])
+            ->addSort([
+                'dateTime' => [
+                    'order' => strtolower($order)
+                ]
+            ])
             ->setSize($maxResults);
 
         return $this->dataFinder->find($query);
