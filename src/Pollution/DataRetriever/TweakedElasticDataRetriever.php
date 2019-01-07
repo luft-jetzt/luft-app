@@ -4,9 +4,10 @@ namespace App\Pollution\DataRetriever;
 
 use App\Entity\Data;
 use App\Entity\Station;
+use Caldera\GeoBasic\Coord\CoordInterface;
 use FOS\ElasticaBundle\Finder\FinderInterface;
 
-class TweakedElasticDataRetriever
+class TweakedElasticDataRetriever implements TweakedElasticDataRetrieverInterface
 {
     /** @var FinderInterface $dataFinder */
     protected $dataFinder;
@@ -16,15 +17,19 @@ class TweakedElasticDataRetriever
         $this->dataFinder = $dataFinder;
     }
 
-    public function retrieveStationData(Station $station, array $pollutantList, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, string $order = 'DESC'): ?Data
+    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, string $order = 'DESC', float $maxDistance = 20.0, int $maxResults): array
     {
-        $stationQuery = new \Elastica\Query\Term(['station' => $station->getId()]);
+        $stationGeoQuery = new \Elastica\Query\GeoDistance('pin', [
+            'lat' => $coord->getLatitude(),
+            'lon' => $coord->getLongitude(),
+        ],
+            sprintf('%fkm', $maxDistance));
 
-        $pollutantQuery = new \Elastica\Query\BoolQuery();
+        $stationQuery = new \Elastica\Query\Nested();
+        $stationQuery->setPath('station');
+        $stationQuery->setQuery($stationGeoQuery);
 
-        foreach ($pollutantList as $pollutantId) {
-            $pollutantQuery->addShould(new \Elastica\Query\Term(['pollutant' => $pollutantId]));
-        }
+        $pollutantQuery = new \Elastica\Query\Term(['pollutant' => $pollutantId]);
 
         $boolQuery = new \Elastica\Query\BoolQuery();
         $boolQuery
@@ -47,14 +52,8 @@ class TweakedElasticDataRetriever
         $query = new \Elastica\Query($boolQuery);
         $query
             ->setSort(['dateTime' => ['order' => strtolower($order)]])
-            ->setSize(1);
+            ->setSize($maxResults);
 
-        $results = $this->dataFinder->find($query);
-
-        if (count($results) === 1) {
-            return array_pop($results);
-        }
-
-        return null;
+        return $this->dataFinder->find($query);
     }
 }
