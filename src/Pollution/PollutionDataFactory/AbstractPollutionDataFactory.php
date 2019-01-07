@@ -48,7 +48,6 @@ abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInter
     public function setCoord(CoordInterface $coord): PollutionDataFactoryInterface
     {
         $this->coord = $coord;
-        $this->stationList = $this->stationFinder->setCoord($this->coord)->findNearestStations();
 
         return $this;
     }
@@ -57,6 +56,13 @@ abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInter
     {
         $this->coord = $station;
         $this->stationList = [$station];
+
+        return $this;
+    }
+
+    public function addStation(Station $station): PollutionDataFactoryInterface
+    {
+        $this->stationList[$station->getId()] = $station;
 
         return $this;
     }

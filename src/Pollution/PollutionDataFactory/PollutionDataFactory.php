@@ -32,13 +32,9 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
             foreach ($dataList as $data) {
                 if ($this->strategy->accepts($this->dataList, $data)) {
                     $this->strategy->addDataToList($this->dataList, $data);
+
+                    continue;
                 }
-            }
-
-            $missingPollutants = $this->strategy->getMissingPollutants($this->dataList);
-
-            if (0 === count($missingPollutants)) {
-                break;
             }
         }
 
