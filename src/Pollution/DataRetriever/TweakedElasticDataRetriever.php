@@ -17,7 +17,7 @@ class TweakedElasticDataRetriever implements TweakedElasticDataRetrieverInterfac
         $this->dataFinder = $dataFinder;
     }
 
-    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 100): array
+    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 50): array
     {
         $stationGeoQuery = new \Elastica\Query\GeoDistance('station.pin', [
             'lat' => $coord->getLatitude(),
@@ -53,19 +53,17 @@ class TweakedElasticDataRetriever implements TweakedElasticDataRetrieverInterfac
 
         $query
             ->addSort([
-            '_geo_distance' => [
-                'station.pin' => [
-                    'lat' => $coord->getLatitude(),
-                    'lon' => $coord->getLongitude()
-                ],
-                'order' => 'asc',
-                'unit' => 'km',
-            ]])
-            ->addSort([
-                'dateTime' => [
-                    'order' => 'desc'
+                '_geo_distance' => [
+                    'station.pin' => [
+                        'lat' => $coord->getLatitude(),
+                        'lon' => $coord->getLongitude()
+                    ],
+                    'order' => 'asc',
+                    'unit' => 'km',
+                    'nested_path' => 'station',
                 ]
             ])
+            ->addSort(['dateTime' => 'desc'])
             ->setSize($maxResults);
 
         return $this->dataFinder->find($query);

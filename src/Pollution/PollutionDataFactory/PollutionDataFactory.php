@@ -37,7 +37,7 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
                 if ($this->strategy->accepts($this->dataList, $data)) {
                     $this->strategy->addDataToList($this->dataList, $data);
 
-                    continue;
+                    break;
                 }
             }
         }
