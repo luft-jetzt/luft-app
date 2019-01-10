@@ -69,8 +69,13 @@ class TweakedElasticDataRetriever implements TweakedElasticDataRetrieverInterfac
                     'nested_path' => 'station',
                 ]
             ])
-            ->addSort(['dateTime' => 'desc'])
-            ->setSize($maxResults);
+            ->addSort(['dateTime' => 'desc']);
+
+        if ($coord instanceof Station) {
+            $query->setSize(1);
+        } else {
+            $query->setSize($maxResults);
+        }
 
         return $this->dataFinder->find($query);
     }

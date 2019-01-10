@@ -30,9 +30,6 @@ abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInter
     /** @var TweakedElasticDataRetrieverInterface $dataRetriever*/
     protected $dataRetriever;
 
-    /** @var array $stationList */
-    protected $stationList = [];
-
     /** @var PollutantFactoryStrategyInterface $strategy */
     protected $strategy;
 
@@ -55,14 +52,6 @@ abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInter
     public function setStation(Station $station): PollutionDataFactoryInterface
     {
         $this->coord = $station;
-        $this->stationList = [$station];
-
-        return $this;
-    }
-
-    public function addStation(Station $station): PollutionDataFactoryInterface
-    {
-        $this->stationList[$station->getId()] = $station;
 
         return $this;
     }
