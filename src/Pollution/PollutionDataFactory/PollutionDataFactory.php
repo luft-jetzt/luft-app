@@ -11,7 +11,7 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
     public function createDecoratedPollutantList(): array
     {
         $dateTime = new \DateTime();
-        $interval = new \DateInterval('P3D');
+        $interval = new \DateInterval('PT12H');
         $dateTime->sub($interval);
 
         $dataList = $this->getDataListFromStationList($dateTime, $interval);
