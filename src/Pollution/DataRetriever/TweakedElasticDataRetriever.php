@@ -19,15 +19,21 @@ class TweakedElasticDataRetriever implements TweakedElasticDataRetrieverInterfac
 
     public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 50): array
     {
-        $stationGeoQuery = new \Elastica\Query\GeoDistance('station.pin', [
-            'lat' => $coord->getLatitude(),
-            'lon' => $coord->getLongitude(),
-        ],
-            sprintf('%fkm', $maxDistance));
+        if ($coord instanceof Station) {
+            $stationQuery = new \Elastica\Query\Nested();
+            $stationQuery->setPath('station');
+            $stationQuery->setQuery(new \Elastica\Query\Term(['station.id' => $coord->getId()]));
+        } else {
+            $stationGeoQuery = new \Elastica\Query\GeoDistance('station.pin', [
+                'lat' => $coord->getLatitude(),
+                'lon' => $coord->getLongitude(),
+            ],
+                sprintf('%fkm', $maxDistance));
 
-        $stationQuery = new \Elastica\Query\Nested();
-        $stationQuery->setPath('station');
-        $stationQuery->setQuery($stationGeoQuery);
+            $stationQuery = new \Elastica\Query\Nested();
+            $stationQuery->setPath('station');
+            $stationQuery->setQuery($stationGeoQuery);
+        }
 
         $pollutantQuery = new \Elastica\Query\Term(['pollutant' => $pollutantId]);
 
