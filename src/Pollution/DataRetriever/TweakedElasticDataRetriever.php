@@ -17,7 +17,7 @@ class TweakedElasticDataRetriever implements TweakedElasticDataRetrieverInterfac
         $this->dataFinder = $dataFinder;
     }
 
-    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 50): array
+    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 250): array
     {
         if ($coord instanceof Station) {
             $stationQuery = new \Elastica\Query\Nested();
