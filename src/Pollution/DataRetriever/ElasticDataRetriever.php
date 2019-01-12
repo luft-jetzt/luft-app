@@ -2,8 +2,8 @@
 
 namespace App\Pollution\DataRetriever;
 
-use App\Entity\Data;
 use App\Entity\Station;
+use Caldera\GeoBasic\Coord\CoordInterface;
 use FOS\ElasticaBundle\Finder\FinderInterface;
 
 class ElasticDataRetriever implements DataRetrieverInterface
@@ -16,13 +16,25 @@ class ElasticDataRetriever implements DataRetrieverInterface
         $this->dataFinder = $dataFinder;
     }
 
-    public function retrieveStationData(Station $station, int $pollutant, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, string $order = 'DESC'): ?Data
+    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 250): array
     {
-        $stationQuery = new \Elastica\Query\Nested();
-        $stationQuery->setPath('station');
-        $stationQuery->setQuery(new \Elastica\Query\Term(['station.id' => $station->getId()]));
+        if ($coord instanceof Station) {
+            $stationQuery = new \Elastica\Query\Nested();
+            $stationQuery->setPath('station');
+            $stationQuery->setQuery(new \Elastica\Query\Term(['station.id' => $coord->getId()]));
+        } else {
+            $stationGeoQuery = new \Elastica\Query\GeoDistance('station.pin', [
+                'lat' => $coord->getLatitude(),
+                'lon' => $coord->getLongitude(),
+            ],
+                sprintf('%fkm', $maxDistance));
 
-        $pollutantQuery = new \Elastica\Query\Term(['pollutant' => $pollutant]);
+            $stationQuery = new \Elastica\Query\Nested();
+            $stationQuery->setPath('station');
+            $stationQuery->setQuery($stationGeoQuery);
+        }
+
+        $pollutantQuery = new \Elastica\Query\Term(['pollutant' => $pollutantId]);
 
         $boolQuery = new \Elastica\Query\BoolQuery();
         $boolQuery
@@ -33,22 +45,37 @@ class ElasticDataRetriever implements DataRetrieverInterface
             $untilDateTime = clone $fromDateTime;
             $untilDateTime->add($dateInterval);
 
-            $dateTimeQuery = new \Elastica\Query\Range('dateTime', ['gt' => $fromDateTime->format('Y-m-d H:i:s'), 'lte' => $untilDateTime->format('Y-m-d H:i:s'), 'format' => 'yyyy-MM-dd HH:mm:ss']);
+            $dateTimeQuery = new \Elastica\Query\Range('dateTime', [
+                'gt' => $fromDateTime->format('Y-m-d H:i:s'),
+                'lte' => $untilDateTime->format('Y-m-d H:i:s'),
+                'format' => 'yyyy-MM-dd HH:mm:ss',
+            ]);
 
             $boolQuery->addMust($dateTimeQuery);
         }
 
         $query = new \Elastica\Query($boolQuery);
+
         $query
-            ->setSort(['dateTime' => ['order' => strtolower($order)]])
-            ->setSize(1);
+            ->addSort([
+                '_geo_distance' => [
+                    'station.pin' => [
+                        'lat' => $coord->getLatitude(),
+                        'lon' => $coord->getLongitude()
+                    ],
+                    'order' => 'asc',
+                    'unit' => 'km',
+                    'nested_path' => 'station',
+                ]
+            ])
+            ->addSort(['dateTime' => 'desc']);
 
-        $results = $this->dataFinder->find($query);
-
-        if (count($results) === 1) {
-            return array_pop($results);
+        if ($coord instanceof Station) {
+            $query->setSize(1);
+        } else {
+            $query->setSize($maxResults);
         }
 
-        return null;
+        return $this->dataFinder->find($query);
     }
 }

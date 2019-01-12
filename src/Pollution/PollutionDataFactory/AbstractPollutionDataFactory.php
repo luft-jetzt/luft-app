@@ -3,12 +3,9 @@
 namespace App\Pollution\PollutionDataFactory;
 
 use App\Entity\Station;
-use App\Pollution\Box\Box;
 use App\Pollution\BoxDecorator\BoxDecoratorInterface;
 use App\Pollution\DataList\DataList;
 use App\Pollution\DataRetriever\DataRetrieverInterface;
-use App\Pollution\DataRetriever\TweakedElasticDataRetriever;
-use App\Pollution\DataRetriever\TweakedElasticDataRetrieverInterface;
 use App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
 use App\Pollution\StationFinder\StationFinderInterface;
 use Caldera\GeoBasic\Coord\CoordInterface;
@@ -27,13 +24,13 @@ abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInter
     /** @var DataList $dataList */
     protected $dataList;
 
-    /** @var TweakedElasticDataRetrieverInterface $dataRetriever*/
+    /** @var DataRetrieverInterface $dataRetriever*/
     protected $dataRetriever;
 
     /** @var PollutantFactoryStrategyInterface $strategy */
     protected $strategy;
 
-    public function __construct(StationFinderInterface $stationFinder, BoxDecoratorInterface $boxDecorator, TweakedElasticDataRetrieverInterface $dataRetriever, PollutantFactoryStrategyInterface $strategy)
+    public function __construct(StationFinderInterface $stationFinder, BoxDecoratorInterface $boxDecorator, DataRetrieverInterface $dataRetriever, PollutantFactoryStrategyInterface $strategy)
     {
         $this->stationFinder = $stationFinder;
         $this->dataList = new DataList();
