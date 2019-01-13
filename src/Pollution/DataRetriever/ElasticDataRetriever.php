@@ -70,11 +70,7 @@ class ElasticDataRetriever implements DataRetrieverInterface
             ])
             ->addSort(['dateTime' => 'desc']);
 
-        if ($coord instanceof Station) {
-            $query->setSize(1);
-        } else {
-            $query->setSize($maxResults);
-        }
+        $query->setSize($maxResults);
 
         return $this->dataFinder->find($query);
     }
