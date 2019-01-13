@@ -19,7 +19,6 @@ class HistoryDataFactory extends PollutionDataFactory implements HistoryDataFact
         foreach ($dataLists as $timestamp => $dataList) {
             $boxList = $this->getBoxListFromDataList($dataList);
 
-            dump($boxList);
             $boxLists[$timestamp] = $this->decoratePollutantList($boxList);
         }
 

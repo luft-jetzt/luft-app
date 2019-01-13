@@ -16,7 +16,7 @@ class ElasticDataRetriever implements DataRetrieverInterface
         $this->dataFinder = $dataFinder;
     }
 
-    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 250): array
+    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 750): array
     {
         if ($coord instanceof Station) {
             $stationQuery = new \Elastica\Query\Nested();
