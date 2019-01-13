@@ -10,7 +10,11 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
 {
     public function createDecoratedPollutantList(): array
     {
-        $dataList = $this->getDataListFromStationList($this->stationList);
+        $dateTime = new \DateTime();
+        $interval = new \DateInterval('PT12H');
+        $dateTime->sub($interval);
+
+        $dataList = $this->getDataListFromStationList($dateTime, $interval);
 
         $boxList = $this->getBoxListFromDataList($dataList);
 
@@ -19,26 +23,25 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
         return $boxList;
     }
 
-    protected function getDataListFromStationList(array $stationList, \DateTime $dateTime = null, \DateInterval $interval = null): array
+    protected function getDataListFromStationList(\DateTime $fromDateTime = null, \DateInterval $interval = null): array
     {
         $this->dataList->reset();
 
         $missingPollutants = $this->strategy->getMissingPollutants($this->dataList);
 
-        /** @var Station $station */
-        foreach ($stationList as $station) {
-            foreach ($missingPollutants as $pollutant) {
-                $data = $this->dataRetriever->retrieveStationData($station, $pollutant, $dateTime, $interval);
+        foreach ($missingPollutants as $pollutantId) {
+            $dataList = $this->dataRetriever->retrieveDataForCoord($this->coord, $pollutantId, $fromDateTime, $interval);
+
+            if (0 === count($dataList)) {
+                continue;
+            }
+
+            while (!$this->strategy->isSatisfied($this->dataList, $pollutantId) && count($dataList)) {
+                $data = array_shift($dataList);
 
                 if ($this->strategy->accepts($this->dataList, $data)) {
                     $this->strategy->addDataToList($this->dataList, $data);
                 }
-            }
-
-            $missingPollutants = $this->strategy->getMissingPollutants($this->dataList);
-
-            if (0 === count($missingPollutants)) {
-                break;
             }
         }
 

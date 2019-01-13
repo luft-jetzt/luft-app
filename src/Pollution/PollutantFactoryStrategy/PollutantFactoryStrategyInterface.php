@@ -8,6 +8,7 @@ use App\Pollution\DataList\DataListInterface;
 interface PollutantFactoryStrategyInterface
 {
     public function getMissingPollutants(DataListInterface $dataList): array;
+    public function isSatisfied(DataListInterface $dataList, int $pollutantId): bool;
     public function accepts(DataListInterface $dataList, Data $data = null): bool;
     public function addDataToList(DataListInterface $dataList, Data $data = null): bool;
 }

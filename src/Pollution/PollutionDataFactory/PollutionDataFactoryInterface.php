@@ -3,12 +3,7 @@
 namespace App\Pollution\PollutionDataFactory;
 
 use App\Entity\Station;
-use App\Pollution\Box\Box;
-use App\Pollution\BoxDecorator\BoxDecoratorInterface;
-use App\Pollution\DataList\DataList;
-use App\Pollution\DataRetriever\DataRetrieverInterface;
 use App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
-use App\Pollution\StationFinder\StationFinderInterface;
 use Caldera\GeoBasic\Coord\CoordInterface;
 
 interface PollutionDataFactoryInterface
