@@ -64,28 +64,3 @@ class HistoryDataFactory extends PollutionDataFactory implements HistoryDataFact
         return $newDataListLists;
     }
 }
-
-
-/**
- * $this->dataList->reset();
-
-$missingPollutants = $this->strategy->getMissingPollutants($this->dataList);
-
-foreach ($missingPollutants as $pollutantId) {
-$dataList = $this->dataRetriever->retrieveDataForCoord($this->coord, $pollutantId, $fromDateTime, $interval);
-
-if (0 === count($dataList)) {
-continue;
-}
-
-while (!$this->strategy->isSatisfied($this->dataList, $pollutantId) && count($dataList)) {
-$data = array_shift($dataList);
-
-if ($this->strategy->accepts($this->dataList, $data)) {
-$this->strategy->addDataToList($this->dataList, $data);
-}
-}
-}
-
-return $this->dataList->getList();
- */
