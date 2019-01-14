@@ -32,7 +32,7 @@ class Twitter extends AbstractTwitter
 
                 $coord = $this->getCoord($twitterSchedule);
 
-                $pollutantList = $this->pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList($this->dateTime);
+                $pollutantList = $this->pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList($this->dateTime, new \DateInterval('PT3H'));
 
                 if (0 === count($pollutantList)) {
                     continue;
