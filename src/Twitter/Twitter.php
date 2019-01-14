@@ -21,7 +21,7 @@ class Twitter extends AbstractTwitter
 
             $cron = CronExpression::factory($twitterSchedule->getCron());
 
-            if ($cron->isDue() || $this->dryRun) {
+            if ($cron->isDue($this->dateTime) || $this->dryRun) {
                 $user = $twitterSchedule->getCity()->getUser();
 
                 if (!$user) {
@@ -32,12 +32,12 @@ class Twitter extends AbstractTwitter
 
                 $coord = $this->getCoord($twitterSchedule);
 
-                $pollutantList = $this->pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();
+                $pollutantList = $this->pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList($this->dateTime);
 
                 if (0 === count($pollutantList)) {
                     continue;
                 }
-                
+
                 $message = $this->createMessage($twitterSchedule, $pollutantList);
 
                 $params = [

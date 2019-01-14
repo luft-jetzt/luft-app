@@ -39,6 +39,9 @@ abstract class AbstractTwitter implements TwitterInterface
     /** @var array $validScheduleList */
     protected $validScheduleList = [];
 
+    /** @var \DateTime $dateTime */
+    protected $dateTime;
+
     /** @var bool $dryRun */
     protected $dryRun = false;
 
@@ -48,6 +51,7 @@ abstract class AbstractTwitter implements TwitterInterface
         $this->messageFactory = $messageFactory;
         $this->permalinkManager = $permalinkManager;
         $this->logger = $logger;
+        $this->dateTime = new \DateTime();
 
         $this->twitterClientId = $twitterClientId;
         $this->twitterClientSecret = $twitterClientSecret;
@@ -78,6 +82,18 @@ abstract class AbstractTwitter implements TwitterInterface
     public function getValidScheduleList(): array
     {
         return $this->validScheduleList;
+    }
+
+    public function setDateTime(\DateTime $dateTime): TwitterInterface
+    {
+        $this->dateTime = $dateTime;
+
+        return $this;
+    }
+
+    public function getDateTime(): \DateTime
+    {
+        return $this->dateTime;
     }
 
     public function getDryRun(): bool
