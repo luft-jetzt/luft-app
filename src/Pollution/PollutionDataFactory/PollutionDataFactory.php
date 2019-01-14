@@ -8,13 +8,19 @@ use App\Pollution\Box\Box;
 
 class PollutionDataFactory extends AbstractPollutionDataFactory
 {
-    public function createDecoratedPollutantList(): array
+    public function createDecoratedPollutantList(\DateTime $dateTime = null, \DateInterval $dateInterval = null): array
     {
-        $dateTime = new \DateTime();
-        $interval = new \DateInterval('PT12H');
-        $dateTime->sub($interval);
+        if (!$dateTime) {
+            $dateTime = new \DateTime();
+        }
 
-        $dataList = $this->getDataListFromStationList($dateTime, $interval);
+        if (!$dateInterval) {
+            $dateInterval = new \DateInterval('PT12H');
+        }
+
+        $dateTime->sub($dateInterval);
+
+        $dataList = $this->getDataListFromStationList($dateTime, $dateInterval);
 
         $boxList = $this->getBoxListFromDataList($dataList);
 
