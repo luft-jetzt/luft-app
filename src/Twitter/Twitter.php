@@ -34,6 +34,10 @@ class Twitter extends AbstractTwitter
 
                 $pollutantList = $this->pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();
 
+                if (0 === count($pollutantList)) {
+                    continue;
+                }
+                
                 $message = $this->createMessage($twitterSchedule, $pollutantList);
 
                 $params = [
