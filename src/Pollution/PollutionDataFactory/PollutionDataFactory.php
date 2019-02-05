@@ -8,13 +8,19 @@ use App\Pollution\Box\Box;
 
 class PollutionDataFactory extends AbstractPollutionDataFactory
 {
-    public function createDecoratedPollutantList(): array
+    public function createDecoratedPollutantList(\DateTime $dateTime = null, \DateInterval $dateInterval = null, int $workingSetSize = 1): array
     {
-        $dateTime = new \DateTime();
-        $interval = new \DateInterval('PT12H');
-        $dateTime->sub($interval);
+        if (!$dateTime) {
+            $dateTime = new \DateTime();
+        }
 
-        $dataList = $this->getDataListFromStationList($dateTime, $interval);
+        if (!$dateInterval) {
+            $dateInterval = new \DateInterval('PT12H');
+        }
+
+        $dateTime->sub($dateInterval);
+
+        $dataList = $this->getDataListFromStationList($dateTime, $dateInterval, $workingSetSize);
 
         $boxList = $this->getBoxListFromDataList($dataList);
 
@@ -23,14 +29,14 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
         return $boxList;
     }
 
-    protected function getDataListFromStationList(\DateTime $fromDateTime = null, \DateInterval $interval = null): array
+    protected function getDataListFromStationList(\DateTime $fromDateTime = null, \DateInterval $interval = null, int $workingSetSize): array
     {
         $this->dataList->reset();
 
         $missingPollutants = $this->strategy->getMissingPollutants($this->dataList);
 
         foreach ($missingPollutants as $pollutantId) {
-            $dataList = $this->dataRetriever->retrieveDataForCoord($this->coord, $pollutantId, $fromDateTime, $interval);
+            $dataList = $this->dataRetriever->retrieveDataForCoord($this->coord, $pollutantId, $fromDateTime, $interval, 20.0, $workingSetSize);
 
             if (0 === count($dataList)) {
                 continue;

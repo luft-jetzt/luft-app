@@ -44,7 +44,7 @@ services:
     # please note that last definitions always *replace* previous ones
 
     App\Twitter\MessageFactory\MessageFactoryInterface:
-        alias: App\Twitter\MessageFactory\EmojiMessageFactory
+        alias: App\Twitter\MessageFactory\ExtendedEmojiMessageFactory
 
     App\Pollution\DataRetriever\DataRetrieverInterface:
         alias: App\Pollution\DataRetriever\ElasticDataRetriever
