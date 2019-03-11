@@ -108,6 +108,8 @@ function createMap() {
     }).addTo(map);
 
     map.setView([53.56414, 9.967882]);
+
+    let hash = new L.Hash(map);
 }
 
 function adjustHeight() {

@@ -116,6 +116,7 @@ gulp.task('copy-js-external', function () {
         'node_modules/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.js',
         'node_modules/calendar_heatmap/calendar_heatmap.bundle.js',
         'node_modules/chart.js/dist/Chart.bundle.min.js',
+        'node_modules/leaflet-hash/leaflet-hash.js',
         'node_modules/datatables.net/js/jquery.dataTables.min.js',
         'node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js',
     ])
