@@ -52,8 +52,8 @@ class UmweltbundesamtStationLoader extends AbstractStationLoader
     {
         $station
             ->setTitle($stationData['station_name'])
+            ->setProvider(UmweltbundesamtDeProvider::IDENTIFIER)
             ->setStationCode($stationData['station_code'])
-            ->setStateCode($this->parseStateCode($stationData['station_code']))
             ->setLatitude(floatval($stationData['station_latitude_d']))
             ->setLongitude(floatval($stationData['station_longitude_d']))
             ->setFromDate($this->parseDate($stationData['station_start_date']))
