@@ -5,7 +5,7 @@ namespace App\Twitter\MessageFactory;
 use App\Pollution\Box\Box;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class EmojiMessageFactory extends AbstractMessageFactory
+class ExtendedEmojiMessageFactory extends AbstractExtendedMessageFactory
 {
     /** @var TranslatorInterface $translator */
     protected $translator;
@@ -25,6 +25,20 @@ class EmojiMessageFactory extends AbstractMessageFactory
             foreach ($pollutant as $box) {
                 $this->message .= sprintf("%s %s: %.0f %s \n", $this->getEmoji($box), $box->getPollutant()->getName(), $box->getData()->getValue(), $box->getPollutant()->getUnitPlain());
             }
+        }
+
+        if (0 !== count($this->additionalPollutantList)) {
+            $this->message .= "\n".'zusätzliche Messwerte aus der Umgebung:'."\n";
+
+            /** @var array $pollutant */
+            foreach ($this->additionalPollutantList as $pollutant) {
+                /** @var Box $box */
+                foreach ($pollutant as $box) {
+                    $this->message .= sprintf("%s %s: %.0f %s \n", $this->getEmoji($box), $box->getPollutant()->getName(), $box->getData()->getValue(), $box->getPollutant()->getUnitPlain());
+                }
+            }
+
+            $this->message .= "\n";
         }
 
         $this->message .= sprintf("%s", $this->link);

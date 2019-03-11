@@ -37,6 +37,6 @@ abstract class AbstractSeoPage implements SeoPageInterface
 
         $package = new Package(new StaticVersionStrategy($this->assetsVersion));
 
-        return $package->getUrl(sprintf('%s%s', $host, '/img/share/opengraph.jpeg'));
+        return $package->getUrl(sprintf('%s%s', $host, $filename));
     }
 }

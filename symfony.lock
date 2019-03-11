@@ -1,4 +1,7 @@
 {
+    "amenadiel/jpgraph": {
+        "version": "3.6.17"
+    },
     "cache/adapter-common": {
         "version": "1.1.0"
     },

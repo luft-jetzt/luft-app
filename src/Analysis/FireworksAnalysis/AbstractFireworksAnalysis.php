@@ -15,12 +15,12 @@ abstract class AbstractFireworksAnalysis implements FireworksAnalysisInterface
     /** @var PaginatedFinderInterface $finder */
     protected $finder;
 
-    /** @var FireworksModelFactoryInterface $komfortofenModelFactory */
-    protected $komfortofenModelFactory;
+    /** @var FireworksModelFactoryInterface $fireworksModelFactory */
+    protected $fireworksModelFactory;
 
-    public function __construct(PaginatedFinderInterface $finder, FireworksModelFactoryInterface $komfortofenModelFactory)
+    public function __construct(PaginatedFinderInterface $finder, FireworksModelFactoryInterface $fireworksModelFactory)
     {
         $this->finder = $finder;
-        $this->komfortofenModelFactory = $komfortofenModelFactory;
+        $this->fireworksModelFactory = $fireworksModelFactory;
     }
 }

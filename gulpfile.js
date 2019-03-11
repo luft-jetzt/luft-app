@@ -46,7 +46,7 @@ gulp.task('build-leaflet-extramarkers', ['extramarkers-images', 'extramarkers-cs
 /* Assets */
 
 gulp.task('copy-asset-images', function () {
-    return gulp.src('assets/img/*/*')
+    return gulp.src('assets/img/**/*')
         .pipe(gulp.dest('public/img/'));
 });
 
@@ -75,6 +75,7 @@ gulp.task('compress-css', ['leaflet-css', 'sass'], function () {
             'node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css',
             'node_modules/leaflet.markercluster/dist/MarkerCluster.css',
             'node_modules/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.css',
+            'node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css',
             'assets/css/*',
         ])
         .pipe(cleanCSS())
@@ -115,6 +116,8 @@ gulp.task('copy-js-external', function () {
         'node_modules/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.js',
         'node_modules/calendar_heatmap/calendar_heatmap.bundle.js',
         'node_modules/chart.js/dist/Chart.bundle.min.js',
+        'node_modules/datatables.net/js/jquery.dataTables.min.js',
+        'node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js',
     ])
         .pipe(gulp.dest('public/js/'));
 });

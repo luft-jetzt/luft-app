@@ -8,4 +8,6 @@ interface SeoPageInterface
     public function setDescription(string $description): SeoPageInterface;
     public function setCanonicalLink(string $link): SeoPageInterface;
     public function setStandardPreviewPhoto(): SeoPageInterface;
+    public function setOpenGraphPreviewPhoto(string $assetUrl): SeoPageInterface;
+    public function setTwitterPreviewPhoto(string $assetUrl): SeoPageInterface;
 }

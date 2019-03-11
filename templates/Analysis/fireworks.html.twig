@@ -16,7 +16,7 @@
 
         <div class="row">
             <div class="col-12">
-                <table class="table table-sm">
+                <table class="table table-sm datatable">
                     <thead>
                         <tr>
                             <th>
@@ -38,7 +38,7 @@
                     </thead>
                     {% for firework in fireworksList %}
                         <tr>
-                            <td>
+                            <td data-order="{{ firework.station.stationCode }}">
                                 <a href="{{ path('station', { stationCode: firework.station.stationCode }) }}">
                                     {{ firework.station.stationCode }}
                                 </a>
@@ -58,17 +58,17 @@
                                 {% endif %}
                             </td>
 
-                            <td>
-                                {{ firework.data.value }}
-                                <br />
-                                <span class="text-danger">+{{ firework.slope }}</span>
+                            <td data-order="{{ firework.data.value }}">
+                                <span class="text-danger">
+                                    {{ firework.data.value }}
+                                </span>
                             </td>
 
                             {#<td>
 
                             </td>#}
 
-                            <td>
+                            <td data-order="{{ firework.data.dateTime|date('U') }}">
                                 <a href="{{ path('station_history', { stationCode: firework.station.stationCode, from: firework.data.dateTime|date_modify('-1 day')|date('Y-m-d'), until: firework.data.dateTime|date_modify('+6 hour')|date('Y-m-d') }) }}">
                                     <time class="d-none d-md-inline-block">
                                         {{ firework.data.dateTime|format_date('eeee, dd. MMMM YYYY') }}
@@ -97,4 +97,20 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('.datatable').DataTable({
+                'paging':   false,
+                'info':     false,
+                'language': {
+                    'search': 'Suche:'
+                }
+            });
+        } );
+    </script>
 {% endblock %}

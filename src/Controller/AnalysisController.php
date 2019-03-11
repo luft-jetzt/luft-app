@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Analysis\FireworksAnalysis\FireworksAnalysisInterface;
 use App\Analysis\KomfortofenAnalysis\KomfortofenAnalysisInterface;
+use App\SeoPage\SeoPageInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class AnalysisController extends AbstractController
@@ -25,8 +26,14 @@ class AnalysisController extends AbstractController
         ]);
     }
 
-    public function fireworksAction(FireworksAnalysisInterface $fireworksAnalysis): Response
+    public function fireworksAction(FireworksAnalysisInterface $fireworksAnalysis, SeoPageInterface $seoPage): Response
     {
+        $seoPage
+            ->setTwitterPreviewPhoto('/img/share/silvester/twitter.jpg')
+            ->setOpenGraphPreviewPhoto('/img/share/silvester/facebook.jpg')
+            ->setTitle('Feinstaub aus Silvester-Feuerwerken')
+            ->setDescription('Finde erhöhte Feinstaub-Konzentrationen aus Silvester-Feuerwerken');
+
         $fireworksAnalysis = $fireworksAnalysis->analyze();
 
         return $this->render('Analysis/fireworks.html.twig', [
