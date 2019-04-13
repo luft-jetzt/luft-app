@@ -66,3 +66,6 @@ services:
     App\SeoPage\SeoPage:
         arguments:
             $sonataSeoPage: '@sonata.seo.page.default'
+
+    App\Pollution\DataPersister\UniquePersisterInterface:
+        alias: App\Pollution\DataPersister\CachedUniquePersister
