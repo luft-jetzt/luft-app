@@ -107,6 +107,8 @@ class CachedUniquePersister extends Persister implements UniquePersisterInterfac
 
         $this->entityManager->flush();
 
+        $this->syncCache($this->newValueList);
+
         return $this;
     }
 
