@@ -28,7 +28,7 @@ class CachedUniquePersister extends Persister implements UniquePersisterInterfac
         parent::__construct($doctrine, $stationCache);
     }
 
-    protected function fetchExistentData(array $values): UniquePersister
+    protected function fetchExistentData(array $values): CachedUniquePersister
     {
         $cacheItem = $this->cacheAdapter->getItem(self::CACHE_KEY);
 
@@ -38,9 +38,11 @@ class CachedUniquePersister extends Persister implements UniquePersisterInterfac
             $existentDataList = [];
         }
 
-        /** @var Data $data */
-        foreach ($existentDataList as $key => $value) {
-            $this->existentDataList[$value['hash']] = true;
+        /** @var Value $value */
+        foreach ($values as $key => $value) {
+            $hash = $this->hashValue($value);
+
+            $this->existentDataList[$hash] = $value->getDateTime()->format('U');
 
             unset($existentDataList[$key]);
         }
@@ -53,19 +55,16 @@ class CachedUniquePersister extends Persister implements UniquePersisterInterfac
         return $data->getStationId() . $data->getDateTime()->format('U') . $data->getPollutant() . $data->getValue();
     }
 
+    protected function hashValue(Value $value): string
+    {
+        return $value->getStation() . $value->getDateTime()->format('U') . $value->getPollutant() . $value->getValue();
+    }
+
     protected function dataExists(Data $data): bool
     {
         $hash = $this->hashData($data);
 
         return array_key_exists($hash, $this->existentDataList);
-    }
-
-    public function reset(): PersisterInterface
-    {
-        $this->existentDataList = [];
-        $this->duplicateDataList = [];
-
-        return parent::reset();
     }
 
     public function persistValues(array $values): PersisterInterface
@@ -117,7 +116,7 @@ class CachedUniquePersister extends Persister implements UniquePersisterInterfac
         return $this->duplicateDataList;
     }
 
-    protected function syncCache(array $valueList): CachedUniquePersister
+    protected function syncCache(array $newDataList): CachedUniquePersister
     {
         $cacheItem = $this->cacheAdapter->getItem(self::CACHE_KEY);
 
@@ -127,13 +126,18 @@ class CachedUniquePersister extends Persister implements UniquePersisterInterfac
             $existentDataList = [];
         }
 
-        $existentDataList = array_merge($existentDataList, $valueList);
+        /** @var Value $newData */
+        foreach ($newDataList as $key => $newData) {
+            $hash = $this->hashData($newData);
 
-        $limitDateTime = (new \DateTime())->sub(new \DateInterval(sprintf('PT%dS', self::TTL)));
+            $existentDataList[$hash] = $newData->getDateTime()->format('U');
+        }
+
+        $limitTimestamp = (new \DateTime())->sub(new \DateInterval(sprintf('PT%dS', self::TTL)))->format('U');
 
         /** @var Data $data */
-        foreach ($existentDataList as $key => $data) {
-            if ($data->getDateTime() < $limitDateTime) {
+        foreach ($existentDataList as $key => $timestamp) {
+            if ($timestamp < $limitTimestamp) {
                 unset($existentDataList[$key]);
             }
         }
