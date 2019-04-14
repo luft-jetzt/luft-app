@@ -9,7 +9,33 @@ class OrmUniqueStrategy implements UniqueStrategyInterface
 
     public function init(): UniqueStrategyInterface
     {
-        // TODO: Implement init() method.
+        $fromDateTime = null;
+        $untilDateTime = null;
+        $stationList = [];
+
+        /** @var Value $value */
+        foreach ($values as $value) {
+            if ($fromDateTime === null || $fromDateTime > $value->getDateTime()) {
+                $fromDateTime = $value->getDateTime();
+            }
+
+            if ($untilDateTime === null || $untilDateTime < $value->getDateTime()) {
+                $untilDateTime = $value->getDateTime();
+            }
+
+            $stationList[] = $value->getStation();
+        }
+
+        $existentDataList = $this->doctrine->getRepository(Data::class)->findHashsInterval($fromDateTime, $untilDateTime, array_unique($stationList));
+
+        /** @var Data $data */
+        foreach ($existentDataList as $key => $value) {
+            $this->existentDataList[$value['hash']] = true;
+
+            unset($existentDataList[$key]);
+        }
+
+        return $this;
     }
 
     public function isDataDuplicate(Data $data): bool
@@ -25,5 +51,10 @@ class OrmUniqueStrategy implements UniqueStrategyInterface
     public function addDataList(array $dataList): UniqueStrategyInterface
     {
         // TODO: Implement addDataList() method.
+    }
+
+    protected function hashData(Data $data): string
+    {
+        return $data->getStationId().$data->getDateTime()->format('U').$data->getPollutant().$data->getValue();
     }
 }

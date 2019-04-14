@@ -2,16 +2,16 @@
 
 namespace App\Consumer;
 
-use App\Pollution\DataPersister\UniquePersisterInterface;
+use App\Pollution\DataPersister\PersisterInterface;
 use OldSound\RabbitMqBundle\RabbitMq\BatchConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class ValueBatchConsumer implements BatchConsumerInterface
 {
-    /** @var UniquePersisterInterface  */
+    /** @var PersisterInterface  */
     protected $persister;
 
-    public function __construct(UniquePersisterInterface $persister)
+    public function __construct(PersisterInterface $persister)
     {
         $this->persister = $persister;
     }
