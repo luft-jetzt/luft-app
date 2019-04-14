@@ -4,6 +4,7 @@ namespace App\Pollution\DataPersister;
 
 use App\Entity\Station;
 use App\Pollution\StationCache\StationCacheInterface;
+use App\Pollution\UniqueStrategy\UniqueStrategyInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -24,11 +25,15 @@ abstract class AbstractPersister implements PersisterInterface
     /** @var StationCacheInterface $stationCache */
     protected $stationCache;
 
-    public function __construct(RegistryInterface $doctrine, StationCacheInterface $stationCache)
+    /** @var UniqueStrategyInterface $uniqueStrategy */
+    protected $uniqueStrategy;
+
+    public function __construct(RegistryInterface $doctrine, StationCacheInterface $stationCache, UniqueStrategyInterface $uniqueStrategy)
     {
         $this->doctrine = $doctrine;
         $this->entityManager = $doctrine->getManager();
         $this->stationCache = $stationCache;
+        $this->uniqueStrategy = $uniqueStrategy;
     }
 
     protected function stationExists(string $stationCode): bool

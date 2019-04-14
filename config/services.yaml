@@ -68,4 +68,7 @@ services:
             $sonataSeoPage: '@sonata.seo.page.default'
 
     App\Pollution\DataPersister\UniquePersisterInterface:
-        alias: App\Pollution\DataPersister\CachedUniquePersister
+        alias: App\Pollution\DataPersister\Persister
+
+    App\Pollution\UniqueStrategy\UniqueStrategyInterface:
+        alias: App\Pollution\UniqueStrategy\CacheUniqueStrategy
