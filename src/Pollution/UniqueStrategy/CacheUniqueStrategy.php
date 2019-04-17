@@ -22,6 +22,11 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
         $this->cacheAdapter = $cacheAdapter;
     }
 
+    public function __destruct()
+    {
+        $this->save();
+    }
+
     public function init(array $values): UniqueStrategyInterface
     {
         $cacheItem = $this->cacheAdapter->getItem(self::CACHE_KEY);
@@ -62,7 +67,7 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
         return $this;
     }
 
-    public function __destruct()
+    public function save(): CacheUniqueStrategy
     {
         $cacheItem = $this->cacheAdapter->getItem(self::CACHE_KEY);
 
@@ -71,6 +76,8 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
         } else {
             $existentDataList = [];
         }
+
+        $existentDataList = array_merge($this->existentDataList, $existentDataList);
 
         $limitTimestamp = (new \DateTime())->sub(new \DateInterval(sprintf('PT%dS', self::TTL)))->format('U');
 
@@ -84,6 +91,8 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
         $cacheItem->set($existentDataList);
 
         $this->cacheAdapter->save($cacheItem);
+
+        return $this;
     }
 
     protected function hashData(Data $data): string
