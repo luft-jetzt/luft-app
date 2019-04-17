@@ -3,11 +3,23 @@
 namespace App\Pollution\UniqueStrategy;
 
 use App\Entity\Data;
+use App\Pollution\Value\Value;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class OrmUniqueStrategy implements UniqueStrategyInterface
 {
+    /** @var RegistryInterface $registry */
+    protected $registry;
 
-    public function init(): UniqueStrategyInterface
+    /** @var array $existentDataList */
+    protected $existentDataList = [];
+
+    public function __construct(RegistryInterface $registry)
+    {
+        $this->registry = $registry;
+    }
+
+    public function init(array $values): UniqueStrategyInterface
     {
         $fromDateTime = null;
         $untilDateTime = null;
@@ -26,7 +38,7 @@ class OrmUniqueStrategy implements UniqueStrategyInterface
             $stationList[] = $value->getStation();
         }
 
-        $existentDataList = $this->doctrine->getRepository(Data::class)->findHashsInterval($fromDateTime, $untilDateTime, array_unique($stationList));
+        $existentDataList = $this->registry->getRepository(Data::class)->findHashsInterval($fromDateTime, $untilDateTime, array_unique($stationList));
 
         /** @var Data $data */
         foreach ($existentDataList as $key => $value) {
@@ -40,17 +52,19 @@ class OrmUniqueStrategy implements UniqueStrategyInterface
 
     public function isDataDuplicate(Data $data): bool
     {
-        // TODO: Implement isDataDuplicate() method.
+        $hash = $this->hashData($data);
+
+        return array_key_exists($hash, $this->existentDataList);
     }
 
     public function addData(Data $data): UniqueStrategyInterface
     {
-        // TODO: Implement addData() method.
+        return $this;
     }
 
     public function addDataList(array $dataList): UniqueStrategyInterface
     {
-        // TODO: Implement addDataList() method.
+        return $this;
     }
 
     protected function hashData(Data $data): string

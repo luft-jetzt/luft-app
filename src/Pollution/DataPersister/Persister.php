@@ -13,7 +13,7 @@ class Persister extends AbstractPersister
             return $this;
         }
 
-        $this->uniqueStrategy->init();
+        $this->uniqueStrategy->init($values);
 
         /** @var Value $value */
         foreach ($values as $value) {

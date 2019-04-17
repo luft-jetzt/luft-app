@@ -22,7 +22,7 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
         $this->cacheAdapter = $cacheAdapter;
     }
 
-    public function init(): UniqueStrategyInterface
+    public function init(array $values): UniqueStrategyInterface
     {
         $cacheItem = $this->cacheAdapter->getItem(self::CACHE_KEY);
 

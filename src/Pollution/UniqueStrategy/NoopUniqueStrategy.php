@@ -6,7 +6,7 @@ use App\Entity\Data;
 
 class NoopUniqueStrategy implements UniqueStrategyInterface
 {
-    public function init(): UniqueStrategyInterface
+    public function init(array $values): UniqueStrategyInterface
     {
         return $this;
     }
