@@ -7,6 +7,7 @@ use App\Pollution\UniqueStrategy\CacheUniqueStrategy;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -22,7 +23,9 @@ class PopulateImportCacheCommand extends Command
 
     protected function configure(): void
     {
-        $this->setDescription('Add a short description for your command');
+        $this
+            ->setDescription('Add a short description for your command')
+            ->addOption('interval', 'i', InputOption::VALUE_REQUIRED, 'Provide an interval starting from today backwards', 'P3D');
     }
 
     public function __construct(?string $name = null, CacheUniqueStrategy $cacheUniqueStrategy, RegistryInterface $registry)
@@ -35,10 +38,18 @@ class PopulateImportCacheCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $io = new SymfonyStyle($input, $output);
+        $intervalSpec = $input->getOption('interval');
 
-        $dataList = $this->registry->getRepository(Data::class)->findAll();
+        $interval = new \DateInterval($intervalSpec);
+
+        $untilDateTime = new \DateTimeImmutable();
+        $fromDateTime = $untilDateTime->sub($interval);
+
+        $dataList = $this->registry->getRepository(Data::class)->findInInterval($fromDateTime, $untilDateTime);
 
         $this->cacheUniqueStrategy->addDataList($dataList)->save();
+
+        $io = new SymfonyStyle($input, $output);
+        $io->success(sprintf('Stored %d data elements from %s to %s', count($dataList), $fromDateTime->format('Y-m-d H:i:s'), $untilDateTime->format('Y-m-d H:i:s')));
     }
 }
