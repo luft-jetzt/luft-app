@@ -77,7 +77,7 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
             $existentDataList = [];
         }
 
-        $existentDataList = array_merge($this->existentDataList, $existentDataList);
+        $existentDataList = $this->existentDataList + $existentDataList;
 
         $limitTimestamp = (new \DateTime())->sub(new \DateInterval(sprintf('PT%dS', self::TTL)))->format('U');
 
@@ -89,6 +89,17 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
         }
 
         $cacheItem->set($existentDataList);
+
+        $this->cacheAdapter->save($cacheItem);
+
+        return $this;
+    }
+
+    public function clear(): CacheUniqueStrategy
+    {
+        $cacheItem = $this->cacheAdapter->getItem(self::CACHE_KEY);
+
+        $cacheItem->set([]);
 
         $this->cacheAdapter->save($cacheItem);
 

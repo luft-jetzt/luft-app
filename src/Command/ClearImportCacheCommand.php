@@ -12,15 +12,12 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class PopulateImportCacheCommand extends Command
+class ClearImportCacheCommand extends Command
 {
     /** @var CacheUniqueStrategy $cacheUniqueStrategy */
     protected $cacheUniqueStrategy;
 
-    /** @var RegistryInterface $registry */
-    protected $registry;
-
-    protected static $defaultName = 'luft:import-cache:populate';
+    protected static $defaultName = 'luft:import-cache:clear';
 
     protected function configure(): void
     {
@@ -30,7 +27,6 @@ class PopulateImportCacheCommand extends Command
     public function __construct(?string $name = null, CacheUniqueStrategy $cacheUniqueStrategy, RegistryInterface $registry)
     {
         $this->cacheUniqueStrategy = $cacheUniqueStrategy->init([]);
-        $this->registry = $registry;
 
         parent::__construct($name);
     }
@@ -39,8 +35,8 @@ class PopulateImportCacheCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $dataList = $this->registry->getRepository(Data::class)->findAll();
+        $this->cacheUniqueStrategy->clear();
 
-        $this->cacheUniqueStrategy->addDataList($dataList)->save();
+        $io->success('Import cache cleared.');
     }
 }
