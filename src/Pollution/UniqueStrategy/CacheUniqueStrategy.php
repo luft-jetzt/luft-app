@@ -22,11 +22,6 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
         $this->cacheAdapter = $cacheAdapter;
     }
 
-    public function __destruct()
-    {
-        $this->save();
-    }
-
     public function init(array $values): UniqueStrategyInterface
     {
         $cacheItem = $this->cacheAdapter->getItem(self::CACHE_KEY);
@@ -67,7 +62,7 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
         return $this;
     }
 
-    public function save(): CacheUniqueStrategy
+    public function save(): UniqueStrategyInterface
     {
         $cacheItem = $this->cacheAdapter->getItem(self::CACHE_KEY);
 
@@ -88,6 +83,8 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
             }
         }
 
+        var_dump($existentDataList);
+
         $cacheItem->set($existentDataList);
 
         $this->cacheAdapter->save($cacheItem);
@@ -97,11 +94,7 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
 
     public function clear(): CacheUniqueStrategy
     {
-        $cacheItem = $this->cacheAdapter->getItem(self::CACHE_KEY);
-
-        $cacheItem->set([]);
-
-        $this->cacheAdapter->save($cacheItem);
+        $this->cacheAdapter->deleteItem(self::CACHE_KEY);
 
         return $this;
     }

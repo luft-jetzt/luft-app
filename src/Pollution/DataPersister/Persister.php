@@ -43,6 +43,8 @@ class Persister extends AbstractPersister
 
         $this->entityManager->flush();
 
+        $this->uniqueStrategy->save();
+
         return $this;
     }
 }

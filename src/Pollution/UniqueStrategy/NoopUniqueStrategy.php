@@ -25,4 +25,9 @@ class NoopUniqueStrategy implements UniqueStrategyInterface
     {
         return $this;
     }
+
+    public function save(): UniqueStrategyInterface
+    {
+        return $this;
+    }
 }

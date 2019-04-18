@@ -71,4 +71,9 @@ class OrmUniqueStrategy implements UniqueStrategyInterface
     {
         return $data->getStationId().$data->getDateTime()->format('U').$data->getPollutant().$data->getValue();
     }
+
+    public function save(): UniqueStrategyInterface
+    {
+        return $this;
+    }
 }
