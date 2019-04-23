@@ -62,6 +62,11 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
         return $this;
     }
 
+    public function getDataList(): array
+    {
+        return $this->existentDataList;
+    }
+
     public function save(): UniqueStrategyInterface
     {
         $cacheItem = $this->cacheAdapter->getItem(self::CACHE_KEY);
