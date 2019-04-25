@@ -88,8 +88,6 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
             }
         }
 
-        var_dump($existentDataList);
-
         $cacheItem->set($existentDataList);
 
         $this->cacheAdapter->save($cacheItem);

@@ -37,8 +37,8 @@ class ImportCacheStatsCommand extends Command
 
         $io = new SymfonyStyle($input, $output);
 
-        foreach ($dayList as $hash => $timestamp) {
-            $date = (new \DateTime($timestamp))->format('Y-m-d');
+        foreach ($dataList as $hash => $timestamp) {
+            $date = (new \DateTime(sprintf('@%d', $timestamp)))->format('Y-m-d');
 
             if (array_key_exists($date, $dayList)) {
                 ++$dayList[$date];
@@ -47,6 +47,12 @@ class ImportCacheStatsCommand extends Command
             }
         }
 
-        $io->table(['DateTime', 'Counter'], $dayList);
+        $rows = [];
+
+        foreach ($dayList as $day => $counter) {
+            $rows[] = [$day, $counter];
+        }
+
+        $io->table(['DateTime', 'Counter'], $rows);
     }
 }
