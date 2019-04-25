@@ -50,9 +50,11 @@ class ImportCacheStatsCommand extends Command
         $rows = [];
 
         foreach ($dayList as $day => $counter) {
-            $rows[] = [$day, $counter];
+            $rows[$day] = [$day, $counter];
         }
 
+        ksort($rows);
+        
         $io->table(['DateTime', 'Counter'], $rows);
     }
 }
