@@ -54,7 +54,7 @@ class ImportCacheStatsCommand extends Command
         }
 
         ksort($rows);
-        
+
         $io->table(['DateTime', 'Counter'], $rows);
     }
 }

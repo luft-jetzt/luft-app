@@ -152,7 +152,7 @@ class FetchCommand extends ContainerAwareCommand
         $valueList = $parser->parse($response, $pollutant);
 
         foreach ($valueList as $value) {
-            $this->getContainer()->get('old_sound_rabbit_mq.value_producer')->publish(serialize($value));
+            $this->getContainer()->get('old_sound_rabbit_mq.luft_value_producer')->publish(serialize($value));
         }
 
         $output->writeln(sprintf('Wrote <info>%d</info> values to cache.', count($valueList)));

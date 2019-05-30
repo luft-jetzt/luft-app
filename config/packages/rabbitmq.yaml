@@ -3,20 +3,20 @@ old_sound_rabbit_mq:
         default:
             url: '%env(RABBITMQ_URL)%'
     producers:
-        value:
+        luft_value:
             connection:       default
-            exchange_options: { name: 'value', type: direct }
+            exchange_options: { name: 'luft_value', type: direct }
     consumers:
-        value:
+        luft_value:
             connection:       default
-            exchange_options: {name: 'value', type: direct}
-            queue_options:    {name: 'value'}
+            exchange_options: {name: 'luft_value', type: direct}
+            queue_options:    {name: 'luft_value'}
             callback:         App\Consumer\ValueConsumer
     batch_consumers:
-        value:
+        luft_value:
             connection:       default
-            exchange_options: {name: 'value', type: fanout}
-            queue_options:    {name: 'value'}
+            exchange_options: {name: 'luft_value', type: fanout}
+            queue_options:    {name: 'luft_value'}
             callback:         App\Consumer\ValueBatchConsumer
             qos_options:      {prefetch_size: 0, prefetch_count: 50000, global: false}
             timeout_wait:     5
