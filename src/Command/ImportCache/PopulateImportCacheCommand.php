@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Command;
+namespace App\Command\ImportCache;
 
 use App\Entity\Data;
 use App\Pollution\UniqueStrategy\CacheUniqueStrategy;
