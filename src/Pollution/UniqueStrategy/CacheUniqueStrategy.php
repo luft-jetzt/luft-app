@@ -5,10 +5,12 @@ namespace App\Pollution\UniqueStrategy;
 use App\Entity\Data;
 use App\Pollution\Value\Value;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class CacheUniqueStrategy implements UniqueStrategyInterface
 {
-    const CACHE_KEY = 'luft-data';
+    const CACHE_KEY = 'import-cache';
+    const CACHE_NAMESPACE = 'luft';
     const TTL = 172800;
 
     /** @var array $existentDataList */
@@ -17,9 +19,13 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
     /** @var AdapterInterface $cacheAdapter */
     protected $cacheAdapter;
 
-    public function __construct(AdapterInterface $cacheAdapter)
+    public function __construct()
     {
-        $this->cacheAdapter = $cacheAdapter;
+        $this->cacheAdapter = new RedisAdapter(
+            RedisAdapter::createConnection('redis://localhost'),
+            self::CACHE_NAMESPACE,
+            self::TTL
+        );
     }
 
     public function init(array $values): UniqueStrategyInterface
@@ -41,7 +47,6 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
 
         return array_key_exists($hash, $this->existentDataList);
     }
-
 
     public function addData(Data $data): UniqueStrategyInterface
     {
