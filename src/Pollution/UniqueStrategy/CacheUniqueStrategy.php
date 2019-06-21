@@ -3,41 +3,21 @@
 namespace App\Pollution\UniqueStrategy;
 
 use App\Entity\Data;
+use App\ImportCache\ImportCacheInterface;
 use App\Pollution\Value\Value;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
-use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class CacheUniqueStrategy implements UniqueStrategyInterface
 {
-    const CACHE_KEY = 'import-cache';
-    const CACHE_NAMESPACE = 'luft';
-    const TTL = 172800;
+    /** @var ImportCacheInterface */
+    protected $importCache;
 
-    /** @var array $existentDataList */
-    protected $existentDataList = [];
-
-    /** @var AdapterInterface $cacheAdapter */
-    protected $cacheAdapter;
-
-    public function __construct()
+    public function __construct(ImportCacheInterface $importCache)
     {
-        $this->cacheAdapter = new RedisAdapter(
-            RedisAdapter::createConnection('redis://localhost'),
-            self::CACHE_NAMESPACE,
-            self::TTL
-        );
+        $this->importCache = $importCache;
     }
 
     public function init(array $values): UniqueStrategyInterface
     {
-        $cacheItem = $this->cacheAdapter->getItem(self::CACHE_KEY);
-
-        if ($cacheItem->isHit()) {
-            $this->existentDataList = $cacheItem->get();
-        } else {
-            $this->existentDataList = [];
-        }
-
         return $this;
     }
 
@@ -45,14 +25,14 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
     {
         $hash = $this->hashData($data);
 
-        return array_key_exists($hash, $this->existentDataList);
+        return $this->importCache->has($hash);
     }
 
     public function addData(Data $data): UniqueStrategyInterface
     {
         $hash = $this->hashData($data);
 
-        $this->existentDataList[$hash] = $data->getDateTime()->format('U');
+        $this->importCache->add($hash, $data->getDateTime()->format('U'));
 
         return $this;
     }
@@ -69,40 +49,17 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
 
     public function getDataList(): array
     {
-        return $this->existentDataList;
+        return [];
     }
 
     public function save(): UniqueStrategyInterface
     {
-        $cacheItem = $this->cacheAdapter->getItem(self::CACHE_KEY);
-
-        if ($cacheItem->isHit()) {
-            $existentDataList = $cacheItem->get();
-        } else {
-            $existentDataList = [];
-        }
-
-        $existentDataList = $this->existentDataList + $existentDataList;
-
-        $limitTimestamp = (new \DateTime())->sub(new \DateInterval(sprintf('PT%dS', self::TTL)))->format('U');
-
-        /** @var Data $data */
-        foreach ($existentDataList as $key => $timestamp) {
-            if ($timestamp < $limitTimestamp) {
-                unset($existentDataList[$key]);
-            }
-        }
-
-        $cacheItem->set($existentDataList);
-
-        $this->cacheAdapter->save($cacheItem);
-
         return $this;
     }
 
     public function clear(): CacheUniqueStrategy
     {
-        $this->cacheAdapter->deleteItem(self::CACHE_KEY);
+        $this->importCache->clear();
 
         return $this;
     }
