@@ -1,16 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace App\Pollution\BoxDecorator;
+namespace App\Pollution\ViewModelFactory;
 
 use App\Entity\Station;
 use App\Pollution\Box\Box;
 
-/**
- * @deprecated
- */
-class BoxDecorator extends AbstractBoxDecorator
+class ViewModelFactory extends AbstractViewModelFactory
 {
-    public function decorate(): BoxDecoratorInterface
+    public function decorate(): ViewModelFactoryInterface
     {
         /** @var array $boxArray */
         foreach ($this->pollutantList as $boxList) {

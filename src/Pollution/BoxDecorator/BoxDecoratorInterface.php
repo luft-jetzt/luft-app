@@ -4,6 +4,9 @@ namespace App\Pollution\BoxDecorator;
 
 use Caldera\GeoBasic\Coord\CoordInterface;
 
+/**
+ * @deprecated
+ */
 interface BoxDecoratorInterface
 {
     public function setPollutantList(array $pollutantList): BoxDecoratorInterface;
