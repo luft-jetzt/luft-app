@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Pollution\Box;
+namespace App\Pollution\ViewModel;
 
 use App\Entity\Data;
 use App\Entity\Station;
@@ -9,9 +9,8 @@ use JMS\Serializer\Annotation as JMS;
 
 /**
  * @JMS\ExclusionPolicy("ALL")
- * @deprecated
  */
-class Box
+class PollutantViewModel
 {
     /**
      * @JMS\Expose()
@@ -53,7 +52,7 @@ class Box
         return $this->station;
     }
 
-    public function setStation(Station $station): Box
+    public function setStation(Station $station): self
     {
         $this->station = $station;
 
@@ -65,7 +64,7 @@ class Box
         return $this->data;
     }
 
-    public function setData($data): Box
+    public function setData($data): self
     {
         $this->data = $data;
 
@@ -77,7 +76,7 @@ class Box
         return $this->pollutant;
     }
 
-    public function setPollutant(PollutantInterface $pollutant): Box
+    public function setPollutant(PollutantInterface $pollutant): self
     {
         $this->pollutant = $pollutant;
 
@@ -89,7 +88,7 @@ class Box
         return $this->pollutionLevel;
     }
 
-    public function setPollutionLevel(int $pollutionLevel): Box
+    public function setPollutionLevel(int $pollutionLevel): self
     {
         $this->pollutionLevel = $pollutionLevel;
 
@@ -101,7 +100,7 @@ class Box
         return $this->caption;
     }
 
-    public function setCaption(string $caption): Box
+    public function setCaption(string $caption): self
     {
         $this->caption = $caption;
 
@@ -113,7 +112,7 @@ class Box
         return $this->distance;
     }
 
-    public function setDistance(float $distance): Box
+    public function setDistance(float $distance): self
     {
         $this->distance = $distance;
 
