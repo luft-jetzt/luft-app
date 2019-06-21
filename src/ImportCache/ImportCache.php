@@ -2,7 +2,6 @@
 
 namespace App\ImportCache;
 
-use App\Entity\Data;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 
