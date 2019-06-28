@@ -26,6 +26,7 @@
         "php-http/guzzle6-adapter": "^1.1",
         "php-http/httplug-bundle": "^1.9",
         "php-http/message": "^1.7",
+        "phpunit/phpunit": "^7.5",
         "presta/sitemap-bundle": "^1.5",
         "salavert/time-ago-in-words": "^1.7",
         "sensio/framework-extra-bundle": "^5.1",
@@ -58,7 +59,7 @@
         "symfony/css-selector": "^4.0",
         "symfony/dotenv": "^4.0",
         "symfony/maker-bundle": "^1.0",
-        "symfony/phpunit-bridge": "^4.0",
+        "symfony/phpunit-bridge": "^4.3",
         "symfony/profiler-pack": "*"
     },
     "config": {
