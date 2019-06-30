@@ -3,6 +3,7 @@
 namespace App\Pollution\DataCache;
 
 use App\Entity\Data;
+use JMS\Serializer\SerializerInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 
@@ -13,8 +14,13 @@ class DataCache implements DataCacheInterface
     /** @var AdapterInterface $cache */
     protected $cache;
 
-    public function __construct()
+    /** @var SerializerInterface $serializer */
+    protected $serializer;
+
+    public function __construct(SerializerInterface $serializer)
     {
+        $this->serializer = $serializer;
+
         $client = RedisAdapter::createConnection(
             'redis://localhost'
         );
@@ -28,7 +34,7 @@ class DataCache implements DataCacheInterface
 
         $cacheItem = $this->cache->getItem($key);
 
-        $cacheItem->set($data);
+        $cacheItem->set($this->serializer->serialize($data, 'json'));
 
         $this->cache->save($cacheItem);
 
@@ -40,7 +46,7 @@ class DataCache implements DataCacheInterface
         $cacheItem = $this->cache->getItem($key);
 
         if ($cacheItem->isHit()) {
-            return $cacheItem->get();
+            return $this->serializer->deserialize($cacheItem->get(), Data::class, 'json');
         }
 
         return null;
