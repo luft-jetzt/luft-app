@@ -24,7 +24,7 @@ class DataCache implements DataCacheInterface
 
     public function addData(Data $data): DataCacheInterface
     {
-        $key = KeyGenerator::generateKey($data);
+        $key = KeyGenerator::generateKeyForData($data);
 
         $cacheItem = $this->cache->getItem($key);
 

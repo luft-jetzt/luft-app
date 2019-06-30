@@ -3,6 +3,7 @@
 namespace App\Pollution\DataCache;
 
 use App\Entity\Data;
+use App\Entity\Station;
 
 class KeyGenerator
 {
@@ -11,8 +12,13 @@ class KeyGenerator
 
     }
 
-    public static function generateKey(Data $data): string
+    public static function generateKeyForData(Data $data): string
     {
         return sprintf('luft-data-%d-%d', $data->getStationId(), $data->getPollutant());
+    }
+
+    public static function generateKeyForStationAndPollutant(Station $station, int $pollutant): string
+    {
+        return sprintf('luft-data-%d-%d', $station->getId(), $pollutant);
     }
 }

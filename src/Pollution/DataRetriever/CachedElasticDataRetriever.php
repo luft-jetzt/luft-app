@@ -3,6 +3,8 @@
 namespace App\Pollution\DataRetriever;
 
 use App\Entity\Station;
+use App\Pollution\DataCache\DataCacheInterface;
+use App\Pollution\DataCache\KeyGenerator;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use FOS\ElasticaBundle\Finder\FinderInterface;
 
@@ -11,12 +13,33 @@ class CachedElasticDataRetriever implements DataRetrieverInterface
     /** @var FinderInterface $dataFinder */
     protected $dataFinder;
 
-    public function __construct(FinderInterface $dataFinder)
+    /** @var DataCacheInterface $dataCache */
+    protected $dataCache;
+
+    public function __construct(DataCacheInterface $dataCache, FinderInterface $dataFinder)
     {
         $this->dataFinder = $dataFinder;
+        $this->dataCache = $dataCache;
     }
 
     public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 750): array
+    {
+        $stationList = $this->getStationList($coord, $maxDistance, $maxResults);
+        $dataList = [];
+
+        /** @var Station $station */
+        foreach ($stationList as $station) {
+            $key = KeyGenerator::generateKeyForStationAndPollutant($station, $pollutantId);
+
+            $data = $this->dataCache->getData($key);
+
+            $dataList[] = $data;
+        }
+
+        return $dataList;
+    }
+
+    protected function getStationList(CoordInterface $coord, float $maxDistance, int $maxResults): array
     {
         if ($coord instanceof Station) {
             $stationQuery = new \Elastica\Query\Nested();
@@ -34,27 +57,7 @@ class CachedElasticDataRetriever implements DataRetrieverInterface
             $stationQuery->setQuery($stationGeoQuery);
         }
 
-        $pollutantQuery = new \Elastica\Query\Term(['pollutant' => $pollutantId]);
-
-        $boolQuery = new \Elastica\Query\BoolQuery();
-        $boolQuery
-            ->addMust($pollutantQuery)
-            ->addMust($stationQuery);
-
-        if ($fromDateTime && $dateInterval) {
-            $untilDateTime = clone $fromDateTime;
-            $untilDateTime->add($dateInterval);
-
-            $dateTimeQuery = new \Elastica\Query\Range('dateTime', [
-                'gt' => $fromDateTime->format('Y-m-d H:i:s'),
-                'lte' => $untilDateTime->format('Y-m-d H:i:s'),
-                'format' => 'yyyy-MM-dd HH:mm:ss',
-            ]);
-
-            $boolQuery->addMust($dateTimeQuery);
-        }
-
-        $query = new \Elastica\Query($boolQuery);
+        $query = new \Elastica\Query($stationQuery);
 
         $query
             ->addSort([
