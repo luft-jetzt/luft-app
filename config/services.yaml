@@ -69,3 +69,6 @@ services:
 
     App\Pollution\UniqueStrategy\UniqueStrategyInterface:
         alias: App\Pollution\UniqueStrategy\CacheUniqueStrategy
+
+    App\Pollution\DataPersister\PersisterInterface:
+        alias: App\Pollution\DataPersister\CachePersister
