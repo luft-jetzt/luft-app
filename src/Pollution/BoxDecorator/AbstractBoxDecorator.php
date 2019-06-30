@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Pollution\ViewModelFactory;
+namespace App\Pollution\BoxDecorator;
 
 use App\AirQuality\Calculator\AirQualityCalculatorInterface;
 use App\Pollution\Pollutant\CO;
@@ -15,7 +15,7 @@ use Caldera\GeoBasic\Coord\CoordInterface;
 /**
  * @deprecated
  */
-abstract class AbstractBoxDecorator implements ViewModelFactoryInterface
+abstract class AbstractBoxDecorator implements BoxDecoratorInterface
 {
     /** @var array $pollutantList */
     protected $pollutantList = [];
@@ -31,7 +31,7 @@ abstract class AbstractBoxDecorator implements ViewModelFactoryInterface
         $this->airQualityCalculator = $airQualityCalculator;
     }
 
-    public function setPollutantList(array $pollutantList): self
+    public function setPollutantList(array $pollutantList): BoxDecoratorInterface
     {
         $this->pollutantList = $pollutantList;
 
