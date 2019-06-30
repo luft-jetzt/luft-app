@@ -24,7 +24,7 @@ class CachedElasticDataRetriever implements DataRetrieverInterface
 
     public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 750): array
     {
-        $stationList = $this->getStationList($coord, $maxDistance, $maxResults);
+        $stationList = $this->getStationList($coord, $maxDistance, 750); // @TODO: get rid of working set size in Pollution Data Factory
         $dataList = [];
 
         /** @var Station $station */
@@ -39,22 +39,16 @@ class CachedElasticDataRetriever implements DataRetrieverInterface
         return $dataList;
     }
 
-    protected function getStationList(CoordInterface $coord, float $maxDistance, int $maxResults): array
+    protected function getStationList(CoordInterface $coord, float $maxDistance = 20.0, int $maxResults = 750): array
     {
         if ($coord instanceof Station) {
-            $stationQuery = new \Elastica\Query\Nested();
-            $stationQuery->setPath('station');
-            $stationQuery->setQuery(new \Elastica\Query\Term(['station.id' => $coord->getId()]));
+            $stationQuery = new \Elastica\Query\Term(['station.id' => $coord->getId()]);
         } else {
-            $stationGeoQuery = new \Elastica\Query\GeoDistance('station.pin', [
+            $stationQuery = new \Elastica\Query\GeoDistance('pin', [
                 'lat' => $coord->getLatitude(),
                 'lon' => $coord->getLongitude(),
             ],
                 sprintf('%fkm', $maxDistance));
-
-            $stationQuery = new \Elastica\Query\Nested();
-            $stationQuery->setPath('station');
-            $stationQuery->setQuery($stationGeoQuery);
         }
 
         $query = new \Elastica\Query($stationQuery);
@@ -62,16 +56,14 @@ class CachedElasticDataRetriever implements DataRetrieverInterface
         $query
             ->addSort([
                 '_geo_distance' => [
-                    'station.pin' => [
+                    'pin' => [
                         'lat' => $coord->getLatitude(),
                         'lon' => $coord->getLongitude()
                     ],
                     'order' => 'asc',
                     'unit' => 'km',
-                    'nested_path' => 'station',
                 ]
-            ])
-            ->addSort(['dateTime' => 'desc']);
+            ]);
 
         $query->setSize($maxResults);
 
