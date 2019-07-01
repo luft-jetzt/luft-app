@@ -4,6 +4,7 @@ namespace App\Menu;
 
 use App\Pollution\Pollutant\PollutantInterface;
 use App\Pollution\PollutantList\PollutantListInterface;
+use Flagception\Manager\FeatureManagerInterface;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -17,10 +18,14 @@ class MainMenuBuilder extends AbstractBuilder
     /** @var RouterInterface $router */
     protected $router;
 
-    public function __construct(FactoryInterface $factory, TokenStorageInterface $tokenStorage, PollutantListInterface $pollutantList, RouterInterface $router)
+    /** @var FeatureManagerInterface $featureManager */
+    protected $featureManager;
+
+    public function __construct(FeatureManagerInterface $featureManager, FactoryInterface $factory, TokenStorageInterface $tokenStorage, PollutantListInterface $pollutantList, RouterInterface $router)
     {
         $this->pollutantList = $pollutantList;
         $this->router = $router;
+        $this->featureManager = $featureManager;
 
         parent::__construct($factory, $tokenStorage);
     }
@@ -42,14 +47,21 @@ class MainMenuBuilder extends AbstractBuilder
         $pollutantDropdown->addChild('Grenzwerte', ['route' => 'limits', 'attributes' => ['divider_prepend' => true]]);
         $pollutantDropdown->addChild('Fahrverbote', ['uri' => 'https://sqi.be/i7vfr']);
 
-        $analysisDropdown = $menu->addChild('Analyse', [
-            'attributes' => [
-                'dropdown' => true,
-            ],
-        ]);
+        if ($this->featureManager->isActive('analysis')) {
+            $analysisDropdown = $menu->addChild('Analyse', [
+                'attributes' => [
+                    'dropdown' => true,
+                ],
+            ]);
 
-        $analysisDropdown->addChild('Komfortofen-Finder', ['route' => 'analysis_komfortofen']);
-        $analysisDropdown->addChild('Silvester-Feuerwerk', ['route' => 'analysis_fireworks']);
+            if ($this->featureManager->isActive('analysis_komfortofen')) {
+                $analysisDropdown->addChild('Komfortofen-Finder', ['route' => 'analysis_komfortofen']);
+            }
+
+            if ($this->featureManager->isActive('analysis_fireworks')) {
+                $analysisDropdown->addChild('Silvester-Feuerwerk', ['route' => 'analysis_fireworks']);
+            }
+        }
 
         $aboutDropdown = $menu->addChild('Über', [
             'attributes' => [
