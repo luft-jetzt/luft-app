@@ -24,7 +24,12 @@ class CachedElasticDataRetriever implements DataRetrieverInterface
 
     public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 750): array
     {
-        $stationList = $this->getStationList($coord, $maxDistance, 750); // @TODO: get rid of working set size in Pollution Data Factory
+        if ($coord instanceof Station) {
+            $stationList = [$coord];
+        } else {
+            $stationList = $this->getStationList($coord, $maxDistance, 750); // @TODO: get rid of working set size in Pollution Data Factory
+        }
+        
         $dataList = [];
 
         /** @var Station $station */
@@ -35,7 +40,7 @@ class CachedElasticDataRetriever implements DataRetrieverInterface
 
             $dataList[] = $data;
         }
-        
+
         return $dataList;
     }
 
