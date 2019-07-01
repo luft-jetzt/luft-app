@@ -6,9 +6,16 @@ use App\Analysis\FireworksAnalysis\FireworksAnalysisInterface;
 use App\Analysis\KomfortofenAnalysis\KomfortofenAnalysisInterface;
 use App\SeoPage\SeoPageInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Flagception\Bundle\FlagceptionBundle\Annotations\Feature;
 
+/**
+ * @Feature("analysis")
+ */
 class AnalysisController extends AbstractController
 {
+    /**
+     * @Feature("analysis_komfortofen")
+     */
     public function komfortofenAction(KomfortofenAnalysisInterface $komfortofenAnalysis): Response
     {
         $interval = new \DateInterval('P30D');
@@ -26,6 +33,9 @@ class AnalysisController extends AbstractController
         ]);
     }
 
+    /**
+     * @Feature("analysis_fireworks")
+     */
     public function fireworksAction(FireworksAnalysisInterface $fireworksAnalysis, SeoPageInterface $seoPage): Response
     {
         $seoPage
