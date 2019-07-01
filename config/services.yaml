@@ -76,3 +76,10 @@ services:
 
     App\Pollution\DataPersister\PersisterInterface:
         alias: App\Pollution\DataPersister\CachePersister
+
+    App\Producer\Value\RabbitValueProducer:
+        arguments:
+            $producer: '@old_sound_rabbit_mq.luft_value_producer'
+
+    App\Producer\Value\ValueProducerInterface:
+        alias: App\Producer\Value\CacheValueProducer
