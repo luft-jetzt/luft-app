@@ -2,8 +2,8 @@
 
 namespace App\Command;
 
-use App\Pollution\DataPersister\UniquePersisterInterface;
 use App\Pollution\Pollutant\PollutantInterface;
+use App\Producer\Value\ValueProducerInterface;
 use App\Provider\ProviderInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Parser\Parser;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaCOQuery;
@@ -30,10 +30,14 @@ class FetchCommand extends ContainerAwareCommand
     /** @var ProviderInterface $provider */
     protected $provider;
 
-    public function __construct(?string $name = null, SourceFetcher $fetcher, UmweltbundesamtDeProvider $umweltbundesamtDeProvider)
+    /** @var ValueProducerInterface $valueProducer */
+    protected $valueProducer;
+
+    public function __construct(?string $name = null, ValueProducerInterface $valueProducer, SourceFetcher $fetcher, UmweltbundesamtDeProvider $umweltbundesamtDeProvider)
     {
         $this->provider = $umweltbundesamtDeProvider;
         $this->fetcher = $fetcher;
+        $this->valueProducer = $valueProducer;
 
         parent::__construct($name);
     }
@@ -152,7 +156,7 @@ class FetchCommand extends ContainerAwareCommand
         $valueList = $parser->parse($response, $pollutant);
 
         foreach ($valueList as $value) {
-            $this->getContainer()->get('old_sound_rabbit_mq.luft_value_producer')->publish(serialize($value));
+            $this->valueProducer->publish($value);
         }
 
         $output->writeln(sprintf('Wrote <info>%d</info> values to cache.', count($valueList)));
