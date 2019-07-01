@@ -35,14 +35,14 @@ class CachedElasticDataRetriever implements DataRetrieverInterface
 
             $dataList[] = $data;
         }
-
+        
         return $dataList;
     }
 
     protected function getStationList(CoordInterface $coord, float $maxDistance = 20.0, int $maxResults = 750): array
     {
         if ($coord instanceof Station) {
-            $stationQuery = new \Elastica\Query\Term(['station.id' => $coord->getId()]);
+            $stationQuery = new \Elastica\Query\Term(['id' => $coord->getId()]);
         } else {
             $stationQuery = new \Elastica\Query\GeoDistance('pin', [
                 'lat' => $coord->getLatitude(),
