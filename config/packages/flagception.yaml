@@ -1,5 +1,8 @@
-# See full configuration at https://github.com/bestit/flagception-bundle
 flagception:
     features:
-        demo_123:
-            default: true
+        analysis:
+            default: false
+        analysis_fireworks:
+            default: false
+        analysis_komfortofen:
+            default: false
