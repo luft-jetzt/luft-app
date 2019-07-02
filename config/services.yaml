@@ -47,7 +47,7 @@ services:
         alias: App\Twitter\MessageFactory\ExtendedEmojiMessageFactory
 
     App\Pollution\DataRetriever\DataRetrieverInterface:
-        alias: App\Pollution\DataRetriever\ElasticDataRetriever
+        alias: App\Pollution\DataRetriever\CachedElasticDataRetriever
 
     App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface:
         alias: App\Pollution\PollutantFactoryStrategy\LuftdatenPollutantFactoryStrategy
@@ -59,6 +59,10 @@ services:
         arguments:
             $dataFinder: '@fos_elastica.finder.air_data.data'
 
+    App\Pollution\DataRetriever\CachedElasticDataRetriever:
+        arguments:
+            $dataFinder: '@fos_elastica.finder.air_station.station'
+
     App\Pollution\StationFinder\ElasticStationFinder:
         arguments:
             $stationFinder: '@fos_elastica.finder.air_station.station'
@@ -69,3 +73,13 @@ services:
 
     App\Pollution\UniqueStrategy\UniqueStrategyInterface:
         alias: App\Pollution\UniqueStrategy\CacheUniqueStrategy
+
+    App\Pollution\DataPersister\PersisterInterface:
+        alias: App\Pollution\DataPersister\CachePersister
+
+    App\Producer\Value\RabbitValueProducer:
+        arguments:
+            $producer: '@old_sound_rabbit_mq.luft_value_producer'
+
+    App\Producer\Value\ValueProducerInterface:
+        alias: App\Producer\Value\CacheValueProducer

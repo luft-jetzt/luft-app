@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Producer\Value\ValueProducerInterface;
 use App\Provider\Luftdaten\LuftdatenProvider;
 use App\Provider\Luftdaten\SourceFetcher\Parser\JsonParserInterface;
 use App\Provider\Luftdaten\SourceFetcher\SourceFetcher;
@@ -17,10 +18,14 @@ class Fetch2Command extends ContainerAwareCommand
     /** @var JsonParserInterface $parser */
     protected $parser;
 
-    public function __construct(?string $name = null, LuftdatenProvider $luftdatenProvider, JsonParserInterface $parser)
+    /** @var ValueProducerInterface $valueProducer */
+    protected $valueProducer;
+
+    public function __construct(?string $name = null, ValueProducerInterface $valueProducer, LuftdatenProvider $luftdatenProvider, JsonParserInterface $parser)
     {
         $this->provider = $luftdatenProvider;
         $this->parser = $parser;
+        $this->valueProducer = $valueProducer;
 
         parent::__construct($name);
     }
@@ -41,7 +46,7 @@ class Fetch2Command extends ContainerAwareCommand
         $valueList = $this->parser->parse($response);
 
         foreach ($valueList as $value) {
-            $this->getContainer()->get('old_sound_rabbit_mq.luft_value_producer')->publish(serialize($value));
+            $this->valueProducer->publish($value);
         }
 
         $output->writeln(sprintf('Wrote <info>%d</info> values to cache.', count($valueList)));

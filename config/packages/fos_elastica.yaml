@@ -18,6 +18,8 @@ fos_elastica:
                             type: date
                             format: "yyyy-MM-dd HH:mm:ss"
                             property_path: untilDateFormatted
+                        stationCode: ~
+                        provider: ~
                     persistence:
                         driver: orm
                         model: App\Entity\Station

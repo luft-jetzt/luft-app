@@ -23,13 +23,15 @@ class Data
      * @var Station $station
      * @ORM\ManyToOne(targetEntity="Station", inversedBy="datas")
      * @ORM\JoinColumn(name="station_id", referencedColumnName="id")
+     * @JMS\Expose()
+     * @JMS\Type("App\Entity\Station")
      */
     protected $station;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
      * @JMS\Expose()
-     * @JMS\Type("DateTime<'U'>")
+     * @JMS\Type("DateTimeImmutable<'U'>")
      */
     protected $dateTime;
 
@@ -45,7 +47,7 @@ class Data
      */
     protected $pollutant;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

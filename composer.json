@@ -9,6 +9,7 @@
         "calderacc/yourls-api-manager": "^0.2.0",
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "dragonmantank/cron-expression": "^2.1",
+        "flagception/flagception-bundle": "^3.2",
         "fresh/doctrine-enum-bundle": "^6.2",
         "friendsofsymfony/elastica-bundle": "^5.0",
         "friendsofsymfony/jsrouting-bundle": "^2.2",
