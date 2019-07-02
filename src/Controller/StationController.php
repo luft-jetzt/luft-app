@@ -2,14 +2,18 @@
 
 namespace App\Controller;
 
+use App\Analysis\LimitAnalysis\LimitAnalysisInterface;
 use App\Entity\Station;
-use App\Pollution\PollutionDataFactory\HistoryDataFactory;
+use App\Plotter\StationPlotter\StationPlotterInterface;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
+use App\SeoPage\SeoPageInterface;
 use App\Util\DateTimeUtil;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 
 class StationController extends AbstractController
 {
@@ -27,7 +31,7 @@ class StationController extends AbstractController
             ->createDecoratedPollutantList();
 
         if ($station->getCity()) {
-            $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s in %s', $station->getStationCode(), $station->getCity()->getName()));
+            $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s — Feinstaub, Stickstoffdioxid und Ozon in %s', $station->getStationCode(), $station->getCity()->getName()));
         } else {
             $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s', $station->getStationCode()));
         }
@@ -38,7 +42,31 @@ class StationController extends AbstractController
         ]);
     }
 
-    public function historyAction(Request $request, string $stationCode, HistoryDataFactoryInterface $historyDataFactory): Response
+    public function limitsAction(LimitAnalysisInterface $limitAnalysis, string $stationCode): Response
+    {
+        /** @var Station $station */
+        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
+
+        if (!$station) {
+            throw $this->createNotFoundException();
+        }
+
+        $now = new \DateTime('2018-11-30');
+
+        $limitAnalysis
+            ->setStation($station)
+            ->setFromDateTime(DateTimeUtil::getMonthStartDateTime($now))
+            ->setUntilDateTime(DateTimeUtil::getMonthEndDateTime($now));
+
+        $exceedance = $limitAnalysis->analyze();
+
+        var_dump($exceedance);
+        return $this->render('Station/limits.html.twig', [
+            'exceedanceJson' => json_encode($exceedance),
+        ]);
+    }
+
+    public function historyAction(Request $request, string $stationCode, HistoryDataFactoryInterface $historyDataFactory, SeoPageInterface $seoPage, RouterInterface $router): Response
     {
         if ($untilDateTimeParam = $request->query->get('until')) {
             try {
@@ -69,6 +97,22 @@ class StationController extends AbstractController
             throw $this->createNotFoundException();
         }
 
+        $seoPage->setOpenGraphPreviewPhoto($router->generate('station_history_plot', [
+            'stationCode' => $station->getStationCode(),
+            'from' => $fromDateTime->format('Y-m-d'),
+            'until' => $untilDateTime->format('Y-m-d'),
+            'width' => 1200,
+            'height' => 630,
+        ]));
+
+        $seoPage->setTwitterPreviewPhoto($router->generate('station_history_plot', [
+            'stationCode' => $station->getStationCode(),
+            'from' => $fromDateTime->format('Y-m-d'),
+            'until' => $untilDateTime->format('Y-m-d'),
+            'width' => 900,
+            'height' => 450,
+        ]));
+
         $dataLists = $historyDataFactory
             ->setStation($station)
             ->createDecoratedPollutantListForInterval($fromDateTime, $untilDateTime);
@@ -93,5 +137,57 @@ class StationController extends AbstractController
         }
 
         return array_unique($pollutantIdList);
+    }
+
+    public function plotHistoryAction(Request $request, string $stationCode, StationPlotterInterface $stationPlotter, string $graphCacheDirectory): BinaryFileResponse
+    {
+        if ($untilDateTimeParam = $request->query->get('until')) {
+            try {
+                $untilDateTime = DateTimeUtil::getDayEndDateTime(new \DateTime($untilDateTimeParam));
+            } catch (\Exception $exception) {
+                $untilDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
+            }
+        } else {
+            $untilDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
+        }
+
+        if ($fromDateTimeParam = $request->query->get('from')) {
+            try {
+                $fromDateTime = DateTimeUtil::getDayStartDateTime(new \DateTime($fromDateTimeParam));
+            } catch (\Exception $exception) {
+                $fromDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
+                $fromDateTime->sub(new \DateInterval('P3D'));
+            }
+        } else {
+            $fromDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
+            $fromDateTime->sub(new \DateInterval('P3D'));
+        }
+
+        /** @var Station $station */
+        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
+
+        if (!$station) {
+            throw $this->createNotFoundException();
+        }
+
+        $width = (int) $request->get('width', 800);
+        $height = (int) $request->get('height', 400);
+
+        $filename = sprintf('%s/%s-%d-%d-%dx%d.png', $graphCacheDirectory, $station->getStationCode(), $fromDateTime->format('U'), $untilDateTime->format('U'), $width, $height);
+
+        if (!file_exists($filename)) {
+            $stationPlotter
+                ->setWidth($width)
+                ->setHeight($height)
+                ->setTitle(sprintf('Messwerte der Station %s', $station->getStationCode()))
+                ->setStation($station)
+                ->setFromDateTime($fromDateTime)
+                ->setUntilDateTime($untilDateTime)
+                ->plot($filename);
+        }
+
+        $response = new BinaryFileResponse($filename);
+
+        return $response;
     }
 }

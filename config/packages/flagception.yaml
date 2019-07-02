@@ -1,0 +1,8 @@
+flagception:
+    features:
+        analysis:
+            default: false
+        analysis_fireworks:
+            default: false
+        analysis_komfortofen:
+            default: false

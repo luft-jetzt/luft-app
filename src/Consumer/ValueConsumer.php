@@ -2,34 +2,26 @@
 
 namespace App\Consumer;
 
-use App\Pollution\DataPersister\UniquePersisterInterface;
-use OldSound\RabbitMqBundle\RabbitMq\BatchConsumerInterface;
+use App\Pollution\DataPersister\PersisterInterface;
+use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 
-class ValueConsumer implements BatchConsumerInterface
+class ValueConsumer implements ConsumerInterface
 {
-    /** @var UniquePersisterInterface  */
+    /** @var PersisterInterface $persister */
     protected $persister;
 
-    public function __construct(UniquePersisterInterface $persister)
+    public function __construct(PersisterInterface $persister)
     {
         $this->persister = $persister;
     }
 
-    public function batchExecute(array $messages): array
+    public function execute(AMQPMessage $message): int
     {
-        $valueList = [];
-        $resultList = [];
+        $value = unserialize($message->getBody());
+        
+        $this->persister->persistValues([$value]);
 
-        /** @var AMQPMessage $message */
-        foreach ($messages as $message) {
-            $valueList[] = unserialize($message->getBody());
-
-            $resultList[(int)$message->delivery_info['delivery_tag']] = true;
-        }
-
-        $this->persister->persistValues($valueList);
-
-        return $resultList;
+        return self::MSG_ACK;
     }
 }

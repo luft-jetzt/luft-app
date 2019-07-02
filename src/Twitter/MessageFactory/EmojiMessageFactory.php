@@ -3,7 +3,6 @@
 namespace App\Twitter\MessageFactory;
 
 use App\Pollution\Box\Box;
-use App\Pollution\PollutionLevel\PollutionLevel;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class EmojiMessageFactory extends AbstractMessageFactory
