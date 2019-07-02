@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\City;
 use App\Entity\Data;
 use App\Entity\Station;
+use App\Geocoding\RequestConverter\RequestConverterInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -47,7 +48,7 @@ class ApiController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $pollutantList = $pollutionDataFactory->setCoord($station)->createDecoratedPollutantList();
+        $pollutantList = $pollutionDataFactory->setStation($station)->createDecoratedPollutantList();
 
         return new JsonResponse($serializer->serialize($this->unpackPollutantList($pollutantList), 'json'), 200, [], true);
     }
@@ -116,9 +117,10 @@ class ApiController extends AbstractController
     public function displayAction(
         Request $request,
         SerializerInterface $serializer,
-        PollutionDataFactory $pollutionDataFactory
+        PollutionDataFactory $pollutionDataFactory,
+        RequestConverterInterface $requestConverter
     ): Response {
-        $coord = $this->getCoordByRequest($request);
+        $coord = $requestConverter->getCoordByRequest($request);
 
         if (!$coord) {
             throw $this->createNotFoundException();
@@ -182,8 +184,10 @@ class ApiController extends AbstractController
      *   @Model(type=App\Entity\Station::class)
      * )
      */
-    public function stationAction(SerializerInterface $serializer, string $stationCode = null): Response
+    public function stationAction(Request $request, SerializerInterface $serializer, string $stationCode = null): Response
     {
+        $providerIdentifier = $request->get('provider');
+
         if ($stationCode) {
             $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
 
@@ -192,6 +196,8 @@ class ApiController extends AbstractController
             }
 
             return new JsonResponse($serializer->serialize($station, 'json'), 200, [], true);
+        } elseif ($providerIdentifier) {
+            $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStationsByProvider($providerIdentifier);
         } else {
             $stationList = $this->getDoctrine()->getRepository(Station::class)->findAll();
         }
