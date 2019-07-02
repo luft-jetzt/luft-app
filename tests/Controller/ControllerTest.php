@@ -22,7 +22,7 @@ class ControllerTest extends WebTestCase
         $client->request('GET', '/impress');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        //$this->assertSelectorTextContains('html h2', 'Datenschutzerklärung');
+        $this->assertSelectorTextContains('html h2', 'Impressum');
     }
 
     public function testPrivacyPage(): void
@@ -32,6 +32,6 @@ class ControllerTest extends WebTestCase
         $client->request('GET', '/privacy');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        //$this->assertSelectorTextContains('html h2', 'Datenschutzerklärung');
+        $this->assertSelectorTextContains('html h2', 'Datenschutzerklärung');
     }
 }
