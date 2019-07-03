@@ -7,15 +7,33 @@ use PHPUnit\Framework\TestCase;
 
 class COTest extends TestCase
 {
-    public function testCO(): void
+    public function testName(): void
     {
-        $co = new CO();
+        $this->assertEquals('Kohlenmonoxid', (new CO())->getName());
+    }
 
-        $this->assertEquals('Kohlenmonoxid', $co->getName());
-        $this->assertEquals('CO', $co->getShortName());
-        $this->assertEquals('co', $co->getIdentifier());
-        $this->assertEquals('CO', $co->getShortNameHtml());
-        $this->assertEquals('µg/m<sup>3</sup>', $co->getUnitHtml());
-        $this->assertEquals('µg/m³', $co->getUnitPlain());
+    public function testShortName(): void
+    {
+        $this->assertEquals('CO', (new CO())->getShortName());
+    }
+
+    public function testIdentifier(): void
+    {
+        $this->assertEquals('co', (new CO())->getIdentifier());
+    }
+
+    public function testShortNameHtml(): void
+    {
+        $this->assertEquals('CO', (new CO())->getShortNameHtml());
+    }
+
+    public function testUnitHtml(): void
+    {
+        $this->assertEquals('µg/m<sup>3</sup>', (new CO())->getUnitHtml());
+    }
+
+    public function testUnitPlain(): void
+    {
+        $this->assertEquals('µg/m³', (new CO())->getUnitPlain());
     }
 }

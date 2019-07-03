@@ -7,15 +7,33 @@ use PHPUnit\Framework\TestCase;
 
 class PM10Test extends TestCase
 {
-    public function testPM10(): void
+    public function testName(): void
     {
-        $pm10 = new PM10();
+        $this->assertEquals('Feinstaub PM10', (new PM10())->getName());
+    }
 
-        $this->assertEquals('Feinstaub PM10', $pm10->getName());
-        $this->assertEquals('PM10', $pm10->getShortName());
-        $this->assertEquals('pm10', $pm10->getIdentifier());
-        $this->assertEquals('PM<sub>10</sub>', $pm10->getShortNameHtml());
-        $this->assertEquals('µg/m<sup>3</sup>', $pm10->getUnitHtml());
-        $this->assertEquals('µg/m³', $pm10->getUnitPlain());
+    public function testShortName(): void
+    {
+        $this->assertEquals('PM10', (new PM10())->getShortName());
+    }
+
+    public function testIdentifier(): void
+    {
+        $this->assertEquals('pm10', (new PM10())->getIdentifier());
+    }
+
+    public function testShortNameHtml(): void
+    {
+        $this->assertEquals('PM<sub>10</sub>', (new PM10())->getShortNameHtml());
+    }
+
+    public function testUnitHtml(): void
+    {
+        $this->assertEquals('µg/m<sup>3</sup>', (new PM10())->getUnitHtml());
+    }
+
+    public function testUnitPlain(): void
+    {
+        $this->assertEquals('µg/m³', (new PM10())->getUnitPlain());
     }
 }

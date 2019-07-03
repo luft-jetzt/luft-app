@@ -7,15 +7,33 @@ use PHPUnit\Framework\TestCase;
 
 class O3Test extends TestCase
 {
-    public function testO3(): void
+    public function testName(): void
     {
-        $o3 = new O3();
+        $this->assertEquals('Ozon', (new O3())->getName());
+    }
 
-        $this->assertEquals('Ozon', $o3->getName());
-        $this->assertEquals('O3', $o3->getShortName());
-        $this->assertEquals('o3', $o3->getIdentifier());
-        $this->assertEquals('O<sub>3</sub>', $o3->getShortNameHtml());
-        $this->assertEquals('µg/m<sup>3</sup>', $o3->getUnitHtml());
-        $this->assertEquals('µg/m³', $o3->getUnitPlain());
+    public function testShortName(): void
+    {
+        $this->assertEquals('O3', (new O3())->getShortName());
+    }
+
+    public function testIdentifier(): void
+    {
+        $this->assertEquals('o3', (new O3())->getIdentifier());
+    }
+
+    public function testShortNameHtml(): void
+    {
+        $this->assertEquals('O<sub>3</sub>', (new O3())->getShortNameHtml());
+    }
+
+    public function testUnitHtml(): void
+    {
+        $this->assertEquals('µg/m<sup>3</sup>', (new O3())->getUnitHtml());
+    }
+
+    public function testUnitPlain(): void
+    {
+        $this->assertEquals('µg/m³', (new O3())->getUnitPlain());
     }
 }

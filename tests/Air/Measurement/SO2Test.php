@@ -7,15 +7,33 @@ use PHPUnit\Framework\TestCase;
 
 class SO2Test extends TestCase
 {
-    public function testSO2(): void
+    public function testName(): void
     {
-        $so2 = new SO2();
+        $this->assertEquals('Schwefeldioxid', (new SO2())->getName());
+    }
 
-        $this->assertEquals('Schwefeldioxid', $so2->getName());
-        $this->assertEquals('SO2', $so2->getShortName());
-        $this->assertEquals('so2', $so2->getIdentifier());
-        $this->assertEquals('SO<sub>2</sub>', $so2->getShortNameHtml());
-        $this->assertEquals('µg/m<sup>3</sup>', $so2->getUnitHtml());
-        $this->assertEquals('µg/m³', $so2->getUnitPlain());
+    public function testShortName(): void
+    {
+        $this->assertEquals('SO2', (new SO2())->getShortName());
+    }
+
+    public function testIdentifier(): void
+    {
+        $this->assertEquals('so2', (new SO2())->getIdentifier());
+    }
+
+    public function testShortNameHtml(): void
+    {
+        $this->assertEquals('SO<sub>2</sub>', (new SO2())->getShortNameHtml());
+    }
+
+    public function testUnitHtml(): void
+    {
+        $this->assertEquals('µg/m<sup>3</sup>', (new SO2())->getUnitHtml());
+    }
+
+    public function testUnitPlain(): void
+    {
+        $this->assertEquals('µg/m³', (new SO2())->getUnitPlain());
     }
 }
