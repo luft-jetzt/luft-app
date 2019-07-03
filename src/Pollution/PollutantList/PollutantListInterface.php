@@ -4,6 +4,9 @@ namespace App\Pollution\PollutantList;
 
 use App\Pollution\Pollutant\PollutantInterface;
 
+/**
+ * @deprecated
+ */
 interface PollutantListInterface
 {
     public function addPollutant(PollutantInterface $pollutant): PollutantListInterface;

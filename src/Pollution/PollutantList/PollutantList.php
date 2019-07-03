@@ -4,6 +4,9 @@ namespace App\Pollution\PollutantList;
 
 use App\Pollution\Pollutant\PollutantInterface;
 
+/**
+ * @deprecated
+ */
 class PollutantList implements PollutantListInterface
 {
     /** @var array $list */
