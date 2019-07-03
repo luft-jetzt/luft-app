@@ -10,6 +10,7 @@ use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
 use App\SeoPage\SeoPageInterface;
 use App\Util\DateTimeUtil;
+use Flagception\Bundle\FlagceptionBundle\Annotations\Feature;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,6 +67,9 @@ class StationController extends AbstractController
         ]);
     }
 
+    /**
+     * @Feature("station_history")
+     */
     public function historyAction(Request $request, string $stationCode, HistoryDataFactoryInterface $historyDataFactory, SeoPageInterface $seoPage, RouterInterface $router): Response
     {
         if ($untilDateTimeParam = $request->query->get('until')) {
@@ -139,6 +143,9 @@ class StationController extends AbstractController
         return array_unique($pollutantIdList);
     }
 
+    /**
+     * @Feature("station_history")
+     */
     public function plotHistoryAction(Request $request, string $stationCode, StationPlotterInterface $stationPlotter, string $graphCacheDirectory): BinaryFileResponse
     {
         if ($untilDateTimeParam = $request->query->get('until')) {
