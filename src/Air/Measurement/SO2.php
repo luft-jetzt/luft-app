@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace App\Measurement;
+namespace App\Air\Measurement;
 
-class PM10 extends AbstractMeasurement
+class SO2 extends AbstractMeasurement
 {
     public function __construct()
     {
         $this->unitHtml = 'µg/m<sup>3</sup>';
         $this->unitPlain = 'µg/m³';
-        $this->name = 'Feinstaub PM10';
-        $this->shortNameHtml = 'PM<sub>10</sub>';
+        $this->name = 'Schwefeldioxid';
+        $this->shortNameHtml = 'SO<sub>2</sub>';
     }
 }

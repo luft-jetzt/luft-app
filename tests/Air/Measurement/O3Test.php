@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Tests\Measurement;
+namespace App\Tests\Air\Measurement;
 
-use App\Measurement\O3;
+use App\Air\Measurement\O3;
 use PHPUnit\Framework\TestCase;
 
 class O3Test extends TestCase

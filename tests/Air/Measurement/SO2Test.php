@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Tests\Measurement;
+namespace App\Tests\Air\Measurement;
 
-use App\Measurement\SO2;
+use App\Air\Measurement\SO2;
 use PHPUnit\Framework\TestCase;
 
 class SO2Test extends TestCase

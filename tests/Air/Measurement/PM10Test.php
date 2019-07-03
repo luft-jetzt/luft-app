@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Tests\Measurement;
+namespace App\Tests\Air\Measurement;
 
-use App\Measurement\PM10;
+use App\Air\Measurement\PM10;
 use PHPUnit\Framework\TestCase;
 
 class PM10Test extends TestCase

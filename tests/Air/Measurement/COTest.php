@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Tests\Measurement;
+namespace App\Tests\Air\Measurement;
 
-use App\Measurement\CO;
+use App\Air\Measurement\CO;
 use PHPUnit\Framework\TestCase;
 
 class COTest extends TestCase
