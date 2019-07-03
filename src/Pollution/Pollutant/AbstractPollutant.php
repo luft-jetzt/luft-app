@@ -2,6 +2,9 @@
 
 namespace App\Pollution\Pollutant;
 
+/**
+ * @deprecated
+ */
 abstract class AbstractPollutant implements PollutantInterface
 {
     /** @var string $unitHtml */

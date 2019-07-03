@@ -2,6 +2,9 @@
 
 namespace App\Pollution\Pollutant;
 
+/**
+ * @deprecated
+ */
 class PM25 extends AbstractPollutant
 {
     public function __construct()

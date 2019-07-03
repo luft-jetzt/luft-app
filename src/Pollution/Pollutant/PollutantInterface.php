@@ -4,6 +4,9 @@ namespace App\Pollution\Pollutant;
 
 use JMS\Serializer\Annotation as JMS;
 
+/**
+ * @deprecated
+ */
 interface PollutantInterface
 {
     const POLLUTANT_PM10 = 1;
