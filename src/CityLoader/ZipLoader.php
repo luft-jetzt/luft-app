@@ -6,23 +6,24 @@ use App\Entity\Zip;
 
 class ZipLoader
 {
-    const SOURCE_URL = 'http://www.fa-technik.adfc.de/code/opengeodb/DE.tab';
     const FIELD_LATITUDE = 4;
     const FIELD_LONGITUDE = 5;
     const FIELD_ZIP = 7;
 
+    /** @var array $lines */
     protected $lines = [];
 
-    public function __construct()
-    {
+    /** @var CsvLoaderInterface $csvLoader */
+    protected $csvLoader;
 
+    public function __construct(CsvLoaderInterface $csvLoader)
+    {
+        $this->csvLoader = $csvLoader;
     }
 
     public function loadData(): ZipLoader
     {
-        $this->lines = file(self::SOURCE_URL);
-
-        array_shift($this->lines);
+        $this->lines = $this->csvLoader->loadLines();
 
         return $this;
     }
