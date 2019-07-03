@@ -29,10 +29,12 @@
                         Weitere Messwerte aus {{ station.city.name }}
                     </a>
 
+                    {% if feature('station_history') %}
                     <a href="{{ path('station_history', { stationCode: station.stationCode }) }}" class="btn btn-primary" title="Frühere Messwerte dieser Station">
                         <i class="fa fa-line-chart"></i>
                         Frühere Messwerte dieser Station
                     </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
