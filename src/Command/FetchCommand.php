@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Pollution\Pollutant\PollutantInterface;
+use App\Air\Measurement\MeasurementInterface;
 use App\Producer\Value\ValueProducerInterface;
 use App\Provider\ProviderInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Parser\Parser;
@@ -103,7 +103,7 @@ class FetchCommand extends ContainerAwareCommand
         $reporting = new Uba1SMW($endDateTime, $startDateTime);
         $query = new UbaPM10Query($reporting);
 
-        $this->fetch($output, $query, PollutantInterface::POLLUTANT_PM10);
+        $this->fetch($output, $query, MeasurementInterface::MEASUREMENT_PM10);
     }
 
     protected function fetchSO2(OutputInterface $output, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
@@ -113,7 +113,7 @@ class FetchCommand extends ContainerAwareCommand
         $reporting = new Uba1SMW($endDateTime, $startDateTime);
         $query = new UbaSO2Query($reporting);
 
-        $this->fetch($output, $query, PollutantInterface::POLLUTANT_SO2);
+        $this->fetch($output, $query, MeasurementInterface::MEASUREMENT_SO2);
     }
 
     protected function fetchNO2(OutputInterface $output, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
@@ -123,7 +123,7 @@ class FetchCommand extends ContainerAwareCommand
         $reporting = new Uba1SMW($endDateTime, $startDateTime);
         $query = new UbaNO2Query($reporting);
 
-        $this->fetch($output, $query, PollutantInterface::POLLUTANT_NO2);
+        $this->fetch($output, $query, MeasurementInterface::MEASUREMENT_NO2);
     }
 
     protected function fetchO3(OutputInterface $output, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
@@ -133,7 +133,7 @@ class FetchCommand extends ContainerAwareCommand
         $reporting = new Uba1SMW($endDateTime, $startDateTime);
         $query = new UbaO3Query($reporting);
 
-        $this->fetch($output, $query, PollutantInterface::POLLUTANT_O3);
+        $this->fetch($output, $query, MeasurementInterface::MEASUREMENT_O3);
     }
 
     protected function fetchCO(OutputInterface $output, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
@@ -143,7 +143,7 @@ class FetchCommand extends ContainerAwareCommand
         $reporting = new Uba8SMW($endDateTime, $startDateTime);
         $query = new UbaCOQuery($reporting);
 
-        $this->fetch($output, $query, PollutantInterface::POLLUTANT_CO);
+        $this->fetch($output, $query, MeasurementInterface::MEASUREMENT_CO);
     }
 
     protected function fetch(OutputInterface $output, UbaQueryInterface $query, int $pollutant)

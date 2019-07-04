@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace App\Pollution\Pollutant;
+namespace App\Air\Measurement;
 
-class CO extends AbstractPollutant
+class O3 extends AbstractMeasurement
 {
     public function __construct()
     {
         $this->unitHtml = 'µg/m<sup>3</sup>';
         $this->unitPlain = 'µg/m³';
-        $this->name = 'Kohlenmonoxid';
-        $this->shortNameHtml = 'CO';
+        $this->name = 'Ozon';
+        $this->shortNameHtml = 'O<sub>3</sub>';
     }
 }

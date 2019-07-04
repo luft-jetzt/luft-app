@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace App\Pollution\Pollutant;
+namespace App\Air\Measurement;
 
-class NO2 extends AbstractPollutant
+class SO2 extends AbstractMeasurement
 {
     public function __construct()
     {
         $this->unitHtml = 'µg/m<sup>3</sup>';
         $this->unitPlain = 'µg/m³';
-        $this->name = 'Stickstoffdioxid';
-        $this->shortNameHtml = 'NO<sub>2</sub>';
+        $this->name = 'Schwefeldioxid';
+        $this->shortNameHtml = 'SO<sub>2</sub>';
     }
 }

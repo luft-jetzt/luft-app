@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Pollution\Pollutant;
+namespace App\Air\Measurement;
 
-class PM10 extends AbstractPollutant
+class PM10 extends AbstractMeasurement
 {
     public function __construct()
     {

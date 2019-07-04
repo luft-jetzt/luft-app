@@ -2,9 +2,9 @@
 
 namespace App\Pollution\Box;
 
+use App\Air\Measurement\MeasurementInterface;
 use App\Entity\Data;
 use App\Entity\Station;
-use App\Pollution\Pollutant\PollutantInterface;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -25,7 +25,7 @@ class Box
     /**
      * @JMS\Expose()
      */
-    protected $pollutant;
+    protected $measurement;
 
     /**
      * @JMS\Expose()
@@ -71,14 +71,32 @@ class Box
         return $this;
     }
 
-    public function getPollutant(): PollutantInterface
+    public function getMeasurement(): MeasurementInterface
     {
-        return $this->pollutant;
+        return $this->measurement;
     }
 
-    public function setPollutant(PollutantInterface $pollutant): Box
+    public function setMeasurement(MeasurementInterface $measurement): Box
     {
-        $this->pollutant = $pollutant;
+        $this->measurement = $measurement;
+
+        return $this;
+    }
+
+    /**
+     * @deprecated
+     */
+    public function getPollutant(): MeasurementInterface
+    {
+        return $this->measurement;
+    }
+
+    /**
+     * @deprecated
+     */
+    public function setPollutant(MeasurementInterface $measurement): Box
+    {
+        $this->measurement = $measurement;
 
         return $this;
     }
