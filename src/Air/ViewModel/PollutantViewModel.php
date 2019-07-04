@@ -13,31 +13,37 @@ use JMS\Serializer\Annotation as JMS;
 class PollutantViewModel
 {
     /**
+     * @var Station $station
      * @JMS\Expose()
      */
     protected $station;
 
     /**
+     * @var Data $data
      * @JMS\Expose()
      */
     protected $data;
 
     /**
+     * @var MeasurementInterface $measurement
      * @JMS\Expose()
      */
-    protected $pollutant;
+    protected $measurement;
 
     /**
+     * @var int $pollutionLevel
      * @JMS\Expose()
      */
     protected $pollutionLevel;
 
     /**
+     * @var string $caption
      * @JMS\Expose()
      */
     protected $caption;
 
     /**
+     * @var float $distance
      * @JMS\Expose()
      */
     protected $distance;
@@ -71,14 +77,14 @@ class PollutantViewModel
         return $this;
     }
 
-    public function getPollutant(): MeasurementInterface
+    public function getMeasurement(): MeasurementInterface
     {
-        return $this->pollutant;
+        return $this->measurement;
     }
 
-    public function setPollutant(MeasurementInterface $pollutant): self
+    public function setMeasurement(MeasurementInterface $measurement): self
     {
-        $this->pollutant = $pollutant;
+        $this->measurement = $measurement;
 
         return $this;
     }
