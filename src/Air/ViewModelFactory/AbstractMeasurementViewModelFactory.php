@@ -12,7 +12,7 @@ use App\Air\Measurement\SO2;
 use App\AirQuality\Calculator\AirQualityCalculatorInterface;
 use Caldera\GeoBasic\Coord\CoordInterface;
 
-abstract class AbstractViewModelFactory implements ViewModelFactoryInterface
+abstract class AbstractMeasurementViewModelFactory implements MeasurementViewModelFactoryInterface
 {
     /** @var array $pollutantList */
     protected $pollutantList = [];
@@ -28,7 +28,7 @@ abstract class AbstractViewModelFactory implements ViewModelFactoryInterface
         $this->airQualityCalculator = $airQualityCalculator;
     }
 
-    public function setPollutantList(array $pollutantList): ViewModelFactoryInterface
+    public function setPollutantList(array $pollutantList): MeasurementViewModelFactoryInterface
     {
         $this->pollutantList = $pollutantList;
 
@@ -52,12 +52,12 @@ abstract class AbstractViewModelFactory implements ViewModelFactoryInterface
         }
     }
 
-    public function setCoord(CoordInterface $coord): ViewModelFactoryInterface
+    public function setCoord(CoordInterface $coord): MeasurementViewModelFactoryInterface
     {
         $this->coord = $coord;
 
         return $this;
     }
 
-    abstract public function decorate(): ViewModelFactoryInterface;
+    abstract public function decorate(): MeasurementViewModelFactoryInterface;
 }

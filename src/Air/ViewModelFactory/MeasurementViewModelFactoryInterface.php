@@ -4,7 +4,7 @@ namespace App\Air\ViewModelFactory;
 
 use Caldera\GeoBasic\Coord\CoordInterface;
 
-interface ViewModelFactoryInterface
+interface MeasurementViewModelFactoryInterface
 {
     public function setPollutantList(array $pollutantList): self;
     public function getPollutantList(): array;

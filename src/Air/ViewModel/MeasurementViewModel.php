@@ -10,7 +10,7 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * @JMS\ExclusionPolicy("ALL")
  */
-class PollutantViewModel
+class MeasurementViewModel
 {
     /**
      * @var Station $station
