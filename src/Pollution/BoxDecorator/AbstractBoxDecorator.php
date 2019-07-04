@@ -2,14 +2,14 @@
 
 namespace App\Pollution\BoxDecorator;
 
+use App\Air\Measurement\CO;
+use App\Air\Measurement\MeasurementInterface;
+use App\Air\Measurement\NO2;
+use App\Air\Measurement\O3;
+use App\Air\Measurement\PM10;
+use App\Air\Measurement\PM25;
+use App\Air\Measurement\SO2;
 use App\AirQuality\Calculator\AirQualityCalculatorInterface;
-use App\Pollution\Pollutant\CO;
-use App\Pollution\Pollutant\NO2;
-use App\Pollution\Pollutant\O3;
-use App\Pollution\Pollutant\PM10;
-use App\Pollution\Pollutant\PM25;
-use App\Pollution\Pollutant\PollutantInterface;
-use App\Pollution\Pollutant\SO2;
 use Caldera\GeoBasic\Coord\CoordInterface;
 
 /**
@@ -43,7 +43,7 @@ abstract class AbstractBoxDecorator implements BoxDecoratorInterface
         return $this->pollutantList;
     }
 
-    protected function getPollutantById(int $pollutantId): PollutantInterface
+    protected function getPollutantById(int $pollutantId): MeasurementInterface
     {
         switch ($pollutantId) {
             case 1: return new PM10();

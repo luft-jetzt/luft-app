@@ -2,9 +2,9 @@
 
 namespace App\Plotter\StationPlotter;
 
+use App\Air\Measurement\MeasurementInterface;
+use App\Air\MeasurementList\MeasurementListInterface;
 use App\Entity\Station;
-use App\Pollution\Pollutant\PollutantInterface;
-use App\Pollution\PollutantList\PollutantListInterface;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 
 abstract class AbstractStationPlotter implements StationPlotterInterface
@@ -12,8 +12,8 @@ abstract class AbstractStationPlotter implements StationPlotterInterface
     /** @var Station $station */
     protected $station;
 
-    /** @var PollutantListInterface $pollutantList */
-    protected $pollutantList;
+    /** @var MeasurementListInterface $measurementList */
+    protected $measurementList;
 
     /** @var HistoryDataFactoryInterface $historyDataFactory */
     protected $historyDataFactory;
@@ -35,15 +35,15 @@ abstract class AbstractStationPlotter implements StationPlotterInterface
 
     /** @var array $colorMap */
     protected $colorMap = [
-        PollutantInterface::POLLUTANT_PM10 => 'red',
-        PollutantInterface::POLLUTANT_PM25 => 'orange',
-        PollutantInterface::POLLUTANT_O3 => 'green',
-        PollutantInterface::POLLUTANT_NO2 => 'blue',
-        PollutantInterface::POLLUTANT_SO2 => 'yellow',
-        PollutantInterface::POLLUTANT_CO => 'back',
+        MeasurementInterface::MEASUREMENT_PM10 => 'red',
+        MeasurementInterface::MEASUREMENT_PM25 => 'orange',
+        MeasurementInterface::MEASUREMENT_O3 => 'green',
+        MeasurementInterface::MEASUREMENT_NO2 => 'blue',
+        MeasurementInterface::MEASUREMENT_SO2 => 'yellow',
+        MeasurementInterface::MEASUREMENT_CO => 'back',
     ];
     
-    public function __construct(PollutantListInterface $pollutantList, HistoryDataFactoryInterface $historyDataFactory)
+    public function __construct(MeasurementListInterface $pollutantList, HistoryDataFactoryInterface $historyDataFactory)
     {
         $this->pollutantList = $pollutantList;
         $this->historyDataFactory = $historyDataFactory;

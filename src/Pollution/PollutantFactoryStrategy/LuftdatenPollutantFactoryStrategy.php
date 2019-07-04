@@ -2,9 +2,9 @@
 
 namespace App\Pollution\PollutantFactoryStrategy;
 
+use App\Air\Measurement\MeasurementInterface;
 use App\Entity\Data;
 use App\Pollution\DataList\DataListInterface;
-use App\Pollution\Pollutant\PollutantInterface;
 
 class LuftdatenPollutantFactoryStrategy implements PollutantFactoryStrategyInterface
 {
@@ -44,7 +44,7 @@ class LuftdatenPollutantFactoryStrategy implements PollutantFactoryStrategyInter
     public function isSatisfied(DataListInterface $dataList, int $pollutantId): bool
     {
         // Luftdaten only collects pm10 and pm25, so there is no need to wait for o3, no2 or so2
-        if (in_array($pollutantId, [PollutantInterface::POLLUTANT_PM10, PollutantInterface::POLLUTANT_PM25])) {
+        if (in_array($pollutantId, [MeasurementInterface::MEASUREMENT_PM10, MeasurementInterface::MEASUREMENT_PM25])) {
             return $dataList->countPollutant($pollutantId) >= 2;
         } else {
             return $dataList->countPollutant($pollutantId) >= 1;

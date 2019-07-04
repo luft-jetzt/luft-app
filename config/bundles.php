@@ -30,4 +30,5 @@ return [
     OldSound\RabbitMqBundle\OldSoundRabbitMqBundle::class => ['all' => true],
     Presta\SitemapBundle\PrestaSitemapBundle::class => ['all' => true],
     Sonata\IntlBundle\SonataIntlBundle::class => ['all' => true],
+    Flagception\Bundle\FlagceptionBundle\FlagceptionBundle::class => ['all' => true],
 ];

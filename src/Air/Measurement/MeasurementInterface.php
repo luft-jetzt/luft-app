@@ -1,17 +1,17 @@
 <?php declare(strict_types=1);
 
-namespace App\Pollution\Pollutant;
+namespace App\Air\Measurement;
 
 use JMS\Serializer\Annotation as JMS;
 
-interface PollutantInterface
+interface MeasurementInterface
 {
-    const POLLUTANT_PM10 = 1;
-    const POLLUTANT_PM25 = 6;
-    const POLLUTANT_O3 = 2;
-    const POLLUTANT_NO2 = 3;
-    const POLLUTANT_SO2 = 4;
-    const POLLUTANT_CO = 5;
+    const MEASUREMENT_PM10 = 1;
+    const MEASUREMENT_PM25 = 6;
+    const MEASUREMENT_O3 = 2;
+    const MEASUREMENT_NO2 = 3;
+    const MEASUREMENT_SO2 = 4;
+    const MEASUREMENT_CO = 5;
 
     /**
      * @JMS\Expose()
