@@ -29,7 +29,7 @@ class AirQualityCalculator extends AbstractAirQualityCalculator
     public function calculateViewModel(MeasurementViewModel $measurementViewModel): int
     {
         /** @var PollutionLevelInterface $level */
-        $level = $this->pollutionLevels[$measurementViewModel->getPollutant()->getIdentifier()];
+        $level = $this->pollutionLevels[$measurementViewModel->getMeasurement()->getIdentifier()];
 
         $levelValue = $level->getLevel($measurementViewModel->getData());
 
