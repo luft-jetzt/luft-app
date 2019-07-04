@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Pollution\ViewModelFactory;
+namespace App\Air\ViewModelFactory;
 
 use Caldera\GeoBasic\Coord\CoordInterface;
 

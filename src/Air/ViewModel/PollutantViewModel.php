@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\Pollution\ViewModel;
+namespace App\Air\ViewModel;
 
+use App\Air\Measurement\MeasurementInterface;
 use App\Entity\Data;
 use App\Entity\Station;
-use App\Pollution\Pollutant\PollutantInterface;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -71,12 +71,12 @@ class PollutantViewModel
         return $this;
     }
 
-    public function getPollutant(): PollutantInterface
+    public function getPollutant(): MeasurementInterface
     {
         return $this->pollutant;
     }
 
-    public function setPollutant(PollutantInterface $pollutant): self
+    public function setPollutant(MeasurementInterface $pollutant): self
     {
         $this->pollutant = $pollutant;
 
