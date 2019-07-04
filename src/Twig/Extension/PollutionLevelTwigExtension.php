@@ -2,9 +2,9 @@
 
 namespace App\Twig\Extension;
 
+use App\Air\ViewModel\MeasurementViewModel;
 use App\AirQuality\Calculator\AirQualityCalculatorInterface;
 use App\AirQuality\PollutionLevel\PollutionLevelInterface;
-use App\Pollution\Box\Box;
 
 class PollutionLevelTwigExtension extends \Twig_Extension
 {
@@ -52,10 +52,10 @@ class PollutionLevelTwigExtension extends \Twig_Extension
 
         /** @var array $pollutant */
         foreach ($pollutionList as $pollutant) {
-            /** @var Box $box */
-            foreach ($pollutant as $box) {
-                if ($maxLevel < $box->getPollutionLevel()) {
-                    $maxLevel = $box->getPollutionLevel();
+            /** @var MeasurementViewModel $measurementViewModel */
+            foreach ($pollutant as $measurementViewModel) {
+                if ($maxLevel < $measurementViewModel->getPollutionLevel()) {
+                    $maxLevel = $measurementViewModel->getPollutionLevel();
                 }
             }
         }

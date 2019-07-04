@@ -2,8 +2,8 @@
 
 namespace App\AirQuality\Calculator;
 
+use App\Air\ViewModel\MeasurementViewModel;
 use App\AirQuality\PollutionLevel\PollutionLevelInterface;
-use App\Pollution\Box\Box;
 
 class AirQualityCalculator extends AbstractAirQualityCalculator
 {
@@ -13,9 +13,9 @@ class AirQualityCalculator extends AbstractAirQualityCalculator
 
         /** @var array $pollutant */
         foreach ($pollutantList as $pollutant) {
-            /** @var Box $box */
-            foreach ($pollutant as $box) {
-                $level = $this->calculateBox($box);
+            /** @var MeasurementViewModel $measurementViewModel */
+            foreach ($pollutant as $measurementViewModel) {
+                $level = $this->calculateViewModel($measurementViewModel);
 
                 if ($level > $maxLevel) {
                     $maxLevel = $level;
@@ -26,14 +26,14 @@ class AirQualityCalculator extends AbstractAirQualityCalculator
         return $maxLevel;
     }
 
-    public function calculateBox(Box $box): int
+    public function calculateViewModel(MeasurementViewModel $measurementViewModel): int
     {
         /** @var PollutionLevelInterface $level */
-        $level = $this->pollutionLevels[$box->getPollutant()->getIdentifier()];
+        $level = $this->pollutionLevels[$measurementViewModel->getPollutant()->getIdentifier()];
 
-        $levelValue = $level->getLevel($box->getData());
+        $levelValue = $level->getLevel($measurementViewModel->getData());
 
-        $box->setPollutionLevel($levelValue);
+        $measurementViewModel->setPollutionLevel($levelValue);
 
         return $levelValue;
     }

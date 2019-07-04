@@ -2,24 +2,23 @@
 
 namespace App\Air\ViewModelFactory;
 
-use App\Entity\Station;
-use App\Pollution\Box\Box;
+use App\Air\ViewModel\MeasurementViewModel;
 
 class MeasurementViewModelFactory extends AbstractMeasurementViewModelFactory
 {
     public function decorate(): MeasurementViewModelFactoryInterface
     {
         /** @var array $boxArray */
-        foreach ($this->pollutantList as $boxList) {
-            /** @var Box $box */
-            foreach ($boxList as $box) {
-                $data = $box->getData();
+        foreach ($this->pollutantList as $measurementViewModelList) {
+            /** @var MeasurementViewModel $measurementViewModel */
+            foreach ($measurementViewModelList as $measurementViewModel) {
+                $data = $measurementViewModel->getData();
 
-                $pollutant = $this->getPollutantById($data->getPollutant());
+                $measurement = $this->getPollutantById($data->getPollutant());
 
-                $box
+                $measurementViewModel
                     ->setStation($data->getStation())
-                    ->setPollutant($pollutant)
+                    ->setMeasurement($measurement)
                     ->setDistance(DistanceCalculator::distance($this->coord, $data->getStation()));
             }
         }

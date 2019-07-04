@@ -31,12 +31,12 @@ class CityController extends AbstractController
         ;
 
         $stationList = $this->getStationListForCity($city);
-        $stationsBoxList = $this->createBoxListForStationList($pollutionDataFactory, $stationList);
+        $stationViewModelList = $this->createViewModelListForStationList($pollutionDataFactory, $stationList);
 
         return $this->render('City/show.html.twig', [
             'city' => $city,
             'stationList' => $stationList,
-            'stationBoxList' => $stationsBoxList,
+            'stationBoxList' => $stationViewModelList,
         ]);
     }
 
