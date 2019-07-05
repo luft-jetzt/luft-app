@@ -47,11 +47,6 @@ class LevelCalculatorTest extends TestCase
     {
         return new Class implements PollutionLevelInterface
         {
-            public function getLevel(Data $data): int
-            {
-                return 0;
-            }
-
             public function getLevels(): array
             {
                 return [
@@ -63,7 +58,7 @@ class LevelCalculatorTest extends TestCase
 
             public function getPollutionIdentifier(): string
             {
-                return '';
+                return 'test';
             }
         };
     }
