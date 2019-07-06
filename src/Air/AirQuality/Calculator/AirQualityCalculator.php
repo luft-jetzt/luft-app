@@ -2,6 +2,7 @@
 
 namespace App\Air\AirQuality\Calculator;
 
+use App\Air\AirQuality\LevelCalculator\LevelCalculator;
 use App\Air\AirQuality\PollutionLevel\PollutionLevelInterface;
 use App\Pollution\Box\Box;
 
@@ -31,7 +32,7 @@ class AirQualityCalculator extends AbstractAirQualityCalculator
         /** @var PollutionLevelInterface $level */
         $level = $this->pollutionLevels[$box->getPollutant()->getIdentifier()];
 
-        $levelValue = $level->getLevel($box->getData());
+        $levelValue = LevelCalculator::calculate($level, $box->getData());
 
         $box->setPollutionLevel($levelValue);
 
