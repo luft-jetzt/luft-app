@@ -3,7 +3,6 @@
 namespace App\Tests\Air\AirQuality\PollutionLevel;
 
 use App\Air\AirQuality\PollutionLevel\O3Level;
-use App\Entity\Data;
 use PHPUnit\Framework\TestCase;
 
 class O3PollutionLevelTest extends TestCase

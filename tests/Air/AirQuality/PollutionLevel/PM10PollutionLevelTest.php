@@ -3,7 +3,6 @@
 namespace App\Tests\Air\AirQuality\PollutionLevel;
 
 use App\Air\AirQuality\PollutionLevel\PM10Level;
-use App\Entity\Data;
 use PHPUnit\Framework\TestCase;
 
 class PM10PollutionLevelTest extends TestCase

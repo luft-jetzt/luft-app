@@ -3,7 +3,6 @@
 namespace App\Tests\Air\AirQuality\PollutionLevel;
 
 use App\Air\AirQuality\PollutionLevel\COLevel;
-use App\Entity\Data;
 use PHPUnit\Framework\TestCase;
 
 class COPollutionLevelTest extends TestCase

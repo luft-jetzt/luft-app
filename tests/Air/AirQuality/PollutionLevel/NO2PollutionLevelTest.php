@@ -3,7 +3,6 @@
 namespace App\Tests\Air\AirQuality\PollutionLevel;
 
 use App\Air\AirQuality\PollutionLevel\NO2Level;
-use App\Entity\Data;
 use PHPUnit\Framework\TestCase;
 
 class NO2PollutionLevelTest extends TestCase
