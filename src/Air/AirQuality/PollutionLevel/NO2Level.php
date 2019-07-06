@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\AirQuality\PollutionLevel;
+namespace App\Air\AirQuality\PollutionLevel;
 
 class NO2Level extends AbstractPollutionLevel
 {

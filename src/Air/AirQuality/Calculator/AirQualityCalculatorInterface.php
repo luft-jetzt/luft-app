@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\AirQuality\Calculator;
+namespace App\Air\AirQuality\Calculator;
 
-use App\AirQuality\PollutionLevel\PollutionLevelInterface;
+use App\Air\AirQuality\PollutionLevel\PollutionLevelInterface;
 use App\Pollution\Box\Box;
 
 interface AirQualityCalculatorInterface
