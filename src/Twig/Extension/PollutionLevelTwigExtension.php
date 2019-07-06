@@ -2,8 +2,8 @@
 
 namespace App\Twig\Extension;
 
-use App\AirQuality\Calculator\AirQualityCalculatorInterface;
-use App\AirQuality\PollutionLevel\PollutionLevelInterface;
+use App\Air\AirQuality\Calculator\AirQualityCalculatorInterface;
+use App\Air\AirQuality\PollutionLevel\PollutionLevelInterface;
 use App\Pollution\Box\Box;
 
 class PollutionLevelTwigExtension extends \Twig_Extension

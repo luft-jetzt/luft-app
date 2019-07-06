@@ -30,7 +30,7 @@ class AirQualityCalculator extends AbstractAirQualityCalculator
     public function calculateBox(Box $box): int
     {
         /** @var PollutionLevelInterface $level */
-        $level = $this->pollutionLevels[$box->getPollutant()->getIdentifier()];
+        $level = $this->pollutionLevels[$box->getMeasurement()->getIdentifier()];
 
         $levelValue = LevelCalculator::calculate($level, $box->getData());
 

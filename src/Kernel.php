@@ -2,8 +2,8 @@
 
 namespace App;
 
+use App\Air\AirQuality\PollutionLevel\PollutionLevelInterface;
 use App\Air\Measurement\MeasurementInterface;
-use App\AirQuality\PollutionLevel\PollutionLevelInterface;
 use App\DependencyInjection\Compiler\PollutionLevelCompilerPass;
 use App\DependencyInjection\Compiler\ProviderCompilerPass;
 use App\Provider\ProviderInterface;
