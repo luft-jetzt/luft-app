@@ -42,7 +42,7 @@ class PollutionLevelTwigExtension extends \Twig_Extension
             new \Twig_SimpleFunction('max_pollution_level', [$this, 'maxPollutionLevel'], ['is_safe' => ['raw']]),
             new \Twig_SimpleFunction('pollution_color', [$this, 'pollutionColor'], ['is_safe' => ['raw']]),
             new \Twig_SimpleFunction('pollution_color_name', [$this, 'pollutionColorName'], ['is_safe' => ['raw']]),
-            new \Twig_SimpleFunction('pollution_levels', [$this, 'getLevelsForPollutant'], ['is_safe' => ['raw']]),
+            new \Twig_SimpleFunction('pollution_levels', [$this, 'getLevelsForMeasurement'], ['is_safe' => ['raw']]),
         ];
     }
 
@@ -73,7 +73,7 @@ class PollutionLevelTwigExtension extends \Twig_Extension
         return $this->backgroundColorNames[$pollutionLevel];
     }
 
-    public function getLevelsForPollutant(string $pollutantIdentifier): PollutionLevelInterface
+    public function getLevelsForMeasurement(string $pollutantIdentifier): PollutionLevelInterface
     {
         $pollutionLevels = $this->airQualityCalculator->getPollutionLevels();
 
