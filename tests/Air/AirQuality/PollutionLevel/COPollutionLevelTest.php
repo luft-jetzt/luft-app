@@ -25,13 +25,4 @@ class COPollutionLevelTest extends TestCase
 
         $this->assertEquals($levels, (new COLevel())->getLevels());
     }
-
-    public function testLevels(): void
-    {
-        $this->assertEquals(0, (new COLevel())->getLevel((new Data())->setValue(250)));
-        $this->assertEquals(1, (new COLevel())->getLevel((new Data())->setValue(3000)));
-        $this->assertEquals(2, (new COLevel())->getLevel((new Data())->setValue(5000)));
-        $this->assertEquals(3, (new COLevel())->getLevel((new Data())->setValue(12000)));
-        $this->assertEquals(4, (new COLevel())->getLevel((new Data())->setValue(40000)));
-    }
 }
