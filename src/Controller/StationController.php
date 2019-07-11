@@ -27,7 +27,7 @@ class StationController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $boxList = $pollutionDataFactory
+        $viewModelList = $pollutionDataFactory
             ->setStation($station)
             ->createDecoratedPollutantList();
 
@@ -39,7 +39,7 @@ class StationController extends AbstractController
 
         return $this->render('Default/station.html.twig', [
             'station' => $station,
-            'pollutantList' => $boxList,
+            'pollutantList' => $viewModelList,
         ]);
     }
 

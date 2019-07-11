@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Pollution\Box;
+namespace App\Air\ViewModel;
 
 use App\Air\Measurement\MeasurementInterface;
 use App\Entity\Data;
@@ -10,34 +10,40 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * @JMS\ExclusionPolicy("ALL")
  */
-class Box
+class MeasurementViewModel
 {
     /**
+     * @var Station $station
      * @JMS\Expose()
      */
     protected $station;
 
     /**
+     * @var Data $data
      * @JMS\Expose()
      */
     protected $data;
 
     /**
+     * @var MeasurementInterface $measurement
      * @JMS\Expose()
      */
     protected $measurement;
 
     /**
+     * @var int $pollutionLevel
      * @JMS\Expose()
      */
     protected $pollutionLevel;
 
     /**
+     * @var string $caption
      * @JMS\Expose()
      */
     protected $caption;
 
     /**
+     * @var float $distance
      * @JMS\Expose()
      */
     protected $distance;
@@ -52,7 +58,7 @@ class Box
         return $this->station;
     }
 
-    public function setStation(Station $station): Box
+    public function setStation(Station $station): self
     {
         $this->station = $station;
 
@@ -64,7 +70,7 @@ class Box
         return $this->data;
     }
 
-    public function setData($data): Box
+    public function setData($data): self
     {
         $this->data = $data;
 
@@ -76,25 +82,7 @@ class Box
         return $this->measurement;
     }
 
-    public function setMeasurement(MeasurementInterface $measurement): Box
-    {
-        $this->measurement = $measurement;
-
-        return $this;
-    }
-
-    /**
-     * @deprecated
-     */
-    public function getPollutant(): MeasurementInterface
-    {
-        return $this->measurement;
-    }
-
-    /**
-     * @deprecated
-     */
-    public function setPollutant(MeasurementInterface $measurement): Box
+    public function setMeasurement(MeasurementInterface $measurement): self
     {
         $this->measurement = $measurement;
 
@@ -106,7 +94,7 @@ class Box
         return $this->pollutionLevel;
     }
 
-    public function setPollutionLevel(int $pollutionLevel): Box
+    public function setPollutionLevel(int $pollutionLevel): self
     {
         $this->pollutionLevel = $pollutionLevel;
 
@@ -118,7 +106,7 @@ class Box
         return $this->caption;
     }
 
-    public function setCaption(string $caption): Box
+    public function setCaption(string $caption): self
     {
         $this->caption = $caption;
 
@@ -130,7 +118,7 @@ class Box
         return $this->distance;
     }
 
-    public function setDistance(float $distance): Box
+    public function setDistance(float $distance): self
     {
         $this->distance = $distance;
 

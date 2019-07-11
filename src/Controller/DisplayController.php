@@ -20,9 +20,9 @@ class DisplayController extends AbstractController
             return $this->redirectToRoute('frontpage');
         }
 
-        $boxList = $pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();
+        $viewModelList = $pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();
 
-        if (0 === count($boxList)) {
+        if (0 === count($viewModelList)) {
             return $this->noStationAction();
         }
 
@@ -37,7 +37,7 @@ class DisplayController extends AbstractController
         }
 
         return $this->render('Default/display.html.twig', [
-            'pollutantList' => $boxList,
+            'pollutantList' => $viewModelList,
             'cityName' => $cityName,
             'coord' => $coord,
             'city' => $city,

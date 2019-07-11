@@ -13,16 +13,16 @@ class HistoryDataFactory extends PollutionDataFactory implements HistoryDataFact
 
         $dataLists = $this->convert($dataLists);
 
-        $boxLists = [];
+        $measurementModelLists = [];
 
         /** @var array $dataList */
         foreach ($dataLists as $timestamp => $dataList) {
-            $boxList = $this->getBoxListFromDataList($dataList);
+            $measurementModelList = $this->getMeasurementViewModelListFromDataList($dataList);
 
-            $boxLists[$timestamp] = $this->decoratePollutantList($boxList);
+            $measurementModelLists[$timestamp] = $this->decoratePollutantList($measurementModelList);
         }
 
-        return $boxLists;
+        return $measurementModelLists;
     }
 
     public function getDataListsForInterval(\DateTime $fromDateTime, \DateTime $untilDateTime): array
