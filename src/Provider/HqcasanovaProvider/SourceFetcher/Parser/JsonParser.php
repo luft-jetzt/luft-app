@@ -2,14 +2,26 @@
 
 namespace App\Provider\HqcasanovaProvider\SourceFetcher\Parser;
 
+use App\Entity\Station;
 use App\Pollution\Value\Value;
 
 class JsonParser implements JsonParserInterface
 {
-    protected $stationList = [];
-
-    public function parse(array $dataList): array
+    protected function prepareStation(): Station
     {
+        $station = new Station(19.536342, -155.576480);
+        $station
+            ->setAltitude(3397)
+            ->setStationCode('USHIMALO')
+            ->setTitle('Mauna Loa Observatory');
+
+        return $station;
+    }
+
+    public function parse(string $jsonData): array
+    {
+        $data = json_decode($jsonData);
+        
         $valueList = [];
 
         foreach ($dataList as $data) {

@@ -14,7 +14,7 @@ class SourceFetcher
         $this->curl = new Curl();
     }
 
-    public function query(): array
+    public function query(): string
     {
         $this->curl->get('http://hqcasanova.com/co2/?callback=process');
 

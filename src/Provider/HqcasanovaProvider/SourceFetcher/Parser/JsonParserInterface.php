@@ -4,5 +4,5 @@ namespace App\Provider\HqcasanovaProvider\SourceFetcher\Parser;
 
 interface JsonParserInterface
 {
-    public function parse(array $data): array;
+    public function parse(string $jsonData): array;
 }
