@@ -2,6 +2,7 @@
 
 namespace App\Provider\HqcasanovaProvider\SourceFetcher\Parser;
 
+use App\Air\Measurement\MeasurementInterface;
 use App\Entity\Station;
 use App\Pollution\Value\Value;
 
@@ -20,53 +21,15 @@ class JsonParser implements JsonParserInterface
 
     public function parse(string $jsonData): array
     {
-        $data = json_decode($jsonData);
-        
-        $valueList = [];
+        $jsonData = str_replace(['process(', '"})'], ['', '"}'], $jsonData);
+        $co2Value = json_decode($jsonData);
 
-        foreach ($dataList as $data) {
-            try {
-                $stationCode = sprintf('LFTDTN%d', $data->location->id);
+        $value = new Value();
+        $value->setValue((float) $co2Value->{'0'})
+            ->setPollutant(MeasurementInterface::MEASUREMENT_CO2)
+            ->setDateTime(new \DateTime($co2Value->date))
+            ->setStation('USHIMALO');
 
-                $dateTime = new \DateTime($data->timestamp);
-
-                $newValueList = $this->getValues($data->sensordatavalues);
-
-                /** @var Value $value */
-                foreach ($newValueList as $value) {
-                    $value
-                        ->setStation($stationCode)
-                        ->setDateTime($dateTime);
-                }
-
-                $valueList = array_merge($valueList, $newValueList);
-            } catch (\Exception $e) {
-                var_dump($e);
-            }
-        }
-
-        return $valueList;
-    }
-
-    protected function getValues(array $sensorDataValues): array
-    {
-        $valueList = [];
-
-        foreach ($sensorDataValues as $sensorDataValue) {
-            $value = new Value();
-            $value->setValue(floatval($sensorDataValue->value));
-
-            if ($sensorDataValue->value_type === 'P1') {
-                $value->setPollutant(PollutantInterface::POLLUTANT_PM10);
-            } elseif ($sensorDataValue->value_type === 'P2') {
-                $value->setPollutant(PollutantInterface::POLLUTANT_PM25);
-            } else {
-                continue;
-            }
-
-            $valueList[] = $value;
-        }
-
-        return $valueList;
+        return [$value];
     }
 }
