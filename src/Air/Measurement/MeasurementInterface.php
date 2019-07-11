@@ -38,4 +38,6 @@ interface MeasurementInterface
      * @JMS\Expose()
      */
     public function getShortNameHtml(): string;
+
+    public function showOnMap(): bool;
 }

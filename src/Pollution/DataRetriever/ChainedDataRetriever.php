@@ -26,7 +26,6 @@ class ChainedDataRetriever implements DataRetrieverInterface
             $dataList = $dataList + $dataRetriever->retrieveDataForCoord($coord, $pollutantId, $fromDateTime, $dateInterval, $maxDistance, $maxResults);
         }
 
-        dump($dataList);die;
         return $dataList;
     }
 }

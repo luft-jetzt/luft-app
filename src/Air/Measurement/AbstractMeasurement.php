@@ -16,6 +16,9 @@ abstract class AbstractMeasurement implements MeasurementInterface
     /** @var string $shortNameHtml */
     protected $shortNameHtml;
 
+    /** @var bool $showOnMap */
+    protected $showOnMap;
+
     public function getUnitHtml(): string
     {
         return $this->unitHtml;
@@ -47,5 +50,10 @@ abstract class AbstractMeasurement implements MeasurementInterface
     {
         $reflection = new \ReflectionClass($this);
         return strtolower($reflection->getShortName());
+    }
+
+    public function showOnMap(): bool
+    {
+        return $this->showOnMap;
     }
 }

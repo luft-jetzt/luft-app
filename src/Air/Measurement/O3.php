@@ -10,5 +10,6 @@ class O3 extends AbstractMeasurement
         $this->unitPlain = 'µg/m³';
         $this->name = 'Ozon';
         $this->shortNameHtml = 'O<sub>3</sub>';
+        $this->showOnMap = true;
     }
 }

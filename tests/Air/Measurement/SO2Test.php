@@ -36,4 +36,9 @@ class SO2Test extends TestCase
     {
         $this->assertEquals('µg/m³', (new SO2())->getUnitPlain());
     }
+
+    public function testShowOnMap(): void
+    {
+        $this->assertTrue((new SO2())->showOnMap());
+    }
 }

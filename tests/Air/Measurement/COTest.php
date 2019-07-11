@@ -36,4 +36,9 @@ class COTest extends TestCase
     {
         $this->assertEquals('µg/m³', (new CO())->getUnitPlain());
     }
+
+    public function testShowOnMap(): void
+    {
+        $this->assertTrue((new CO())->showOnMap());
+    }
 }

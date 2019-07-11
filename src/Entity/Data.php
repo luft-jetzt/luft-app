@@ -31,7 +31,7 @@ class Data
     /**
      * @ORM\Column(type="datetime", nullable=false)
      * @JMS\Expose()
-     * @JMS\Type("DateTimeImmutable<'U'>")
+     * @JMS\Type("DateTime<'U'>")
      */
     protected $dateTime;
 

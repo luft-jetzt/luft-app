@@ -36,4 +36,9 @@ class O3Test extends TestCase
     {
         $this->assertEquals('µg/m³', (new O3())->getUnitPlain());
     }
+
+    public function testShowOnMap(): void
+    {
+        $this->assertTrue((new O3())->showOnMap());
+    }
 }

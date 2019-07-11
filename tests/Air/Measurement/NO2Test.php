@@ -36,4 +36,9 @@ class NO2Test extends TestCase
     {
         $this->assertEquals('µg/m³', (new NO2())->getUnitPlain());
     }
+
+    public function testShowOnMap(): void
+    {
+        $this->assertTrue((new NO2())->showOnMap());
+    }
 }

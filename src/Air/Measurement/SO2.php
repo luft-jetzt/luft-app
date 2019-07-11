@@ -10,5 +10,6 @@ class SO2 extends AbstractMeasurement
         $this->unitPlain = 'µg/m³';
         $this->name = 'Schwefeldioxid';
         $this->shortNameHtml = 'SO<sub>2</sub>';
+        $this->showOnMap = true;
     }
 }

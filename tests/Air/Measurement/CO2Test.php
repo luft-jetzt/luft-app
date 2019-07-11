@@ -36,4 +36,9 @@ class CO2Test extends TestCase
     {
         $this->assertEquals('ppm', (new CO2())->getUnitPlain());
     }
+
+    public function testShowOnMap(): void
+    {
+        $this->assertFalse((new CO2())->showOnMap());
+    }
 }

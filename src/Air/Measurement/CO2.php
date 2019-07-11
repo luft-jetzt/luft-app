@@ -10,5 +10,6 @@ class CO2 extends AbstractMeasurement
         $this->unitPlain = 'ppm';
         $this->name = 'Kohlenstoffdioxid';
         $this->shortNameHtml = 'CO<sub>2</sub>';
+        $this->showOnMap = false;
     }
 }
