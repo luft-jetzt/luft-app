@@ -31,7 +31,6 @@ function createMap(id, latitude, longitude, color) {
         attribution: 'Wikimedia maps beta | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
     }).addTo(map);
 
-    console.log(color);
     var markerIcon = L.ExtraMarkers.icon({
         icon: 'fa-circle-o',
         markerColor: color,
@@ -105,6 +104,11 @@ function createCoordMap(id) {
 
     $('.box').each(function (index) {
         var stationCode = $(this).data('station-code');
+        var showOnMap = $(this).data('station-map');
+
+        if (!showOnMap) {
+            return;
+        }
 
         if (!knownStations.includes(stationCode)) {
             var latitude = $(this).data('station-latitude');
