@@ -7,6 +7,7 @@ use App\Entity\Station;
 use App\Pollution\DataCache\DataCacheInterface;
 use App\Pollution\DataCache\KeyGenerator;
 use Caldera\GeoBasic\Coord\CoordInterface;
+use function PHPSTORM_META\elementType;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class Co2CachedDataRetriever implements DataRetrieverInterface
@@ -35,6 +36,10 @@ class Co2CachedDataRetriever implements DataRetrieverInterface
 
         $data = $this->dataCache->getData($dataKey);
 
-        return [$data];
+        if ($data) {
+            return [$data];
+        }
+
+        return [];
     }
 }
