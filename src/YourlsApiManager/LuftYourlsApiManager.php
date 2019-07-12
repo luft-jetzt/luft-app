@@ -62,5 +62,4 @@ class LuftYourlsApiManager extends YourlsApiManager
 
         return $url;
     }
-
 }
