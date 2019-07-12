@@ -2,6 +2,7 @@
 
 namespace App\Twitter;
 
+use App\Air\ViewModel\MeasurementViewModel;
 use App\Entity\TwitterSchedule;
 use Caldera\GeoBasic\Coord\Coord;
 use Cron\CronExpression;
@@ -54,11 +55,7 @@ class Twitter extends AbstractTwitter
                     }
                 }
 
-                /*foreach ($additionalPollutantList as $pollutantId => $additionalPollutant) {
-                    dump($additionalPollutant);
-                }*/
-
-                $message = $this->createMessage($twitterSchedule, $pollutantList, $additionalPollutantList);
+                $message = $this->createMessage($twitterSchedule, $this->removeNotTwitterableMeasurements($pollutantList), $this->removeNotTwitterableMeasurements($additionalPollutantList));
 
                 $params = [
                     'status' => $message,
@@ -96,5 +93,19 @@ class Twitter extends AbstractTwitter
             ->getMessage();
 
         return $message;
+    }
+
+    protected function removeNotTwitterableMeasurements(array $list): array
+    {
+        foreach ($list as $key => $measurementViewModelList) {
+            /** @var MeasurementViewModel $measurementViewModel */
+            foreach ($measurementViewModelList as $measurementViewModel) {
+                if (!$measurementViewModel->getMeasurement()->includeInTweets()) {
+                    unset($list[$key]);
+                }
+            }
+        }
+
+        return $list;
     }
 }
