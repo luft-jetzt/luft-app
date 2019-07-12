@@ -8,3 +8,5 @@ flagception:
             default: false
         station_history:
             default: false
+        short_twitter_links:
+            default: false
