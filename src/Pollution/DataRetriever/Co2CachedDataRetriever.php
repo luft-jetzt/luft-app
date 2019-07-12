@@ -25,6 +25,10 @@ class Co2CachedDataRetriever implements DataRetrieverInterface
 
     public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 750): array
     {
+        if (MeasurementInterface::MEASUREMENT_CO2 !== $pollutantId) {
+            return [];
+        }
+
         $station = $this->registry->getRepository(Station::class)->findOneByStationCode('USHIMALO');
 
         $dataKey = KeyGenerator::generateKeyForStationAndPollutant($station, MeasurementInterface::MEASUREMENT_CO2);
