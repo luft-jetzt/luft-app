@@ -14,7 +14,15 @@ class LuftdatenPollutantFactoryStrategy implements PollutantFactoryStrategyInter
         $missingList = [];
 
         array_walk($list, function(array $list, int $key) use (&$missingList) {
-            if (null === $list || 0 === count($list) || 1 === count($list)) {
+            if (null === $list) {
+                array_push($missingList, $key);
+            }
+
+            if (in_array($key, [MeasurementInterface::MEASUREMENT_PM25, MeasurementInterface::MEASUREMENT_PM10]) && count($list) < 2) {
+                array_push($missingList, $key);
+            }
+
+            if (!in_array($key, [MeasurementInterface::MEASUREMENT_PM25, MeasurementInterface::MEASUREMENT_PM10]) && count($list) < 1) {
                 array_push($missingList, $key);
             }
         });
