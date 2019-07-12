@@ -11,5 +11,6 @@ class CO extends AbstractMeasurement
         $this->name = 'Kohlenmonoxid';
         $this->shortNameHtml = 'CO';
         $this->showOnMap = true;
+        $this->includeInTweets = true;
     }
 }

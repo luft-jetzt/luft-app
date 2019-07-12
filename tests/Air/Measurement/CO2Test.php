@@ -41,4 +41,9 @@ class CO2Test extends TestCase
     {
         $this->assertFalse((new CO2())->showOnMap());
     }
+
+    public function testIncludeInTweets(): void
+    {
+        $this->assertFalse((new CO2())->includeInTweets());
+    }
 }

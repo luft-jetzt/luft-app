@@ -11,5 +11,6 @@ class PM10 extends AbstractMeasurement
         $this->name = 'Feinstaub PM10';
         $this->shortNameHtml = 'PM<sub>10</sub>';
         $this->showOnMap = true;
+        $this->includeInTweets = true;
     }
 }

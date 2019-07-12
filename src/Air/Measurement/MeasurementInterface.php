@@ -40,4 +40,6 @@ interface MeasurementInterface
     public function getShortNameHtml(): string;
 
     public function showOnMap(): bool;
+
+    public function includeInTweets(): bool;
 }

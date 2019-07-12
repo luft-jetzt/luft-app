@@ -41,4 +41,9 @@ class COTest extends TestCase
     {
         $this->assertTrue((new CO())->showOnMap());
     }
+
+    public function testIncludeInTweets(): void
+    {
+        $this->assertTrue((new CO())->includeInTweets());
+    }
 }

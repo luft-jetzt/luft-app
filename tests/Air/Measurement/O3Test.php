@@ -41,4 +41,9 @@ class O3Test extends TestCase
     {
         $this->assertTrue((new O3())->showOnMap());
     }
+
+    public function testIncludeInTweets(): void
+    {
+        $this->assertTrue((new O3())->includeInTweets());
+    }
 }

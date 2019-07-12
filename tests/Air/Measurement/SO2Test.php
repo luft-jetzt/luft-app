@@ -41,4 +41,9 @@ class SO2Test extends TestCase
     {
         $this->assertTrue((new SO2())->showOnMap());
     }
+
+    public function testIncludeInTweets(): void
+    {
+        $this->assertTrue((new SO2())->includeInTweets());
+    }
 }

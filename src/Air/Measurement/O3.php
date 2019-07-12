@@ -11,5 +11,6 @@ class O3 extends AbstractMeasurement
         $this->name = 'Ozon';
         $this->shortNameHtml = 'O<sub>3</sub>';
         $this->showOnMap = true;
+        $this->includeInTweets = true;
     }
 }

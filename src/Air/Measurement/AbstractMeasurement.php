@@ -19,6 +19,9 @@ abstract class AbstractMeasurement implements MeasurementInterface
     /** @var bool $showOnMap */
     protected $showOnMap;
 
+    /** @var bool $includeInTweets */
+    protected $includeInTweets;
+
     public function getUnitHtml(): string
     {
         return $this->unitHtml;
@@ -55,5 +58,10 @@ abstract class AbstractMeasurement implements MeasurementInterface
     public function showOnMap(): bool
     {
         return $this->showOnMap;
+    }
+
+    public function includeInTweets(): bool
+    {
+        return $this->includeInTweets;
     }
 }

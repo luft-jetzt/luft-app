@@ -11,5 +11,6 @@ class SO2 extends AbstractMeasurement
         $this->name = 'Schwefeldioxid';
         $this->shortNameHtml = 'SO<sub>2</sub>';
         $this->showOnMap = true;
+        $this->includeInTweets = true;
     }
 }

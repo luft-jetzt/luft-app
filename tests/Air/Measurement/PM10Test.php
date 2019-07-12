@@ -41,4 +41,9 @@ class PM10Test extends TestCase
     {
         $this->assertTrue((new PM10())->showOnMap());
     }
+
+    public function testIncludeInTweets(): void
+    {
+        $this->assertTrue((new PM10())->includeInTweets());
+    }
 }
