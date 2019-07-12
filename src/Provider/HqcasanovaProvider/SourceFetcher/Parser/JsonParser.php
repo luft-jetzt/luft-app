@@ -15,7 +15,7 @@ class JsonParser implements JsonParserInterface
         $value = new Value();
         $value->setValue((float) $co2Value->{'0'})
             ->setPollutant(MeasurementInterface::MEASUREMENT_CO2)
-            ->setDateTime(new \DateTime($co2Value->date))
+            ->setDateTime(new \DateTimeImmutable($co2Value->date))
             ->setStation('USHIMALO');
 
         return [$value];
