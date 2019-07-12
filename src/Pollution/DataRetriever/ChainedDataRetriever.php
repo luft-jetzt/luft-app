@@ -23,7 +23,7 @@ class ChainedDataRetriever implements DataRetrieverInterface
 
         /** @var DataRetrieverInterface $dataRetriever */
         foreach ($this->chain as $dataRetriever) {
-            $dataList = $dataList + $dataRetriever->retrieveDataForCoord($coord, $pollutantId, $fromDateTime, $dateInterval, $maxDistance, $maxResults);
+            $dataList = array_merge($dataList, $dataRetriever->retrieveDataForCoord($coord, $pollutantId, $fromDateTime, $dateInterval, $maxDistance, $maxResults));
         }
 
         return $dataList;
