@@ -74,6 +74,28 @@ class Co2CachedDataRetrieverTest extends TestCase
         $this->assertEquals([], $resultDataList);
     }
 
+    public function testNoopIfStationIsRequested(): void
+    {
+        $dataCache = $this->createMock(DataCacheInterface::class);
+        $dataCache
+            ->expects($this->never())
+            ->method('getData');
+
+        $registry = $this->createMock(RegistryInterface::class);
+        $registry
+            ->expects($this->never())
+            ->method('getRepository');
+
+        $co2CacheDataRetriever = new Co2CachedDataRetriever($dataCache, $registry);
+
+        $coord = new Station(57.3, 10.5);
+
+        $resultDataList = $co2CacheDataRetriever->retrieveDataForCoord($coord, MeasurementInterface::MEASUREMENT_CO2);
+
+        $this->assertCount(0, $resultDataList);
+        $this->assertEquals([], $resultDataList);
+    }
+
     protected function createStation(): Station
     {
         $station = new Station(19.536342, -155.576480);
