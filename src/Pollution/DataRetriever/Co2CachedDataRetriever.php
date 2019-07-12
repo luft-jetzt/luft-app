@@ -26,6 +26,10 @@ class Co2CachedDataRetriever implements DataRetrieverInterface
 
     public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 750): array
     {
+        if ($coord instanceof Station) { // TODO this should be regulated through a service
+            return [];
+        }
+        
         if (MeasurementInterface::MEASUREMENT_CO2 !== $pollutantId) {
             return [];
         }
