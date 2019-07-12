@@ -53,10 +53,19 @@ class LuftdatenPollutantFactoryStrategy implements PollutantFactoryStrategyInter
     {
         // Luftdaten only collects pm10 and pm25, so there is no need to wait for o3, no2 or so2
         if (in_array($pollutantId, [MeasurementInterface::MEASUREMENT_PM10, MeasurementInterface::MEASUREMENT_PM25])) {
-            return $dataList->countPollutant($pollutantId) >= 2;
-        } else {
-            return $dataList->countPollutant($pollutantId) >= 1;
+            if ($dataList->countPollutant($pollutantId) === 2) {
+                $list = $dataList->getList()[$pollutantId];
+
+                $data1 = array_pop($list);
+                $data2 = array_pop($list);
+
+                return $this->isProvidersDifferent($data1, $data2);
+            }
+
+            return false;
         }
+
+        return $dataList->countPollutant($pollutantId) >= 1;
     }
 
     public function addDataToList(DataListInterface $dataList, Data $data = null): bool

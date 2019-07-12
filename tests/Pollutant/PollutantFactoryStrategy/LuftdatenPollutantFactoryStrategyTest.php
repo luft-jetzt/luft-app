@@ -4,12 +4,16 @@ namespace App\Tests\Pollutant\PollutantFactoryStrategy;
 
 use App\Air\Measurement\MeasurementInterface;
 use App\Entity\Data;
+use App\Entity\Station;
 use App\Pollution\DataList\DataList;
 use App\Pollution\PollutantFactoryStrategy\LuftdatenPollutantFactoryStrategy;
 use PHPUnit\Framework\TestCase;
 
 class LuftdatenPollutantFactoryStrategyTest extends TestCase
 {
+    /** @var int $testDataId */
+    protected $testDataId = 0;
+
     public function testAllPollutantsAreMissingInitiallyForEmptyDataList(): void
     {
         $dataList = new DataList();
@@ -34,8 +38,8 @@ class LuftdatenPollutantFactoryStrategyTest extends TestCase
 
         $luftdatenPollutantFactoryStrategy = new LuftdatenPollutantFactoryStrategy();
 
-        $luftdatenPollutantFactoryStrategy->addDataToList($dataList, (new Data())->setPollutant(MeasurementInterface::MEASUREMENT_CO));
-        $luftdatenPollutantFactoryStrategy->addDataToList($dataList, (new Data())->setPollutant(MeasurementInterface::MEASUREMENT_O3));
+        $luftdatenPollutantFactoryStrategy->addDataToList($dataList, $this->createData(MeasurementInterface::MEASUREMENT_CO));
+        $luftdatenPollutantFactoryStrategy->addDataToList($dataList, $this->createData(MeasurementInterface::MEASUREMENT_O3));
 
         $expectedMissingPollutantsList = [
             MeasurementInterface::MEASUREMENT_PM25,
@@ -94,7 +98,7 @@ class LuftdatenPollutantFactoryStrategyTest extends TestCase
         // add SO2
         $this->assertFalse($luftdatenPollutantFactoryStrategy->isSatisfied($dataList, MeasurementInterface::MEASUREMENT_SO2));
 
-        $luftdatenPollutantFactoryStrategy->addDataToList($dataList, (new Data())->setPollutant(MeasurementInterface::MEASUREMENT_SO2));
+        $luftdatenPollutantFactoryStrategy->addDataToList($dataList, $this->createData(MeasurementInterface::MEASUREMENT_SO2));
 
         $this->assertTrue($luftdatenPollutantFactoryStrategy->isSatisfied($dataList, MeasurementInterface::MEASUREMENT_SO2));
 
@@ -111,11 +115,11 @@ class LuftdatenPollutantFactoryStrategyTest extends TestCase
         // add PM10
         $this->assertFalse($luftdatenPollutantFactoryStrategy->isSatisfied($dataList, MeasurementInterface::MEASUREMENT_PM10));
 
-        $luftdatenPollutantFactoryStrategy->addDataToList($dataList, (new Data())->setPollutant(MeasurementInterface::MEASUREMENT_PM10));
+        $luftdatenPollutantFactoryStrategy->addDataToList($dataList, $this->createData(MeasurementInterface::MEASUREMENT_PM10));
 
         $this->assertFalse($luftdatenPollutantFactoryStrategy->isSatisfied($dataList, MeasurementInterface::MEASUREMENT_PM10));
 
-        $luftdatenPollutantFactoryStrategy->addDataToList($dataList, (new Data())->setPollutant(MeasurementInterface::MEASUREMENT_PM10));
+        $luftdatenPollutantFactoryStrategy->addDataToList($dataList, $this->createData(MeasurementInterface::MEASUREMENT_PM10, 'foo-provider'));
 
         $this->assertTrue($luftdatenPollutantFactoryStrategy->isSatisfied($dataList, MeasurementInterface::MEASUREMENT_PM10));
 
@@ -131,7 +135,7 @@ class LuftdatenPollutantFactoryStrategyTest extends TestCase
         // add O3
         $this->assertFalse($luftdatenPollutantFactoryStrategy->isSatisfied($dataList, MeasurementInterface::MEASUREMENT_O3));
 
-        $luftdatenPollutantFactoryStrategy->addDataToList($dataList, (new Data())->setPollutant(MeasurementInterface::MEASUREMENT_O3));
+        $luftdatenPollutantFactoryStrategy->addDataToList($dataList, $this->createData(MeasurementInterface::MEASUREMENT_O3));
 
         $this->assertTrue($luftdatenPollutantFactoryStrategy->isSatisfied($dataList, MeasurementInterface::MEASUREMENT_O3));
 
@@ -146,11 +150,11 @@ class LuftdatenPollutantFactoryStrategyTest extends TestCase
         // add PM25
         $this->assertFalse($luftdatenPollutantFactoryStrategy->isSatisfied($dataList, MeasurementInterface::MEASUREMENT_PM25));
 
-        $luftdatenPollutantFactoryStrategy->addDataToList($dataList, (new Data())->setPollutant(MeasurementInterface::MEASUREMENT_PM25));
+        $luftdatenPollutantFactoryStrategy->addDataToList($dataList, $this->createData(MeasurementInterface::MEASUREMENT_PM25));
 
         $this->assertFalse($luftdatenPollutantFactoryStrategy->isSatisfied($dataList, MeasurementInterface::MEASUREMENT_PM25));
 
-        $luftdatenPollutantFactoryStrategy->addDataToList($dataList, (new Data())->setPollutant(MeasurementInterface::MEASUREMENT_PM25));
+        $luftdatenPollutantFactoryStrategy->addDataToList($dataList, $this->createData(MeasurementInterface::MEASUREMENT_PM25, 'foo-provider'));
 
         $this->assertTrue($luftdatenPollutantFactoryStrategy->isSatisfied($dataList, MeasurementInterface::MEASUREMENT_PM25));
 
@@ -164,7 +168,7 @@ class LuftdatenPollutantFactoryStrategyTest extends TestCase
         // add NO2
         $this->assertFalse($luftdatenPollutantFactoryStrategy->isSatisfied($dataList, MeasurementInterface::MEASUREMENT_NO2));
 
-        $luftdatenPollutantFactoryStrategy->addDataToList($dataList, (new Data())->setPollutant(MeasurementInterface::MEASUREMENT_NO2));
+        $luftdatenPollutantFactoryStrategy->addDataToList($dataList, $this->createData(MeasurementInterface::MEASUREMENT_NO2));
 
         $this->assertTrue($luftdatenPollutantFactoryStrategy->isSatisfied($dataList, MeasurementInterface::MEASUREMENT_NO2));
 
@@ -177,7 +181,7 @@ class LuftdatenPollutantFactoryStrategyTest extends TestCase
         // add CO
         $this->assertFalse($luftdatenPollutantFactoryStrategy->isSatisfied($dataList, MeasurementInterface::MEASUREMENT_CO));
 
-        $luftdatenPollutantFactoryStrategy->addDataToList($dataList, (new Data())->setPollutant(MeasurementInterface::MEASUREMENT_CO));
+        $luftdatenPollutantFactoryStrategy->addDataToList($dataList, $this->createData(MeasurementInterface::MEASUREMENT_CO));
 
         $this->assertTrue($luftdatenPollutantFactoryStrategy->isSatisfied($dataList, MeasurementInterface::MEASUREMENT_CO));
 
@@ -189,7 +193,7 @@ class LuftdatenPollutantFactoryStrategyTest extends TestCase
     public function testStrategySatisfiedWithDataListContainingCO(): void
     {
         $dataList = new DataList();
-        $dataList->addData((new Data())->setPollutant(MeasurementInterface::MEASUREMENT_CO));
+        $dataList->addData($this->createData(MeasurementInterface::MEASUREMENT_CO));
 
         $luftdatenPollutantFactoryStrategy = new LuftdatenPollutantFactoryStrategy();
 
@@ -199,7 +203,7 @@ class LuftdatenPollutantFactoryStrategyTest extends TestCase
     public function testStrategySatisfiedWithDataListContainingSO2(): void
     {
         $dataList = new DataList();
-        $dataList->addData((new Data())->setPollutant(MeasurementInterface::MEASUREMENT_SO2));
+        $dataList->addData($this->createData(MeasurementInterface::MEASUREMENT_SO2));
 
         $luftdatenPollutantFactoryStrategy = new LuftdatenPollutantFactoryStrategy();
 
@@ -209,7 +213,7 @@ class LuftdatenPollutantFactoryStrategyTest extends TestCase
     public function testStrategySatisfiedWithDataListContainingO3(): void
     {
         $dataList = new DataList();
-        $dataList->addData((new Data())->setPollutant(MeasurementInterface::MEASUREMENT_O3));
+        $dataList->addData($this->createData(MeasurementInterface::MEASUREMENT_O3));
 
         $luftdatenPollutantFactoryStrategy = new LuftdatenPollutantFactoryStrategy();
 
@@ -219,7 +223,7 @@ class LuftdatenPollutantFactoryStrategyTest extends TestCase
     public function testStrategySatisfiedWithDataListContainingNO2(): void
     {
         $dataList = new DataList();
-        $dataList->addData((new Data())->setPollutant(MeasurementInterface::MEASUREMENT_NO2));
+        $dataList->addData($this->createData(MeasurementInterface::MEASUREMENT_NO2));
 
         $luftdatenPollutantFactoryStrategy = new LuftdatenPollutantFactoryStrategy();
 
@@ -232,11 +236,11 @@ class LuftdatenPollutantFactoryStrategyTest extends TestCase
 
         $luftdatenPollutantFactoryStrategy = new LuftdatenPollutantFactoryStrategy();
 
-        $dataList->addData((new Data())->setPollutant(MeasurementInterface::MEASUREMENT_PM10));
+        $dataList->addData($this->createData(MeasurementInterface::MEASUREMENT_PM10));
 
         $this->assertFalse($luftdatenPollutantFactoryStrategy->isSatisfied($dataList, MeasurementInterface::MEASUREMENT_PM10));
 
-        $dataList->addData((new Data())->setPollutant(MeasurementInterface::MEASUREMENT_PM10));
+        $dataList->addData($this->createData(MeasurementInterface::MEASUREMENT_PM10, 'foo-provider'));
 
         $this->assertTrue($luftdatenPollutantFactoryStrategy->isSatisfied($dataList, MeasurementInterface::MEASUREMENT_PM10));
     }
@@ -247,12 +251,26 @@ class LuftdatenPollutantFactoryStrategyTest extends TestCase
 
         $dataList = new DataList();
 
-        $dataList->addData((new Data())->setPollutant(MeasurementInterface::MEASUREMENT_PM25));
+        $dataList->addData($this->createData(MeasurementInterface::MEASUREMENT_PM25));
 
         $this->assertFalse($luftdatenPollutantFactoryStrategy->isSatisfied($dataList, MeasurementInterface::MEASUREMENT_PM25));
 
-        $dataList->addData((new Data())->setPollutant(MeasurementInterface::MEASUREMENT_PM25));
+        $dataList->addData($this->createData(MeasurementInterface::MEASUREMENT_PM25, 'foo-provider'));
 
         $this->assertTrue($luftdatenPollutantFactoryStrategy->isSatisfied($dataList, MeasurementInterface::MEASUREMENT_PM25));
+    }
+
+    protected function createData(int $measurementId, string $provider = 'test-provider'): Data
+    {
+        $station = new Station(53.4, 9.73);
+        $station->setProvider($provider);
+
+        $data = new Data();
+        $data
+            ->setId(++$this->testDataId)
+            ->setPollutant($measurementId)
+            ->setStation($station);
+
+        return $data;
     }
 }
