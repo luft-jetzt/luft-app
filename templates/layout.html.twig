@@ -16,24 +16,31 @@
         {{ sonata_seo_link_canonical() }}
         {{ sonata_seo_lang_alternates() }}
 
-        <link rel="stylesheet" href="{{ asset('/css/bootstrap/bootstrap.min.css') }}" />
-        <link rel="stylesheet" href="{{ asset('/css/leaflet/leaflet.css') }}" />
-        <link rel="stylesheet" href="{{ asset('/css/luft.css') }}" />
-        <link rel="stylesheet" href="{{ asset('/css/fontawesome/font-awesome.css') }}" />
+        <link rel="stylesheet" href="{{ asset('/css/luft.min.css') }}" />
     </head>
     <body>
+        {% include 'Includes/menu.html.twig' %}
+
         <a href="http://sqi.be/ed94a">
-            <img style="position: absolute; top: 0; right: 0; border: 0;" src="{{ asset('/img/github/black-topright.png') }}" />
+            <img class="d-none d-md-block" style="position: absolute; top: 56px; right: 0; border: 0;" src="{{ asset('/img/github/black-topright.png') }}" />
         </a>
-        {% include 'Includes/header.html.twig' %}
+
+        {{ wo_render_breadcrumbs() }}
 
         {% block content %}{% endblock %}
 
         {% include 'Includes/footer.html.twig' %}
 
-        <script src="{{ asset('/js/jquery/jquery-3.3.1.slim.min.js') }}"></script>
-        <script src="{{ asset('/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
-        <script src="{{ asset('/js/leaflet/leaflet.js') }}"></script>
+        <script src="{{ asset('/js/jquery.min.js') }}"></script>
+        <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('/js/bloodhound.min.js') }}"></script>
+        <script src="{{ asset('/js/typeahead.jquery.min.js') }}"></script>
+        <script src="{{ asset('/js/leaflet.js') }}"></script>
+        <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+        <script src="{{ asset('/js/geolocation.min.js') }}"></script>
+        <script src="{{ asset('/js/typeahead.min.js') }}"></script>
+        <script src="{{ asset('/js/search.min.js') }}"></script>
 
         {% block scripts %}{% endblock %}
 

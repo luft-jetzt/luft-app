@@ -3,54 +3,79 @@
 namespace App\Command;
 
 use App\Entity\Station;
-use App\StationLoader\StationLoader;
+use App\Provider\ProviderInterface;
+use App\Provider\ProviderListInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class StationCommand extends Command
 {
-    /** @var StationLoader $stationLoader */
-    protected $stationLoader;
+    /** @var ProviderListInterface $providerList */
+    protected $providerList;
 
-    public function __construct(?string $name = null, StationLoader $stationLoader)
+    public function __construct(?string $name = null, ProviderListInterface $providerList)
     {
-        $this->stationLoader = $stationLoader;
+        $this->providerList = $providerList;
 
         parent::__construct($name);
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setName('luft:station')
-            ->setDescription('');
+            ->setName('luft:load-station')
+            ->addOption('update', 'u', InputOption::VALUE_NONE, 'Update existing station data')
+            ->addArgument('provider', InputArgument::REQUIRED, 'Providers to fetch from')
+            ->setDescription('Fetch station list');
     }
+
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->stationLoader->load();
+        /** @var ProviderInterface $provider */
+        foreach ($this->providerList->getList() as $provider) {
+            if ($input->getArgument('provider') !== $provider->getIdentifier()) {
+                continue;
+            }
 
-        $output->writeln('New stations');
+            $stationLoader = $provider->getStationLoader();
 
-        $table = new Table($output);
-        $table->setHeaders(['stationCode', 'stateCode', 'title', 'latitude', 'longitude']);
+            $stationLoader->load();
 
-        foreach ($this->stationLoader->getNewStationList() as $newStation) {
-            $this->addStationRow($table, $newStation);
+            if ($input->getOption('update')) {
+                $stationLoader->setUpdate(true);
+            }
+
+            $progressBar = new ProgressBar($output, $stationLoader->count());
+
+            $stationLoader->process(function() use ($progressBar) {
+                $progressBar->advance();
+            });
+
+            $progressBar->finish();
+
+            $output->writeln('Existing stations');
+            $this->printTable($output, $stationLoader->getExistingStationList());
+
+            $output->writeln('');
+
+            $output->writeln('New stations');
+            $this->printTable($output, $stationLoader->getNewStationList());
         }
+    }
 
-        $table->render();
-
-        $output->writeln('');
-        $output->writeln('Existing stations');
-
+    protected function printTable(OutputInterface $output, array $stationList): void
+    {
         $table = new Table($output);
-        $table->setHeaders(['stationCode', 'stateCode', 'title', 'latitude', 'longitude']);
+        $table->setHeaders(['stationCode', 'title', 'latitude', 'longitude', 'altitude', 'fromDate', 'untilDate', 'stationType']);
 
-        foreach ($this->stationLoader->getExistingStationList() as $existingStation) {
-            $this->addStationRow($table, $existingStation);
+        foreach ($stationList as $station) {
+            $this->addStationRow($table, $station);
         }
 
         $table->render();
@@ -58,6 +83,15 @@ class StationCommand extends Command
 
     protected function addStationRow(Table $table, Station $station): void
     {
-        $table->addRow([$station->getStationCode(), $station->getStateCode(), $station->getTitle(), $station->getLatitude(), $station->getLongitude()]);
+        $table->addRow([
+            $station->getStationCode(),
+            $station->getTitle(),
+            $station->getLatitude(),
+            $station->getLongitude(),
+            $station->getAltitude() ?? '',
+            $station->getFromDate() ? $station->getFromDate()->format('Y-m-d') : '',
+            $station->getUntilDate() ? $station->getUntilDate()->format('Y-m-d') : '',
+            $station->getStationType(),
+        ]);
     }
 }

@@ -1,56 +1,64 @@
-{% if box %}
-    {% if box.pollutionLevel == constant('LEVEL_ACCEPTABLE', box.pollutant.pollutionLevel) %}
-    {% set levelClass = 'bg-success' %}
-    {% endif %}
-
-    {% if box.pollutionLevel == constant('LEVEL_WARNING', box.pollutant.pollutionLevel) %}
-    {% set levelClass = 'bg-warning' %}
-    {% endif %}
-
-    {% if box.pollutionLevel == constant('LEVEL_DANGER', box.pollutant.pollutionLevel) %}
-    {% set levelClass = 'bg-danger' %}
-    {% endif %}
-
-    {% if box.pollutionLevel == constant('LEVEL_DEATH', box.pollutant.pollutionLevel) %}
-    {% set levelClass = 'bg-dark' %}
-    {% endif %}
-
+{% if view_model %}
     {% if combined is defined and combined == true %}
-    {% set combined = true %}
+     {% set combined = true %}
     {% else %}
-    {% set combined = false %}
+     {% set combined = false %}
+    {% endif %}
+
+    {% if linkToStation is defined and linkToStation == true %}
+        {% set stationLink = true %}
+    {% else %}
+        {% set stationLink = false %}
+    {% endif %}
+
+    {% if showStationTitle is defined and showStationTitle != false %}
+        {% set stationTitle = true %}
+    {% else %}
+        {% set stationTitle = false %}
     {% endif %}
 
     {% if not combined %}
 <div class="col-12">
+    <div class="card card-inverse mb-2">
     {% endif %}
-    {% if linkToStation is defined and linkToStation == true %}
-    <a href="{{ path('station', { 'stationCode': box.station.stationCode }) }}" class="no-underline">
-    {% endif %}
+
+    <div class="card-body text-white text-center box h-100 {{ view_model.measurement.identifier }}" style="background-color: {{ pollution_color(view_model.pollutionLevel) }}" data-station-code="{{ view_model.station.stationCode }}" data-station-latitude="{{ view_model.station.latitude }}" data-station-longitude="{{ view_model.station.longitude }}" data-station-color="{{ pollution_color_name(view_model.pollutionLevel) }}" data-station-map="{{ view_model.showOnMap }}">
+        {% if stationLink %}<a href="{{ path('station', { 'stationCode': view_model.station.stationCode }) }}" class="no-underline text-white" title="Weitere Luftmesswerte der Station {{ view_model.station.stationCode }}{% if view_model.station.city %} aus {{ view_model.station.city.name }}{% endif %}">{% endif %}
+        <h4 class="card-title">
+            {{ view_model.data.value|number_format }} {{ view_model.measurement.unitHtml|raw }}
+        </h4>
+        {% if stationLink %}</a>{% endif %}
+
+        <p class="card-text">
+            <a href="{{ path('limits') }}#{{ view_model.measurement.identifier }}" class="btn btn-sm text-white" title="Weitere Informationen über den Luftschadstoff {{ view_model.measurement.name }}">
+                <i class="fa fa-info-circle"></i> {{ view_model.measurement.name }}
+            </a>
+        </p>
+
+        {% if stationLink %}<a href="{{ path('station', { 'stationCode': view_model.station.stationCode }) }}" class="no-underline text-white" title="Weitere Luftmesswerte der Station {{ view_model.station.stationCode }}{% if view_model.station.city %} aus {{ view_model.station.city.name }}{% endif %}">{% endif %}
+
+        <p class="card-text">
+        {% if stationTitle %}
+            {{ view_model.station.title }}<br />
+        {% endif %}
+
+        <small>
+            <i class="fa fa-clock-o"></i> {{ view_model.data.dateTime|time_ago_in_words }}
+            {% if stationTitle %}
+            <br /><i class="fa fa-compass"></i> {{ view_model.distance|number_format(2, ',', '.') }} km entfernt
+            {% endif %}
+            {% if view_model.data.station.network and stationTitle %}
+            <br />
+            {{ view_model.data.station.network.name }}
+            {% endif %}
+        </small>
+
+        </p>
+        {% if stationLink %}</a>{% endif %}
+    </div>
+
     {% if not combined %}
-        <div class="card card-inverse mb-2">
-    {% endif %}
-            <div class="card-body {{ levelClass }} text-white text-center">
-                <h4 class="card-title">
-                    {{ box.data.value }} {{ box.pollutant.unitHtml|raw }}
-                </h4>
-                <p class="card-text">
-                    {{ box.pollutant.name }}
-                </p>
-                <p class="card-text">
-                {% if showStationTitle is defined and showStationTitle != false %}{{ box.station.title }}<br />{% endif %}
-                    <small>
-                        gemessen: {{ box.data.dateTime|date('d.m.Y H:i') }} Uhr
-                    </small>
-                </p>
-            </div>
-    {% if not combined %}
-        </div>
-    {% endif %}
-    {% if linkToStation is defined and linkToStation == true %}
-    </a>
-    {% endif %}
-    {% if not combined %}
+    </div>
 </div>
     {% endif %}
 {% endif %}

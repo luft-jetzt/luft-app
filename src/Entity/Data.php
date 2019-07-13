@@ -20,15 +20,18 @@ class Data
     protected $id;
 
     /**
+     * @var Station $station
      * @ORM\ManyToOne(targetEntity="Station", inversedBy="datas")
      * @ORM\JoinColumn(name="station_id", referencedColumnName="id")
+     * @JMS\Expose()
+     * @JMS\Type("App\Entity\Station")
      */
     protected $station;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
      * @JMS\Expose()
-     * @JMS\Type("DateTime<'U'>")
+     * @JMS\Type("DateTimeImmutable<'U'>")
      */
     protected $dateTime;
 
@@ -44,7 +47,14 @@ class Data
      */
     protected $pollutant;
 
-    public function getId(): int
+    public function setId(int $id): Data
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -75,12 +85,12 @@ class Data
         return $this->dateTime->format('Y-m-d H:i:s');
     }
 
-    public function getDateTime(): \DateTime
+    public function getDateTime(): \DateTimeInterface
     {
         return $this->dateTime;
     }
 
-    public function setDateTime(\DateTime $dateTime): Data
+    public function setDateTime(\DateTimeInterface $dateTime): Data
     {
         $this->dateTime = $dateTime;
 
@@ -109,6 +119,11 @@ class Data
         $this->pollutant = $pollutant;
 
         return $this;
+    }
+
+    public function getProvider(): string
+    {
+        return $this->station->getProvider();
     }
 
     public function isIndexable(): bool

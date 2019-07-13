@@ -4,8 +4,17 @@
 <div class="container">
     <div class="row">
         <div class="col-12 text-center">
+            <h2 class="h3">
+                Luft in {{ city.name }}
+            </h2>
+
+            <p class="lead">
+                Aktuelle Messwerte von Feinstaub, Stickoxiden und Ozon aus {{ city.name }}.
+            </p>
+            
             <div class="card">
                 <div id="map-city-{{ city.slug }}" class="city-map card-img-top" style="height: 33.33vh;"></div>
+                {% if city.description or city.user or city.fahrverbote %}
                 <div class="card-body">
                     <h4 class="card-title">
                         {{ city.name }}
@@ -16,19 +25,46 @@
                         </p>
                     {% endif %}
 
-                    {% if city.user %}
-                        <p>
-                            Folge aktuellen Luftdaten aus {{ city.name }} auf twitter:
-                        </p>
+                    {% if city.user or city.fahrverbote %}
+                    {% set col_width = 'col-6' %}
 
-                        <p>
-                            <a href="https://twitter.com/{{ city.user.username}}" class="btn btn-primary">
-                                <i class="fa fa-twitter"></i>
-                                @{{ city.user.username }}
-                            </a>
-                        </p>
+                    <div class="row">
+                        {% if (city.user and not city.fahrverbote) or (not city.user and city.fahrverbote) %}
+                        {% set col_width = 'col-12' %}
+                        {% endif %}
+
+                        {% if city.user %}
+                            <div class="{{ col_width }}">
+                                <p>
+                                    Folge aktuellen Luftdaten aus {{ city.name }} auf twitter:
+                                </p>
+
+                                <p>
+                                    <a href="https://twitter.com/{{ city.user.username}}" class="btn btn-primary">
+                                        <i class="fa fa-twitter"></i>
+                                        @{{ city.user.username }}
+                                    </a>
+                                </p>
+                            </div>
+                        {% endif %}
+
+                        {% if city.fahrverbote %}
+                            <div class="{{ col_width }}">
+                                <p>
+                                    In {{ city.name }} sind einige Straßen für den Kraftverkehr gesperrt:
+                                </p>
+
+                                <p>
+                                    <a href="https://fahrverbote.info/{{ city.fahrverboteSlug }}" class="btn btn-danger">
+                                        Fahrverbote in {{ city.name }}
+                                    </a>
+                                </p>
+                            </div>
+                        {% endif %}
+                    </div>
                     {% endif %}
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -37,7 +73,9 @@
         <div class="col-12">
             <div class="card-columns">
             {% for station in stationList %}
-            {% include 'Default/_station.html.twig' with { linkToStation: true, station: station, boxList: stationBoxList[station.stationCode], showMap: false } %}
+            {% if stationBoxList[station.stationCode]|length > 0 %}
+            {% include 'Default/_station.html.twig' with { 'linkToStation': true, 'station': station, 'pollutantList': stationBoxList[station.stationCode], 'showMap': false } %}
+            {% endif %}
             {% endfor %}
             </div>
         </div>
@@ -46,7 +84,8 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-    <script src="/js/map.js"></script>
+    <script src="{{ asset('/js/map.min.js') }}"></script>
+    <script src="{{ asset('/js/leaflet.extra-markers.min.js') }}"></script>
 {% endblock %}

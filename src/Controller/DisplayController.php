@@ -2,18 +2,19 @@
 
 namespace App\Controller;
 
-use App\Entity\Station;
-use App\Pollution\PollutionDataFactory\PollutionDataFactory;
-use App\Pollution\StationFinder\StationFinderInterface;
+use App\Entity\City;
+use App\Geocoding\Guesser\CityGuesserInterface;
+use App\Geocoding\RequestConverter\RequestConverterInterface;
+use App\Pollution\PollutionDataFactory\PollutionDataFactoryInterface;
 use App\SeoPage\SeoPage;
-use Caldera\GeoBasic\Coord\Coord;
-use maxh\Nominatim\Nominatim;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
+use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class DisplayController extends AbstractController
 {
-    public function stationAction(SeoPage $seoPage, string $stationCode, PollutionDataFactory $pollutionDataFactory): Response
+    public function indexAction(Request $request, SeoPage $seoPage, RequestConverterInterface $requestConverter, PollutionDataFactoryInterface $pollutionDataFactory, CityGuesserInterface $cityGuesser, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
     {
         /** @var Station $station */
         $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
@@ -41,58 +42,54 @@ class DisplayController extends AbstractController
     public function indexAction(Request $request, SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory, StationFinderInterface $stationFinder): Response
     {
         $coord = $this->getCoordByRequest($request);
+        $coord = $requestConverter->getCoordByRequest($request);
 
         if (!$coord) {
-            return $this->render('Default/select.html.twig');
+            return $this->redirectToRoute('frontpage');
         }
 
-        $boxList = $pollutionDataFactory->setCoord($coord)->createDecoratedBoxList();
+        $viewModelList = $pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();
 
-        if (0 === count($boxList)) {
-            return $this->noStationAction($request, $stationFinder, $coord);
+        if (0 === count($viewModelList)) {
+            return $this->noStationAction();
         }
 
-        $cityName = $this->getCityNameForCoord($coord);
+        $cityName = $cityGuesser->guess($coord);
 
         if ($cityName) {
             $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus %s', $cityName));
+            $city = $this->findCityForName($cityName);
+
+            if ($city) {
+                $breadcrumbs
+                    ->addItem('Luft', $router->generate('display'))
+                    ->addItem($city->getName(), $router->generate('show_city', ['citySlug' => $city->getSlug()]))
+                    ->addItem('Dein Standort');
+            }
         } else {
+            $breadcrumbs
+                ->addItem('Luft')
+                ->addItem('Dein Standort');
+
             $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus deiner Umgebung'));
+            $city = null;
         }
 
         return $this->render('Default/display.html.twig', [
-            'boxList' => $boxList,
+            'pollutantList' => $viewModelList,
+            'cityName' => $cityName,
+            'coord' => $coord,
+            'city' => $city,
         ]);
     }
 
-    public function noStationAction(Request $request, StationFinderInterface $stationFinder, Coord $coord = null): Response
+    public function noStationAction(): Response
     {
-        if (!$coord) {
-            $coord = $this->getCoordByRequest($request);
-        }
-
-        $stationList = $stationFinder->setCoord($coord)->findNearestStations(1000.0);
-
-        return $this->render('Default/nostations.html.twig', [
-            'stationList' => $stationList,
-        ]);
+        return $this->render('Default/no_stations.html.twig');
     }
 
-    protected function getCityNameForCoord(Coord $coord): ?string
+    protected function findCityForName(string $cityName): ?City
     {
-        $url = "http://nominatim.openstreetmap.org/";
-        $nominatim = new Nominatim($url);
-
-        $reverse = $nominatim->newReverse()
-            ->latlon($coord->getLatitude(), $coord->getLongitude())
-        ;
-
-        try {
-            $result = $nominatim->find($reverse);
-
-            return $result['address']['city'];
-        } catch (\Exception $e) {
-            return null;
-        }
+        return $this->getDoctrine()->getRepository(City::class)->findOneByName($cityName);
     }
 }
