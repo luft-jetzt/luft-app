@@ -34,13 +34,16 @@ class DisplayController extends AbstractController
             $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus %s', $cityName));
             $city = $this->findCityForName($cityName);
 
-            $breadcrumbs
-                ->addItem('Luft', $router->generate('display'));
-                //->addItem($city->getName(), $router->generate('show_city', ['citySlug' => $city->getSlug()]));
+            if ($city) {
+                $breadcrumbs
+                    ->addItem('Luft', $router->generate('display'))
+                    ->addItem($city->getName(), $router->generate('show_city', ['citySlug' => $city->getSlug()]))
+                    ->addItem('Dein Standort');
+            }
         } else {
             $breadcrumbs
-                ->addItem('Luft');
-                //->addItem(sprintf('Station %s', $station->getStationCode()));
+                ->addItem('Luft')
+                ->addItem('Dein Standort');
 
             $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus deiner Umgebung'));
             $city = null;
