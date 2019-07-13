@@ -10,5 +10,7 @@ class CO extends AbstractMeasurement
         $this->unitPlain = 'µg/m³';
         $this->name = 'Kohlenmonoxid';
         $this->shortNameHtml = 'CO';
+        $this->showOnMap = true;
+        $this->includeInTweets = true;
     }
 }

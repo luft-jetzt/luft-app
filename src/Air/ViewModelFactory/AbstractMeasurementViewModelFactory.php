@@ -4,6 +4,7 @@ namespace App\Air\ViewModelFactory;
 
 use App\Air\AirQuality\Calculator\AirQualityCalculatorInterface;
 use App\Air\Measurement\CO;
+use App\Air\Measurement\CO2;
 use App\Air\Measurement\MeasurementInterface;
 use App\Air\Measurement\NO2;
 use App\Air\Measurement\O3;
@@ -49,6 +50,7 @@ abstract class AbstractMeasurementViewModelFactory implements MeasurementViewMod
             case 3: return new NO2();
             case 4: return new SO2();
             case 5: return new CO();
+            case 7: return new CO2();
         }
     }
 

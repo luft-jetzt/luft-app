@@ -10,5 +10,7 @@ class NO2 extends AbstractMeasurement
         $this->unitPlain = 'µg/m³';
         $this->name = 'Stickstoffdioxid';
         $this->shortNameHtml = 'NO<sub>2</sub>';
+        $this->showOnMap = true;
+        $this->includeInTweets = true;
     }
 }

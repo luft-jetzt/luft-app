@@ -124,4 +124,9 @@ class MeasurementViewModel
 
         return $this;
     }
+
+    public function showOnMap(): bool
+    {
+        return $this->measurement->showOnMap();
+    }
 }

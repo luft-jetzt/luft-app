@@ -23,7 +23,12 @@ class ExtendedEmojiMessageFactory extends AbstractExtendedMessageFactory
         foreach ($this->pollutantList as $pollutant) {
             /** @var MeasurementViewModel $measurementViewModel */
             foreach ($pollutant as $measurementViewModel) {
-                $this->message .= sprintf("%s %s: %.0f %s \n", $this->getEmoji($measurementViewModel), $measurementViewModel->getPollutant()->getName(), $measurementViewModel->getData()->getValue(), $measurementViewModel->getPollutant()->getUnitPlain());
+                $this->message .= sprintf("%s %s: %.0f %s \n",
+                    $this->getEmoji($measurementViewModel),
+                    $measurementViewModel->getMeasurement()->getName(),
+                    $measurementViewModel->getData()->getValue(),
+                    $measurementViewModel->getMeasurement()->getUnitPlain()
+                );
             }
         }
 
@@ -34,7 +39,7 @@ class ExtendedEmojiMessageFactory extends AbstractExtendedMessageFactory
             foreach ($this->additionalPollutantList as $pollutant) {
                 /** @var MeasurementViewModel $measurementViewModel */
                 foreach ($pollutant as $measurementViewModel) {
-                    $this->message .= sprintf("%s %s: %.0f %s \n", $this->getEmoji($measurementViewModel), $measurementViewModel->getPollutant()->getName(), $measurementViewModel->getData()->getValue(), $measurementViewModel->getPollutant()->getUnitPlain());
+                    $this->message .= sprintf("%s %s: %.0f %s \n", $this->getEmoji($measurementViewModel), $measurementViewModel->getMeasurement()->getName(), $measurementViewModel->getData()->getValue(), $measurementViewModel->getMeasurement()->getUnitPlain());
                 }
             }
 

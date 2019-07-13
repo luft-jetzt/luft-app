@@ -36,9 +36,9 @@ class CachedElasticDataRetriever implements DataRetrieverInterface
         foreach ($stationList as $station) {
             $key = KeyGenerator::generateKeyForStationAndPollutant($station, $pollutantId);
 
-            $data = $this->dataCache->getData($key);
-
-            $dataList[] = $data;
+            if ($data = $this->dataCache->getData($key)) {
+                $dataList[] = $data;
+            }
         }
 
         return $dataList;

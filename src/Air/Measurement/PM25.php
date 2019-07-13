@@ -10,5 +10,7 @@ class PM25 extends AbstractMeasurement
         $this->unitPlain = 'µg/m³';
         $this->name = 'Feinstaub PM25';
         $this->shortNameHtml = 'PM<sub>25</sub>';
+        $this->showOnMap = true;
+        $this->includeInTweets = true;
     }
 }

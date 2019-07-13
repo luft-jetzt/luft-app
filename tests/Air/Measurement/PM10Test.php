@@ -36,4 +36,14 @@ class PM10Test extends TestCase
     {
         $this->assertEquals('µg/m³', (new PM10())->getUnitPlain());
     }
+
+    public function testShowOnMap(): void
+    {
+        $this->assertTrue((new PM10())->showOnMap());
+    }
+
+    public function testIncludeInTweets(): void
+    {
+        $this->assertTrue((new PM10())->includeInTweets());
+    }
 }

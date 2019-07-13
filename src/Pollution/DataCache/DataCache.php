@@ -25,7 +25,7 @@ class DataCache implements DataCacheInterface
             'redis://localhost'
         );
 
-        $this->cache = new RedisAdapter($client,'luft-data', self::TTL);
+        $this->cache = new RedisAdapter($client,'luft-data', 5 * self::TTL);
     }
 
     public function addData(Data $data): DataCacheInterface

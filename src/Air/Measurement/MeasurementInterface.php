@@ -12,6 +12,7 @@ interface MeasurementInterface
     const MEASUREMENT_NO2 = 3;
     const MEASUREMENT_SO2 = 4;
     const MEASUREMENT_CO = 5;
+    const MEASUREMENT_CO2 = 7;
 
     /**
      * @JMS\Expose()
@@ -37,4 +38,8 @@ interface MeasurementInterface
      * @JMS\Expose()
      */
     public function getShortNameHtml(): string;
+
+    public function showOnMap(): bool;
+
+    public function includeInTweets(): bool;
 }
