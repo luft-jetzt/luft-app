@@ -18,4 +18,29 @@
         <default key="_controller">App\Controller\TemplateController::staticAction</default>
         <default key="templateName">limits</default>
     </route>
+
+    <route id="pollutant_pm10" path="/schadstoffe/feinstaub">
+        <default key="_controller">Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction</default>
+        <default key="template">Static/Pollutant/feinstaub.html.twig</default>
+    </route>
+
+    <route id="pollutant_no2" path="/schadstoffe/stickstoffdioxid">
+        <default key="_controller">Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction</default>
+        <default key="template">Static/Pollutant/stickstoffdioxid.html.twig</default>
+    </route>
+
+    <route id="pollutant_so2" path="/schadstoffe/schwefeldioxid">
+        <default key="_controller">Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction</default>
+        <default key="template">Static/Pollutant/schwefeldioxid.html.twig</default>
+    </route>
+
+    <route id="pollutant_co" path="/schadstoffe/kohlenmonoxid">
+        <default key="_controller">Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction</default>
+        <default key="template">Static/Pollutant/kohlenmonoxid.html.twig</default>
+    </route>
+
+    <route id="pollutant_o3" path="/schadstoffe/ozon">
+        <default key="_controller">Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction</default>
+        <default key="template">Static/Pollutant/ozon.html.twig</default>
+    </route>
 </routes>

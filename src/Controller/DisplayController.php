@@ -3,75 +3,53 @@
 namespace App\Controller;
 
 use App\Entity\City;
-use App\Entity\Station;
-use App\Geocoding\CityGuesserInterface;
-use App\Pollution\PollutionDataFactory\PollutionDataFactory;
+use App\Geocoding\Guesser\CityGuesserInterface;
+use App\Pollution\PollutionDataFactory\PollutionDataFactoryInterface;
 use App\SeoPage\SeoPage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class DisplayController extends AbstractController
 {
-    public function stationAction(SeoPage $seoPage, string $stationCode, PollutionDataFactory $pollutionDataFactory, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
-    {
-        /** @var Station $station */
-        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
-
-        if (!$station) {
-            throw $this->createNotFoundException();
-        }
-
-        $boxList = $pollutionDataFactory->setCoord($station)->createDecoratedBoxList();
-
-        if ($station->getCity()) {
-            $breadcrumbs
-                ->addItem('Luft', $router->generate('display'))
-                ->addItem($station->getCity()->getName(), $router->generate('show_city', ['citySlug' => $station->getCity()->getSlug()]))
-                ->addItem(sprintf('Station %s', $station->getStationCode()));
-
-            $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s in %s', $station->getStationCode(), $station->getCity()->getName()));
-        } else {
-            $breadcrumbs
-                ->addItem('Luft')
-                ->addItem(sprintf('Station %s', $station->getStationCode()));
-
-            $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s', $station->getStationCode()));
-        }
-
-        return $this->render('Default/station.html.twig', [
-            'station' => $station,
-            'boxList' => $boxList,
-        ]);
-    }
-
-    public function indexAction(Request $request, SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory, CityGuesserInterface $cityGuesser, Breadcrumbs $breadcrumbs): Response
+    public function indexAction(Request $request, SeoPage $seoPage, PollutionDataFactoryInterface $pollutionDataFactory, CityGuesserInterface $cityGuesser, Breadcrumbs $breadcrumbs): Response
     {
         $coord = $this->getCoordByRequest($request);
 
         if (!$coord) {
-            return $this->render('Default/select.html.twig');
+            return $this->redirectToRoute('frontpage');
         }
 
-        $boxList = $pollutionDataFactory->setCoord($coord)->createDecoratedBoxList();
+        $viewModelList = $pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();
 
-        if (0 === count($boxList)) {
+        if (0 === count($viewModelList)) {
             return $this->noStationAction();
         }
 
         $cityName = $cityGuesser->guess($coord);
 
         if ($cityName) {
+            /*$breadcrumbs
+                ->addItem('Luft', $router->generate('display'))
+                ->addItem($station->getCity()->getName(), $router->generate('show_city', ['citySlug' => $station->getCity()->getSlug()]))
+                ->addItem(sprintf('Station %s', $station->getStationCode()));*/
+
             $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus %s', $cityName));
+            $city = $this->findCityForName($cityName);
         } else {
+/*            $breadcrumbs
+                ->addItem('Luft')
+                ->addItem(sprintf('Station %s', $station->getStationCode()));*/
+
             $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus deiner Umgebung'));
+            $city = null;
         }
 
         return $this->render('Default/display.html.twig', [
-            'boxList' => $boxList,
+            'pollutantList' => $viewModelList,
             'cityName' => $cityName,
-            'city' => $this->findCityForName($cityName),
+            'coord' => $coord,
+            'city' => $city,
         ]);
     }
 

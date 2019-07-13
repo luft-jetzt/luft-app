@@ -2,23 +2,22 @@
 
 namespace App\Pollution\DataList;
 
+use App\Air\Measurement\MeasurementInterface;
 use App\Entity\Data;
-use App\Pollution\Pollutant\PollutantInterface;
 
-class DataList
+class DataList implements DataListInterface
 {
-    protected $list;
+    /** @var array $list */
+    protected $list = [];
 
     public function __construct()
     {
         $this->reset();
     }
 
-    public function addData(Data $data, bool $overwrite = false): DataList
+    public function addData(Data $data): DataListInterface
     {
-        if ($overwrite || !$this->hasPollutant($data)) {
-            $this->list[$data->getPollutant()] = $data;
-        }
+        $this->list[$data->getPollutant()][$data->getId()] = $data;
 
         return $this;
     }
@@ -27,20 +26,12 @@ class DataList
     {
         $pollutant = $data->getPollutant();
 
-        return $this->list[$pollutant] !== null;
+        return 0 !== count($this->list[$pollutant]);
     }
 
-    public function getMissingPollutants(): array
+    public function countPollutant(int $pollutant): int
     {
-        $missingList = [];
-
-        array_walk($this->list, function(Data $data = null, int $key) use (&$missingList) {
-            if ($data === null) {
-                array_push($missingList, $key);
-            }
-        });
-
-        return $missingList;
+        return count($this->list[$pollutant]);
     }
 
     public function getList(): array
@@ -48,14 +39,16 @@ class DataList
         return $this->list;
     }
 
-    public function reset(): DataList
+    public function reset(): DataListInterface
     {
         $this->list = [
-            PollutantInterface::POLLUTANT_PM10 => null,
-            PollutantInterface::POLLUTANT_O3 => null,
-            PollutantInterface::POLLUTANT_NO2 => null,
-            PollutantInterface::POLLUTANT_SO2 => null,
-            PollutantInterface::POLLUTANT_CO => null,
+            MeasurementInterface::MEASUREMENT_PM25 => [],
+            MeasurementInterface::MEASUREMENT_PM10 => [],
+            MeasurementInterface::MEASUREMENT_O3 => [],
+            MeasurementInterface::MEASUREMENT_NO2 => [],
+            MeasurementInterface::MEASUREMENT_SO2 => [],
+            MeasurementInterface::MEASUREMENT_CO => [],
+            MeasurementInterface::MEASUREMENT_CO2 => [],
         ];
 
         return $this;

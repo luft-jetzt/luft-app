@@ -2,68 +2,50 @@
 
 namespace App\Pollution\PollutionDataFactory;
 
-use App\Pollution\Box\Box;
-use App\Pollution\BoxDecorator\BoxDecoratorInterface;
-use App\Pollution\DataList\DataList;
-use App\Pollution\DataRetriever\DataRetrieverInterface;
-use App\Pollution\StationFinder\StationFinderInterface;
-use Caldera\GeoBasic\Coord\CoordInterface;
+use App\Air\ViewModel\MeasurementViewModel;
+use App\Entity\Data;
 
-class PollutionDataFactory
+class PollutionDataFactory extends AbstractPollutionDataFactory
 {
-    /** @var CoordInterface $coord */
-    protected $coord;
-
-    /** @var StationFinderInterface $stationFinder */
-    protected $stationFinder;
-
-    /** @var StationFinderInterface $boxDecorator */
-    protected $boxDecorator;
-
-    /** @var DataList $dataList */
-    protected $dataList;
-
-    /** @var DataRetrieverInterface */
-    protected $dataRetriever;
-
-    public function __construct(StationFinderInterface $stationFinder, BoxDecoratorInterface $boxDecorator, DataRetrieverInterface $dataRetriever)
+    public function createDecoratedPollutantList(\DateTime $dateTime = null, \DateInterval $dateInterval = null, int $workingSetSize = 1): array
     {
-        $this->stationFinder = $stationFinder;
-        $this->dataList = new DataList();
-        $this->boxDecorator = $boxDecorator;
-        $this->dataRetriever = $dataRetriever;
+        if (!$dateTime) {
+            $dateTime = new \DateTime();
+        }
+
+        if (!$dateInterval) {
+            $dateInterval = new \DateInterval('PT12H');
+        }
+
+        $dateTime->sub($dateInterval);
+
+        $dataList = $this->getDataListFromStationList($dateTime, $dateInterval, $workingSetSize);
+
+        $measurementViewModelList = $this->getMeasurementViewModelListFromDataList($dataList);
+
+        $measurementViewModelList = $this->decoratePollutantList($measurementViewModelList);
+
+        return $measurementViewModelList;
     }
 
-    public function setCoord(CoordInterface $coord): PollutionDataFactory
-    {
-        $this->coord = $coord;
-
-        return $this;
-    }
-
-    public function createDecoratedBoxList(): array
-    {
-        $stationList = $this->stationFinder->setCoord($this->coord)->findNearestStations();
-
-        $dataList = $this->getDataListFromStationList($stationList);
-
-        $boxList = $this->getBoxListFromDataList($dataList);
-
-        $boxList = $this->decorateBoxList($boxList);
-
-        return $boxList;
-    }
-
-    protected function getDataListFromStationList(array $stationList): array
+    protected function getDataListFromStationList(\DateTime $fromDateTime = null, \DateInterval $interval = null, int $workingSetSize): array
     {
         $this->dataList->reset();
 
-        foreach ($stationList as $station) {
-            foreach ($this->dataList->getMissingPollutants() as $pollutant) {
-                $data = $this->dataRetriever->retrieveStationData($station, $pollutant);
+        $missingPollutants = $this->strategy->getMissingPollutants($this->dataList);
 
-                if ($data) {
-                    $this->dataList->addData($data);
+        foreach ($missingPollutants as $pollutantId) {
+            $dataList = $this->dataRetriever->retrieveDataForCoord($this->coord, $pollutantId, $fromDateTime, $interval, 20.0, $workingSetSize);
+
+            if (0 === count($dataList)) {
+                continue;
+            }
+
+            while (!$this->strategy->isSatisfied($this->dataList, $pollutantId) && count($dataList)) {
+                $data = array_shift($dataList);
+
+                if ($this->strategy->accepts($this->dataList, $data)) {
+                    $this->strategy->addDataToList($this->dataList, $data);
                 }
             }
         }
@@ -71,34 +53,32 @@ class PollutionDataFactory
         return $this->dataList->getList();
     }
 
-    protected function getBoxListFromDataList(array $dataList): array
+    protected function getMeasurementViewModelListFromDataList(array $dataList): array
     {
-        $boxList = [];
+        $measurementViewModelList = [];
 
+        /** @var array $data */
         foreach ($dataList as $data) {
-            if ($data) {
-                $boxList[] = new Box($data);
+            /** @var Data $dataElement */
+            foreach ($data as $dataElement) {
+                if ($dataElement) {
+                    $measurementViewModelList[$dataElement->getPollutant()][$dataElement->getId()] = new MeasurementViewModel($dataElement);
+                }
             }
         }
 
-        return $boxList;
+        return $measurementViewModelList;
     }
 
-    protected function decorateBoxList(array $boxList): array
+    protected function decoratePollutantList(array $pollutantList): array
     {
         return $this
             ->reset()
-            ->boxDecorator
-            ->setBoxList($boxList)
+            ->measurementViewModelFactory
+            ->setCoord($this->coord)
+            ->setPollutantList($pollutantList)
             ->decorate()
-            ->getBoxList()
+            ->getPollutantList()
         ;
-    }
-
-    protected function reset(): PollutionDataFactory
-    {
-        $this->dataList->reset();
-
-        return $this;
     }
 }

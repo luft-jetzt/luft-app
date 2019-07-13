@@ -1,8 +1,7 @@
 {% if linkToStation is defined and linkToStation == true %}
 <a href="{{ path('station', { 'stationCode': station.stationCode }) }}" class="no-underline">
 {% endif %}
-
-    <div class="card station" data-latitude="{{ station.latitude }}" data-longitude="{{ station.longitude }}" data-station-code="{{ station.stationCode }}">
+    <div class="card station" data-latitude="{{ station.latitude }}" data-longitude="{{ station.longitude }}" data-station-code="{{ station.stationCode }}" data-station-color="{{ pollution_color_name(max_pollution_level(pollutantList)) }}">
     {% if showMap is not defined or showMap == true %}
         <div id="map-station-{{ station.stationCode }}" class="map card-img-top" style="height: 33.33vh;"></div>
         {% endif %}
@@ -29,12 +28,16 @@
             {% if station.stationType and station.areaType %}
             <p class="card-text text-muted">
                 Stationstyp: {{ station.stationType|readable_enum|trans({}, 'messages', 'de') }}, {{ station.areaType|readable_enum|trans({}, 'messages', 'de') }}
+                {% if station.network %}
+                <br />
+                {{ station.network.name }}
+                {% endif %}
             </p>
             {% endif %}
         </div>
 
-        {% for box in boxList %}
-            {% include 'Default/_box.html.twig' with { 'box': box, 'showStationTitle': false, combined: true } %}
+        {% for pollutant in pollutantList %}
+            {% include 'Default/_pollutant.html.twig' with { 'pollutant': pollutant, 'showStationTitle': false, 'combined': true } %}
         {% endfor %}
     </div>
 

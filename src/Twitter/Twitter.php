@@ -2,56 +2,14 @@
 
 namespace App\Twitter;
 
+use App\Air\ViewModel\MeasurementViewModel;
 use App\Entity\TwitterSchedule;
-use App\Pollution\PollutionDataFactory\PollutionDataFactory;
-use App\Twitter\MessageFactory\MessageFactoryInterface;
-use App\YourlsApiManager\LuftYourlsApiManager;
 use Caldera\GeoBasic\Coord\Coord;
-use Caldera\GeoBasic\Coord\CoordInterface;
-use Codebird\Codebird;
 use Cron\CronExpression;
-use Symfony\Bridge\Doctrine\RegistryInterface as Doctrine;
-use Psr\Log\LoggerInterface;
 
-class Twitter
+class Twitter extends AbstractTwitter
 {
-    /** @var Doctrine $doctrine */
-    protected $doctrine;
-
-    /** @var PollutionDataFactory $pollutionDataFactory */
-    protected $pollutionDataFactory;
-
-    /** @var MessageFactoryInterface $messageFactory */
-    protected $messageFactory;
-
-    /** @var LuftYourlsApiManager $permalinkManager */
-    protected $permalinkManager;
-
-    /** @var LoggerInterface $logger */
-    protected $logger;
-
-    /** @var string $twitterClientId */
-    protected $twitterClientId;
-
-    /** @var string $twitterClientSecret */
-    protected $twitterClientSecret;
-
-    /** @var array $validScheduleList */
-    protected $validScheduleList = [];
-
-    public function __construct(Doctrine $doctrine, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, LuftYourlsApiManager $permalinkManager, LoggerInterface $logger, string $twitterClientId, string $twitterClientSecret)
-    {
-        $this->doctrine = $doctrine;
-        $this->pollutionDataFactory = $pollutionDataFactory;
-        $this->messageFactory = $messageFactory;
-        $this->permalinkManager = $permalinkManager;
-        $this->logger = $logger;
-
-        $this->twitterClientId = $twitterClientId;
-        $this->twitterClientSecret = $twitterClientSecret;
-    }
-
-    public function tweet()
+    public function tweet(): void
     {
         $twitterSchedules = $this->doctrine->getRepository(TwitterSchedule::class)->findAll();
 
@@ -65,7 +23,7 @@ class Twitter
 
             $cron = CronExpression::factory($twitterSchedule->getCron());
 
-            if ($cron->isDue()) {
+            if ($cron->isDue($this->dateTime) || $this->dryRun) {
                 $user = $twitterSchedule->getCity()->getUser();
 
                 if (!$user) {
@@ -76,9 +34,28 @@ class Twitter
 
                 $coord = $this->getCoord($twitterSchedule);
 
-                $boxList = $this->pollutionDataFactory->setCoord($coord)->createDecoratedBoxList();
+                $pollutantList = $this
+                    ->pollutionDataFactory
+                    ->setCoord($coord)
+                    ->createDecoratedPollutantList($this->dateTime, new \DateInterval('PT3H'));
 
-                $message = $this->createMessage($twitterSchedule, $boxList);
+                if (0 === count($pollutantList)) {
+                    continue;
+                }
+
+                $additionalCoord = new Coord($coord->getLatitude(), $coord->getLongitude());
+                $additionalPollutantList = $this
+                    ->pollutionDataFactory
+                    ->setCoord($additionalCoord)
+                    ->createDecoratedPollutantList($this->dateTime, new \DateInterval('PT3H'));
+
+                foreach ($pollutantList as $pollutantId => $pollutant) {
+                    if (array_key_exists($pollutantId, $additionalPollutantList)) {
+                        unset($additionalPollutantList[$pollutantId]);
+                    }
+                }
+
+                $message = $this->createMessage($twitterSchedule, $this->removeNotTwitterableMeasurements($pollutantList), $this->removeNotTwitterableMeasurements($additionalPollutantList));
 
                 $params = [
                     'status' => $message,
@@ -86,49 +63,49 @@ class Twitter
                     'long' => $coord->getLongitude(),
                 ];
 
-                $reply = $cb->statuses_update($params);
-                
-                $this->logger->notice(json_encode($reply));
+                if (!$this->dryRun) {
+                    $reply = $cb->statuses_update($params);
+
+                    $this->logger->notice(json_encode($reply));
+                }
 
                 $this->validScheduleList[] = $twitterSchedule;
             }
         }
     }
 
-    protected function getCoord(TwitterSchedule $twitterSchedule): CoordInterface
+    protected function createMessage(TwitterSchedule $twitterSchedule, array $pollutantList, array $additionalPollutantList): string
     {
-        if ($twitterSchedule->getStation()) {
-            return $twitterSchedule->getStation();
-        } else {
-            $coord = new Coord($twitterSchedule->getLatitude(), $twitterSchedule->getLongitude());
-
-            return $coord;
-        }
-    }
-
-    protected function getCodeBird(): Codebird
-    {
-        Codebird::setConsumerKey($this->twitterClientId, $this->twitterClientSecret);
-
-        return Codebird::getInstance();
-    }
-
-    protected function createMessage(TwitterSchedule $twitterSchedule, array $boxList): string
-    {
-        $message = $this->messageFactory
+        $this->messageFactory
             ->reset()
             ->setTitle($twitterSchedule->getTitle())
-            ->setLink($this->permalinkManager->createPermalinkForTweet($twitterSchedule))
-            ->setBoxList($boxList)
+            ->setPollutantList($pollutantList)
+            ->setAdditionalPollutantList($additionalPollutantList);
+
+        if ($this->dryRun) {
+            $this->messageFactory->setLink('https://localhost/foobarbaz');
+        } else {
+            $this->messageFactory->setLink($this->permalinkManager->createPermalinkForTweet($twitterSchedule));
+        }
+
+        $message = $this->messageFactory
             ->compose()
-            ->getMessage()
-        ;
+            ->getMessage();
 
         return $message;
     }
 
-    public function getValidScheduleList(): array
+    protected function removeNotTwitterableMeasurements(array $list): array
     {
-        return $this->validScheduleList;
+        foreach ($list as $key => $measurementViewModelList) {
+            /** @var MeasurementViewModel $measurementViewModel */
+            foreach ($measurementViewModelList as $measurementViewModel) {
+                if (!$measurementViewModel->getMeasurement()->includeInTweets()) {
+                    unset($list[$key]);
+                }
+            }
+        }
+
+        return $list;
     }
 }

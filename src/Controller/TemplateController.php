@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\City;
 use App\SeoPage\SeoPage;
 use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;

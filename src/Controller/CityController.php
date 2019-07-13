@@ -28,20 +28,20 @@ class CityController extends AbstractController
         }
 
         $seoPage
-            ->setTitle(sprintf('Luft in %s', $city->getName()))
-            ->setDescription(sprintf('Aktuelle Schadstoff- und Luftmesswerte aus %s', $city->getName()));
+            ->setTitle(sprintf('Luftmesswerte aus %s: Stickstoffdioxid, Feinstaub und Ozon', $city->getName()))
+            ->setDescription(sprintf('Aktuelle Schadstoffwerte aus Luftmessstationen in %s: Stickstoffdioxid, Feinstaub und Ozon', $city->getName()));
 
         $breadcrumbs
             ->addItem('Luft', $router->generate('display'))
             ->addItem($city->getName(), $router->generate('show_city', ['citySlug' => $city->getSlug()]));
 
         $stationList = $this->getStationListForCity($city);
-        $stationsBoxList = $this->createBoxListForStationList($pollutionDataFactory, $stationList);
+        $stationViewModelList = $this->createViewModelListForStationList($pollutionDataFactory, $stationList);
 
         return $this->render('City/show.html.twig', [
             'city' => $city,
             'stationList' => $stationList,
-            'stationBoxList' => $stationsBoxList,
+            'stationBoxList' => $stationViewModelList,
         ]);
     }
 

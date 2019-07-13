@@ -33,13 +33,7 @@ class Station extends Coord
     protected $stationCode;
 
     /**
-     * @ORM\Column(type="string", length=2, nullable=false)
-     * @JMS\Expose()
-     */
-    protected $stateCode;
-
-    /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string", nullable=true)
      * @JMS\Expose()
      */
     protected $title;
@@ -70,12 +64,14 @@ class Station extends Coord
     /**
      * @ORM\Column(type="date", nullable=true)
      * @JMS\Expose()
+     * @JMS\Type("DateTime<'U'>")
      */
     protected $fromDate;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      * @JMS\Expose()
+     * @JMS\Type("DateTime<'U'>")
      */
     protected $untilDate;
 
@@ -97,11 +93,30 @@ class Station extends Coord
      */
     protected $areaType;
 
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     * @JMS\Expose()
+     */
+    protected $provider;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Network", inversedBy="stations")
+     * @ORM\JoinColumn(name="network_id", referencedColumnName="id")
+     */
+    protected $network;
+
     public function __construct(float $latitude, float $longitude)
     {
         $this->twitterSchedules = new ArrayCollection();
 
         parent::__construct($latitude, $longitude);
+    }
+
+    public function setId(int $id): Station
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getId(): int
@@ -117,18 +132,6 @@ class Station extends Coord
     public function setStationCode(string $stationCode): Station
     {
         $this->stationCode = $stationCode;
-
-        return $this;
-    }
-
-    public function getStateCode(): string
-    {
-        return $this->stateCode;
-    }
-
-    public function setStateCode(string $stateCode): Station
-    {
-        $this->stateCode = $stateCode;
 
         return $this;
     }
@@ -157,12 +160,12 @@ class Station extends Coord
         return $this;
     }
 
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function setTitle(string $title): Station
+    public function setTitle(string $title = null): Station
     {
         $this->title = $title;
 
@@ -229,6 +232,11 @@ class Station extends Coord
         return $this;
     }
 
+    public function getFromDateFormatted(): ?string
+    {
+        return $this->fromDate ? $this->fromDate->format('Y-m-d H:i:s') : null;
+    }
+
     public function getUntilDate(): ?\DateTime
     {
         return $this->untilDate;
@@ -239,6 +247,11 @@ class Station extends Coord
         $this->untilDate = $untilDate;
 
         return $this;
+    }
+
+    public function getUntilDateFormatted(): ?string
+    {
+        return $this->untilDate ? $this->untilDate->format('Y-m-d H:i:s') : null;
     }
 
     public function getAltitude(): ?int
@@ -273,6 +286,30 @@ class Station extends Coord
     public function setAreaType(string $areaType = null): Station
     {
         $this->areaType = $areaType;
+
+        return $this;
+    }
+
+    public function getProvider(): ?string
+    {
+        return $this->provider;
+    }
+
+    public function setProvider(string $provider): Station
+    {
+        $this->provider = $provider;
+
+        return $this;
+    }
+
+    public function getNetwork(): ?Network
+    {
+        return $this->network;
+    }
+
+    public function setNetwork(Network $network): Station
+    {
+        $this->network = $network;
 
         return $this;
     }
