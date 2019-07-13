@@ -112,6 +112,13 @@ class Station extends Coord
         parent::__construct($latitude, $longitude);
     }
 
+    public function setId(int $id): Station
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getId(): int
     {
         return $this->id;

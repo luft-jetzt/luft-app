@@ -25,6 +25,8 @@
             <img class="d-none d-md-block" style="position: absolute; top: 56px; right: 0; border: 0;" src="{{ asset('/img/github/black-topright.png') }}" />
         </a>
 
+        {{ wo_render_breadcrumbs() }}
+
         {% block content %}{% endblock %}
 
         {% include 'Includes/footer.html.twig' %}

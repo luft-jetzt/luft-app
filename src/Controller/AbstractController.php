@@ -16,18 +16,18 @@ abstract class AbstractController extends Controller
         return $this->getDoctrine()->getRepository(Station::class)->findActiveStationsForCity($city);
     }
 
-    protected function createBoxListForStationList(PollutionDataFactory $pollutionDataFactory, array $stationList): array
+    protected function createViewModelListForStationList(PollutionDataFactory $pollutionDataFactory, array $stationList): array
     {
-        $stationsBoxList = [];
+        $stationViewModelList = [];
 
         /** @var Station $station */
         foreach ($stationList as $station) {
-            $stationsBoxList[$station->getStationCode()] = $pollutionDataFactory
+            $stationViewModelList[$station->getStationCode()] = $pollutionDataFactory
                 ->setStation($station)
                 ->createDecoratedPollutantList();
         }
 
-        return $stationsBoxList;
+        return $stationViewModelList;
     }
 
     protected function getCityBySlug(string $citySlug): ?City

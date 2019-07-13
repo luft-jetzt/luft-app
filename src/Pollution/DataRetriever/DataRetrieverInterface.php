@@ -2,10 +2,9 @@
 
 namespace App\Pollution\DataRetriever;
 
-use App\Entity\Data;
-use App\Entity\Station;
+use Caldera\GeoBasic\Coord\CoordInterface;
 
 interface DataRetrieverInterface
 {
-    public function retrieveStationData(Station $station, int $pollutant, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, string $order = 'DESC'): ?Data;
+    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 250): array;
 }
