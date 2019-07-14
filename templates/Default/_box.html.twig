@@ -39,7 +39,11 @@
 
         <p class="card-text">
         {% if stationTitle %}
-            {{ view_model.station.title }}<br />
+            {% if view_model.station.title %}
+                {{ view_model.station.title }}<br />
+            {% else %}
+                {{ view_model.station.stationCode }}<br />
+            {% endif %}
         {% endif %}
 
         <small>
