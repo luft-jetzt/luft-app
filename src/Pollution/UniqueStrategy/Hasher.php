@@ -14,8 +14,8 @@ class Hasher
 
     public static function hashData(Data $data): string
     {
-        return sprintf('%d-%d-%d-%f',
-            $data->getStationId(),
+        return sprintf('%s-%d-%d-%f',
+            $data->getStation()->getStationCode(),
             $data->getDateTime()->format('U'),
             $data->getPollutant(),
             $data->getValue()
@@ -24,7 +24,7 @@ class Hasher
 
     public static function hashValue(Value $value): string
     {
-        return sprintf('%d-%d-%d-%f',
+        return sprintf('%s-%d-%d-%f',
             $value->getStation(),
             $value->getDateTime()->format('U'),
             $value->getPollutant(),

@@ -4,6 +4,7 @@ namespace App\Pollution\DataList;
 
 use App\Air\Measurement\MeasurementInterface;
 use App\Entity\Data;
+use App\Pollution\UniqueStrategy\Hasher;
 
 class DataList implements DataListInterface
 {
@@ -17,7 +18,7 @@ class DataList implements DataListInterface
 
     public function addData(Data $data): DataListInterface
     {
-        $this->list[$data->getPollutant()][$data->getId()] = $data;
+        $this->list[$data->getPollutant()][Hasher::hashData($data)] = $data;
 
         return $this;
     }

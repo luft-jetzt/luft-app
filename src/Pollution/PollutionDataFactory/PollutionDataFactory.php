@@ -4,6 +4,7 @@ namespace App\Pollution\PollutionDataFactory;
 
 use App\Air\ViewModel\MeasurementViewModel;
 use App\Entity\Data;
+use App\Pollution\UniqueStrategy\Hasher;
 
 class PollutionDataFactory extends AbstractPollutionDataFactory
 {
@@ -62,7 +63,7 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
             /** @var Data $dataElement */
             foreach ($data as $dataElement) {
                 if ($dataElement) {
-                    $measurementViewModelList[$dataElement->getPollutant()][$dataElement->getId()] = new MeasurementViewModel($dataElement);
+                    $measurementViewModelList[$dataElement->getPollutant()][Hasher::hashData($dataElement)] = new MeasurementViewModel($dataElement);
                 }
             }
         }
