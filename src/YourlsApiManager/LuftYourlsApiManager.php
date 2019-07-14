@@ -6,7 +6,7 @@ use App\Entity\Station;
 use App\Entity\TwitterSchedule;
 use Caldera\GeoBasic\Coord\Coord;
 use Caldera\YourlsApiManager\YourlsApiManager;
-use Curl\Curl;
+use Flagception\Manager\FeatureManagerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -15,9 +15,13 @@ class LuftYourlsApiManager extends YourlsApiManager
     /** @var RouterInterface $router */
     protected $router;
 
-    public function __construct(RouterInterface $router, string $apiUrl, string $apiUsername, string $apiPassword)
+    /** @var FeatureManagerInterface $featureManager */
+    protected $featureManager;
+
+    public function __construct(FeatureManagerInterface $featureManager, RouterInterface $router, string $apiUrl, string $apiUsername, string $apiPassword)
     {
         $this->router = $router;
+        $this->featureManager = $featureManager;
 
         parent::__construct($apiUrl, $apiUsername, $apiPassword);
     }
@@ -34,9 +38,11 @@ class LuftYourlsApiManager extends YourlsApiManager
             $url = $this->generateUrlForCoord($coord, $dateTime);
         }
 
-        $permalink = $this->createShorturl($url, $twitterSchedule->getTitle());
+        if ($this->featureManager->isActive('short_twitter_links')) {
+            return $this->createShorturl($url, $twitterSchedule->getTitle());
+        }
 
-        return $permalink;
+        return $url;
     }
 
     protected function generateUrlForStation(Station $station, \DateTimeInterface $dateTime): string
@@ -56,5 +62,4 @@ class LuftYourlsApiManager extends YourlsApiManager
 
         return $url;
     }
-
 }

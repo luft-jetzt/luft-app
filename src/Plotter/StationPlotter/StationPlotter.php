@@ -4,7 +4,7 @@ namespace App\Plotter\StationPlotter;
 
 use Amenadiel\JpGraph\Graph;
 use Amenadiel\JpGraph\Plot;
-use App\Pollution\Box\Box;
+use App\Air\ViewModel\MeasurementViewModel;
 
 class StationPlotter extends AbstractStationPlotter
 {
@@ -22,14 +22,14 @@ class StationPlotter extends AbstractStationPlotter
 
         /** @var array $dataList */
         foreach ($dataLists as $timestamp => $dataList) {
-            foreach ($dataList as $pollutantId => $boxList) {
-                /** @var Box $box */
-                foreach ($boxList as $box) {
+            foreach ($dataList as $pollutantId => $measurementViewModelList) {
+                /** @var MeasurementViewModel $measurementViewModel */
+                foreach ($measurementViewModelList as $measurementViewModel) {
                     if (!array_key_exists($pollutantId, $plotData)) {
                         $plotData[$pollutantId] = [];
                     }
 
-                    $value = $box->getData()->getValue();
+                    $value = $measurementViewModel->getData()->getValue();
 
                     if ($value > $maxValue) {
                         $maxValue = $value;
@@ -37,7 +37,7 @@ class StationPlotter extends AbstractStationPlotter
 
                     array_unshift($plotData[$pollutantId], $value);
 
-                    $dateTime = $box->getData()->getDateTime();
+                    $dateTime = $measurementViewModel->getData()->getDateTime();
 
                     $tickPositions[$i] = $i;
 
@@ -61,7 +61,7 @@ class StationPlotter extends AbstractStationPlotter
 
             $linePlot   = new Plot\LinePlot($valueList);
             $linePlot->SetColor($this->getColorForPollutantId($pollutantId));
-            $linePlot->SetLegend($this->pollutantList->getPollutantsWithIds()[$pollutantId]->getName());
+            $linePlot->SetLegend($this->measurementList->getMeasurementWithIds()[$pollutantId]->getName());
 
             $graph->Add($linePlot);
         }

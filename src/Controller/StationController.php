@@ -7,7 +7,6 @@ use App\Entity\Station;
 use App\Plotter\StationPlotter\StationPlotterInterface;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
-use App\SeoPage\SeoPage;
 use App\SeoPage\SeoPageInterface;
 use App\Util\DateTimeUtil;
 use Flagception\Bundle\FlagceptionBundle\Annotations\Feature;
@@ -15,10 +14,11 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class StationController extends AbstractController
 {
-    public function stationAction(SeoPage $seoPage, string $stationCode, PollutionDataFactory $pollutionDataFactory): Response
+    public function stationAction(SeoPageInterface $seoPage, string $stationCode, PollutionDataFactory $pollutionDataFactory, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
     {
         /** @var Station $station */
         $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
@@ -27,19 +27,24 @@ class StationController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $boxList = $pollutionDataFactory
+        $viewModelList = $pollutionDataFactory
             ->setStation($station)
             ->createDecoratedPollutantList();
 
         if ($station->getCity()) {
             $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s — Feinstaub, Stickstoffdioxid und Ozon in %s', $station->getStationCode(), $station->getCity()->getName()));
+
+            $breadcrumbs
+                ->addItem('Luft', $router->generate('display'))
+                ->addItem($station->getCity()->getName(), $router->generate('show_city', ['citySlug' => $station->getCity()->getSlug()]))
+                ->addItem($station->getStationCode(), $router->generate('station', ['stationCode' => $station->getStationCode()]));
         } else {
             $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s', $station->getStationCode()));
         }
 
         return $this->render('Default/station.html.twig', [
             'station' => $station,
-            'pollutantList' => $boxList,
+            'pollutantList' => $viewModelList,
         ]);
     }
 
@@ -70,7 +75,7 @@ class StationController extends AbstractController
     /**
      * @Feature("station_history")
      */
-    public function historyAction(Request $request, string $stationCode, HistoryDataFactoryInterface $historyDataFactory, SeoPageInterface $seoPage, RouterInterface $router): Response
+    public function historyAction(Request $request, string $stationCode, SeoPageInterface $seoPage, HistoryDataFactoryInterface $historyDataFactory, RouterInterface $router): Response
     {
         if ($untilDateTimeParam = $request->query->get('until')) {
             try {
@@ -101,20 +106,18 @@ class StationController extends AbstractController
             throw $this->createNotFoundException();
         }
 
+        if ($station->getCity()) {
+            $seoPage->setTitle(sprintf('Frühere Luftmesswerte für die Station %s — Feinstaub, Stickstoffdioxid und Ozon in %s', $station->getStationCode(), $station->getCity()->getName()));
+        } else {
+            $seoPage->setTitle(sprintf('Frühere Luftmesswerte für die Station %s', $station->getStationCode()));
+        }
+
         $seoPage->setOpenGraphPreviewPhoto($router->generate('station_history_plot', [
             'stationCode' => $station->getStationCode(),
             'from' => $fromDateTime->format('Y-m-d'),
             'until' => $untilDateTime->format('Y-m-d'),
             'width' => 1200,
             'height' => 630,
-        ]));
-
-        $seoPage->setTwitterPreviewPhoto($router->generate('station_history_plot', [
-            'stationCode' => $station->getStationCode(),
-            'from' => $fromDateTime->format('Y-m-d'),
-            'until' => $untilDateTime->format('Y-m-d'),
-            'width' => 900,
-            'height' => 450,
         ]));
 
         $dataLists = $historyDataFactory

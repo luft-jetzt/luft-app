@@ -2,6 +2,7 @@
 
 namespace App\Twitter;
 
+use App\Air\ViewModel\MeasurementViewModel;
 use App\Entity\TwitterSchedule;
 use Caldera\GeoBasic\Coord\Coord;
 use Cron\CronExpression;
@@ -33,14 +34,20 @@ class Twitter extends AbstractTwitter
 
                 $coord = $this->getCoord($twitterSchedule);
 
-                $pollutantList = $this->pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList($this->dateTime, new \DateInterval('PT3H'));
+                $pollutantList = $this
+                    ->pollutionDataFactory
+                    ->setCoord($coord)
+                    ->createDecoratedPollutantList($this->dateTime, new \DateInterval('PT3H'));
 
                 if (0 === count($pollutantList)) {
                     continue;
                 }
 
                 $additionalCoord = new Coord($coord->getLatitude(), $coord->getLongitude());
-                $additionalPollutantList = $this->pollutionDataFactory->setCoord($additionalCoord)->createDecoratedPollutantList($this->dateTime, new \DateInterval('PT3H'));
+                $additionalPollutantList = $this
+                    ->pollutionDataFactory
+                    ->setCoord($additionalCoord)
+                    ->createDecoratedPollutantList($this->dateTime, new \DateInterval('PT3H'));
 
                 foreach ($pollutantList as $pollutantId => $pollutant) {
                     if (array_key_exists($pollutantId, $additionalPollutantList)) {
@@ -48,7 +55,7 @@ class Twitter extends AbstractTwitter
                     }
                 }
 
-                $message = $this->createMessage($twitterSchedule, $pollutantList, $additionalPollutantList);
+                $message = $this->createMessage($twitterSchedule, $this->removeNotTwitterableMeasurements($pollutantList), $this->removeNotTwitterableMeasurements($additionalPollutantList));
 
                 $params = [
                     'status' => $message,
@@ -86,5 +93,19 @@ class Twitter extends AbstractTwitter
             ->getMessage();
 
         return $message;
+    }
+
+    protected function removeNotTwitterableMeasurements(array $list): array
+    {
+        foreach ($list as $key => $measurementViewModelList) {
+            /** @var MeasurementViewModel $measurementViewModel */
+            foreach ($measurementViewModelList as $measurementViewModel) {
+                if (!$measurementViewModel->getMeasurement()->includeInTweets()) {
+                    unset($list[$key]);
+                }
+            }
+        }
+
+        return $list;
     }
 }

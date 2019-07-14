@@ -16,7 +16,7 @@ class AnalysisController extends AbstractController
     /**
      * @Feature("analysis_komfortofen")
      */
-    public function komfortofenAction(KomfortofenAnalysisInterface $komfortofenAnalysis): Response
+    public function komfortofenAction(KomfortofenAnalysisInterface $komfortofenAnalysis, SeoPageInterface $seoPage): Response
     {
         $interval = new \DateInterval('P30D');
         $untilDateTime = new \DateTimeImmutable();
@@ -27,6 +27,8 @@ class AnalysisController extends AbstractController
             ->setUntilDateTime($untilDateTime);
 
         $ofens = $komfortofenAnalysis->analyze();
+
+        $seoPage->setTitle('Finde Feinstaub-Belastungen aus Holzöfen in deiner Nähe');
 
         return $this->render('Analysis/komfortofen.html.twig', [
             'ofenList' => $ofens,

@@ -2,9 +2,9 @@
 
 namespace App\Twig\Extension;
 
-use App\AirQuality\Calculator\AirQualityCalculatorInterface;
-use App\AirQuality\PollutionLevel\PollutionLevelInterface;
-use App\Pollution\Box\Box;
+use App\Air\ViewModel\MeasurementViewModel;
+use App\Air\AirQuality\Calculator\AirQualityCalculatorInterface;
+use App\Air\AirQuality\PollutionLevel\PollutionLevelInterface;
 
 class PollutionLevelTwigExtension extends \Twig_Extension
 {
@@ -42,7 +42,7 @@ class PollutionLevelTwigExtension extends \Twig_Extension
             new \Twig_SimpleFunction('max_pollution_level', [$this, 'maxPollutionLevel'], ['is_safe' => ['raw']]),
             new \Twig_SimpleFunction('pollution_color', [$this, 'pollutionColor'], ['is_safe' => ['raw']]),
             new \Twig_SimpleFunction('pollution_color_name', [$this, 'pollutionColorName'], ['is_safe' => ['raw']]),
-            new \Twig_SimpleFunction('pollution_levels', [$this, 'getLevelsForPollutant'], ['is_safe' => ['raw']]),
+            new \Twig_SimpleFunction('pollution_levels', [$this, 'getLevelsForMeasurement'], ['is_safe' => ['raw']]),
         ];
     }
 
@@ -52,10 +52,10 @@ class PollutionLevelTwigExtension extends \Twig_Extension
 
         /** @var array $pollutant */
         foreach ($pollutionList as $pollutant) {
-            /** @var Box $box */
-            foreach ($pollutant as $box) {
-                if ($maxLevel < $box->getPollutionLevel()) {
-                    $maxLevel = $box->getPollutionLevel();
+            /** @var MeasurementViewModel $measurementViewModel */
+            foreach ($pollutant as $measurementViewModel) {
+                if ($maxLevel < $measurementViewModel->getPollutionLevel()) {
+                    $maxLevel = $measurementViewModel->getPollutionLevel();
                 }
             }
         }
@@ -73,7 +73,7 @@ class PollutionLevelTwigExtension extends \Twig_Extension
         return $this->backgroundColorNames[$pollutionLevel];
     }
 
-    public function getLevelsForPollutant(string $pollutantIdentifier): PollutionLevelInterface
+    public function getLevelsForMeasurement(string $pollutantIdentifier): PollutionLevelInterface
     {
         $pollutionLevels = $this->airQualityCalculator->getPollutionLevels();
 

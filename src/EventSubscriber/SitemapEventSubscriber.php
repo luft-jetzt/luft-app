@@ -2,10 +2,9 @@
 
 namespace App\EventSubscriber;
 
+use App\Air\MeasurementList\MeasurementListInterface;
 use App\Entity\City;
 use App\Entity\Station;
-use App\Pollution\Pollutant\PollutantInterface;
-use App\Pollution\PollutantList\PollutantListInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -25,15 +24,15 @@ class SitemapEventSubscriber implements EventSubscriberInterface
     /** @var RegistryInterface $registry */
     protected $registry;
 
-    /** @var PollutantListInterface $pollutantList */
-    protected $pollutantList;
+    /** @var MeasurementListInterface $measurementList */
+    protected $measurementList;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, RouterInterface $router, RegistryInterface $registry, PollutantListInterface $pollutantList)
+    public function __construct(UrlGeneratorInterface $urlGenerator, RouterInterface $router, RegistryInterface $registry, MeasurementListInterface $measurementList)
     {
         $this->urlGenerator = $urlGenerator;
         $this->router = $router;
         $this->registry = $registry;
-        $this->pollutantList = $pollutantList;
+        $this->measurementList = $measurementList;
     }
 
     public static function getSubscribedEvents(): array
@@ -76,9 +75,9 @@ class SitemapEventSubscriber implements EventSubscriberInterface
 
     public function registerPollutantUrls(UrlContainerInterface $urlContainer): void
     {
-        /** @var PollutantInterface $pollutant */
-        foreach ($this->pollutantList->getPollutants() as $pollutant) {
-            $routeName = sprintf('pollutant_%s', $pollutant->getIdentifier());
+        /** @var MeasurementListInterface $measurement */
+        foreach ($this->measurementList->getMeasurements() as $measurement) {
+            $routeName = sprintf('pollutant_%s', $measurement->getIdentifier());
 
             if ($this->router->getRouteCollection()->get($routeName)) {
                 $url = $this->urlGenerator->generate($routeName, [], UrlGeneratorInterface::ABSOLUTE_URL);

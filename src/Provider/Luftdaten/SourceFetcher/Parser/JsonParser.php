@@ -2,6 +2,7 @@
 
 namespace App\Provider\Luftdaten\SourceFetcher\Parser;
 
+use App\Air\Measurement\MeasurementInterface;
 use App\Pollution\Pollutant\PollutantInterface;
 use App\Pollution\Value\Value;
 
@@ -17,7 +18,7 @@ class JsonParser implements JsonParserInterface
             try {
                 $stationCode = sprintf('LFTDTN%d', $data->location->id);
 
-                $dateTime = new \DateTime($data->timestamp);
+                $dateTime = new \DateTimeImmutable($data->timestamp);
 
                 $newValueList = $this->getValues($data->sensordatavalues);
 
@@ -46,9 +47,9 @@ class JsonParser implements JsonParserInterface
             $value->setValue(floatval($sensorDataValue->value));
 
             if ($sensorDataValue->value_type === 'P1') {
-                $value->setPollutant(PollutantInterface::POLLUTANT_PM10);
+                $value->setPollutant(MeasurementInterface::MEASUREMENT_PM10);
             } elseif ($sensorDataValue->value_type === 'P2') {
-                $value->setPollutant(PollutantInterface::POLLUTANT_PM25);
+                $value->setPollutant(MeasurementInterface::MEASUREMENT_PM25);
             } else {
                 continue;
             }
