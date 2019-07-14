@@ -7,7 +7,7 @@ use App\Entity\Data;
 
 class PollutionDataFactory extends AbstractPollutionDataFactory
 {
-    public function createDecoratedPollutantList(\DateTime $dateTime = null, \DateInterval $dateInterval = null, int $workingSetSize = 1): array
+    public function createDecoratedPollutantList(\DateTime $dateTime = null, \DateInterval $dateInterval = null, int $workingSetSize = 20): array
     {
         if (!$dateTime) {
             $dateTime = new \DateTime();
@@ -49,7 +49,7 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
                 }
             }
         }
-
+        
         return $this->dataList->getList();
     }
 
