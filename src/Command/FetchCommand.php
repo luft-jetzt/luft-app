@@ -2,10 +2,8 @@
 
 namespace App\Command;
 
-use App\Pollution\DataPersister\UniquePersisterInterface;
-use App\Pollution\Pollutant\PollutantInterface;
-use App\Pollution\Value\Value;
-use App\Pollution\ValueCache\ValueCacheInterface;
+use App\Air\Measurement\MeasurementInterface;
+use App\Producer\Value\ValueProducerInterface;
 use App\Provider\ProviderInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Parser\Parser;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaCOQuery;
@@ -18,29 +16,28 @@ use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\Uba1SMW;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\Uba8SMW;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\SourceFetcher;
 use App\Provider\UmweltbundesamtDe\UmweltbundesamtDeProvider;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\Table;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class FetchCommand extends Command
+class FetchCommand extends ContainerAwareCommand
 {
-    /** @var ValueCacheInterface $valueCache */
-    protected $valueCache;
-
     /** @var SourceFetcher $fetcher */
     protected $fetcher;
 
     /** @var ProviderInterface $provider */
     protected $provider;
 
-    public function __construct(?string $name = null, ValueCacheInterface $valueCache, SourceFetcher $fetcher, UmweltbundesamtDeProvider $umweltbundesamtDeProvider)
+    /** @var ValueProducerInterface $valueProducer */
+    protected $valueProducer;
+
+    public function __construct(?string $name = null, ValueProducerInterface $valueProducer, SourceFetcher $fetcher, UmweltbundesamtDeProvider $umweltbundesamtDeProvider)
     {
-        $this->valueCache = $valueCache;
         $this->provider = $umweltbundesamtDeProvider;
         $this->fetcher = $fetcher;
+        $this->valueProducer = $valueProducer;
 
         parent::__construct($name);
     }
@@ -106,7 +103,7 @@ class FetchCommand extends Command
         $reporting = new Uba1SMW($endDateTime, $startDateTime);
         $query = new UbaPM10Query($reporting);
 
-        $this->fetch($output, $query, PollutantInterface::POLLUTANT_PM10);
+        $this->fetch($output, $query, MeasurementInterface::MEASUREMENT_PM10);
     }
 
     protected function fetchSO2(OutputInterface $output, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
@@ -116,7 +113,7 @@ class FetchCommand extends Command
         $reporting = new Uba1SMW($endDateTime, $startDateTime);
         $query = new UbaSO2Query($reporting);
 
-        $this->fetch($output, $query, PollutantInterface::POLLUTANT_SO2);
+        $this->fetch($output, $query, MeasurementInterface::MEASUREMENT_SO2);
     }
 
     protected function fetchNO2(OutputInterface $output, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
@@ -126,7 +123,7 @@ class FetchCommand extends Command
         $reporting = new Uba1SMW($endDateTime, $startDateTime);
         $query = new UbaNO2Query($reporting);
 
-        $this->fetch($output, $query, PollutantInterface::POLLUTANT_NO2);
+        $this->fetch($output, $query, MeasurementInterface::MEASUREMENT_NO2);
     }
 
     protected function fetchO3(OutputInterface $output, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
@@ -136,7 +133,7 @@ class FetchCommand extends Command
         $reporting = new Uba1SMW($endDateTime, $startDateTime);
         $query = new UbaO3Query($reporting);
 
-        $this->fetch($output, $query, PollutantInterface::POLLUTANT_O3);
+        $this->fetch($output, $query, MeasurementInterface::MEASUREMENT_O3);
     }
 
     protected function fetchCO(OutputInterface $output, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
@@ -146,7 +143,7 @@ class FetchCommand extends Command
         $reporting = new Uba8SMW($endDateTime, $startDateTime);
         $query = new UbaCOQuery($reporting);
 
-        $this->fetch($output, $query, PollutantInterface::POLLUTANT_CO);
+        $this->fetch($output, $query, MeasurementInterface::MEASUREMENT_CO);
     }
 
     protected function fetch(OutputInterface $output, UbaQueryInterface $query, int $pollutant)
@@ -158,9 +155,9 @@ class FetchCommand extends Command
         $parser = new Parser($query);
         $valueList = $parser->parse($response, $pollutant);
 
-        $this->valueCache
-            ->setProvider($this->provider)
-            ->addValuesToCache($valueList);
+        foreach ($valueList as $value) {
+            $this->valueProducer->publish($value);
+        }
 
         $output->writeln(sprintf('Wrote <info>%d</info> values to cache.', count($valueList)));
     }

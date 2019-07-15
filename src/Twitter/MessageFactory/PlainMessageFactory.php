@@ -2,7 +2,7 @@
 
 namespace App\Twitter\MessageFactory;
 
-use App\Pollution\Box\Box;
+use App\Air\ViewModel\MeasurementViewModel;
 
 class PlainMessageFactory extends AbstractMessageFactory
 {
@@ -10,9 +10,9 @@ class PlainMessageFactory extends AbstractMessageFactory
     {
         $this->message .= sprintf("%s\n", $this->title);
 
-        /** @var Box $box */
-        foreach ($this->boxList as $box) {
-            $this->message .= sprintf("%s: %.0f %s \n", $box->getPollutant()->getName(), $box->getData()->getValue(), $box->getPollutant()->getUnitPlain());
+        /** @var MeasurementViewModel $measurementViewModel */
+        foreach ($this->boxList as $measurementViewModel) {
+            $this->message .= sprintf("%s: %.0f %s \n", $measurementViewModel->getMeasurement()->getName(), $measurementViewModel->getData()->getValue(), $measurementViewModel->getMeasurement()->getUnitPlain());
         }
 
         $this->message .= sprintf("%s", $this->link);

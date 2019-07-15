@@ -18,6 +18,9 @@ doctrine:
         types:
             StationType: App\DBAL\Types\StationType
             AreaType: App\DBAL\Types\AreaType
+            datetime: App\DBAL\Types\UTCDateTimeType
+            date: App\DBAL\Types\UTCDateType
+            time: App\DBAL\Types\UTCTimeType
 
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'

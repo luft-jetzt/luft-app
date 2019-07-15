@@ -9,7 +9,11 @@ class Persister extends AbstractPersister
 {
     public function persistValues(array $values): PersisterInterface
     {
-        $this->fetchStationList();
+        if (0 === count($values)) {
+            return $this;
+        }
+
+        $this->uniqueStrategy->init($values);
 
         /** @var Value $value */
         foreach ($values as $value) {
@@ -26,12 +30,20 @@ class Persister extends AbstractPersister
                 continue;
             }
 
+            if ($this->uniqueStrategy->isDataDuplicate($data)) {
+                continue;
+            }
+
+            $this->uniqueStrategy->addData($data);
+
             $this->entityManager->persist($data);
 
             $this->newValueList[] = $data;
         }
 
         $this->entityManager->flush();
+
+        $this->uniqueStrategy->save();
 
         return $this;
     }

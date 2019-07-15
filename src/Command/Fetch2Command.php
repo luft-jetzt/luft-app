@@ -2,13 +2,11 @@
 
 namespace App\Command;
 
-use App\Pollution\Value\Value;
-use App\Pollution\ValueCache\ValueCacheInterface;
+use App\Producer\Value\ValueProducerInterface;
 use App\Provider\Luftdaten\LuftdatenProvider;
 use App\Provider\Luftdaten\SourceFetcher\Parser\JsonParserInterface;
 use App\Provider\Luftdaten\SourceFetcher\SourceFetcher;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -20,14 +18,14 @@ class Fetch2Command extends ContainerAwareCommand
     /** @var JsonParserInterface $parser */
     protected $parser;
 
-    /** @var ValueCacheInterface */
-    protected $valueCache;
+    /** @var ValueProducerInterface $valueProducer */
+    protected $valueProducer;
 
-    public function __construct(?string $name = null, ValueCacheInterface $valueCache, LuftdatenProvider $luftdatenProvider, JsonParserInterface $parser)
+    public function __construct(?string $name = null, ValueProducerInterface $valueProducer, LuftdatenProvider $luftdatenProvider, JsonParserInterface $parser)
     {
-        $this->valueCache = $valueCache;
         $this->provider = $luftdatenProvider;
         $this->parser = $parser;
+        $this->valueProducer = $valueProducer;
 
         parent::__construct($name);
     }
@@ -41,15 +39,15 @@ class Fetch2Command extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $this->valueCache->setProvider($this->provider);
-
         $sourceFetcher = new SourceFetcher();
 
         $response = $sourceFetcher->query();
 
         $valueList = $this->parser->parse($response);
 
-        $this->valueCache->setProvider($this->provider)->addValuesToCache($valueList);
+        foreach ($valueList as $value) {
+            $this->valueProducer->publish($value);
+        }
 
         $output->writeln(sprintf('Wrote <info>%d</info> values to cache.', count($valueList)));
     }
