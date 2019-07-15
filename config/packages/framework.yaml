@@ -9,3 +9,5 @@ framework:
         log: true
     assets:
         version: '%assets_version%'
+    templating:
+        engines: ['twig']

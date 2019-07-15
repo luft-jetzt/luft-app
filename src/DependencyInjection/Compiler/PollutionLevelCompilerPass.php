@@ -2,14 +2,14 @@
 
 namespace App\DependencyInjection\Compiler;
 
-use App\AirQuality\Calculator\AirQualityCalculatorInterface;
+use App\Air\AirQuality\Calculator\AirQualityCalculatorInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
 class PollutionLevelCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->has(AirQualityCalculatorInterface::class)) {
             return;

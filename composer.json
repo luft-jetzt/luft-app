@@ -52,7 +52,9 @@
         "symfony/validator": "^4.0",
         "symfony/web-link": "^4.0",
         "symfony/webpack-encore-pack": "*",
-        "symfony/yaml": "^4.0"
+        "whiteoctober/breadcrumbs-bundle": "^1.4",
+        "symfony/yaml": "^4.0",
+        "ext-json": "*"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.2",

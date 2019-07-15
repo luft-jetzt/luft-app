@@ -52,9 +52,7 @@ class OrmUniqueStrategy implements UniqueStrategyInterface
 
     public function isDataDuplicate(Data $data): bool
     {
-        $hash = $this->hashData($data);
-
-        return array_key_exists($hash, $this->existentDataList);
+        return array_key_exists(Hasher::hashData($data), $this->existentDataList);
     }
 
     public function addData(Data $data): UniqueStrategyInterface
@@ -65,11 +63,6 @@ class OrmUniqueStrategy implements UniqueStrategyInterface
     public function addDataList(array $dataList): UniqueStrategyInterface
     {
         return $this;
-    }
-
-    protected function hashData(Data $data): string
-    {
-        return $data->getStationId().$data->getDateTime()->format('U').$data->getPollutant().$data->getValue();
     }
 
     public function save(): UniqueStrategyInterface

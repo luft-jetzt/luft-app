@@ -47,7 +47,8 @@ services:
         alias: App\Twitter\MessageFactory\ExtendedEmojiMessageFactory
 
     App\Pollution\DataRetriever\DataRetrieverInterface:
-        alias: App\Pollution\DataRetriever\CachedElasticDataRetriever
+        #alias: App\Pollution\DataRetriever\CachedElasticDataRetriever
+        alias: App\Pollution\DataRetriever\ChainedDataRetriever
 
     App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface:
         alias: App\Pollution\PollutantFactoryStrategy\LuftdatenPollutantFactoryStrategy

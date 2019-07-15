@@ -4,7 +4,6 @@ namespace App\Pollution\UniqueStrategy;
 
 use App\Entity\Data;
 use App\ImportCache\ImportCacheInterface;
-use App\Pollution\Value\Value;
 
 class CacheUniqueStrategy implements UniqueStrategyInterface
 {
@@ -23,16 +22,12 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
 
     public function isDataDuplicate(Data $data): bool
     {
-        $hash = $this->hashData($data);
-
-        return $this->importCache->has($hash);
+        return $this->importCache->has(Hasher::hashData($data));
     }
 
     public function addData(Data $data): UniqueStrategyInterface
     {
-        $hash = $this->hashData($data);
-
-        $this->importCache->add($hash, $data->getDateTime()->format('U'));
+        $this->importCache->set(Hasher::hashData($data), (int) $data->getDateTime()->format('U'));
 
         return $this;
     }
@@ -62,15 +57,5 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
         $this->importCache->clear();
 
         return $this;
-    }
-
-    protected function hashData(Data $data): string
-    {
-        return $data->getStationId() . $data->getDateTime()->format('U') . $data->getPollutant() . $data->getValue();
-    }
-
-    protected function hashValue(Value $value): string
-    {
-        return $value->getStation() . $value->getDateTime()->format('U') . $value->getPollutant() . $value->getValue();
     }
 }
