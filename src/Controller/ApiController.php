@@ -27,7 +27,7 @@ class ApiController extends AbstractController
      *   description="Retrieve pollution data for station",
      *   @SWG\Schema(
      *     type="array",
-     *     @SWG\Items(ref=@Model(type=App\Pollution\Box\Box::class))
+     *     @SWG\Items(ref=@Model(type=App\Air\ViewModel\MeasurementViewModel::class))
      *   )
      * )
      * @SWG\Parameter(
@@ -62,7 +62,7 @@ class ApiController extends AbstractController
      *   description="Retrieve pollution data for cities",
      *   @SWG\Schema(
      *     type="array",
-     *     @SWG\Items(ref=@Model(type=App\Pollution\Box\Box::class))
+     *     @SWG\Items(ref=@Model(type=App\Air\ViewModel\MeasurementViewModel::class))
      *   )
      * )
      */
@@ -110,7 +110,7 @@ class ApiController extends AbstractController
      *   description="Returns pollution data of specified station",
      *   @SWG\Schema(
      *     type="array",
-     *     @SWG\Items(ref=@Model(type=App\Pollution\Box\Box::class))
+     *     @SWG\Items(ref=@Model(type=App\Air\ViewModel\MeasurementViewModel::class))
      *   )
      * )
      */
