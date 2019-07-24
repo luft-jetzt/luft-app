@@ -27,6 +27,7 @@ class LuftdatenPollutantFactoryStrategyTest extends TestCase
             MeasurementInterface::MEASUREMENT_NO2,
             MeasurementInterface::MEASUREMENT_SO2,
             MeasurementInterface::MEASUREMENT_CO,
+            MeasurementInterface::MEASUREMENT_CO2,
         ];
 
         $this->assertEquals($expectedMissingPollutantsList, $luftdatenPollutantFactoryStrategy->getMissingPollutants($dataList));
@@ -46,6 +47,7 @@ class LuftdatenPollutantFactoryStrategyTest extends TestCase
             MeasurementInterface::MEASUREMENT_PM10,
             MeasurementInterface::MEASUREMENT_NO2,
             MeasurementInterface::MEASUREMENT_SO2,
+            MeasurementInterface::MEASUREMENT_CO2,
         ];
 
         $this->assertEquals($expectedMissingPollutantsList, $luftdatenPollutantFactoryStrategy->getMissingPollutants($dataList));
@@ -67,11 +69,8 @@ class LuftdatenPollutantFactoryStrategyTest extends TestCase
 
     public function testEmptyStrategyNotSatisfiedWithPopulatedDataListForeignMeasurement(): void
     {
-        $data = new Data();
-        $data->setPollutant(MeasurementInterface::MEASUREMENT_NO2);
-
         $dataList = new DataList();
-        $dataList->addData($data);
+        $dataList->addData($this->createData(MeasurementInterface::MEASUREMENT_NO2));
 
         $luftdatenPollutantFactoryStrategy = new LuftdatenPollutantFactoryStrategy();
 
@@ -91,6 +90,7 @@ class LuftdatenPollutantFactoryStrategyTest extends TestCase
             MeasurementInterface::MEASUREMENT_NO2,
             MeasurementInterface::MEASUREMENT_SO2,
             MeasurementInterface::MEASUREMENT_CO,
+            MeasurementInterface::MEASUREMENT_CO2,
         ];
 
         $this->assertEquals($expectedMissingPollutantsList, $luftdatenPollutantFactoryStrategy->getMissingPollutants($dataList));
@@ -108,6 +108,7 @@ class LuftdatenPollutantFactoryStrategyTest extends TestCase
             MeasurementInterface::MEASUREMENT_O3,
             MeasurementInterface::MEASUREMENT_NO2,
             MeasurementInterface::MEASUREMENT_CO,
+            MeasurementInterface::MEASUREMENT_CO2,
         ];
 
         $this->assertEquals($expectedMissingPollutantsList, $luftdatenPollutantFactoryStrategy->getMissingPollutants($dataList));
@@ -128,6 +129,7 @@ class LuftdatenPollutantFactoryStrategyTest extends TestCase
             MeasurementInterface::MEASUREMENT_O3,
             MeasurementInterface::MEASUREMENT_NO2,
             MeasurementInterface::MEASUREMENT_CO,
+            MeasurementInterface::MEASUREMENT_CO2,
         ];
 
         $this->assertEquals($expectedMissingPollutantsList, $luftdatenPollutantFactoryStrategy->getMissingPollutants($dataList));
@@ -263,13 +265,17 @@ class LuftdatenPollutantFactoryStrategyTest extends TestCase
     protected function createData(int $measurementId, string $provider = 'test-provider'): Data
     {
         $station = new Station(53.4, 9.73);
-        $station->setProvider($provider);
+        $station
+            ->setProvider($provider)
+            ->setStationCode('DESH001');
 
         $data = new Data();
         $data
             ->setId(++$this->testDataId)
             ->setPollutant($measurementId)
-            ->setStation($station);
+            ->setStation($station)
+            ->setDateTime(new \DateTime('2019-01-01 12:34:56'))
+            ->setValue(42.3);
 
         return $data;
     }
