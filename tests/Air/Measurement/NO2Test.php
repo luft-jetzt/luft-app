@@ -46,4 +46,9 @@ class NO2Test extends TestCase
     {
         $this->assertTrue((new NO2())->includeInTweets());
     }
+
+    public function testDecimals(): void
+    {
+        $this->assertEquals(0, (new NO2())->getDecimals());
+    }
 }
