@@ -12,5 +12,6 @@ class PM10 extends AbstractMeasurement
         $this->shortNameHtml = 'PM<sub>10</sub>';
         $this->showOnMap = true;
         $this->includeInTweets = true;
+        $this->decimals = 0;
     }
 }

@@ -46,4 +46,9 @@ class O3Test extends TestCase
     {
         $this->assertTrue((new O3())->includeInTweets());
     }
+
+    public function testDecimals(): void
+    {
+        $this->assertEquals(0, (new O3())->getDecimals());
+    }
 }

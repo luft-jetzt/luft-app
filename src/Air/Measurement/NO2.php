@@ -12,5 +12,6 @@ class NO2 extends AbstractMeasurement
         $this->shortNameHtml = 'NO<sub>2</sub>';
         $this->showOnMap = true;
         $this->includeInTweets = true;
+        $this->decimals = 0;
     }
 }

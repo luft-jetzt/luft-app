@@ -22,6 +22,9 @@ abstract class AbstractMeasurement implements MeasurementInterface
     /** @var bool $includeInTweets */
     protected $includeInTweets;
 
+    /** @var int $decimals */
+    protected $decimals;
+
     public function getUnitHtml(): string
     {
         return $this->unitHtml;
@@ -63,5 +66,10 @@ abstract class AbstractMeasurement implements MeasurementInterface
     public function includeInTweets(): bool
     {
         return $this->includeInTweets;
+    }
+
+    public function getDecimals(): int
+    {
+        return $this->decimals;
     }
 }

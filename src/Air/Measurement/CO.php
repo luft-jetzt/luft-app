@@ -12,5 +12,6 @@ class CO extends AbstractMeasurement
         $this->shortNameHtml = 'CO';
         $this->showOnMap = true;
         $this->includeInTweets = true;
+        $this->decimals = 0;
     }
 }
