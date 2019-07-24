@@ -2,11 +2,10 @@
 
 namespace App\Tests\Pollutant\ViewModel;
 
+use App\Air\Measurement\CO;
+use App\Air\ViewModel\MeasurementViewModel;
 use App\Entity\Data;
 use App\Entity\Station;
-use App\Pollution\Pollutant\CO;
-use App\Pollution\Pollutant\PollutantInterface;
-use App\Pollution\ViewModel\PollutantViewModel;
 use PHPUnit\Framework\TestCase;
 
 class PollutantViewModelTest extends TestCase
@@ -15,7 +14,7 @@ class PollutantViewModelTest extends TestCase
     {
         $data = new Data();
 
-        $pollutantViewModel = new PollutantViewModel($data);
+        $pollutantViewModel = new MeasurementViewModel($data);
 
         $this->assertEquals($data, $pollutantViewModel->getData());
     }
@@ -24,7 +23,7 @@ class PollutantViewModelTest extends TestCase
     {
         $data = new Data();
 
-        $pollutantViewModel = new PollutantViewModel($data);
+        $pollutantViewModel = new MeasurementViewModel($data);
         $pollutantViewModel->setDistance(42.5);
 
         $this->assertEquals(42.5, $pollutantViewModel->getDistance());
@@ -34,7 +33,7 @@ class PollutantViewModelTest extends TestCase
     {
         $data = new Data();
 
-        $pollutantViewModel = new PollutantViewModel($data);
+        $pollutantViewModel = new MeasurementViewModel($data);
         $pollutantViewModel->setCaption('Testcaption');
 
         $this->assertEquals('Testcaption', $pollutantViewModel->getCaption());
@@ -45,17 +44,17 @@ class PollutantViewModelTest extends TestCase
         $data = new Data();
         $pollutant = new CO();
 
-        $pollutantViewModel = new PollutantViewModel($data);
-        $pollutantViewModel->setPollutant($pollutant);
+        $pollutantViewModel = new MeasurementViewModel($data);
+        $pollutantViewModel->setMeasurement($pollutant);
 
-        $this->assertEquals($pollutant, $pollutantViewModel->getPollutant());
+        $this->assertEquals($pollutant, $pollutantViewModel->getMeasurement());
     }
 
     public function testPollutionLevel(): void
     {
         $data = new Data();
 
-        $pollutantViewModel = new PollutantViewModel($data);
+        $pollutantViewModel = new MeasurementViewModel($data);
         $pollutantViewModel->setPollutionLevel(2);
 
         $this->assertEquals(2, $pollutantViewModel->getPollutionLevel());
@@ -66,7 +65,7 @@ class PollutantViewModelTest extends TestCase
         $data = new Data();
         $station = new Station(53.5, 10.2);
 
-        $pollutantViewModel = new PollutantViewModel($data);
+        $pollutantViewModel = new MeasurementViewModel($data);
         $pollutantViewModel->setStation($station);
 
         $this->assertEquals($station, $pollutantViewModel->getStation());
