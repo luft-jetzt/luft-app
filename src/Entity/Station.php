@@ -119,12 +119,12 @@ class Station extends Coord
         return $this;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getStationCode(): string
+    public function getStationCode(): ?string
     {
         return $this->stationCode;
     }

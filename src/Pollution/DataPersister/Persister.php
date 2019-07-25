@@ -4,6 +4,7 @@ namespace App\Pollution\DataPersister;
 
 use App\Entity\Data;
 use App\Pollution\Value\Value;
+use App\Pollution\ValueDataConverter\ValueDataConverter;
 
 class Persister extends AbstractPersister
 {
@@ -17,15 +18,10 @@ class Persister extends AbstractPersister
 
         /** @var Value $value */
         foreach ($values as $value) {
-            $data = new Data();
-
-            $data
-                ->setDateTime($value->getDateTime())
-                ->setValue($value->getValue())
-                ->setPollutant($value->getPollutant());
-
             if ($this->stationExists($value->getStation())) {
-                $data->setStation($this->getStationByCode($value->getStation()));
+                $station = $this->getStationByCode($value->getStation());
+
+                $data = ValueDataConverter::convert($value, $station);
             } else {
                 continue;
             }

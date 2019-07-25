@@ -7,6 +7,7 @@ use App\Pollution\DataCache\DataCacheInterface;
 use App\Pollution\StationCache\StationCacheInterface;
 use App\Pollution\UniqueStrategy\UniqueStrategyInterface;
 use App\Pollution\Value\Value;
+use App\Pollution\ValueDataConverter\ValueDataConverter;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CachePersister extends AbstractPersister
@@ -29,15 +30,10 @@ class CachePersister extends AbstractPersister
 
         /** @var Value $value */
         foreach ($values as $value) {
-            $data = new Data();
-
-            $data
-                ->setDateTime($value->getDateTime())
-                ->setValue($value->getValue())
-                ->setPollutant($value->getPollutant());
-
             if ($this->stationExists($value->getStation())) {
-                $data->setStation($this->getStationByCode($value->getStation()));
+                $station = $this->getStationByCode($value->getStation());
+
+                $data = ValueDataConverter::convert($value, $station);
             } else {
                 continue;
             }
