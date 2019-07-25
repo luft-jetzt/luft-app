@@ -26,6 +26,10 @@ class AdhocDataRetriever implements DataRetrieverInterface
 
     public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 250): array
     {
+        if ($coord instanceof Station) {
+            return [];
+        }
+
         if (MeasurementInterface::MEASUREMENT_UV === $pollutantId) {
             $data = $this->retrieveUVIndexForCoord($coord);
 
