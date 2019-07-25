@@ -2,6 +2,8 @@
 
 namespace App\Pollution\DataRetriever;
 
+use App\Air\Measurement\MeasurementInterface;
+use App\Entity\Data;
 use App\Entity\Station;
 use App\Pollution\ValueDataConverter\ValueDataConverter;
 use App\Provider\OpenWeatherMapProvider\SourceFetcher\Parser\JsonParserInterface;
@@ -24,15 +26,38 @@ class AdhocDataRetriever implements DataRetrieverInterface
 
     public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 250): array
     {
-        $jsonData = $this->sourceFetcher->query($coord);
+        if (MeasurementInterface::MEASUREMENT_UV === $pollutantId) {
+            $data = $this->retrieveUVIndexForCoord($coord);
 
-        $valueList = $this->jsonParser->parse($jsonData);
+            return [$data];
+        }
 
-        $value = array_pop($valueList);
+        if (MeasurementInterface::MEASUREMENT_TEMPERATURE === $pollutantId) {
+            $data = $this->retrieveTemperatureForCoord($coord);
+
+            return [$data];
+        }
+
+        return [];
+    }
+
+    protected function retrieveUVIndexForCoord(CoordInterface $coord): Data
+    {
+        $jsonData = $this->sourceFetcher->queryUVIndex($coord);
+
+        $value = $this->jsonParser->parseUVIndex($jsonData);
 
         $station = new Station($coord->getLatitude(), $coord->getLongitude());
-        $data = ValueDataConverter::convert($value, $station);
+        return ValueDataConverter::convert($value, $station);
+    }
 
-        return [$data];
+    protected function retrieveTemperatureForCoord(CoordInterface $coord): Data
+    {
+        $jsonData = $this->sourceFetcher->queryTemperature($coord);
+
+        $value = $this->jsonParser->parseTemperature($jsonData);
+
+        $station = new Station($coord->getLatitude(), $coord->getLongitude());
+        return ValueDataConverter::convert($value, $station);
     }
 }
