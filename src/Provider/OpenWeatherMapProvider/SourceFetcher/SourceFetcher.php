@@ -19,9 +19,17 @@ class SourceFetcher
         $this->openWeatherMapAppId = $openWeatherMapAppId;
     }
 
-    public function query(CoordInterface $coord): string
+    public function queryUVIndex(CoordInterface $coord): string
     {
         $url = sprintf('https://api.openweathermap.org/data/2.5/uvi?lat=%f&lon=%f&appid=%s', $coord->getLatitude(), $coord->getLongitude(), $this->openWeatherMapAppId);
+        $this->curl->get($url);
+
+        return $this->curl->rawResponse;
+    }
+
+    public function queryTemperature(CoordInterface $coord): string
+    {
+        $url = sprintf('https://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f&appid=%s', $coord->getLatitude(), $coord->getLongitude(), $this->openWeatherMapAppId);
         $this->curl->get($url);
 
         return $this->curl->rawResponse;
