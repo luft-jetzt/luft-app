@@ -14,6 +14,7 @@ interface MeasurementInterface
     const MEASUREMENT_CO = 5;
     const MEASUREMENT_CO2 = 7;
     const MEASUREMENT_UV = 8;
+    const MEASUREMENT_TEMPERATURE = 9;
 
     /**
      * @JMS\Expose()
