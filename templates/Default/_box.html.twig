@@ -5,13 +5,13 @@
      {% set combined = false %}
     {% endif %}
 
-    {% if linkToStation is defined and linkToStation == true %}
+    {% if linkToStation is defined and linkToStation == true and view_model.station.id %}
         {% set stationLink = true %}
     {% else %}
         {% set stationLink = false %}
     {% endif %}
 
-    {% if showStationTitle is defined and showStationTitle != false %}
+    {% if showStationTitle is defined and showStationTitle != false and view_model.station.id %}
         {% set stationTitle = true %}
     {% else %}
         {% set stationTitle = false %}
