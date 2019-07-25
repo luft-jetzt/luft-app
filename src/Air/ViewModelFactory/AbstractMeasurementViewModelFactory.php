@@ -11,6 +11,7 @@ use App\Air\Measurement\O3;
 use App\Air\Measurement\PM10;
 use App\Air\Measurement\PM25;
 use App\Air\Measurement\SO2;
+use App\Air\Measurement\UVIndex;
 use Caldera\GeoBasic\Coord\CoordInterface;
 
 abstract class AbstractMeasurementViewModelFactory implements MeasurementViewModelFactoryInterface
@@ -51,6 +52,7 @@ abstract class AbstractMeasurementViewModelFactory implements MeasurementViewMod
             case 4: return new SO2();
             case 5: return new CO();
             case 7: return new CO2();
+            case 8: return new UVIndex();
         }
     }
 
