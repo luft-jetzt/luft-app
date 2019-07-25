@@ -9,11 +9,12 @@ class ChainedDataRetriever implements DataRetrieverInterface
     /** @var array $chain */
     protected $chain = [];
 
-    public function __construct(CachedElasticDataRetriever $cachedElasticDataRetriever, Co2CachedDataRetriever $co2CachedDataRetriever)
+    public function __construct(CachedElasticDataRetriever $cachedElasticDataRetriever, Co2CachedDataRetriever $co2CachedDataRetriever, AdhocDataRetriever $adhocDataRetriever)
     {
         $this->chain = [
             $cachedElasticDataRetriever,
             $co2CachedDataRetriever,
+            $adhocDataRetriever,
         ];
     }
 

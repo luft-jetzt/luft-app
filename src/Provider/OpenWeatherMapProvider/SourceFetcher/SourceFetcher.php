@@ -2,6 +2,7 @@
 
 namespace App\Provider\OpenWeatherMapProvider\SourceFetcher;
 
+use Caldera\GeoBasic\Coord\CoordInterface;
 use Curl\Curl;
 
 class SourceFetcher
@@ -18,11 +19,11 @@ class SourceFetcher
         $this->openWeatherMapAppId = $openWeatherMapAppId;
     }
 
-    public function query(float $latitude, float $longitude): string
+    public function query(CoordInterface $coord): string
     {
-        $url = sprintf('https://api.openweathermap.org/data/2.5/uvi?lat=%f&lon=%f&appid=%s', $latitude, $longitude, $this->openWeatherMapAppId);
+        $url = sprintf('https://api.openweathermap.org/data/2.5/uvi?lat=%f&lon=%f&appid=%s', $coord->getLatitude(), $coord->getLongitude(), $this->openWeatherMapAppId);
         $this->curl->get($url);
 
-        return $this->curl->response;
+        return $this->curl->rawResponse;
     }
 }
