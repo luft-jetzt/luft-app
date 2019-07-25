@@ -68,6 +68,11 @@ class City
      */
     protected $user;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $openWeatherMapCityId;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -213,5 +218,17 @@ class City
     public function __toString(): ?string
     {
         return $this->name ? $this->name : '';
+    }
+
+    public function getOpenWeatherMapCityId(): ?int
+    {
+        return $this->openWeatherMapCityId;
+    }
+
+    public function setOpenWeatherMapCityId(?int $openWeatherMapCityId): self
+    {
+        $this->openWeatherMapCityId = $openWeatherMapCityId;
+
+        return $this;
     }
 }
