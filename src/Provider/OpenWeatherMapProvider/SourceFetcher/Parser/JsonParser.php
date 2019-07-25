@@ -3,7 +3,6 @@
 namespace App\Provider\OpenWeatherMapProvider\SourceFetcher\Parser;
 
 use App\Air\Measurement\MeasurementInterface;
-use App\Entity\Station;
 use App\Pollution\Value\Value;
 
 class JsonParser implements JsonParserInterface
@@ -15,7 +14,7 @@ class JsonParser implements JsonParserInterface
         $value = new Value();
         $value->setValue((float) $uvValue->value)
             ->setPollutant(MeasurementInterface::MEASUREMENT_UV)
-            ->setDateTime(new \DateTimeImmutable(sprintf('@%d', $uvValue->date)));
+            ->setDateTime(new \DateTimeImmutable(sprintf('@%d', $uvValue->date), new \DateTimeZone('UTC')));
 
         return [$value];
     }

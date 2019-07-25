@@ -13,7 +13,7 @@ class AdhocDataRetriever implements DataRetrieverInterface
     /** @var SourceFetcher $sourceFetcher */
     protected $sourceFetcher;
 
-    /** @var JsonParserInterface */
+    /** @var JsonParserInterface $jsonParser */
     protected $jsonParser;
 
     public function __construct(SourceFetcher $sourceFetcher, JsonParserInterface $jsonParser)
