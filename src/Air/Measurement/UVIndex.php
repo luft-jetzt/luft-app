@@ -12,5 +12,6 @@ class UVIndex extends AbstractMeasurement
         $this->shortNameHtml = 'UV-Index';
         $this->showOnMap = false;
         $this->includeInTweets = false;
+        $this->decimals = 0;
     }
 }
