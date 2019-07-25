@@ -2,17 +2,33 @@
 
 namespace App\Provider\OpenWeatherMapProvider\CityIdHandler;
 
+use App\Entity\City;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+
 class CityIdHandler
 {
-    protected $json;
+    /** @var array $cityDataList */
+    protected $cityDataList;
 
-    public function load(): void
+    /** @var RegistryInterface $registry */
+    protected $registry;
+
+    /** @var CityDataLoader $cityDataLoader */
+    protected $cityDataLoader;
+
+    /** @var array $cityList */
+    protected $cityList = [];
+
+    public function __construct(RegistryInterface $registry, CityDataLoader $cityDataLoader)
     {
-        $this->json = json_decode(file_get_contents( __DIR__.'/../../../../public/city.list.json'));
+        $this->registry = $registry;
+        $this->cityDataLoader = $cityDataLoader;
     }
 
-    public function getJson(): array
+    public function assign(): void
     {
-        return $this->json;
+        $this->cityDataList = $this->cityDataLoader->loadCityData();
+
+        $this->cityList = $this->registry->getRepository(City::class)->findAll();
     }
 }
