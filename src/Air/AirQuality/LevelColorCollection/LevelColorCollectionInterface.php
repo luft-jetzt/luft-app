@@ -6,5 +6,6 @@ use App\Air\AirQuality\LevelColors\LevelColorsInterface;
 
 interface LevelColorCollectionInterface
 {
+    public function getLevelColorsList(): array;
     public function getLevelColorsForMeasurement(string $measurementIdentifier): LevelColorsInterface;
 }

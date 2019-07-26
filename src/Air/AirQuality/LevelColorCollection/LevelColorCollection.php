@@ -21,6 +21,11 @@ class LevelColorCollection implements LevelColorCollectionInterface
         return $this;
     }
 
+    public function getLevelColorsList(): array
+    {
+        return $this->levelColorsList;
+    }
+
     public function getLevelColorsForMeasurement(string $measurementIdentifier): LevelColorsInterface
     {
         if (!array_key_exists($measurementIdentifier, $this->levelColorsList)) {
