@@ -4,6 +4,7 @@ namespace App\Air\AirQuality\LevelColorCollection;
 
 use App\Air\AirQuality\LevelColors\LevelColorsInterface;
 use App\Air\AirQuality\LevelColors\StandardLevelColors;
+use App\Util\ClassUtil;
 
 class LevelColorCollection implements LevelColorCollectionInterface
 {
@@ -17,9 +18,10 @@ class LevelColorCollection implements LevelColorCollectionInterface
 
     public function addLevelColors(LevelColorsInterface $levelColors): LevelColorCollectionInterface
     {
-        echo get_class($levelColors);
-
-        $this->levelColorsList[] = $levelColors;
+        $lowercaseClassName = ClassUtil::getLowercaseShortname($levelColors);
+        $identifier = str_replace('Levelcolors', '', $lowercaseClassName);
+        
+        $this->levelColorsList[$identifier] = $levelColors;
 
         return $this;
     }
