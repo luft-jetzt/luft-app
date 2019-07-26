@@ -4,6 +4,7 @@ namespace App\Twig\Extension;
 
 use App\Air\AirQuality\LevelColorHandler\LevelColorHandlerInterface;
 use App\Air\AirQuality\PollutionLevel\PollutionLevelInterface;
+use App\Air\ViewModel\MeasurementViewModel;
 
 class PollutionLevelTwigExtension extends \Twig_Extension
 {
@@ -30,14 +31,14 @@ class PollutionLevelTwigExtension extends \Twig_Extension
         return $this->levelColorHandler->maxPollutionLevel($pollutionList);
     }
 
-    public function pollutionColor(int $pollutionLevel): string
+    public function pollutionColor(MeasurementViewModel $measurementViewModel): string
     {
-        return $this->levelColorHandler->pollutionColor($pollutionLevel);
+        return $this->levelColorHandler->pollutionColor($measurementViewModel);
     }
 
-    public function pollutionColorName(int $pollutionLevel): string
+    public function pollutionColorName(MeasurementViewModel $measurementViewModel): string
     {
-        return $this->levelColorHandler->pollutionColorName($pollutionLevel);
+        return $this->levelColorHandler->pollutionColorName($measurementViewModel);
     }
 
     public function getLevelsForMeasurement(string $pollutantIdentifier): PollutionLevelInterface

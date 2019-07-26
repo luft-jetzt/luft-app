@@ -38,14 +38,14 @@ class LevelColorHandler implements LevelColorHandlerInterface
         return $maxLevel;
     }
 
-    public function pollutionColor(int $pollutionLevel): string
+    public function pollutionColor(MeasurementViewModel $measurementViewModel): string
     {
-        return $this->levelColorCollection->getBackgroundColor($pollutionLevel);
+        return $this->levelColorCollection->getBackgroundColor($measurementViewModel->getPollutionLevel());
     }
 
-    public function pollutionColorName(int $pollutionLevel): string
+    public function pollutionColorName(MeasurementViewModel $measurementViewModel): string
     {
-        return $this->levelColorCollection->getBackgroundColorName($pollutionLevel);
+        return $this->levelColorCollection->getBackgroundColorName($measurementViewModel->getPollutionLevel());
     }
 
     public function getLevelsForMeasurement(string $pollutantIdentifier): PollutionLevelInterface
