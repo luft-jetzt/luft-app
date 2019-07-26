@@ -5,16 +5,16 @@ namespace App\Air\AirQuality\LevelColors;
 class UVIndexLevelColors extends AbstractLevelColors
 {
     protected $backgroundColors = [
-        0 => '#c0ffa0',
-        1 => '#f8f040',
-        2 => '#f87820',
-        3 => '#a80080',
+        1 => '#c0ffa0',
+        2 => '#f8f040',
+        3 => '#f87820',
+        4 => '#a80080',
     ];
 
     protected $backgroundColorNames = [
-        0 => 'green',
-        1 => 'yellow',
-        2 => 'red',
-        3 => 'purple',
+        1 => 'green',
+        2 => 'yellow',
+        3 => 'red',
+        4 => 'purple',
     ];
 }
