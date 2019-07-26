@@ -32,14 +32,4 @@ class LevelColorCollection implements LevelColorCollectionInterface
 
         return new StandardLevelColors();
     }
-
-    public function getBackgroundColor(string $measurementIdentifier, int $pollutionLevel): string
-    {
-        return $this->levelColorsList[$measurementIdentifier]->getBackgroundColors()[$pollutionLevel];
-    }
-
-    public function getBackgroundColorName(string $measurementIdentifier, int $pollutionLevel): string
-    {
-        return $this->levelColorsList[$measurementIdentifier]->getBackgroundColorNames()[$pollutionLevel];
-    }
 }
