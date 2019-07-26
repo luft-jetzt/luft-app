@@ -38,6 +38,13 @@ class LevelColorHandler implements LevelColorHandlerInterface
         return $maxLevel;
     }
 
+    public function maxPollutionColorName(array $pollutionList): string
+    {
+        $maxLevel = $this->maxPollutionLevel($pollutionList);
+
+        return $this->levelColorCollection->getLevelColorsList()['standard']->getBackgroundColorNames()[$maxLevel];
+    }
+
     public function pollutionColor(MeasurementViewModel $measurementViewModel): string
     {
         return $this->levelColorCollection->getLevelColorsForMeasurement($measurementViewModel->getMeasurement()->getIdentifier())->getBackgroundColors()[$measurementViewModel->getPollutionLevel()];

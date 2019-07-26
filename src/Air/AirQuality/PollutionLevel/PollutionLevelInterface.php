@@ -2,8 +2,6 @@
 
 namespace App\Air\AirQuality\PollutionLevel;
 
-use App\Entity\Data;
-
 interface PollutionLevelInterface
 {
     public function getLevels(): array;

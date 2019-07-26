@@ -8,6 +8,7 @@ use App\Air\ViewModel\MeasurementViewModel;
 interface LevelColorHandlerInterface
 {
     public function maxPollutionLevel(array $pollutionList): int;
+    public function maxPollutionColorName(array $pollutionList): string;
     public function pollutionColor(MeasurementViewModel $measurementViewModel): string;
     public function pollutionColorName(MeasurementViewModel $measurementViewModel): string;
     public function getLevelsForMeasurement(string $pollutantIdentifier): PollutionLevelInterface;

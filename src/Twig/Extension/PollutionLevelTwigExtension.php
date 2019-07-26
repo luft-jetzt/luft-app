@@ -20,6 +20,7 @@ class PollutionLevelTwigExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('max_pollution_level', [$this, 'maxPollutionLevel'], ['is_safe' => ['raw']]),
+            new \Twig_SimpleFunction('max_pollution_color_name', [$this, 'maxPollutionColorName'], ['is_safe' => ['raw']]),
             new \Twig_SimpleFunction('pollution_color', [$this, 'pollutionColor'], ['is_safe' => ['raw']]),
             new \Twig_SimpleFunction('pollution_color_name', [$this, 'pollutionColorName'], ['is_safe' => ['raw']]),
             new \Twig_SimpleFunction('pollution_levels', [$this, 'getLevelsForMeasurement'], ['is_safe' => ['raw']]),
@@ -31,6 +32,10 @@ class PollutionLevelTwigExtension extends \Twig_Extension
         return $this->levelColorHandler->maxPollutionLevel($pollutionList);
     }
 
+    public function maxPollutionColorName(array $pollutionList): string
+    {
+        return $this->levelColorHandler->maxPollutionColorName($pollutionList);
+    }
     public function pollutionColor(MeasurementViewModel $measurementViewModel): string
     {
         return $this->levelColorHandler->pollutionColor($measurementViewModel);
