@@ -40,12 +40,12 @@ class LevelColorHandler implements LevelColorHandlerInterface
 
     public function pollutionColor(MeasurementViewModel $measurementViewModel): string
     {
-        return $this->levelColorCollection->getBackgroundColor($measurementViewModel->getPollutionLevel());
+        return $this->levelColorCollection->getLevelColorsForMeasurement($measurementViewModel->getMeasurement()->getIdentifier())->getBackgroundColors()[$measurementViewModel->getPollutionLevel()];
     }
 
     public function pollutionColorName(MeasurementViewModel $measurementViewModel): string
     {
-        return $this->levelColorCollection->getBackgroundColorName($measurementViewModel->getPollutionLevel());
+        return $this->levelColorCollection->getLevelColorsForMeasurement($measurementViewModel->getMeasurement()->getIdentifier())->getBackgroundColorNames()[$measurementViewModel->getPollutionLevel()];
     }
 
     public function getLevelsForMeasurement(string $pollutantIdentifier): PollutionLevelInterface

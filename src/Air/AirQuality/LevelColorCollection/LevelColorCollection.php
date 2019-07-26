@@ -7,21 +7,39 @@ use App\Air\AirQuality\LevelColors\StandardLevelColors;
 
 class LevelColorCollection implements LevelColorCollectionInterface
 {
-    /** @var LevelColorsInterface $level */
-    protected $level;
+    /** @var array $levelColorsList */
+    protected $levelColorsList = [];
 
     public function __construct()
     {
         $this->level = new StandardLevelColors(); // todo
     }
 
-    public function getBackgroundColor(int $pollutionLevel): string
+    public function addLevelColors(LevelColorsInterface $levelColors): LevelColorCollectionInterface
     {
-        return $this->level->getBackgroundColors()[$pollutionLevel];
+        echo get_class($levelColors);
+
+        $this->levelColorsList[] = $levelColors;
+
+        return $this;
     }
 
-    public function getBackgroundColorName(int $pollutionLevel): string
+    public function getLevelColorsForMeasurement(string $measurementIdentifier): LevelColorsInterface
     {
-        return $this->level->getBackgroundColorNames()[$pollutionLevel];
+        if (!array_key_exists($measurementIdentifier, $this->levelColorsList)) {
+            return new StandardLevelColors();
+        }
+
+        return new StandardLevelColors();
+    }
+
+    public function getBackgroundColor(string $measurementIdentifier, int $pollutionLevel): string
+    {
+        return $this->levelColorsList[$measurementIdentifier]->getBackgroundColors()[$pollutionLevel];
+    }
+
+    public function getBackgroundColorName(string $measurementIdentifier, int $pollutionLevel): string
+    {
+        return $this->levelColorsList[$measurementIdentifier]->getBackgroundColorNames()[$pollutionLevel];
     }
 }

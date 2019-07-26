@@ -2,8 +2,10 @@
 
 namespace App;
 
+use App\Air\AirQuality\LevelColors\LevelColorsInterface;
 use App\Air\AirQuality\PollutionLevel\PollutionLevelInterface;
 use App\Air\Measurement\MeasurementInterface;
+use App\DependencyInjection\Compiler\LevelColorCompilerPass;
 use App\DependencyInjection\Compiler\PollutionLevelCompilerPass;
 use App\DependencyInjection\Compiler\ProviderCompilerPass;
 use App\Provider\ProviderInterface;
@@ -62,6 +64,9 @@ class Kernel extends BaseKernel
 
         $container->addCompilerPass(new PollutantCompilerPass());
         $container->registerForAutoconfiguration(MeasurementInterface::class)->addTag('measurement');
+
+        $container->addCompilerPass(new LevelColorCompilerPass());
+        $container->registerForAutoconfiguration(LevelColorsInterface::class)->addTag('level_colors');
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes)
