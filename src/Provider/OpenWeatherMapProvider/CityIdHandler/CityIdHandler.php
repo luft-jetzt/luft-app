@@ -30,5 +30,19 @@ class CityIdHandler
         $this->cityDataList = $this->cityDataLoader->loadCityData();
 
         $this->cityList = $this->registry->getRepository(City::class)->findAll();
+
+        /** @var City $city */
+        foreach ($this->cityList as $city) {
+            if ($city->getOpenWeatherMapCityId()) {
+                continue;
+            }
+
+            /** @var array $cityData */
+            foreach ($this->cityDataList as $cityData) {
+                if ($cityData['name'] === $city->getName()) {
+                    dump($cityData);
+                }
+            }
+        }
     }
 }
