@@ -3,37 +3,22 @@
 namespace App\Air\AirQuality\LevelColorHandler;
 
 use App\Air\AirQuality\Calculator\AirQualityCalculatorInterface;
+use App\Air\AirQuality\LevelColorCollection\LevelColorCollectionInterface;
 use App\Air\AirQuality\PollutionLevel\PollutionLevelInterface;
 use App\Air\ViewModel\MeasurementViewModel;
 
 class LevelColorHandler implements LevelColorHandlerInterface
 {
-    protected $backgroundColors = [
-        0 => 'white',
-        1 => '#28a745',
-        2 => '#28a745',
-        3 => '#ffc107',
-        4 => '#ffc107',
-        5 => '#dc3545',
-        6 => '#dc3545',
-    ];
-
-    protected $backgroundColorNames = [
-        0 => 'white',
-        1 => 'green',
-        2 => 'green',
-        3 => 'yellow',
-        4 => 'yellow',
-        5 => 'red',
-        6 => 'red',
-    ];
-
     /** @var AirQualityCalculatorInterface $airQualityCalculator */
     protected $airQualityCalculator;
 
-    public function __construct(AirQualityCalculatorInterface $airQualityCalculator)
+    /** @var LevelColorCollectionInterface $levelColorCollection */
+    protected $levelColorCollection;
+
+    public function __construct(AirQualityCalculatorInterface $airQualityCalculator, LevelColorCollectionInterface $levelColorCollection)
     {
         $this->airQualityCalculator = $airQualityCalculator;
+        $this->levelColorCollection = $levelColorCollection;
     }
 
     public function maxPollutionLevel(array $pollutionList): int
@@ -55,12 +40,12 @@ class LevelColorHandler implements LevelColorHandlerInterface
 
     public function pollutionColor(int $pollutionLevel): string
     {
-        return $this->backgroundColors[$pollutionLevel];
+        return $this->levelColorCollection->getBackgroundColor($pollutionLevel);
     }
 
     public function pollutionColorName(int $pollutionLevel): string
     {
-        return $this->backgroundColorNames[$pollutionLevel];
+        return $this->levelColorCollection->getBackgroundColorName($pollutionLevel);
     }
 
     public function getLevelsForMeasurement(string $pollutantIdentifier): PollutionLevelInterface
