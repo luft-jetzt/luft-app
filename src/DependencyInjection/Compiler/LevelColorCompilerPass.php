@@ -17,7 +17,7 @@ class LevelColorCompilerPass implements CompilerPassInterface
 
         $levelColorCollection = $container->findDefinition(LevelColorCollectionInterface::class);
 
-        $taggedServices = $container->findTaggedServiceIds('level_color');
+        $taggedServices = $container->findTaggedServiceIds('level_colors');
 
         foreach ($taggedServices as $id => $tags) {
             $levelColorCollection->addMethodCall('addLevelColors', [new Reference($id)]);

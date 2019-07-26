@@ -11,16 +11,11 @@ class LevelColorCollection implements LevelColorCollectionInterface
     /** @var array $levelColorsList */
     protected $levelColorsList = [];
 
-    public function __construct()
-    {
-        $this->level = new StandardLevelColors(); // todo
-    }
-
     public function addLevelColors(LevelColorsInterface $levelColors): LevelColorCollectionInterface
     {
         $lowercaseClassName = ClassUtil::getLowercaseShortname($levelColors);
-        $identifier = str_replace('Levelcolors', '', $lowercaseClassName);
-        
+        $identifier = str_replace('levelcolors', '', $lowercaseClassName);
+
         $this->levelColorsList[$identifier] = $levelColors;
 
         return $this;
@@ -32,6 +27,6 @@ class LevelColorCollection implements LevelColorCollectionInterface
             return new StandardLevelColors();
         }
 
-        return new StandardLevelColors();
+        return $this->levelColorsList[$measurementIdentifier];
     }
 }
