@@ -6,6 +6,7 @@ use App\Air\Measurement\MeasurementInterface;
 use App\Producer\Value\ValueProducerInterface;
 use App\Provider\ProviderInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Parser\Parser;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Parser\ParserInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaCOQuery;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaNO2Query;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaO3Query;
@@ -33,11 +34,15 @@ class FetchCommand extends ContainerAwareCommand
     /** @var ValueProducerInterface $valueProducer */
     protected $valueProducer;
 
-    public function __construct(?string $name = null, ValueProducerInterface $valueProducer, SourceFetcher $fetcher, UmweltbundesamtDeProvider $umweltbundesamtDeProvider)
+    /** @var ParserInterface $parser */
+    protected $parser;
+
+    public function __construct(?string $name = null, ValueProducerInterface $valueProducer, SourceFetcher $fetcher, UmweltbundesamtDeProvider $umweltbundesamtDeProvider, ParserInterface $parser)
     {
         $this->provider = $umweltbundesamtDeProvider;
         $this->fetcher = $fetcher;
         $this->valueProducer = $valueProducer;
+        $this->parser = $parser;
 
         parent::__construct($name);
     }
@@ -147,8 +152,7 @@ class FetchCommand extends ContainerAwareCommand
 
         $response = $sourceFetcher->query($query);
 
-        $parser = new Parser($query);
-        $valueList = $parser->parse($response, $pollutant);
+        $valueList = $this->parser->parse($response, $pollutant);
 
         foreach ($valueList as $value) {
             $this->valueProducer->publish($value);
