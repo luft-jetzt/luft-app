@@ -16,7 +16,7 @@ class SourceFetcher
         $this->curl = new Curl();
     }
 
-    public function query(UbaQueryInterface $query): \stdClass
+    public function query(UbaQueryInterface $query): array
     {
         $data = QueryBuilder::buildQueryString($query);
 
@@ -24,8 +24,8 @@ class SourceFetcher
 
         $this->curl->get($queryString);
 
+        $response = $this->curl->rawResponse;
 
-dump($queryString);die;
-        return $this->curl->response;
+        return json_decode($response, true);
     }
 }

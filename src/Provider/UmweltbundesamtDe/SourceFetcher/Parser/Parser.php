@@ -15,39 +15,23 @@ class Parser implements ParserInterface
         $this->query = $query;
     }
 
-    public function parse(\stdClass $response, int $pollutant): array
+    public function parse(array $response, int $pollutant): array
     {
-        $data = array_pop($response->data);
+        foreach ($response['data'] as $stationId => $dataSet) {
+            $data = array_pop($dataSet);
 
-        $timeScope = array_pop($response->time_scope);
-        $interval = new \DateInterval(sprintf('PT%dS', $timeScope));
+            $dataValue = new Value();
 
-        $valueList = [];
+            $dataValue
+                //->setStation($stationCode) // !!!
+                ->setDateTime(new \DateTime($data[3]))
+                ->setPollutant($pollutant)
+                ->setValue($data[2]);
 
-        foreach ($data as $stationCode => $dataList) {
-            $dateTime = $this->query->getReporting()->getStartDateTime();
-
-            foreach ($dataList as $value) {
-                $dateTime = $dateTime->add($interval);
-
-                $value = $this->query->getFilter()->filter($value);
-
-                if (!$value) {
-                    continue;
-                }
-
-                $dataValue = new Value();
-
-                $dataValue
-                    ->setStation($stationCode)
-                    ->setDateTime($dateTime)
-                    ->setPollutant($pollutant)
-                    ->setValue($value);
-
-                $valueList[] = $dataValue;
-            }
+            $valueList[] = $dataValue;
         }
 
+        dump($valueList);die;
         return $valueList;
     }
 }
