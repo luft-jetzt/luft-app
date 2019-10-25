@@ -23,7 +23,7 @@ class Parser implements ParserInterface
             $dataValue = new Value();
 
             $dataValue
-                //->setStation($stationCode) // !!!
+                ->setStation($stationCode) // !!!
                 ->setDateTime(new \DateTime($data[3]))
                 ->setPollutant($pollutant)
                 ->setValue($data[2]);
