@@ -25,6 +25,8 @@ class Parser implements ParserInterface
     {
         $this->fetchStationList();
 
+        $valueList = [];
+
         foreach ($response['data'] as $stationId => $dataSet) {
             $data = array_pop($dataSet);
 
