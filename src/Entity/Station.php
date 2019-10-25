@@ -33,7 +33,7 @@ class Station extends Coord
     protected $stationCode;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @JMS\Expose()
      */
     protected $ubaStationId;
