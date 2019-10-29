@@ -4,7 +4,6 @@ namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Parser;
 
 use App\Entity\Station;
 use App\Pollution\Value\Value;
-use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaQueryInterface;
 use App\Provider\UmweltbundesamtDe\UmweltbundesamtDeProvider;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
