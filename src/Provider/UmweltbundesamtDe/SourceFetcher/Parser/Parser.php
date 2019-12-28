@@ -29,6 +29,10 @@ class Parser implements ParserInterface
         foreach ($response['data'] as $stationId => $dataSet) {
             $data = array_pop($dataSet);
 
+            if ($data[2] <= 0) {
+                continue;
+            }
+            
             if (!array_key_exists($stationId, $this->stationList)) {
                 continue;
             }
