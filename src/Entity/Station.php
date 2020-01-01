@@ -33,6 +33,12 @@ class Station extends Coord
     protected $stationCode;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @JMS\Expose()
+     */
+    protected $ubaStationId;
+
+    /**
      * @ORM\Column(type="string", nullable=true)
      * @JMS\Expose()
      */
@@ -132,6 +138,18 @@ class Station extends Coord
     public function setStationCode(string $stationCode): Station
     {
         $this->stationCode = $stationCode;
+
+        return $this;
+    }
+
+    public function getUbaStationId()
+    {
+        return $this->ubaStationId;
+    }
+
+    public function setUbaStationId($ubaStationId)
+    {
+        $this->ubaStationId = $ubaStationId;
 
         return $this;
     }

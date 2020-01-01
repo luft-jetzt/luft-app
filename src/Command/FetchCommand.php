@@ -6,6 +6,7 @@ use App\Air\Measurement\MeasurementInterface;
 use App\Producer\Value\ValueProducerInterface;
 use App\Provider\ProviderInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Parser\Parser;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\Parser\ParserInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaCOQuery;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaNO2Query;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaO3Query;
@@ -33,11 +34,15 @@ class FetchCommand extends ContainerAwareCommand
     /** @var ValueProducerInterface $valueProducer */
     protected $valueProducer;
 
-    public function __construct(?string $name = null, ValueProducerInterface $valueProducer, SourceFetcher $fetcher, UmweltbundesamtDeProvider $umweltbundesamtDeProvider)
+    /** @var ParserInterface $parser */
+    protected $parser;
+
+    public function __construct(?string $name = null, ValueProducerInterface $valueProducer, SourceFetcher $fetcher, UmweltbundesamtDeProvider $umweltbundesamtDeProvider, ParserInterface $parser)
     {
         $this->provider = $umweltbundesamtDeProvider;
         $this->fetcher = $fetcher;
         $this->valueProducer = $valueProducer;
+        $this->parser = $parser;
 
         parent::__construct($name);
     }
@@ -100,8 +105,7 @@ class FetchCommand extends ContainerAwareCommand
     {
         $output->writeln('PM10');
 
-        $reporting = new Uba1SMW($endDateTime, $startDateTime);
-        $query = new UbaPM10Query($reporting);
+        $query = new UbaPM10Query();
 
         $this->fetch($output, $query, MeasurementInterface::MEASUREMENT_PM10);
     }
@@ -110,8 +114,7 @@ class FetchCommand extends ContainerAwareCommand
     {
         $output->writeln('SO2');
 
-        $reporting = new Uba1SMW($endDateTime, $startDateTime);
-        $query = new UbaSO2Query($reporting);
+        $query = new UbaSO2Query();
 
         $this->fetch($output, $query, MeasurementInterface::MEASUREMENT_SO2);
     }
@@ -120,8 +123,7 @@ class FetchCommand extends ContainerAwareCommand
     {
         $output->writeln('NO2');
 
-        $reporting = new Uba1SMW($endDateTime, $startDateTime);
-        $query = new UbaNO2Query($reporting);
+        $query = new UbaNO2Query();
 
         $this->fetch($output, $query, MeasurementInterface::MEASUREMENT_NO2);
     }
@@ -130,8 +132,7 @@ class FetchCommand extends ContainerAwareCommand
     {
         $output->writeln('O3');
 
-        $reporting = new Uba1SMW($endDateTime, $startDateTime);
-        $query = new UbaO3Query($reporting);
+        $query = new UbaO3Query();
 
         $this->fetch($output, $query, MeasurementInterface::MEASUREMENT_O3);
     }
@@ -140,8 +141,7 @@ class FetchCommand extends ContainerAwareCommand
     {
         $output->writeln('CO');
 
-        $reporting = new Uba8SMW($endDateTime, $startDateTime);
-        $query = new UbaCOQuery($reporting);
+        $query = new UbaCOQuery();
 
         $this->fetch($output, $query, MeasurementInterface::MEASUREMENT_CO);
     }
@@ -152,8 +152,7 @@ class FetchCommand extends ContainerAwareCommand
 
         $response = $sourceFetcher->query($query);
 
-        $parser = new Parser($query);
-        $valueList = $parser->parse($response, $pollutant);
+        $valueList = $this->parser->parse($response, $pollutant);
 
         foreach ($valueList as $value) {
             $this->valueProducer->publish($value);

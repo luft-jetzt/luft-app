@@ -3,6 +3,7 @@
 namespace App\Provider\UmweltbundesamtDe\SourceFetcher;
 
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaQueryInterface;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\QueryBuilder\QueryBuilder;
 use Curl\Curl;
 
 class SourceFetcher
@@ -15,12 +16,16 @@ class SourceFetcher
         $this->curl = new Curl();
     }
 
-    public function query(UbaQueryInterface $query): \stdClass
+    public function query(UbaQueryInterface $query): array
     {
-        $queryString = sprintf('https://www.umweltbundesamt.de/js/uaq/data/stations/measuring?%s', $query->getQueryString());
+        $data = QueryBuilder::buildQueryString($query);
+
+        $queryString = sprintf('https://www.umweltbundesamt.de/api/air_data/v2/measures/json?%s', $data);
 
         $this->curl->get($queryString);
 
-        return $this->curl->response;
+        $response = $this->curl->rawResponse;
+
+        return json_decode($response, true);
     }
 }

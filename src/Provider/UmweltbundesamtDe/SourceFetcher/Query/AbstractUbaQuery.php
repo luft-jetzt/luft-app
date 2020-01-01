@@ -8,103 +8,55 @@ use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\ReportingInterface;
 
 abstract class AbstractUbaQuery implements UbaQueryInterface
 {
-    /** @var array $pollutant */
-    protected $pollutant = [];
+    /** @var int $component */
+    protected $component;
 
     /** @var array $scope */
     protected $scope = [];
 
-    /** @var array $group */
-    protected $group = ['station'];
+    /** @var \DateTime $fromDateTime */
+    protected $fromDateTime;
 
-    /** @var array $range */
-    protected $range = [];
+    /** @var \DateTime $untilDateTime */
+    protected $untilDateTime;
 
-    /** @var ReportingInterface $reporting */
-    protected $reporting;
-
-    /** @var FilterInterface $filter */
-    protected $filter;
-
-    public function __construct(ReportingInterface $reporting)
+    public function __construct()
     {
-        $this->reporting = $reporting;
-
-        $this->filter = new NoopFilter();
-
-        $this
-            ->calcRange()
-            ->setupScope()
-            ->setupPollutant()
-        ;
+        $this->fromDateTime = new \DateTime();
+        $this->untilDateTime = new \DateTime();
     }
 
-    protected function setupScope(): AbstractUbaQuery
+    public function getComponent(): int
     {
-        $this->scope = [$this->reporting->getReportingIdentifier()];
+        return $this->component;
+    }
+
+    public function getScope(): array
+    {
+        return $this->scope;
+    }
+
+    public function getFromDateTime(): \DateTime
+    {
+        return $this->fromDateTime;
+    }
+
+    public function setFromDateTime(\DateTime $fromDateTime): UbaQueryInterface
+    {
+        $this->fromDateTime = $fromDateTime;
 
         return $this;
     }
 
-    public function setupPollutant(): AbstractUbaQuery
+    public function getUntilDateTime(): \DateTime
     {
-        $reflection = new \ReflectionClass($this);
-        $pollutant = $reflection->getShortName();
+        return $this->untilDateTime;
+    }
 
-        $pollutant = str_replace('Uba', '', $pollutant);
-        $pollutant = str_replace('Query', '', $pollutant);
-
-        $this->pollutant = [$pollutant];
+    public function setUntilDateTime(\DateTime $untilDateTime): UbaQueryInterface
+    {
+        $this->untilDateTime = $untilDateTime;
 
         return $this;
-    }
-
-    protected function calcRange(): AbstractUbaQuery
-    {
-        $this->range = [
-            $this->reporting->getStartTimestamp(),
-            $this->reporting->getEndTimestamp(),
-        ];
-
-        return $this;
-    }
-
-    public function getQueryOptions(): array
-    {
-        return [
-            'pollutant' => $this->pollutant,
-            'scope' => $this->scope,
-            'group' => $this->group,
-            'range' => $this->range
-        ];
-    }
-
-    public function getQueryString(): string
-    {
-        $parts = [];
-        $options = $this->getQueryOptions();
-
-        foreach ($options as $key => $value) {
-            $parts[] = $key . '[]='.implode(',', $value);
-        }
-
-        $queryString = implode('&', $parts);
-
-        return $queryString;
-    }
-
-    public function getReporting(): ReportingInterface
-    {
-        return $this->reporting;
-    }
-
-    public function getDateTimeFormat(): string
-    {
-        return 'd.m.Y H:i';
-    }
-
-    public function getFilter(): FilterInterface
-    {
-        return $this->filter;
     }
 }
