@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4144d49051c9aec690a66f5f6bb29b8b",
+    "content-hash": "3821e8279ed7da58a665a4b64816ddea",
     "packages": [
         {
             "name": "amenadiel/jpgraph",
@@ -13434,7 +13434,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.1.3",
+        "php": "^7.4",
         "ext-iconv": "*",
         "ext-json": "*"
     },
