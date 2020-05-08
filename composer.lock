@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d09c37744468420ac93b4d03fc6c9562",
+    "content-hash": "23a0d9349258b70eda766fa2b629f6f2",
     "packages": [
         {
             "name": "amenadiel/jpgraph",
@@ -11159,36 +11159,57 @@
             "time": "2020-04-28T17:55:16+00:00"
         },
         {
-            "name": "symfony/webpack-encore-pack",
-            "version": "v1.0.3",
+            "name": "symfony/webpack-encore-bundle",
+            "version": "v1.7.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/webpack-encore-pack.git",
-                "reference": "8d7f51379d7ae17aea7cf501d910a11896895ac4"
+                "url": "https://github.com/symfony/webpack-encore-bundle.git",
+                "reference": "5c0f659eceae87271cce54bbdfb05ed8ec9007bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/webpack-encore-pack/zipball/8d7f51379d7ae17aea7cf501d910a11896895ac4",
-                "reference": "8d7f51379d7ae17aea7cf501d910a11896895ac4",
+                "url": "https://api.github.com/repos/symfony/webpack-encore-bundle/zipball/5c0f659eceae87271cce54bbdfb05ed8ec9007bd",
+                "reference": "5c0f659eceae87271cce54bbdfb05ed8ec9007bd",
                 "shasum": ""
             },
             "require": {
-                "symfony/asset": "^3.3|^4.0"
+                "php": "^7.1.3",
+                "symfony/asset": "^3.4 || ^4.0 || ^5.0",
+                "symfony/config": "^3.4 || ^4.0 || ^5.0",
+                "symfony/dependency-injection": "^3.4 || ^4.0 || ^5.0",
+                "symfony/http-kernel": "^3.4 || ^4.0 || ^5.0",
+                "symfony/service-contracts": "^1.0 || ^2.0"
             },
-            "type": "symfony-pack",
+            "require-dev": {
+                "symfony/framework-bundle": "^3.4 || ^4.0 || ^5.0",
+                "symfony/phpunit-bridge": "^4.3.5 || ^5.0",
+                "symfony/twig-bundle": "^3.4 || ^4.0 || ^5.0",
+                "symfony/web-link": "^3.4 || ^4.0 || ^5.0"
+            },
+            "type": "symfony-bundle",
             "extra": {
                 "thanks": {
                     "name": "symfony/webpack-encore",
                     "url": "https://github.com/symfony/webpack-encore"
                 }
             },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\WebpackEncoreBundle\\": "src"
+                }
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "description": "A pack for Symfony Encore",
-            "abandoned": "symfony/webpack-encore-bundle",
-            "time": "2018-07-16T10:15:28+00:00"
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Integration with your Symfony app & Webpack Encore!",
+            "time": "2020-01-31T15:31:59+00:00"
         },
         {
             "name": "symfony/yaml",

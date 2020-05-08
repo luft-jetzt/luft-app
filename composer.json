@@ -4,6 +4,7 @@
     "require": {
         "php": "^7.4",
         "ext-iconv": "*",
+        "ext-json": "*",
         "amenadiel/jpgraph": "^3.6",
         "calderacc/geobasic": "^0.2.0",
         "calderacc/yourls-api-manager": "^0.2.0",
@@ -50,10 +51,9 @@
         "symfony/swiftmailer-bundle": "^3.1",
         "symfony/validator": "^4.0",
         "symfony/web-link": "^4.0",
-        "symfony/webpack-encore-pack": "*",
-        "whiteoctober/breadcrumbs-bundle": "^1.4",
+        "symfony/webpack-encore-bundle": "^1.7",
         "symfony/yaml": "^4.0",
-        "ext-json": "*"
+        "whiteoctober/breadcrumbs-bundle": "^1.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.0",
