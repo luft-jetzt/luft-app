@@ -16,6 +16,11 @@ abstract class AbstractProvider implements ProviderInterface
 
     public function providesMeasurement(MeasurementInterface $measurement): bool
     {
-        return false;
+        return in_array(get_class($measurement), $this->providedMeasurements());
+    }
+
+    public function fetchMeasurements(array $measurements): void
+    {
+
     }
 }

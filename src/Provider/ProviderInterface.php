@@ -13,4 +13,6 @@ interface ProviderInterface
     public function providedMeasurements(): array;
 
     public function providesMeasurement(MeasurementInterface $measurement): bool;
+
+    public function fetchMeasurements(array $measurementList): void;
 }
