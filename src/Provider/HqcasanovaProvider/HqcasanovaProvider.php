@@ -6,6 +6,7 @@ use App\Air\Measurement\CO2;
 use App\Provider\AbstractProvider;
 use App\Provider\HqcasanovaProvider\SourceFetcher\SourceFetcher;
 use App\Provider\HqcasanovaProvider\StationLoader\HqcasanovaStationLoader;
+use App\SourceFetcher\FetchProcess;
 
 class HqcasanovaProvider extends AbstractProvider
 {
@@ -31,8 +32,8 @@ class HqcasanovaProvider extends AbstractProvider
         ];
     }
 
-    public function fetchMeasurements(array $measurements): void
+    public function fetchMeasurements(FetchProcess $fetchProcess): void
     {
-        $this->sourceFetcher->fetch();
+        $this->sourceFetcher->fetch($fetchProcess);
     }
 }

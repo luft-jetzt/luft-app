@@ -2,10 +2,12 @@
 
 namespace App\Provider\OpenWeatherMapProvider\SourceFetcher;
 
+use App\SourceFetcher\FetchProcess;
+use App\SourceFetcher\SourceFetcherInterface;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Curl\Curl;
 
-class SourceFetcher
+class SourceFetcher implements SourceFetcherInterface
 {
     protected Curl $curl;
 
@@ -15,6 +17,17 @@ class SourceFetcher
     {
         $this->curl = new Curl();
         $this->openWeatherMapAppId = $openWeatherMapAppId;
+    }
+
+    public function fetch(FetchProcess $fetchProcess): void
+    {
+        if (array_key_exists('uvindex', $fetchProcess->getMeasurementList()) && $fetchProcess->getCoord()) {
+            $this->queryUVIndex($fetchProcess->getCoord());
+        }
+
+        if (array_key_exists('temperature', $fetchProcess->getMeasurementList()) && $fetchProcess->getCoord()) {
+            $this->queryTemperature($fetchProcess->getCoord());
+        }
     }
 
     public function queryUVIndex(CoordInterface $coord): string

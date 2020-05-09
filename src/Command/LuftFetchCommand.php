@@ -6,10 +6,10 @@ use App\Air\Measurement\MeasurementInterface;
 use App\Air\MeasurementList\MeasurementListInterface;
 use App\Provider\ProviderInterface;
 use App\Provider\ProviderListInterface;
+use App\SourceFetcher\FetchProcess;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -54,9 +54,13 @@ class LuftFetchCommand extends Command
             $io->warning(sprintf('There are no providers to query: %s', join(', ', $input->getArgument('pollutants'))));
         }
 
+        $fetchProcess = $this->createFetchProcess($measurementsToQuery, $input);
+
         /** @var ProviderInterface $provider */
         foreach ($providersToQuery as $provider) {
-            $provider->fetchMeasurements($measurementsToQuery);
+            $fetchResult = $provider->fetchMeasurements($fetchProcess);
+
+            $io->text(sprintf('Provider %s returned %d new values', $provider->getIdentifier(), $fetchResult->getCounter()));
         }
 
         return 1;
@@ -92,5 +96,14 @@ class LuftFetchCommand extends Command
         }
 
         return $providersToQuery;
+    }
+
+    protected function createFetchProcess(array $measurementsToQuery, InputInterface $input): FetchProcess
+    {
+        $fetchProcess = new FetchProcess();
+
+        $fetchProcess->setMeasurementList($measurementsToQuery);
+
+        return $fetchProcess;
     }
 }

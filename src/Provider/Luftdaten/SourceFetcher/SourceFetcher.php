@@ -4,9 +4,11 @@ namespace App\Provider\Luftdaten\SourceFetcher;
 
 use App\Producer\Value\ValueProducerInterface;
 use App\Provider\Luftdaten\SourceFetcher\Parser\JsonParserInterface;
+use App\SourceFetcher\FetchProcess;
+use App\SourceFetcher\SourceFetcherInterface;
 use Curl\Curl;
 
-class SourceFetcher
+class SourceFetcher implements SourceFetcherInterface
 {
     protected Curl $curl;
 
@@ -22,7 +24,7 @@ class SourceFetcher
         $this->curl = new Curl();
     }
 
-    public function fetch(array $measurements): void
+    public function fetch(FetchProcess $fetchProcess): void
     {
         $response = $this->query();
 

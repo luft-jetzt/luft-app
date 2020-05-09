@@ -10,6 +10,7 @@ use App\Air\Measurement\SO2;
 use App\Provider\AbstractProvider;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\SourceFetcher;
 use App\Provider\UmweltbundesamtDe\StationLoader\UmweltbundesamtStationLoader;
+use App\SourceFetcher\FetchProcess;
 
 class UmweltbundesamtDeProvider extends AbstractProvider
 {
@@ -39,8 +40,8 @@ class UmweltbundesamtDeProvider extends AbstractProvider
         ];
     }
 
-    public function fetchMeasurements(array $measurements): void
+    public function fetchMeasurements(FetchProcess $fetchProcess): void
     {
-        $this->fetcher->fetch($measurements);
+        $this->fetcher->fetch($fetchProcess);
     }
 }

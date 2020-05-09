@@ -6,6 +6,7 @@ use App\Air\Measurement\Temperature;
 use App\Air\Measurement\UVIndex;
 use App\Provider\AbstractProvider;
 use App\Provider\OpenWeatherMapProvider\SourceFetcher\SourceFetcher;
+use App\SourceFetcher\FetchProcess;
 use Caldera\GeoBasic\Coord\Coord;
 
 class OpenWeatherMapProvider extends AbstractProvider
@@ -32,16 +33,8 @@ class OpenWeatherMapProvider extends AbstractProvider
         ];
     }
 
-    public function fetchMeasurements(array $measurements): void
+    public function fetchMeasurements(FetchProcess $fetchProcess): void
     {
-        $fakeCoord = new Coord(53, 10);
-
-        if (array_key_exists('uvindex', $measurements)) {
-            $this->sourceFetcher->queryUVIndex($fakeCoord);
-        }
-
-        if (array_key_exists('temperature', $measurements)) {
-            $this->sourceFetcher->queryTemperature($fakeCoord);
-        }
+        $this->sourceFetcher->fetch($fetchProcess);
     }
 }

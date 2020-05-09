@@ -3,6 +3,7 @@
 namespace App\Provider;
 
 use App\Air\Measurement\MeasurementInterface;
+use App\SourceFetcher\FetchProcess;
 
 interface ProviderInterface
 {
@@ -14,5 +15,5 @@ interface ProviderInterface
 
     public function providesMeasurement(MeasurementInterface $measurement): bool;
 
-    public function fetchMeasurements(array $measurementList): void;
+    public function fetchMeasurements(FetchProcess $fetchProcess): void;
 }

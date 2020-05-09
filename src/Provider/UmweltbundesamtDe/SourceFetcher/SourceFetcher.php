@@ -12,9 +12,11 @@ use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaPM10Query;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaQueryInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaSO2Query;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\QueryBuilder\QueryBuilder;
+use App\SourceFetcher\FetchProcess;
+use App\SourceFetcher\SourceFetcherInterface;
 use Curl\Curl;
 
-class SourceFetcher
+class SourceFetcher implements SourceFetcherInterface
 {
     protected Curl $curl;
 
@@ -29,29 +31,30 @@ class SourceFetcher
         $this->parser = $parser;
     }
 
-    public function fetch(array $measurementList): void
+    public function fetch(FetchProcess $fetchProcess): void
     {
-        //if ($input->getArgument('endDateTime')) {
-        //    $endDateTime = new \DateTimeImmutable($input->getArgument('endDateTime'));
-        //} else {
-        $endDateTime = new \DateTimeImmutable();
-        //}
+        if ($fetchProcess->getUntilDateTime()) {
+            $endDateTime = $fetchProcess->getUntilDateTime();
+        } else {
+            $endDateTime = new \DateTimeImmutable();
+        }
 
-        //if ($input->getArgument('startDateTime')) {
-        //    $startDateTime = new \DateTimeImmutable($input->getArgument('startDateTime'));
-        //} elseif ($input->getOption('interval')) {
-        //    $startDateTime = $endDateTime->sub(new \DateInterval(sprintf('PT%dH', $input->getOption('interval'))));
-        //} else {
-        $startDateTime = $endDateTime->sub(new \DateInterval(sprintf('PT2H')));
-        //}
-
-        //$output->writeln(sprintf('Fetching uba pollution data from <info>%s</info> to <info>%s</info>', $startDateTime->format('Y-m-d H:i:s'), $endDateTime->format('Y-m-d H:i:s')));
+        if ($fetchProcess->getFromDateTime()) {
+            $startDateTime = $fetchProcess->getFromDateTime();
+        } elseif ($fetchProcess->getInterval()) {
+            //$startDateTime = $endDateTime->sub(new \DateInterval(sprintf('PT%dH', $input->getOption('interval'))));
+            $startDateTime = $endDateTime->sub($fetchProcess->getInterval());
+        } else {
+            $startDateTime = $endDateTime->sub(new \DateInterval(sprintf('PT2H')));
+        }
 
         /** @var MeasurementInterface $measurement */
-        foreach ($measurementList as $measurement) {
+        foreach ($fetchProcess->getMeasurementList() as $measurement) {
             $methodName = sprintf('fetch%s', strtoupper($measurement->getIdentifier()));
 
-            $this->$methodName($endDateTime, $startDateTime);
+            if (method_exists($this, $methodName)) {
+                $this->$methodName($endDateTime, $startDateTime);
+            }
         }
     }
 

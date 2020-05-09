@@ -5,9 +5,11 @@ namespace App\Provider\HqcasanovaProvider\SourceFetcher;
 use App\Producer\Value\ValueProducerInterface;
 use App\Provider\HqcasanovaProvider\SourceFetcher\Parser\JsonParser;
 use App\Provider\HqcasanovaProvider\StationLoader\HqcasanovaStationLoader;
+use App\SourceFetcher\FetchProcess;
+use App\SourceFetcher\SourceFetcherInterface;
 use Curl\Curl;
 
-class SourceFetcher
+class SourceFetcher implements SourceFetcherInterface
 {
     protected Curl $curl;
 
@@ -19,12 +21,12 @@ class SourceFetcher
     {
         $this->stationLoader = $stationLoader;
         $this->jsonParser = $jsonParser;
-        $this->valueProduer = $valueProducer;
+        $this->valueProducer = $valueProducer;
 
         $this->curl = new Curl();
     }
 
-    public function fetch(): void
+    public function fetch(FetchProcess $fetchProcess): void
     {
         $response = $this->query();
 

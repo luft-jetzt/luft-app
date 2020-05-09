@@ -7,6 +7,7 @@ use App\Air\Measurement\PM25;
 use App\Provider\AbstractProvider;
 use App\Provider\Luftdaten\SourceFetcher\SourceFetcher;
 use App\Provider\Luftdaten\StationLoader\LuftdatenStationLoader;
+use App\SourceFetcher\FetchProcess;
 
 class LuftdatenProvider extends AbstractProvider
 {
@@ -33,8 +34,8 @@ class LuftdatenProvider extends AbstractProvider
         ];
     }
 
-    public function fetchMeasurements(array $measurements): void
+    public function fetchMeasurements(FetchProcess $fetchProcess): void
     {
-        $this->sourceFetcher->fetch($measurements);
+        $this->sourceFetcher->fetch($fetchProcess);
     }
 }
