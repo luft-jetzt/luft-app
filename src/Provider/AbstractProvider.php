@@ -2,6 +2,8 @@
 
 namespace App\Provider;
 
+use App\Air\Measurement\MeasurementInterface;
+
 abstract class AbstractProvider implements ProviderInterface
 {
     /** @var StationLoaderInterface $stationLoader */
@@ -10,5 +12,10 @@ abstract class AbstractProvider implements ProviderInterface
     public function getStationLoader(): StationLoaderInterface
     {
         return $this->stationLoader;
+    }
+
+    public function providesMeasurement(MeasurementInterface $measurement): bool
+    {
+        return false;
     }
 }
