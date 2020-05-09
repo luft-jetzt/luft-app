@@ -8,15 +8,19 @@ use App\Air\Measurement\O3;
 use App\Air\Measurement\PM10;
 use App\Air\Measurement\SO2;
 use App\Provider\AbstractProvider;
+use App\Provider\UmweltbundesamtDe\SourceFetcher\SourceFetcher;
 use App\Provider\UmweltbundesamtDe\StationLoader\UmweltbundesamtStationLoader;
 
 class UmweltbundesamtDeProvider extends AbstractProvider
 {
     const IDENTIFIER = 'uba_de';
 
-    public function __construct(UmweltbundesamtStationLoader $umweltbundesamtStationLoader)
+    protected SourceFetcher $fetcher;
+
+    public function __construct(UmweltbundesamtStationLoader $umweltbundesamtStationLoader, SourceFetcher $fetcher)
     {
         $this->stationLoader = $umweltbundesamtStationLoader;
+        $this->fetcher = $fetcher;
     }
 
     public function getIdentifier(): string
@@ -33,5 +37,10 @@ class UmweltbundesamtDeProvider extends AbstractProvider
             PM10::class,
             SO2::class,
         ];
+    }
+
+    public function fetchMeasurements(array $measurements): void
+    {
+        $this->fetcher->fetch($measurements);
     }
 }
