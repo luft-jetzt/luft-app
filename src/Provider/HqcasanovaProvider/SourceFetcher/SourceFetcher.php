@@ -2,19 +2,40 @@
 
 namespace App\Provider\HqcasanovaProvider\SourceFetcher;
 
+use App\Producer\Value\ValueProducerInterface;
+use App\Provider\HqcasanovaProvider\SourceFetcher\Parser\JsonParser;
+use App\Provider\HqcasanovaProvider\StationLoader\HqcasanovaStationLoader;
 use Curl\Curl;
 
 class SourceFetcher
 {
-    /** @var Curl $curl */
-    protected $curl;
+    protected Curl $curl;
 
-    public function __construct()
+    protected JsonParser $jsonParser;
+
+    protected ValueProducerInterface $valueProducer;
+
+    public function __construct(HqcasanovaStationLoader $stationLoader, JsonParser $jsonParser, ValueProducerInterface $valueProducer)
     {
+        $this->stationLoader = $stationLoader;
+        $this->jsonParser = $jsonParser;
+        $this->valueProduer = $valueProducer;
+
         $this->curl = new Curl();
     }
 
-    public function query(): string
+    public function fetch(): void
+    {
+        $response = $this->query();
+
+        $valueList = $this->jsonParser->parse($response);
+
+        foreach ($valueList as $value) {
+            $this->valueProducer->publish($value);
+        }
+    }
+
+    protected function query(): string
     {
         $this->curl->get('http://hqcasanova.com/co2/?callback=process');
 
