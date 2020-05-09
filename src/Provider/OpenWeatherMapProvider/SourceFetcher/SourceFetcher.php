@@ -7,11 +7,9 @@ use Curl\Curl;
 
 class SourceFetcher
 {
-    /** @var Curl $curl */
-    protected $curl;
+    protected Curl $curl;
 
-    /** @var string $openWeatherAppId */
-    protected $openWeatherMapAppId;
+    protected string $openWeatherMapAppId;
 
     public function __construct(string $openWeatherMapAppId)
     {

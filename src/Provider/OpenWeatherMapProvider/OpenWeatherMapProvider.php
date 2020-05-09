@@ -2,18 +2,22 @@
 
 namespace App\Provider\OpenWeatherMapProvider;
 
-use App\Air\Measurement\CO;
-use App\Air\Measurement\NO2;
-use App\Air\Measurement\O3;
-use App\Air\Measurement\PM10;
-use App\Air\Measurement\SO2;
 use App\Air\Measurement\Temperature;
 use App\Air\Measurement\UVIndex;
 use App\Provider\AbstractProvider;
+use App\Provider\OpenWeatherMapProvider\SourceFetcher\SourceFetcher;
+use Caldera\GeoBasic\Coord\Coord;
 
 class OpenWeatherMapProvider extends AbstractProvider
 {
     const IDENTIFIER = 'owm';
+
+    protected SourceFetcher $sourceFetcher;
+
+    public function __construct(SourceFetcher $sourceFetcher)
+    {
+        $this->sourceFetcher = $sourceFetcher;
+    }
 
     public function getIdentifier(): string
     {
@@ -26,5 +30,18 @@ class OpenWeatherMapProvider extends AbstractProvider
             Temperature::class,
             UVIndex::class,
         ];
+    }
+
+    public function fetchMeasurements(array $measurements): void
+    {
+        $fakeCoord = new Coord(53, 10);
+
+        if (array_key_exists('uvindex', $measurements)) {
+            $this->sourceFetcher->queryUVIndex($fakeCoord);
+        }
+
+        if (array_key_exists('temperature', $measurements)) {
+            $this->sourceFetcher->queryTemperature($fakeCoord);
+        }
     }
 }
