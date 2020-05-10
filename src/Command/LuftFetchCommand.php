@@ -10,6 +10,7 @@ use App\SourceFetcher\FetchProcess;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -33,7 +34,10 @@ class LuftFetchCommand extends Command
     {
         $this
             ->setDescription('Fetch new values')
-            ->addArgument('pollutants', InputArgument::IS_ARRAY, 'List of pollutants to fetch', []);
+            ->addArgument('pollutants', InputArgument::IS_ARRAY, 'List of pollutants to fetch', [])
+            ->addOption('fromDateTime', InputOption::VALUE_REQUIRED)
+            ->addOption('untilDateTime', InputOption::VALUE_REQUIRED)
+            ->addOption('interval', InputOption::VALUE_REQUIRED);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -109,6 +113,18 @@ class LuftFetchCommand extends Command
         $fetchProcess = new FetchProcess();
 
         $fetchProcess->setMeasurementList($measurementsToQuery);
+
+        if ($input->getOption('fromDateTime')) {
+            $fetchProcess->setFromDateTime(new \DateTimeImmutable($input->getOption('fromDateTime')));
+        }
+
+        if ($input->getOption('untilDateTime')) {
+            $fetchProcess->setUntilDateTime(new \DateTimeImmutable($input->getOption('untilDateTime')));
+        }
+
+        if ($input->getOption('interval')) {
+            $fetchProcess->setInterval(new \DateInterval(sprintf('PT%dH', (int) $input->getOption('interval'))));
+        }
 
         return $fetchProcess;
     }
