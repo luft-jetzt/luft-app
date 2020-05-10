@@ -6,6 +6,7 @@ use App\Producer\Value\ValueProducerInterface;
 use App\Provider\HqcasanovaProvider\SourceFetcher\Parser\JsonParser;
 use App\Provider\HqcasanovaProvider\StationLoader\HqcasanovaStationLoader;
 use App\SourceFetcher\FetchProcess;
+use App\SourceFetcher\FetchResult;
 use App\SourceFetcher\SourceFetcherInterface;
 use Curl\Curl;
 
@@ -26,7 +27,7 @@ class SourceFetcher implements SourceFetcherInterface
         $this->curl = new Curl();
     }
 
-    public function fetch(FetchProcess $fetchProcess): void
+    public function fetch(FetchProcess $fetchProcess): FetchResult
     {
         $response = $this->query();
 
@@ -35,6 +36,11 @@ class SourceFetcher implements SourceFetcherInterface
         foreach ($valueList as $value) {
             $this->valueProducer->publish($value);
         }
+
+        $fetchResult = new FetchResult();
+        $fetchResult->setCounter(count($valueList));
+
+        return $fetchResult;
     }
 
     protected function query(): string

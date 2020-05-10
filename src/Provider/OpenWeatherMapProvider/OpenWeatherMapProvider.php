@@ -7,6 +7,7 @@ use App\Air\Measurement\UVIndex;
 use App\Provider\AbstractProvider;
 use App\Provider\OpenWeatherMapProvider\SourceFetcher\SourceFetcher;
 use App\SourceFetcher\FetchProcess;
+use App\SourceFetcher\FetchResult;
 use Caldera\GeoBasic\Coord\Coord;
 
 class OpenWeatherMapProvider extends AbstractProvider
@@ -33,8 +34,8 @@ class OpenWeatherMapProvider extends AbstractProvider
         ];
     }
 
-    public function fetchMeasurements(FetchProcess $fetchProcess): void
+    public function fetchMeasurements(FetchProcess $fetchProcess): FetchResult
     {
-        $this->sourceFetcher->fetch($fetchProcess);
+        return $this->sourceFetcher->fetch($fetchProcess);
     }
 }

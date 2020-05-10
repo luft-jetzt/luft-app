@@ -5,6 +5,7 @@ namespace App\Provider\Luftdaten\SourceFetcher;
 use App\Producer\Value\ValueProducerInterface;
 use App\Provider\Luftdaten\SourceFetcher\Parser\JsonParserInterface;
 use App\SourceFetcher\FetchProcess;
+use App\SourceFetcher\FetchResult;
 use App\SourceFetcher\SourceFetcherInterface;
 use Curl\Curl;
 
@@ -24,15 +25,20 @@ class SourceFetcher implements SourceFetcherInterface
         $this->curl = new Curl();
     }
 
-    public function fetch(FetchProcess $fetchProcess): void
+    public function fetch(FetchProcess $fetchProcess): FetchResult
     {
         $response = $this->query();
 
         $valueList = $this->parser->parse($response);
 
+        $fetchResult = new FetchResult();
+
         foreach ($valueList as $value) {
             $this->valueProducer->publish($value);
+            $fetchResult->incCounter();
         }
+
+        return $fetchResult;
     }
 
     protected function query(): array

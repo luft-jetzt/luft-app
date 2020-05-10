@@ -4,5 +4,5 @@ namespace App\SourceFetcher;
 
 interface SourceFetcherInterface
 {
-    public function fetch(FetchProcess $fetchProcess): void;
+    public function fetch(FetchProcess $fetchProcess): FetchResult;
 }

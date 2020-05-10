@@ -13,6 +13,7 @@ use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaQueryInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaSO2Query;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\QueryBuilder\QueryBuilder;
 use App\SourceFetcher\FetchProcess;
+use App\SourceFetcher\FetchResult;
 use App\SourceFetcher\SourceFetcherInterface;
 use Curl\Curl;
 
@@ -31,8 +32,10 @@ class SourceFetcher implements SourceFetcherInterface
         $this->parser = $parser;
     }
 
-    public function fetch(FetchProcess $fetchProcess): void
+    public function fetch(FetchProcess $fetchProcess): FetchResult
     {
+        $fetchResult = new FetchResult();
+
         if ($fetchProcess->getUntilDateTime()) {
             $endDateTime = $fetchProcess->getUntilDateTime();
         } else {
@@ -53,47 +56,49 @@ class SourceFetcher implements SourceFetcherInterface
             $methodName = sprintf('fetch%s', strtoupper($measurement->getIdentifier()));
 
             if (method_exists($this, $methodName)) {
-                $this->$methodName($endDateTime, $startDateTime);
+                 $this->$methodName($fetchResult, $endDateTime, $startDateTime);
             }
         }
+
+        return $fetchResult;
     }
 
-    protected function fetchPM10(\DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
+    protected function fetchPM10(FetchResult $fetchResult, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null): void
     {
         $query = new UbaPM10Query();
 
-        $this->fetchMeasurement($query, MeasurementInterface::MEASUREMENT_PM10);
+        $this->fetchMeasurement($fetchResult, $query, MeasurementInterface::MEASUREMENT_PM10);
     }
 
-    protected function fetchSO2(\DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
+    protected function fetchSO2(FetchResult $fetchResult, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null): void
     {
         $query = new UbaSO2Query();
 
-        $this->fetchMeasurement($query, MeasurementInterface::MEASUREMENT_SO2);
+        $this->fetchMeasurement($fetchResult, $query, MeasurementInterface::MEASUREMENT_SO2);
     }
 
-    protected function fetchNO2(\DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
+    protected function fetchNO2(FetchResult $fetchResult, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null): void
     {
         $query = new UbaNO2Query();
 
-        $this->fetchMeasurement($query, MeasurementInterface::MEASUREMENT_NO2);
+        $this->fetchMeasurement($fetchResult, $query, MeasurementInterface::MEASUREMENT_NO2);
     }
 
-    protected function fetchO3(\DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
+    protected function fetchO3(FetchResult $fetchResult, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null): void
     {
         $query = new UbaO3Query();
 
-        $this->fetchMeasurement($query, MeasurementInterface::MEASUREMENT_O3);
+        $this->fetchMeasurement($fetchResult, $query, MeasurementInterface::MEASUREMENT_O3);
     }
 
-    protected function fetchCO(\DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null)
+    protected function fetchCO(FetchResult $fetchResult, \DateTimeInterface $endDateTime, \DateTimeInterface $startDateTime = null): void
     {
         $query = new UbaCOQuery();
 
-        $this->fetchMeasurement($query, MeasurementInterface::MEASUREMENT_CO);
+        $this->fetchMeasurement($fetchResult, $query, MeasurementInterface::MEASUREMENT_CO);
     }
 
-    protected function fetchMeasurement(UbaQueryInterface $query, int $pollutant)
+    protected function fetchMeasurement(FetchResult $fetchResult, UbaQueryInterface $query, int $pollutant): void
     {
         $response = $this->query($query);
 
@@ -102,6 +107,8 @@ class SourceFetcher implements SourceFetcherInterface
         foreach ($valueList as $value) {
             $this->valueProducer->publish($value);
         }
+
+        $fetchResult->incCounter(count($valueList));
     }
 
     protected function query(UbaQueryInterface $query): array

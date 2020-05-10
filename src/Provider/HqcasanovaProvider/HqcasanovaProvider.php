@@ -7,6 +7,7 @@ use App\Provider\AbstractProvider;
 use App\Provider\HqcasanovaProvider\SourceFetcher\SourceFetcher;
 use App\Provider\HqcasanovaProvider\StationLoader\HqcasanovaStationLoader;
 use App\SourceFetcher\FetchProcess;
+use App\SourceFetcher\FetchResult;
 
 class HqcasanovaProvider extends AbstractProvider
 {
@@ -32,8 +33,8 @@ class HqcasanovaProvider extends AbstractProvider
         ];
     }
 
-    public function fetchMeasurements(FetchProcess $fetchProcess): void
+    public function fetchMeasurements(FetchProcess $fetchProcess): FetchResult
     {
-        $this->sourceFetcher->fetch($fetchProcess);
+        return $this->sourceFetcher->fetch($fetchProcess);
     }
 }

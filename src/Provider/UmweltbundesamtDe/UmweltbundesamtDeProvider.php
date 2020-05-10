@@ -11,6 +11,7 @@ use App\Provider\AbstractProvider;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\SourceFetcher;
 use App\Provider\UmweltbundesamtDe\StationLoader\UmweltbundesamtStationLoader;
 use App\SourceFetcher\FetchProcess;
+use App\SourceFetcher\FetchResult;
 
 class UmweltbundesamtDeProvider extends AbstractProvider
 {
@@ -40,8 +41,8 @@ class UmweltbundesamtDeProvider extends AbstractProvider
         ];
     }
 
-    public function fetchMeasurements(FetchProcess $fetchProcess): void
+    public function fetchMeasurements(FetchProcess $fetchProcess): FetchResult
     {
-        $this->fetcher->fetch($fetchProcess);
+        return $this->fetcher->fetch($fetchProcess);
     }
 }

@@ -8,6 +8,7 @@ use App\Provider\AbstractProvider;
 use App\Provider\Luftdaten\SourceFetcher\SourceFetcher;
 use App\Provider\Luftdaten\StationLoader\LuftdatenStationLoader;
 use App\SourceFetcher\FetchProcess;
+use App\SourceFetcher\FetchResult;
 
 class LuftdatenProvider extends AbstractProvider
 {
@@ -34,8 +35,8 @@ class LuftdatenProvider extends AbstractProvider
         ];
     }
 
-    public function fetchMeasurements(FetchProcess $fetchProcess): void
+    public function fetchMeasurements(FetchProcess $fetchProcess): FetchResult
     {
-        $this->sourceFetcher->fetch($fetchProcess);
+        return $this->sourceFetcher->fetch($fetchProcess);
     }
 }
