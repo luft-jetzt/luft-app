@@ -2,6 +2,7 @@
 
 namespace App\Provider\Luftdaten\SourceFetcher;
 
+use App\Pollution\Value\Value;
 use App\Producer\Value\ValueProducerInterface;
 use App\Provider\Luftdaten\SourceFetcher\Parser\JsonParserInterface;
 use App\SourceFetcher\FetchProcess;
@@ -33,9 +34,10 @@ class SourceFetcher implements SourceFetcherInterface
 
         $fetchResult = new FetchResult();
 
+        /** @var Value $value */
         foreach ($valueList as $value) {
             $this->valueProducer->publish($value);
-            $fetchResult->incCounter();
+            $fetchResult->incCounter((string) $value->getPollutant()); // @todo
         }
 
         return $fetchResult;

@@ -4,24 +4,28 @@ namespace App\SourceFetcher;
 
 class FetchResult
 {
-    protected int $counter = 0;
+    protected array $counters = [];
 
-    public function incCounter(int $step = 1): FetchResult
+    public function incCounter(string $identifier, int $step = 1): FetchResult
     {
-        $this->counter += $step;
+        if (!array_key_exists($identifier, $this->counters)) {
+            $this->counters[$identifier] = 0;
+        }
+
+        $this->counters[$identifier] += $step;
 
         return $this;
     }
 
-    public function setCounter(int $counter): FetchResult
+    public function setCounter(string $identifier, int $counter): FetchResult
     {
-        $this->counter = $counter;
+        $this->counters[$identifier] = $counter;
 
         return $this;
     }
 
-    public function getCounter(): int
+    public function getCounters(): array
     {
-        return $this->counter;
+        return $this->counters;
     }
 }

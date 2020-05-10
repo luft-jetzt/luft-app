@@ -38,7 +38,7 @@ class SourceFetcher implements SourceFetcherInterface
         }
 
         $fetchResult = new FetchResult();
-        $fetchResult->setCounter(count($valueList));
+        $fetchResult->setCounter('co2', count($valueList));
 
         return $fetchResult;
     }

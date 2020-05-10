@@ -27,13 +27,13 @@ class SourceFetcher implements SourceFetcherInterface
         if (array_key_exists('uvindex', $fetchProcess->getMeasurementList()) && $fetchProcess->getCoord()) {
             $this->queryUVIndex($fetchProcess->getCoord());
 
-            $fetchResult->incCounter();
+            $fetchResult->incCounter('uvindex');
         }
 
         if (array_key_exists('temperature', $fetchProcess->getMeasurementList()) && $fetchProcess->getCoord()) {
             $this->queryTemperature($fetchProcess->getCoord());
 
-            $fetchResult->incCounter();
+            $fetchResult->incCounter('temperature');
         }
 
         return $fetchResult;

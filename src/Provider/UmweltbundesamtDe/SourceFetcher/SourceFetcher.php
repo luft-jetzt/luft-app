@@ -108,7 +108,7 @@ class SourceFetcher implements SourceFetcherInterface
             $this->valueProducer->publish($value);
         }
 
-        $fetchResult->incCounter(count($valueList));
+        $fetchResult->incCounter((string) $pollutant, count($valueList));
     }
 
     protected function query(UbaQueryInterface $query): array
