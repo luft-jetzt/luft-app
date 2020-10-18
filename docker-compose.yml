@@ -1,0 +1,20 @@
+###############################################################################
+#                          Generated on phpdocker.io                          #
+###############################################################################
+version: "3.1"
+services:
+    mysql:
+      image: mariadb
+      container_name: luft-jetzt-mysql
+      working_dir: /application
+      volumes:
+        - ./docker/mysql:/var/lib/mysql
+      environment:
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_DATABASE=luft-jetzt
+        - MYSQL_USER=luft-jetzt
+        - MYSQL_PASSWORD=luft-jetzt
+      ports:
+        - "8002:3306"
+      labels:
+        com.symfony.server.service-prefix: 'DATABASE'
