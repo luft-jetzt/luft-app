@@ -22,10 +22,10 @@ class StationCache implements StationCacheInterface
     /** @var AbstractAdapter $cache */
     protected $cache;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(RegistryInterface $registry, string $redisHost)
     {
         $this->registry = $registry;
-        $this->cache = $this->createConnection();
+        $this->cache = $this->createConnection($redisHost);
 
         if (!$this->list = $this->loadFromCache()) {
             $this->list = $this->loadFromDatabase();
@@ -64,9 +64,9 @@ class StationCache implements StationCacheInterface
         return array_key_exists($stationCode, $this->list);
     }
 
-    protected function createConnection(): AbstractAdapter
+    protected function createConnection(string $redisHost): AbstractAdapter
     {
-        $client = RedisAdapter::createConnection('redis://localhost');
+        $client = RedisAdapter::createConnection($redisHost);
 
         $cache = new RedisAdapter($client);
 

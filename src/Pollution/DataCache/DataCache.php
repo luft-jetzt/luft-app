@@ -17,13 +17,11 @@ class DataCache implements DataCacheInterface
     /** @var SerializerInterface $serializer */
     protected $serializer;
 
-    public function __construct(SerializerInterface $serializer)
+    public function __construct(SerializerInterface $serializer, string $redisHost)
     {
         $this->serializer = $serializer;
 
-        $client = RedisAdapter::createConnection(
-            'redis://localhost'
-        );
+        $client = RedisAdapter::createConnection($redisHost);
 
         $this->cache = new RedisAdapter($client,'luft-data', 5 * self::TTL);
     }

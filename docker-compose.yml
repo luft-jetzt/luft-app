@@ -3,6 +3,12 @@
 ###############################################################################
 version: "3.1"
 services:
+    redis:
+      image: redis:alpine
+      container_name: luft-jetzt-redis
+      labels:
+        com.symfony.server.service-prefix: 'REDIS'
+
     mysql:
       image: mariadb
       container_name: luft-jetzt-mysql
