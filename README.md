@@ -15,4 +15,8 @@ Die Daten werden grundsätzlich in einer SQL-Datenbank gespeichert, werden aber 
 1. Clone this repository somewhere on your local machine.
 2. Type ````symfony composer install``` to install all dependencies.
 3. Get the required docker containers started: ```docker-compose up -d```
-4. Start Symfony Webserver: ```symfony serve```
+4. Create database schema: ```symfony console d:s:c```
+5. Unfold a hell of javascripts: ```npm install```
+6. Gulp: ```node_modules/gulp/bin/gulp.js```
+5. Start Symfony Webserver: ```symfony serve```
+
