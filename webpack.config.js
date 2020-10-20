@@ -18,6 +18,14 @@ Encore
 
     // uncomment for legacy applications that require $/jQuery as a global variable
     .autoProvidejQuery()
+    .copyFiles({
+        from: './assets/img',
+        to: 'images/[path][name].[ext]',
+    })
+    .copyFiles({
+        from: 'node_modules/leaflet-extra-markers/dist/img/',
+        to: 'images/extramarkers/[name].[ext]',
+    })
 ;
 
 module.exports = Encore.getWebpackConfig();
