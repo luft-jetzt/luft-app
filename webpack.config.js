@@ -11,7 +11,7 @@ Encore
     // .enableVersioning(Encore.isProduction())
 
     .addEntry('js/app', './assets/js/app.js')
-    .addStyleEntry('css/app', './assets/scss/luft.scss')
+    .addStyleEntry('css/app', './assets/scss/app.scss')
 
     // uncomment if you use Sass/SCSS files
     .enableSassLoader()
