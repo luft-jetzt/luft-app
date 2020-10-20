@@ -136,9 +136,50 @@ function createCoordMap(id) {
 
     markerGroup.addTo(map);
     map.fitBounds(markerGroup.getBounds(), { padding: [15, 15] });
+
+
+
+
+
+
+
+    function success(pos) {
+        var coords = pos.coords;
+
+        var route = Routing.generate(
+            'display',
+            {
+                latitude: coords.latitude,
+                longitude: coords.longitude
+            }
+        );
+
+        window.location = route;
+    }
+
+    function error(err) {
+        var $message = $('#geolocation-failed');
+
+        $message.removeClass('d-none');
+    }
+
+    function installButton() {
+        $('#locate-button').on('click', function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(success, error, {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0
+                });
+            } else {
+                error();
+            }
+        });
+    }
 }
 
 
 document.addEventListener('DOMContentLoaded', () => {
     createAllMaps();
+    installButton();
 });
