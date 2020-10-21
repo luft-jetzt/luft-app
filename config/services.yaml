@@ -28,6 +28,7 @@ services:
             $assetsVersion: '%assets_version%'
             $graphCacheDirectory: '%env(GRAPH_CACHE_DIRECTORY)%'
             $openWeatherMapAppId: '%env(OPENWEATHERMAP_APPID)%'
+            $redisHost: 'redis://%env(REDIS_HOST)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
