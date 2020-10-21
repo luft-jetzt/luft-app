@@ -35,9 +35,9 @@ class LuftFetchCommand extends Command
         $this
             ->setDescription('Fetch new values')
             ->addArgument('pollutants', InputArgument::IS_ARRAY, 'List of pollutants to fetch', [])
-            ->addOption('fromDateTime', InputOption::VALUE_REQUIRED)
-            ->addOption('untilDateTime', InputOption::VALUE_REQUIRED)
-            ->addOption('interval', InputOption::VALUE_REQUIRED);
+            ->addOption('fromDateTime', null, InputOption::VALUE_REQUIRED)
+            ->addOption('untilDateTime', null,InputOption::VALUE_REQUIRED)
+            ->addOption('interval', null, InputOption::VALUE_REQUIRED);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
