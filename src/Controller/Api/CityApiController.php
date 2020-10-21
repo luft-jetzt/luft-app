@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\City;
 use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use JMS\Serializer\SerializerInterface;
@@ -43,36 +44,18 @@ class CityApiController extends AbstractApiController
     }
 
     /**
-     * Get details of the city identified by <code>citySlug</code>.
-     *
-     * Retrieve a list of all known cities by leaving <code>citySlug</code> empty.
+     * Get a list of all registered cities form the databases.
      *
      * @SWG\Tag(name="City")
-     * @SWG\Parameter(
-     *     name="citySlug",
-     *     in="path",
-     *     type="string",
-     *     description="city slug"
-     * )
      * @SWG\Response(
      *   response=200,
-     *   description="Returns details for specified city",
+     *   description="Returns a list of all cities",
      *   @Model(type=App\Entity\City::class)
      * )
      */
-    public function cityAction(SerializerInterface $serializer, string $citySlug = null): Response
+    public function cityAction(SerializerInterface $serializer): Response
     {
-        if ($citySlug) {
-            $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
-
-            if (!$city) {
-                throw $this->createNotFoundException();
-            }
-
-            return new JsonResponse($serializer->serialize($city, 'json'), 200, [], true);
-        } else {
-            $cityList = $this->getDoctrine()->getRepository(City::class)->findAll();
-        }
+        $cityList = $this->getDoctrine()->getRepository(City::class)->findAll();
 
         return new JsonResponse($serializer->serialize($cityList, 'json'), 200, [], true);
     }
