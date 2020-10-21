@@ -32,7 +32,7 @@
     </route>
 
     <route id="api_city" path="/api/{citySlug}" methods="GET">
-        <default key="_controller">App\Controller\Api\CityApiController::cityAction</default>
+        <default key="_controller">App\Controller\Api\CityApiController::displayCityAction</default>
         <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
 

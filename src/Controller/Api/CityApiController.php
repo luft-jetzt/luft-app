@@ -14,9 +14,9 @@ use Swagger\Annotations as SWG;
 class CityApiController extends AbstractApiController
 {
     /**
-     * Get pollution data for a provided city slug.
+     * Retrieve pollution data for a provided city slug.
      *
-     * @SWG\Tag(name="Data")
+     * @SWG\Tag(name="City")
      * @SWG\Response(
      *   response=200,
      *   description="Retrieve pollution data for cities",
