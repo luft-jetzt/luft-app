@@ -17,11 +17,6 @@
         <default key="_controller">App\Controller\Api\StationApiController::stationAction</default>
     </route>
 
-    <route id="api_city_city" path="/api/city/{citySlug}" methods="GET">
-        <default key="_controller">App\Controller\Api\CityApiController::cityAction</default>
-        <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
-    </route>
-
     <route id="api_city_all" path="/api/city" methods="GET">
         <default key="_controller">App\Controller\Api\CityApiController::cityAction</default>
     </route>
