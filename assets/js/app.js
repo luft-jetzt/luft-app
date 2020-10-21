@@ -1,6 +1,4 @@
 import 'bootstrap';
-import 'leaflet';
-import 'leaflet-extra-markers';
 import Geocoding from './modules/Geocoding';
 import Map from './modules/Map';
 

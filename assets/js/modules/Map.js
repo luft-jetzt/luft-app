@@ -1,3 +1,6 @@
+import 'leaflet';
+import 'leaflet-extra-markers';
+
 export default class Map {
     constructor(element, options) {
         const defaults = {};
@@ -8,46 +11,47 @@ export default class Map {
     }
 
     createAllMaps() {
-        var cityMapId = $('.city-map').attr('id');
-        var coordMapId = $('.coord-map').attr('id');
+        const cityMap = document.querySelector('.city-map');
+        const coordMap = document.querySelector('.coord-map');
 
-        if (cityMapId) {
-            this.createCityMap(cityMapId);
-        } else if (coordMapId) {
-            this.createCoordMap(coordMapId);
+        if (cityMap) {
+            this.createCityMap(cityMap.id);
+        } else if (coordMap) {
+            this.createCoordMap(coordMap.id);
         } else {
             const that = this;
 
-            $('.map').each(function (index) {
-                var id = $(this).prop('id');
-                var latitude = $(this).parent().data('latitude');
-                var longitude = $(this).parent().data('longitude');
-                var color = $(this).parent().data('station-color');
+            const mapList = document.querySelectorAll('.map');
 
-                that.createMap(id, latitude, longitude, color);
+            mapList.forEach(function (map) {
+                const mapContainer = map.parentNode;
+
+                const latitude = mapContainer.dataset.latitude;
+                const longitude = mapContainer.dataset.longitude;
+                const color = mapContainer.dataset.stationColor;
+
+                that.createMap(map.id, latitude, longitude, color);
             });
         }
     }
 
     createMap(id, latitude, longitude, color) {
-        var centerLatLng = L.latLng([latitude, longitude]);
+        const centerLatLng = L.latLng([latitude, longitude]);
 
-        var map = L.map(id, {
+        const map = L.map(id, {
             zoomControl: false
         }).setView(centerLatLng, 13);
 
-        L.tileLayer('https://tiles.caldera.cc/wikimedia-intl/{z}/{x}/{y}.png', {
-            attribution: 'Wikimedia maps beta | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-        }).addTo(map);
+        this.addTileLayer(map);
 
-        var markerIcon = L.ExtraMarkers.icon({
+        const markerIcon = L.ExtraMarkers.icon({
             icon: 'fa-circle-o',
             markerColor: color,
             shape: 'circle',
             prefix: 'fa'
         });
 
-        var marker = L.marker(centerLatLng, {icon: markerIcon}).addTo(map);
+        const marker = L.marker(centerLatLng, {icon: markerIcon}).addTo(map);
 
         map._handlers.forEach(function (handler) {
             handler.disable();
@@ -55,28 +59,25 @@ export default class Map {
     }
 
     createCityMap(id) {
-        var map = L.map(id);
+        const map = L.map(id);
 
-        L.tileLayer('https://tiles.caldera.cc/wikimedia-intl/{z}/{x}/{y}.png', {
-            attribution: 'Wikimedia maps beta | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-        }).addTo(map);
+        this.addTileLayer(map);
 
-        var markerGroup = new L.featureGroup();
+        const markerGroup = new L.featureGroup();
 
-        $('.station').each(function (index) {
-            var stationCode = $(this).data('station-code');
-            var latitude = $(this).data('latitude');
-            var longitude = $(this).data('longitude');
-            var color = $(this).data('station-color');
+        const that = this;
 
-            var markerIcon = L.ExtraMarkers.icon({
-                icon: 'fa-thermometer-half',
-                markerColor: color,
-                shape: 'circle',
-                prefix: 'fa'
-            });
+        const stationList = document.querySelectorAll('.station');
 
-            var marker = L.marker([latitude, longitude], {icon: markerIcon}).addTo(markerGroup);
+        stationList.forEach(function (station) {
+            const stationCode = station.dataset.stationCode;
+            const latitude = station.dataset.latitude;
+            const longitude = station.dataset.longitude;
+            const color = station.dataset.stationColor;
+
+            const markerIcon = that.createIcon('fa-thermometer-half', color);
+
+            const marker = L.marker([latitude, longitude], {icon: markerIcon}).addTo(markerGroup);
 
             marker.on('click', function() {
                 window.location = Routing.generate('station', { stationCode: stationCode });
@@ -88,50 +89,41 @@ export default class Map {
     }
 
     createCoordMap(id) {
-        var map = L.map(id);
-        var $map = $('#' + id);
+        const map = L.map(id);
+        const mapContainer = document.getElementById(id).parentNode;
 
-        L.tileLayer('https://tiles.caldera.cc/wikimedia-intl/{z}/{x}/{y}.png', {
-            attribution: 'Wikimedia maps beta | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-        }).addTo(map);
+        this.addTileLayer(map);
 
-        var markerGroup = new L.featureGroup();
+        const markerGroup = new L.featureGroup();
 
-        var latitude = $map.parent().data('latitude');
-        var longitude = $map.parent().data('longitude');
+        const latitude = mapContainer.dataset.latitude;
+        const longitude = mapContainer.dataset.longitude;
 
-        var markerIcon = L.ExtraMarkers.icon({
-            icon: 'fa-user',
-            markerColor: 'blue',
-            shape: 'circle',
-            prefix: 'fa'
-        });
+        const markerIcon = this.createIcon('fa-user', 'blue');
 
-        var marker = L.marker([latitude, longitude], {icon: markerIcon}).addTo(markerGroup);
+        const marker = L.marker([latitude, longitude], {icon: markerIcon}).addTo(markerGroup);
 
-        var knownStations = [];
+        const that = this;
+        const knownStations = [];
 
-        $('.box').each(function (index) {
-            var stationCode = $(this).data('station-code');
-            var showOnMap = $(this).data('station-map');
+        const boxList = document.querySelectorAll('.box');
+
+        boxList.forEach(function (box) {
+            const stationCode = box.dataset.stationCode;
+            const showOnMap = box.dataset.showOnMap;
 
             if (!showOnMap) {
                 return;
             }
 
             if (!knownStations.includes(stationCode)) {
-                var latitude = $(this).data('station-latitude');
-                var longitude = $(this).data('station-longitude');
-                var color = $(this).data('station-color');
+                const latitude = box.dataset.stationLatitude;
+                const longitude = box.dataset.stationLongitude;
+                const color = box.dataset.stationColor;
 
-                var markerIcon = L.ExtraMarkers.icon({
-                    icon: 'fa-thermometer-half',
-                    markerColor: color,
-                    shape: 'circle',
-                    prefix: 'fa'
-                });
+                const markerIcon = that.createIcon('fa-thermometer-half', color);
 
-                var marker = L.marker([latitude, longitude], {icon: markerIcon}).addTo(markerGroup);
+                const marker = L.marker([latitude, longitude], {icon: markerIcon}).addTo(markerGroup);
 
                 marker.on('click', function() {
                     window.location = Routing.generate('station', { stationCode: stationCode });
@@ -143,6 +135,21 @@ export default class Map {
 
         markerGroup.addTo(map);
         map.fitBounds(markerGroup.getBounds(), { padding: [15, 15] });
+    }
+
+    addTileLayer(map) {
+        L.tileLayer('https://tiles.caldera.cc/wikimedia-intl/{z}/{x}/{y}.png', {
+            attribution: 'Wikimedia maps beta | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+        }).addTo(map);
+    }
+
+    createIcon(icon, color) {
+        return L.ExtraMarkers.icon({
+            icon: icon,
+            markerColor: color,
+            shape: 'circle',
+            prefix: 'fa'
+        });
     }
 }
 
