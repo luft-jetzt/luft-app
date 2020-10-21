@@ -24,6 +24,7 @@ class FetchProcess
     public function setMeasurementList(array $measurementList): FetchProcess
     {
         $this->measurementList = $measurementList;
+
         return $this;
     }
 

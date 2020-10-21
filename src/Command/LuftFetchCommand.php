@@ -62,6 +62,8 @@ class LuftFetchCommand extends Command
 
         /** @var ProviderInterface $provider */
         foreach ($providersToQuery as $provider) {
+            $io->text(sprintf('Will now query provider %s for %s', $provider->getIdentifier(), join(',', $input->getArgument('pollutants'))));
+
             $fetchResult = $provider->fetchMeasurements($fetchProcess);
 
             /**
@@ -69,11 +71,11 @@ class LuftFetchCommand extends Command
              * @var int $counter
              */
             foreach ($fetchResult->getCounters() as $identifier => $counter) {
-                $io->text(sprintf('Provider %s returned %d new values for %s', $provider->getIdentifier(), $counter, $identifier));
+                $io->success(sprintf('Provider %s returned %d new values for %s', $provider->getIdentifier(), $counter, $identifier));
             }
         }
 
-        return 1;
+        return 0;
     }
 
     protected function getMeasurementsToQuery(InputInterface $input): array
