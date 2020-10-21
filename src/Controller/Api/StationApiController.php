@@ -14,44 +14,7 @@ use Swagger\Annotations as SWG;
 class StationApiController extends AbstractApiController
 {
     /**
-     * Get pollution data for a provided station code.
-     *
-     * @SWG\Tag(name="Station")
-     * @SWG\Response(
-     *   response=200,
-     *   description="Retrieve pollution data for station",
-     *   @SWG\Schema(
-     *     type="array",
-     *     @SWG\Items(ref=@Model(type=App\Air\ViewModel\MeasurementViewModel::class))
-     *   )
-     * )
-     * @SWG\Parameter(
-     *     name="stationCode",
-     *     in="path",
-     *     type="string",
-     *     description="station code"
-     * )
-     */
-    public function displayStationAction(
-        SerializerInterface $serializer,
-        string $stationCode,
-        PollutionDataFactory $pollutionDataFactory
-    ): Response {
-        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
-
-        if (!$station) {
-            throw $this->createNotFoundException();
-        }
-
-        $pollutantList = $pollutionDataFactory->setStation($station)->createDecoratedPollutantList();
-
-        return new JsonResponse($serializer->serialize($this->unpackPollutantList($pollutantList), 'json'), 200, [], true);
-    }
-
-    /**
-     * Get details of the city identified by <code>citySlug</code>.
-     *
-     * Retrieve a list of all known cities by leaving <code>citySlug</code> empty.
+     * Get details of the station identified by <code>stationCode</code>.
      *
      * @SWG\Tag(name="Station")
      * @SWG\Parameter(
@@ -79,6 +42,44 @@ class StationApiController extends AbstractApiController
 
             return new JsonResponse($serializer->serialize($station, 'json'), 200, [], true);
         } elseif ($providerIdentifier) {
+            $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStationsByProvider($providerIdentifier);
+        } else {
+            $stationList = $this->getDoctrine()->getRepository(Station::class)->findAll();
+        }
+
+        return new JsonResponse($serializer->serialize($stationList, 'json'), 200, [], true);
+    }
+
+    /**
+     * List all known stations. You may limit the list by specifing a provider identifier.
+     *
+     * Possible provider identifiers are:
+     *
+     * <ul>
+     * <li><code>uba_de</code>: Umweltbundesamt</li>
+     * <li><code>ld</code>: Luftdaten.info</li>
+     * <li><code>hqc</code>: HQCasanova</li>
+     * <li><code>owm</code>: OpenWeatherMap</li>
+     * </ul>
+     *
+     * @SWG\Tag(name="Station")
+     * @SWG\Parameter(
+     *     name="provider",
+     *     in="query",
+     *     type="string",
+     *     description="Provider identifier"
+     * )
+     * @SWG\Response(
+     *   response=200,
+     *   description="Returns a list of all known stations",
+     *   @Model(type=App\Entity\Station::class)
+     * )
+     */
+    public function listStationAction(Request $request, SerializerInterface $serializer): Response
+    {
+        $providerIdentifier = $request->get('provider');
+
+        if ($providerIdentifier) {
             $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStationsByProvider($providerIdentifier);
         } else {
             $stationList = $this->getDoctrine()->getRepository(Station::class)->findAll();
