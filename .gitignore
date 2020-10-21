@@ -13,6 +13,8 @@
 
 .idea/
 
+docker/
+
 public/img/*
 public/js/*
 public/css/*
