@@ -1,5 +1,6 @@
 nelmio_api_doc:
     documentation:
+        host: luft.jetzt
         schemes: [https]
         info:
             title: Luft.jetzt api
