@@ -30,5 +30,7 @@
     "popper.js": "^1.14.4",
     "typeahead.js": "^0.11.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@symfony/webpack-encore": "^0.28.2"
+  }
 }
