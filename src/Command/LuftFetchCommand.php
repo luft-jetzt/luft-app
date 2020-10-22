@@ -62,7 +62,7 @@ class LuftFetchCommand extends Command
 
         /** @var ProviderInterface $provider */
         foreach ($providersToQuery as $provider) {
-            $io->text(sprintf('Will now query provider %s for %s', $provider->getIdentifier(), join(',', $input->getArgument('pollutants'))));
+            $io->text(sprintf('Will now query provider %s for %s', $provider->getIdentifier(), join(', ', array_keys($measurementsToQuery))));
 
             $fetchResult = $provider->fetchMeasurements($fetchProcess);
 
