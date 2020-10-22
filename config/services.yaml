@@ -7,7 +7,6 @@ parameters:
     yourls.api_url: '%env(YOURLS_HOSTNAME)%'
     yourls.api_username: '%env(YOURLS_USERNAME)%'
     yourls.api_password: '%env(YOURLS_PASSWORD)%'
-    assets_version: '%env(ASSETS_VERSION)%'
     router.request_context.host: 'luft.jetzt'
     router.request_context.scheme: 'https'
 
@@ -25,7 +24,6 @@ services:
             $apiUrl: '%env(YOURLS_API_URL)%'
             $apiUsername: '%env(YOURLS_API_USERNAME)%'
             $apiPassword: '%env(YOURLS_API_PASSWORD)%'
-            $assetsVersion: '%assets_version%'
             $graphCacheDirectory: '%env(GRAPH_CACHE_DIRECTORY)%'
             $openWeatherMapAppId: '%env(OPENWEATHERMAP_APPID)%'
             $redisHost: 'redis://%env(REDIS_HOST)%'
