@@ -18,6 +18,8 @@ fos_elastica:
                             type: date
                             format: "yyyy-MM-dd HH:mm:ss"
                             property_path: untilDateFormatted
+                        stationCode: ~
+                        provider: ~
                     persistence:
                         driver: orm
                         model: App\Entity\Station
@@ -30,13 +32,23 @@ fos_elastica:
             types:
                 data:
                     properties:
+                        provider:
+                            type: text
+                            property_path: provider
                         value:
                             type: float
                         pollutant:
                             type: integer
                         station:
-                            property_path: stationId
-                            type: integer
+                            type: nested
+                            properties:
+                                id: ~
+                                pin:
+                                    type: geo_point
+                                untilDate:
+                                    type: date
+                                    format: "yyyy-MM-dd HH:mm:ss"
+                                    property_path: untilDateFormatted
                         dateTime:
                             type: date
                             format: "yyyy-MM-dd HH:mm:ss"

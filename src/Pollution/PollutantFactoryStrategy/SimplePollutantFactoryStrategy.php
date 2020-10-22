@@ -27,7 +27,7 @@ class SimplePollutantFactoryStrategy implements PollutantFactoryStrategyInterfac
             return false;
         }
 
-        return $data && $dataList->countPollutant($data->getPollutant()) <= 1;
+        return $data && !$this->isSatisfied($dataList, $data->getPollutant());
     }
 
     public function addDataToList(DataListInterface $dataList, Data $data = null): bool
@@ -39,5 +39,10 @@ class SimplePollutantFactoryStrategy implements PollutantFactoryStrategyInterfac
         $dataList->addData($data);
 
         return true;
+    }
+
+    public function isSatisfied(DataListInterface $dataList, int $pollutantId): bool
+    {
+        return $dataList->countPollutant($pollutantId) >= 1;
     }
 }

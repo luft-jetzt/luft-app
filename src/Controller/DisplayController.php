@@ -9,10 +9,12 @@ use App\Pollution\PollutionDataFactory\PollutionDataFactoryInterface;
 use App\SeoPage\SeoPage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
+use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class DisplayController extends AbstractController
 {
-    public function indexAction(Request $request, RequestConverterInterface $requestConverter, SeoPage $seoPage, PollutionDataFactoryInterface $pollutionDataFactory, CityGuesserInterface $cityGuesser): Response
+    public function indexAction(Request $request, SeoPage $seoPage, RequestConverterInterface $requestConverter, PollutionDataFactoryInterface $pollutionDataFactory, CityGuesserInterface $cityGuesser, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
     {
         $coord = $requestConverter->getCoordByRequest($request);
 
@@ -20,9 +22,9 @@ class DisplayController extends AbstractController
             return $this->redirectToRoute('frontpage');
         }
 
-        $boxList = $pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();
+        $viewModelList = $pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();
 
-        if (0 === count($boxList)) {
+        if (0 === count($viewModelList)) {
             return $this->noStationAction();
         }
 
@@ -31,13 +33,24 @@ class DisplayController extends AbstractController
         if ($cityName) {
             $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus %s', $cityName));
             $city = $this->findCityForName($cityName);
+
+            if ($city) {
+                $breadcrumbs
+                    ->addItem('Luft', $router->generate('display'))
+                    ->addItem($city->getName(), $router->generate('show_city', ['citySlug' => $city->getSlug()]))
+                    ->addItem('Dein Standort');
+            }
         } else {
+            $breadcrumbs
+                ->addItem('Luft')
+                ->addItem('Dein Standort');
+
             $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus deiner Umgebung'));
             $city = null;
         }
 
         return $this->render('Default/display.html.twig', [
-            'pollutantList' => $boxList,
+            'pollutantList' => $viewModelList,
             'cityName' => $cityName,
             'coord' => $coord,
             'city' => $city,

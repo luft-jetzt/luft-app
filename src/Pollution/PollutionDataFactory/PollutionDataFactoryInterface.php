@@ -3,17 +3,12 @@
 namespace App\Pollution\PollutionDataFactory;
 
 use App\Entity\Station;
-use App\Pollution\Box\Box;
-use App\Pollution\BoxDecorator\BoxDecoratorInterface;
-use App\Pollution\DataList\DataList;
-use App\Pollution\DataRetriever\DataRetrieverInterface;
 use App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
-use App\Pollution\StationFinder\StationFinderInterface;
 use Caldera\GeoBasic\Coord\CoordInterface;
 
 interface PollutionDataFactoryInterface
 {
-    public function createDecoratedPollutantList(): array;
+    public function createDecoratedPollutantList(\DateTime $dateTime = null, \DateInterval $dateInterval = null, int $workingSetSize = 20): array;
     public function setCoord(CoordInterface $coord): PollutionDataFactoryInterface;
     public function setStation(Station $station): PollutionDataFactoryInterface;
     public function setStrategy(PollutantFactoryStrategyInterface $strategy): PollutionDataFactoryInterface;

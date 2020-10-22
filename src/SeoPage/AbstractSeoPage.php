@@ -13,17 +13,13 @@ abstract class AbstractSeoPage implements SeoPageInterface
     /** @var SonataSeoPageInterface $sonataSeoPage*/
     protected $sonataSeoPage;
 
-    /** @var string $assetsVersion */
-    protected $assetsVersion;
-
     /** @var RequestStack $requestStack */
     protected $requestStack;
 
-    public function __construct(SonataSeoPageInterface $sonataSeoPage, RequestStack $requestStack, string $assetsVersion)
+    public function __construct(SonataSeoPageInterface $sonataSeoPage, RequestStack $requestStack)
     {
         $this->sonataSeoPage = $sonataSeoPage;
         $this->requestStack = $requestStack;
-        $this->assetsVersion = $assetsVersion;
     }
 
     protected function getRequest(): Request
@@ -35,8 +31,8 @@ abstract class AbstractSeoPage implements SeoPageInterface
     {
         $host = $this->getRequest()->getSchemeAndHttpHost();
 
-        $package = new Package(new StaticVersionStrategy($this->assetsVersion));
+        $package = new Package(new StaticVersionStrategy((new \DateTime())->format('Y-m-d')));
 
-        return $package->getUrl(sprintf('%s%s', $host, '/img/share/opengraph.jpeg'));
+        return $package->getUrl(sprintf('%s%s', $host, $filename));
     }
 }

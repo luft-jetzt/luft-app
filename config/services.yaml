@@ -7,7 +7,6 @@ parameters:
     yourls.api_url: '%env(YOURLS_HOSTNAME)%'
     yourls.api_username: '%env(YOURLS_USERNAME)%'
     yourls.api_password: '%env(YOURLS_PASSWORD)%'
-    assets_version: '%env(ASSETS_VERSION)%'
     router.request_context.host: 'luft.jetzt'
     router.request_context.scheme: 'https'
 
@@ -25,7 +24,9 @@ services:
             $apiUrl: '%env(YOURLS_API_URL)%'
             $apiUsername: '%env(YOURLS_API_USERNAME)%'
             $apiPassword: '%env(YOURLS_API_PASSWORD)%'
-            $assetsVersion: '%assets_version%'
+            $graphCacheDirectory: '%env(GRAPH_CACHE_DIRECTORY)%'
+            $openWeatherMapAppId: '%env(OPENWEATHERMAP_APPID)%'
+            $redisHost: 'redis://%env(REDIS_HOST)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -43,10 +44,11 @@ services:
     # please note that last definitions always *replace* previous ones
 
     App\Twitter\MessageFactory\MessageFactoryInterface:
-        alias: App\Twitter\MessageFactory\EmojiMessageFactory
+        alias: App\Twitter\MessageFactory\ExtendedEmojiMessageFactory
 
     App\Pollution\DataRetriever\DataRetrieverInterface:
-        alias: App\Pollution\DataRetriever\ElasticDataRetriever
+        #alias: App\Pollution\DataRetriever\CachedElasticDataRetriever
+        alias: App\Pollution\DataRetriever\ChainedDataRetriever
 
     App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface:
         alias: App\Pollution\PollutantFactoryStrategy\LuftdatenPollutantFactoryStrategy
@@ -58,6 +60,10 @@ services:
         arguments:
             $dataFinder: '@fos_elastica.finder.air_data.data'
 
+    App\Pollution\DataRetriever\CachedElasticDataRetriever:
+        arguments:
+            $dataFinder: '@fos_elastica.finder.air_station.station'
+
     App\Pollution\StationFinder\ElasticStationFinder:
         arguments:
             $stationFinder: '@fos_elastica.finder.air_station.station'
@@ -65,3 +71,16 @@ services:
     App\SeoPage\SeoPage:
         arguments:
             $sonataSeoPage: '@sonata.seo.page.default'
+
+    App\Pollution\UniqueStrategy\UniqueStrategyInterface:
+        alias: App\Pollution\UniqueStrategy\CacheUniqueStrategy
+
+    App\Pollution\DataPersister\PersisterInterface:
+        alias: App\Pollution\DataPersister\CachePersister
+
+    App\Producer\Value\RabbitValueProducer:
+        arguments:
+            $producer: '@old_sound_rabbit_mq.luft_value_producer'
+
+    App\Producer\Value\ValueProducerInterface:
+        alias: App\Producer\Value\CacheValueProducer

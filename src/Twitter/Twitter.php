@@ -2,7 +2,9 @@
 
 namespace App\Twitter;
 
+use App\Air\ViewModel\MeasurementViewModel;
 use App\Entity\TwitterSchedule;
+use Caldera\GeoBasic\Coord\Coord;
 use Cron\CronExpression;
 
 class Twitter extends AbstractTwitter
@@ -21,7 +23,7 @@ class Twitter extends AbstractTwitter
 
             $cron = CronExpression::factory($twitterSchedule->getCron());
 
-            if ($cron->isDue() || $this->dryRun) {
+            if ($cron->isDue($this->dateTime) || $this->dryRun) {
                 $user = $twitterSchedule->getCity()->getUser();
 
                 if (!$user) {
@@ -32,9 +34,28 @@ class Twitter extends AbstractTwitter
 
                 $coord = $this->getCoord($twitterSchedule);
 
-                $pollutantList = $this->pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();
+                $pollutantList = $this
+                    ->pollutionDataFactory
+                    ->setCoord($coord)
+                    ->createDecoratedPollutantList($this->dateTime, new \DateInterval('PT3H'));
 
-                $message = $this->createMessage($twitterSchedule, $pollutantList);
+                if (0 === count($pollutantList)) {
+                    continue;
+                }
+
+                $additionalCoord = new Coord($coord->getLatitude(), $coord->getLongitude());
+                $additionalPollutantList = $this
+                    ->pollutionDataFactory
+                    ->setCoord($additionalCoord)
+                    ->createDecoratedPollutantList($this->dateTime, new \DateInterval('PT3H'));
+
+                foreach ($pollutantList as $pollutantId => $pollutant) {
+                    if (array_key_exists($pollutantId, $additionalPollutantList)) {
+                        unset($additionalPollutantList[$pollutantId]);
+                    }
+                }
+
+                $message = $this->createMessage($twitterSchedule, $this->removeNotTwitterableMeasurements($pollutantList), $this->removeNotTwitterableMeasurements($additionalPollutantList));
 
                 $params = [
                     'status' => $message,
@@ -53,12 +74,13 @@ class Twitter extends AbstractTwitter
         }
     }
 
-    protected function createMessage(TwitterSchedule $twitterSchedule, array $pollutantList): string
+    protected function createMessage(TwitterSchedule $twitterSchedule, array $pollutantList, array $additionalPollutantList): string
     {
         $this->messageFactory
             ->reset()
             ->setTitle($twitterSchedule->getTitle())
-            ->setPollutantList($pollutantList);
+            ->setPollutantList($pollutantList)
+            ->setAdditionalPollutantList($additionalPollutantList);
 
         if ($this->dryRun) {
             $this->messageFactory->setLink('https://localhost/foobarbaz');
@@ -71,5 +93,19 @@ class Twitter extends AbstractTwitter
             ->getMessage();
 
         return $message;
+    }
+
+    protected function removeNotTwitterableMeasurements(array $list): array
+    {
+        foreach ($list as $key => $measurementViewModelList) {
+            /** @var MeasurementViewModel $measurementViewModel */
+            foreach ($measurementViewModelList as $measurementViewModel) {
+                if (!$measurementViewModel->getMeasurement()->includeInTweets()) {
+                    unset($list[$key]);
+                }
+            }
+        }
+
+        return $list;
     }
 }

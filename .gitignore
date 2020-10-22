@@ -11,14 +11,18 @@
 /public/build/
 ###< symfony/webpack-encore-pack ###
 
-###> symfony/phpunit-bridge ###
-.phpunit
-/phpunit.xml
-###< symfony/phpunit-bridge ###
-
 .idea/
+
+docker/
 
 public/img/*
 public/js/*
 public/css/*
 public/fonts/*
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###

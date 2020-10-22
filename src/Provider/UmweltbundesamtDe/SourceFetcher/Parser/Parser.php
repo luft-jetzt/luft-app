@@ -2,52 +2,61 @@
 
 namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Parser;
 
+use App\Entity\Station;
 use App\Pollution\Value\Value;
-use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaQueryInterface;
+use App\Provider\UmweltbundesamtDe\UmweltbundesamtDeProvider;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class Parser implements ParserInterface
 {
-    /** @var UbaQueryInterface $query */
-    protected $query = null;
+    /** @var array $stationList */
+    protected $stationList;
 
-    public function __construct(UbaQueryInterface $query)
+    /** @var RegistryInterface $registry */
+    protected $registry;
+
+    public function __construct(RegistryInterface $registry)
     {
-        $this->query = $query;
+        $this->registry = $registry;
     }
 
-    public function parse(\stdClass $response, int $pollutant): array
+    public function parse(array $response, int $pollutant): array
     {
-        $data = array_pop($response->data);
-
-        $timeScope = array_pop($response->time_scope);
-        $interval = new \DateInterval(sprintf('PT%dS', $timeScope));
+        $this->fetchStationList();
 
         $valueList = [];
 
-        foreach ($data as $stationCode => $dataList) {
-            $dateTime = $this->query->getReporting()->getStartDateTime();
+        foreach ($response['data'] as $stationId => $dataSet) {
+            $data = array_pop($dataSet);
 
-            foreach ($dataList as $value) {
-                $dateTime = $dateTime->add($interval);
-
-                $value = $this->query->getFilter()->filter($value);
-
-                if (!$value) {
-                    continue;
-                }
-
-                $dataValue = new Value();
-
-                $dataValue
-                    ->setStation($stationCode)
-                    ->setDateTime($dateTime)
-                    ->setPollutant($pollutant)
-                    ->setValue($value);
-
-                $valueList[] = $dataValue;
+            if ($data[2] <= 0) {
+                continue;
             }
+            
+            if (!array_key_exists($stationId, $this->stationList)) {
+                continue;
+            }
+
+            $stationCode = $this->stationList[$stationId]->getStationCode();
+
+            $dataValue = new Value();
+
+            $dataValue
+                ->setStation($stationCode)
+                ->setDateTime(new \DateTimeImmutable($data[3]))
+                ->setPollutant($pollutant)
+                ->setValue($data[2]);
+
+            $valueList[] = $dataValue;
         }
 
         return $valueList;
+    }
+
+    protected function fetchStationList(): Parser
+    {
+        $this->stationList = $this->registry->getRepository(Station::class)->findIndexedByProvider(UmweltbundesamtDeProvider::IDENTIFIER, 'ubaStationId');
+
+        return $this;
     }
 }

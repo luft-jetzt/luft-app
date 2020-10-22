@@ -16,7 +16,7 @@
 
         <div class="row">
             <div class="col-12">
-                <table class="table table-sm">
+                <table class="table table-sm datatable">
                     <thead>
                         <tr>
                             <th>
@@ -34,7 +34,7 @@
                     </thead>
                     {% for ofen in ofenList %}
                         <tr>
-                            <td>
+                            <td data-order="{{ ofen.station.stationCode }}">
                                 <a href="{{ path('station', { stationCode: ofen.station.stationCode }) }}">
                                     {{ ofen.station.stationCode }}
                                 </a>
@@ -54,13 +54,13 @@
                                 {% endif %}
                             </td>
 
-                            <td>
+                            <td data-order="{{ ofen.data.value }}">
                                 {{ ofen.data.value }}
                                 <br />
                                 <span class="text-danger">+{{ ofen.slope }}</span>
                             </td>
 
-                            <td>
+                            <td data-order="{{ ofen.data.dateTime|date('U') }}">
                                 <a href="{{ path('station_history', { stationCode: ofen.station.stationCode, from: ofen.data.dateTime|date('Y-m-d'), until: ofen.data.dateTime|date('Y-m-d') }) }}">
                                     <time class="d-none d-md-inline-block">
                                         {{ ofen.data.dateTime|format_date('eeee, dd. MMMM YYYY') }}
@@ -89,4 +89,20 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('.datatable').DataTable({
+                'paging':   false,
+                'info':     false,
+                'language': {
+                    'search': 'Suche:'
+                }
+            });
+        } );
+    </script>
 {% endblock %}

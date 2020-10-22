@@ -7,5 +7,5 @@ framework:
         handler_id: ~
     php_errors:
         log: true
-    assets:
-        version: '%assets_version%'
+    templating:
+        engines: ['twig']

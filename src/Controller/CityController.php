@@ -12,11 +12,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class CityController extends AbstractController
 {
-    public function showAction(SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory, string $citySlug): Response
+    public function showAction(SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory, string $citySlug, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
     {
         /** @var City $city */
         $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
@@ -27,16 +29,19 @@ class CityController extends AbstractController
 
         $seoPage
             ->setTitle(sprintf('Luftmesswerte aus %s: Stickstoffdioxid, Feinstaub und Ozon', $city->getName()))
-            ->setDescription(sprintf('Aktuelle Schadstoffwerte aus Luftmessstationen in %s: Stickstoffdioxid, Feinstaub und Ozon', $city->getName()))
-        ;
+            ->setDescription(sprintf('Aktuelle Schadstoffwerte aus Luftmessstationen in %s: Stickstoffdioxid, Feinstaub und Ozon', $city->getName()));
+
+        $breadcrumbs
+            ->addItem('Luft', $router->generate('display'))
+            ->addItem($city->getName(), $router->generate('show_city', ['citySlug' => $city->getSlug()]));
 
         $stationList = $this->getStationListForCity($city);
-        $stationsBoxList = $this->createBoxListForStationList($pollutionDataFactory, $stationList);
+        $stationViewModelList = $this->createViewModelListForStationList($pollutionDataFactory, $stationList);
 
         return $this->render('City/show.html.twig', [
             'city' => $city,
             'stationList' => $stationList,
-            'stationBoxList' => $stationsBoxList,
+            'stationBoxList' => $stationViewModelList,
         ]);
     }
 
