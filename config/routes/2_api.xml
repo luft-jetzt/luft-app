@@ -9,39 +9,34 @@
     </route>
 
     <route id="api_station_station" path="/api/station/{stationCode}" methods="GET">
-        <default key="_controller">App\Controller\ApiController::stationAction</default>
+        <default key="_controller">App\Controller\Api\StationApiController::stationAction</default>
         <requirement key="stationCode">^([A-Z]{4,6})([0-9]{0,8})$</requirement>
     </route>
 
     <route id="api_station_all" path="/api/station" methods="GET">
-        <default key="_controller">App\Controller\ApiController::stationAction</default>
-    </route>
-
-    <route id="api_city_city" path="/api/city/{citySlug}" methods="GET">
-        <default key="_controller">App\Controller\ApiController::cityAction</default>
-        <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
+        <default key="_controller">App\Controller\Api\StationApiController::listStationAction</default>
     </route>
 
     <route id="api_city_all" path="/api/city" methods="GET">
-        <default key="_controller">App\Controller\ApiController::cityAction</default>
+        <default key="_controller">App\Controller\Api\CityApiController::cityAction</default>
     </route>
 
     <route id="api_station" path="/api/{stationCode}" methods="GET">
-        <default key="_controller">App\Controller\ApiController::displayStationAction</default>
+        <default key="_controller">App\Controller\Api\DisplayApiController::displayStationAction</default>
         <requirement key="stationCode">^([A-Z]{2,6})([A-Z0-9]{0,8})$</requirement>
     </route>
 
     <route id="api_station" path="/api/{stationCode}/analysis" methods="GET">
-        <default key="_controller">App\Controller\ApiController::stationAnalysisAction</default>
+        <default key="_controller">App\Controller\Api\AnalysisApiController::stationAnalysisAction</default>
         <requirement key="stationCode">^([A-Z]{4,6})([0-9]{1,5})$</requirement>
     </route>
 
     <route id="api_city" path="/api/{citySlug}" methods="GET">
-        <default key="_controller">App\Controller\ApiController::cityAction</default>
+        <default key="_controller">App\Controller\Api\CityApiController::displayCityAction</default>
         <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
 
     <route id="api_display" path="/api" methods="GET">
-        <default key="_controller">App\Controller\ApiController::displayAction</default>
+        <default key="_controller">App\Controller\Api\DisplayApiController::displayAction</default>
     </route>
 </routes>
