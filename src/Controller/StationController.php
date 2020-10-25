@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Analysis\LimitAnalysis\LimitAnalysisInterface;
+use App\Entity\City;
 use App\Entity\Station;
 use App\Plotter\StationPlotter\StationPlotterInterface;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
@@ -10,6 +11,7 @@ use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPageInterface;
 use App\Util\DateTimeUtil;
 use Flagception\Bundle\FlagceptionBundle\Annotations\Feature;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,15 +20,11 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class StationController extends AbstractController
 {
-    public function stationAction(SeoPageInterface $seoPage, string $stationCode, PollutionDataFactory $pollutionDataFactory, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
+    /**
+     * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
+     */
+    public function stationAction(SeoPageInterface $seoPage, Station $station, PollutionDataFactory $pollutionDataFactory, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
     {
-        /** @var Station $station */
-        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
-
-        if (!$station) {
-            throw $this->createNotFoundException();
-        }
-
         $viewModelList = $pollutionDataFactory
             ->setStation($station)
             ->createDecoratedPollutantList();
@@ -48,15 +46,11 @@ class StationController extends AbstractController
         ]);
     }
 
-    public function limitsAction(LimitAnalysisInterface $limitAnalysis, string $stationCode): Response
+    /**
+     * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
+     */
+    public function limitsAction(LimitAnalysisInterface $limitAnalysis, Station $station): Response
     {
-        /** @var Station $station */
-        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
-
-        if (!$station) {
-            throw $this->createNotFoundException();
-        }
-
         $now = new \DateTime('2018-11-30');
 
         $limitAnalysis
@@ -74,8 +68,9 @@ class StationController extends AbstractController
 
     /**
      * @Feature("station_history")
+     * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
      */
-    public function historyAction(Request $request, string $stationCode, SeoPageInterface $seoPage, HistoryDataFactoryInterface $historyDataFactory, RouterInterface $router): Response
+    public function historyAction(Request $request, Station $station, SeoPageInterface $seoPage, HistoryDataFactoryInterface $historyDataFactory, RouterInterface $router): Response
     {
         if ($untilDateTimeParam = $request->query->get('until')) {
             try {
@@ -97,13 +92,6 @@ class StationController extends AbstractController
         } else {
             $fromDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
             $fromDateTime->sub(new \DateInterval('P3D'));
-        }
-
-        /** @var Station $station */
-        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
-
-        if (!$station) {
-            throw $this->createNotFoundException();
         }
 
         if ($station->getCity()) {
@@ -148,8 +136,9 @@ class StationController extends AbstractController
 
     /**
      * @Feature("station_history")
+     * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
      */
-    public function plotHistoryAction(Request $request, string $stationCode, StationPlotterInterface $stationPlotter, string $graphCacheDirectory): BinaryFileResponse
+    public function plotHistoryAction(Request $request, Station $station, StationPlotterInterface $stationPlotter, string $graphCacheDirectory): BinaryFileResponse
     {
         if ($untilDateTimeParam = $request->query->get('until')) {
             try {
@@ -171,13 +160,6 @@ class StationController extends AbstractController
         } else {
             $fromDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
             $fromDateTime->sub(new \DateInterval('P3D'));
-        }
-
-        /** @var Station $station */
-        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
-
-        if (!$station) {
-            throw $this->createNotFoundException();
         }
 
         $width = (int) $request->get('width', 800);
