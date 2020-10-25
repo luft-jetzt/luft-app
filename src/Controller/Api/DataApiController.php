@@ -36,17 +36,10 @@ class DataApiController extends AbstractApiController
     {
         $body = $request->getContent();
 
-        try {
-            /** @var Value $value */
-            $value = $serializer->deserialize($body, Value::class, 'json');
+        /** @var Value $value */
+        $value = $serializer->deserialize($body, Value::class, 'json');
 
-            $persister->persistValues([$value]);
-        } catch (\Exception $exception) {
-            /** @var array<Value> $valueList */
-            $valueList = $serializer->deserialize($body, 'array<App\Pollution\Value\Value>', 'json');
-
-            $persister->persistValues($valueList);
-        }
+        $persister->persistValues([$value]);
 
         return new JsonResponse($serializer->serialize($value, 'json'), 200, [], true);
     }
