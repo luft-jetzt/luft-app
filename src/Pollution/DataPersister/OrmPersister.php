@@ -6,7 +6,7 @@ use App\Entity\Data;
 use App\Pollution\Value\Value;
 use App\Pollution\ValueDataConverter\ValueDataConverter;
 
-class Persister extends AbstractPersister
+class OrmPersister extends AbstractPersister
 {
     public function persistValues(array $values): PersisterInterface
     {
