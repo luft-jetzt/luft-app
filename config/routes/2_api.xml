@@ -30,14 +30,8 @@
         <default key="_controller">App\Controller\Api\CityApiController::cityAction</default>
     </route>
 
-    <route id="api_station" path="/api/{stationCode}" methods="GET">
-        <default key="_controller">App\Controller\Api\DisplayApiController::displayStationAction</default>
-        <requirement key="stationCode">^([A-Z]{2,6})([A-Z0-9]{0,8})$</requirement>
-    </route>
-
-    <route id="api_station" path="/api/{stationCode}/analysis" methods="GET">
-        <default key="_controller">App\Controller\Api\AnalysisApiController::stationAnalysisAction</default>
-        <requirement key="stationCode">^([A-Z]{4,6})([0-9]{1,5})$</requirement>
+    <route id="api_city_put" path="/api/city" methods="PUT">
+        <default key="_controller">App\Controller\Api\CityApiController::putCityAction</default>
     </route>
 
     <route id="api_city" path="/api/{citySlug}" methods="GET">
@@ -45,6 +39,21 @@
         <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
     </route>
 
+    <route id="api_city_post" path="/api/{citySlug}" methods="POST">
+        <default key="_controller">App\Controller\Api\CityApiController::postCityAction</default>
+        <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
+    </route>
+
+    <route id="api_station" path="/api/{stationCode}" methods="GET">
+        <default key="_controller">App\Controller\Api\DisplayApiController::displayStationAction</default>
+        <requirement key="stationCode">^([A-Z]{2,6})([A-Z0-9]{0,8})$</requirement>
+    </route>
+
+    <route id="api_station_analysis" path="/api/{stationCode}/analysis" methods="GET">
+        <default key="_controller">App\Controller\Api\AnalysisApiController::stationAnalysisAction</default>
+        <requirement key="stationCode">^([A-Z]{4,6})([0-9]{1,5})$</requirement>
+    </route>
+    
     <route id="api_display" path="/api" methods="GET">
         <default key="_controller">App\Controller\Api\DisplayApiController::displayAction</default>
     </route>
