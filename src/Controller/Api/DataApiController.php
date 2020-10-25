@@ -2,11 +2,8 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\Data;
-use App\Entity\Station;
 use App\Pollution\DataPersister\PersisterInterface;
 use App\Pollution\Value\Value;
-use Doctrine\Persistence\ManagerRegistry;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,10 +36,17 @@ class DataApiController extends AbstractApiController
     {
         $body = $request->getContent();
 
-        /** @var Value $value */
-        $value = $serializer->deserialize($body, Value::class, 'json');
+        try {
+            /** @var Value $value */
+            $value = $serializer->deserialize($body, Value::class, 'json');
 
-        $persister->persistValues([$value]);
+            $persister->persistValues([$value]);
+        } catch (\Exception $exception) {
+            /** @var array<Value> $valueList */
+            $valueList = $serializer->deserialize($body, 'array<App\Pollution\Value\Value>', 'json');
+
+            $persister->persistValues($valueList);
+        }
 
         return new JsonResponse($serializer->serialize($value, 'json'), 200, [], true);
     }

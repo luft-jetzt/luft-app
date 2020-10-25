@@ -13,7 +13,7 @@ class Value
      * @JMS\Expose()
      * @JMS\Type("string")
      */
-    protected string $station;
+    protected ?string $station = null;
 
     /**
      * @JMS\Expose()
@@ -38,7 +38,7 @@ class Value
 
     }
 
-    public function getStation(): string
+    public function getStation(): ?string
     {
         return $this->station;
     }
@@ -50,7 +50,7 @@ class Value
         return $this;
     }
 
-    public function getDateTime(): \DateTimeInterface
+    public function getDateTime(): ?\DateTimeInterface
     {
         return $this->dateTime;
     }
@@ -62,7 +62,7 @@ class Value
         return $this;
     }
 
-    public function getValue(): float
+    public function getValue(): ?float
     {
         return $this->value;
     }
@@ -74,7 +74,7 @@ class Value
         return $this;
     }
 
-    public function getPollutant(): int
+    public function getPollutant(): ?int
     {
         return $this->pollutant;
     }
@@ -85,5 +85,4 @@ class Value
 
         return $this;
     }
-
 }
