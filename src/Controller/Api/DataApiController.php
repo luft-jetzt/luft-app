@@ -14,9 +14,7 @@ use Swagger\Annotations as SWG;
 class DataApiController extends AbstractApiController
 {
     /**
-     * Returns details of a specified station.
-     *
-     * Get details of the station identified by <code>stationCode</code>. Note this will not return any pollution data.
+     * Add values of stations.
      *
      * @SWG\Tag(name="Data")
      * @SWG\Parameter(
