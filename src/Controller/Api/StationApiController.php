@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
+use App\Util\EntityMerger\EntityMergerInterface;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,6 +79,74 @@ class StationApiController extends AbstractApiController
      * )
      */
     public function listStationAction(Request $request, SerializerInterface $serializer): Response
+    {
+        $providerIdentifier = $request->get('provider');
+
+        if ($providerIdentifier) {
+            $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStationsByProvider($providerIdentifier);
+        } else {
+            $stationList = $this->getDoctrine()->getRepository(Station::class)->findAll();
+        }
+
+        return new JsonResponse($serializer->serialize($stationList, 'json'), 200, [], true);
+    }
+
+    /**
+     * Add a new station.
+     *
+     * @SWG\Tag(name="Station")
+     * @SWG\Parameter(
+     *     name="provider",
+     *     in="query",
+     *     type="string",
+     *     description="Provider identifier"
+     * )
+     * @SWG\Response(
+     *   response=200,
+     *   description="Returns a list of all known stations",
+     *   @Model(type=App\Entity\Station::class)
+     * )
+     */
+    public function putStationAction(Request $request, SerializerInterface $serializer): Response
+    {
+        $providerIdentifier = $request->get('provider');
+
+        if ($providerIdentifier) {
+            $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStationsByProvider($providerIdentifier);
+        } else {
+            $stationList = $this->getDoctrine()->getRepository(Station::class)->findAll();
+        }
+
+        return new JsonResponse($serializer->serialize($stationList, 'json'), 200, [], true);
+    }
+
+    /**
+     * List all known stations. You may limit the list by specifing a provider identifier.
+     *
+     * Possible provider identifiers are:
+     *
+     * <ul>
+     * <li><code>uba_de</code>: Umweltbundesamt</li>
+     * <li><code>ld</code>: Luftdaten.info</li>
+     * <li><code>hqc</code>: HQCasanova</li>
+     * <li><code>owm</code>: OpenWeatherMap</li>
+     * </ul>
+     *
+     * @SWG\Tag(name="Station")
+     * @SWG\Parameter(
+     *     name="provider",
+     *     in="query",
+     *     type="string",
+     *     description="Provider identifier"
+     * )
+     * @SWG\Response(
+     *   response=200,
+     *   description="Returns a list of all known stations",
+     *   @Model(type=App\Entity\Station::class)
+     * )
+     * @ParamConverter("post", class="App:Station")
+     */
+    public function postStationAction(Request $request, SerializerInterface $serializer, Station $station, EntityMergerInterface $entityMerger): Response
     {
         $providerIdentifier = $request->get('provider');
 
