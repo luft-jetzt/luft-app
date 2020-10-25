@@ -4,7 +4,8 @@ namespace App\Controller\Api;
 
 use App\Entity\Data;
 use App\Entity\Station;
-use App\Model\Data as DataModel;
+use App\Pollution\DataPersister\PersisterInterface;
+use App\Pollution\Value\Value;
 use Doctrine\Persistence\ManagerRegistry;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -31,36 +32,18 @@ class DataApiController extends AbstractApiController
      * @SWG\Response(
      *   response=200,
      *   description="Returns details for specified station",
-     *   @Model(type=App\Entity\Station::class)
+     *   @Model(type=App\Entity\Data::class)
      * )
      */
-    public function putDataAction(Request $request, SerializerInterface $serializer, ManagerRegistry $managerRegistry): Response
+    public function putDataAction(Request $request, SerializerInterface $serializer, PersisterInterface $persister): Response
     {
         $body = $request->getContent();
 
-        /** @var DataModel $dataModel */
-        $dataModel = $serializer->deserialize($body, DataModel::class, 'json');
+        /** @var Value $value */
+        $value = $serializer->deserialize($body, Value::class, 'json');
 
-        $data = $this->convertToOrmData($managerRegistry, $dataModel);
+        $persister->persistValues([$value]);
 
-        $em = $managerRegistry->getManager();
-        $em->persist($data);
-        $em->flush();
-        
-        return new JsonResponse($serializer->serialize($data, 'json'), 200, [], true);
-    }
-
-    protected function convertToOrmData(ManagerRegistry $managerRegistry, DataModel $dataModel): Data
-    {
-        $station = $managerRegistry->getRepository(Station::class)->findOneByStationCode($dataModel->getStationCode());
-
-        $data = new Data();
-        $data
-            ->setDateTime($dataModel->getDateTime())
-            ->setPollutant($dataModel->getPollutant())
-            ->setValue($dataModel->getValue())
-            ->setStation($station);
-
-        return $data;
+        return new JsonResponse($serializer->serialize($value, 'json'), 200, [], true);
     }
 }

@@ -2,19 +2,36 @@
 
 namespace App\Pollution\Value;
 
+use JMS\Serializer\Annotation as JMS;
+
+/**
+ * @JMS\ExclusionPolicy("ALL")
+ */
 class Value
 {
-    /** @var string $station */
-    protected $station;
+    /**
+     * @JMS\Expose()
+     * @JMS\Type("string")
+     */
+    protected string $station;
 
-    /** @var \DateTime $dateTime */
-    protected $dateTime;
+    /**
+     * @JMS\Expose()
+     * @JMS\Type("DateTime<'U'>")
+     */
+    protected ?\DateTime $dateTime = null;
 
-    /** @var float $value */
-    protected $value;
+    /**
+     * @JMS\Expose()
+     * @JMS\Type("float")
+     */
+    protected ?float $value = null;
 
-    /** @var int $pollutant */
-    protected $pollutant;
+    /**
+     * @JMS\Expose()
+     * @JMS\Type("integer")
+     */
+    protected ?int $pollutant = null;
 
     public function __construct()
     {
@@ -38,7 +55,7 @@ class Value
         return $this->dateTime;
     }
 
-    public function setDateTime(\DateTimeInterface $dateTime): Value
+    public function setDateTime(\DateTime $dateTime): Value
     {
         $this->dateTime = $dateTime;
 
