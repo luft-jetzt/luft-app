@@ -5,7 +5,9 @@ namespace App\Controller\Api;
 use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\Util\EntityMerger\EntityMergerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use JMS\Serializer\SerializerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -96,66 +98,59 @@ class StationApiController extends AbstractApiController
      *
      * @SWG\Tag(name="Station")
      * @SWG\Parameter(
-     *     name="provider",
-     *     in="query",
+     *     name="body",
+     *     in="body",
      *     type="string",
-     *     description="Provider identifier"
+     *     description="Json of station data",
+     *     @SWG\Schema(type="string")
      * )
      * @SWG\Response(
      *   response=200,
-     *   description="Returns a list of all known stations",
+     *   description="Returns the new created station",
      *   @Model(type=App\Entity\Station::class)
      * )
      */
-    public function putStationAction(Request $request, SerializerInterface $serializer): Response
+    public function putStationAction(Request $request, SerializerInterface $serializer, ManagerRegistry $managerRegistry): Response
     {
-        $providerIdentifier = $request->get('provider');
+        $requestBody = $request->getContent();
 
-        if ($providerIdentifier) {
-            $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStationsByProvider($providerIdentifier);
-        } else {
-            $stationList = $this->getDoctrine()->getRepository(Station::class)->findAll();
-        }
+        $station = $serializer->deserialize($requestBody, Station::class, 'json');
 
-        return new JsonResponse($serializer->serialize($stationList, 'json'), 200, [], true);
+        $em = $managerRegistry->getManager();
+        $em->persist($station);
+        $em->flush();
+
+        return new JsonResponse($serializer->serialize($station, 'json'), 200, [], true);
     }
 
     /**
-     * List all known stations. You may limit the list by specifing a provider identifier.
-     *
-     * Possible provider identifiers are:
-     *
-     * <ul>
-     * <li><code>uba_de</code>: Umweltbundesamt</li>
-     * <li><code>ld</code>: Luftdaten.info</li>
-     * <li><code>hqc</code>: HQCasanova</li>
-     * <li><code>owm</code>: OpenWeatherMap</li>
-     * </ul>
+     * Updates station data.
      *
      * @SWG\Tag(name="Station")
      * @SWG\Parameter(
-     *     name="provider",
-     *     in="query",
+     *     name="body",
+     *     in="body",
      *     type="string",
-     *     description="Provider identifier"
+     *     description="Json of station data",
+     *     @SWG\Schema(type="string")
      * )
      * @SWG\Response(
      *   response=200,
-     *   description="Returns a list of all known stations",
+     *   description="Returns the updated station",
      *   @Model(type=App\Entity\Station::class)
      * )
-     * @ParamConverter("post", class="App:Station")
+     * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
      */
-    public function postStationAction(Request $request, SerializerInterface $serializer, Station $station, EntityMergerInterface $entityMerger): Response
+    public function postStationAction(Request $request, SerializerInterface $serializer, Station $station, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
     {
-        $providerIdentifier = $request->get('provider');
+        $requestBody = $request->getContent();
 
-        if ($providerIdentifier) {
-            $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStationsByProvider($providerIdentifier);
-        } else {
-            $stationList = $this->getDoctrine()->getRepository(Station::class)->findAll();
-        }
+        $updatedStation = $serializer->deserialize($requestBody, Station::class, 'json');
 
-        return new JsonResponse($serializer->serialize($stationList, 'json'), 200, [], true);
+        $station = $entityMerger->merge($updatedStation, $station);
+
+        $managerRegistry->getManager()->flush();
+
+        return new JsonResponse($serializer->serialize($station, 'json'), 200, [], true);
     }
 }
