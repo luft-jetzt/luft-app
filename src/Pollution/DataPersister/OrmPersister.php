@@ -2,12 +2,32 @@
 
 namespace App\Pollution\DataPersister;
 
-use App\Entity\Data;
+use App\Pollution\StationCache\StationCacheInterface;
+use App\Pollution\UniqueStrategy\UniqueStrategyInterface;
 use App\Pollution\Value\Value;
 use App\Pollution\ValueDataConverter\ValueDataConverter;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 
 class OrmPersister extends AbstractPersister
 {
+    protected ManagerRegistry $doctrine;
+    protected ObjectManager $entityManager;
+    protected array $stationList = [];
+
+    protected array $newValueList = [];
+
+    protected UniqueStrategyInterface $uniqueStrategy;
+
+    public function __construct(ManagerRegistry $doctrine, StationCacheInterface $stationCache, UniqueStrategyInterface $uniqueStrategy)
+    {
+        $this->doctrine = $doctrine;
+        $this->entityManager = $doctrine->getManager();
+        $this->uniqueStrategy = $uniqueStrategy;
+
+        parent::__construct($stationCache);
+    }
+
     public function persistValues(array $values): PersisterInterface
     {
         if (0 === count($values)) {
@@ -42,5 +62,18 @@ class OrmPersister extends AbstractPersister
         $this->uniqueStrategy->save();
 
         return $this;
+    }
+
+    public function reset(): PersisterInterface
+    {
+        $this->stationList = [];
+        $this->newValueList = [];
+
+        return $this;
+    }
+
+    public function getNewValueList(): array
+    {
+        return $this->newValueList;
     }
 }
