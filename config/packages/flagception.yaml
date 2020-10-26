@@ -1,11 +1,11 @@
 flagception:
     features:
         analysis:
-            default: false
+            default: true
         analysis_fireworks:
-            default: false
+            default: true
         analysis_komfortofen:
-            default: false
+            default: true
         station_history:
             default: false
         short_twitter_links:
