@@ -9,15 +9,19 @@ class JsonParser implements JsonParserInterface
 {
     public function parse(string $jsonData): array
     {
-        $jsonData = str_replace(['process(', '"})'], ['', '"}'], $jsonData);
-        $co2Value = json_decode($jsonData);
+        try {
+            $jsonData = str_replace(['process(', '"})'], ['', '"}'], $jsonData);
+            $co2Value = json_decode($jsonData);
 
-        $value = new Value();
-        $value->setValue((float) $co2Value->{'0'})
-            ->setPollutant(MeasurementInterface::MEASUREMENT_CO2)
-            ->setDateTime(new \DateTimeImmutable($co2Value->date))
-            ->setStation('USHIMALO');
+            $value = new Value();
+            $value->setValue((float) $co2Value->{'0'})
+                ->setPollutant(MeasurementInterface::MEASUREMENT_CO2)
+                ->setDateTime(new \DateTimeImmutable($co2Value->date))
+                ->setStation('USHIMALO');
 
-        return [$value];
+            return [$value];
+        } catch (\Exception $exception) {
+            return [];
+        }
     }
 }
