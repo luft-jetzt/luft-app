@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Geocoding\Query;
+namespace App\Geocoding\Geocoder;
 
-interface GeoQueryInterface
+interface GeocoderInterface
 {
     public function query(string $queryString): array;
 }

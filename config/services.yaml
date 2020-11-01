@@ -85,7 +85,7 @@ services:
     App\Producer\Value\ValueProducerInterface:
         alias: App\Producer\Value\CacheValueProducer
 
-    App\Geocoding\Query\GeoQuery:
+    App\Geocoding\Geocoder\Geocoder:
         $provider: '@bazinga_geocoder.provider.nominatim'
 
     app.geocoding_cache:

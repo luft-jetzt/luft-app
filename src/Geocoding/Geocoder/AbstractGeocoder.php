@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace App\Geocoding\Query;
+namespace App\Geocoding\Geocoder;
 
 use Geocoder\Provider\Provider;
 use Symfony\Component\Routing\RouterInterface;
 
-abstract class AbstractGeoQuery implements GeoQueryInterface
+abstract class AbstractGeocoder implements GeocoderInterface
 {
     protected RouterInterface $router;
 

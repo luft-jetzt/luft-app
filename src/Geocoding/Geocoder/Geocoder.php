@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace App\Geocoding\Query;
+namespace App\Geocoding\Geocoder;
 
 use Geocoder\Model\AddressCollection;
 use Geocoder\Provider\Nominatim\Model\NominatimAddress;
 use Geocoder\Query\GeocodeQuery;
 
-class GeoQuery extends AbstractGeoQuery
+class Geocoder extends AbstractGeocoder
 {
     public function query(string $queryString): array
     {
