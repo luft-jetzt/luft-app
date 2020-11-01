@@ -221,9 +221,6 @@
     "league/geotools": {
         "version": "0.8.0"
     },
-    "maxh/php-nominatim": {
-        "version": "1.2.3"
-    },
     "michelf/php-markdown": {
         "version": "1.8.0"
     },
