@@ -87,3 +87,7 @@ services:
 
     App\Geocoding\Query\GeoQuery:
         $provider: '@bazinga_geocoder.provider.nominatim'
+
+    app.geocoding_cache:
+        class: Symfony\Component\Cache\Simple\Psr6Cache
+        arguments: ['@app.cache.geocoding']
