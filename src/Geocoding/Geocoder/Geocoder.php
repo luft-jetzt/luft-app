@@ -39,13 +39,11 @@ class Geocoder extends AbstractGeocoder
                 'icon' => 'map-marker',
             ];
 
-            if ($nominatimAddress->getDisplayName()) {
-                $value['name'] = $nominatimAddress->getDisplayName();
+            if ($nominatimAddress->getStreetName() && $nominatimAddress->getStreetNumber()) {
+                $value['name'] = sprintf('%s %s', $nominatimAddress->getStreetName(), $nominatimAddress->getStreetNumber());
+            }
 
-                if ($nominatimAddress->getStreetName()) {
-                    $value['address'] = $nominatimAddress->getStreetName();
-                }
-            } elseif ($nominatimAddress->getStreetName()) {
+            if ($nominatimAddress->getStreetName() && !$nominatimAddress->getStreetNumber()) {
                 $value['name'] = $nominatimAddress->getStreetName();
             }
 
