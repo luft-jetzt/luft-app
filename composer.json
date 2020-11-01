@@ -14,7 +14,7 @@
         "fresh/doctrine-enum-bundle": "^6.2",
         "friendsofsymfony/elastica-bundle": "^5.0",
         "friendsofsymfony/jsrouting-bundle": "^2.2",
-        "geocoder-php/nominatim-provider": "^5.0",
+        "geocoder-php/nominatim-provider": "^5.2",
         "hwi/oauth-bundle": "^0.6.1",
         "jms/serializer-bundle": "^2.3",
         "jublonet/codebird-php": "^3.1",
@@ -55,7 +55,8 @@
         "symfony/web-link": "^4.0",
         "symfony/webpack-encore-bundle": "^1.7",
         "symfony/yaml": "^4.0",
-        "whiteoctober/breadcrumbs-bundle": "^1.4"
+        "whiteoctober/breadcrumbs-bundle": "^1.4",
+        "willdurand/geocoder-bundle": "^5.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.0",

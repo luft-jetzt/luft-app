@@ -155,6 +155,9 @@
     "geocoder-php/nominatim-provider": {
         "version": "5.0.0"
     },
+    "geocoder-php/plugin": {
+        "version": "1.2.0"
+    },
     "guzzlehttp/guzzle": {
         "version": "6.3.0"
     },
@@ -842,6 +845,18 @@
     },
     "willdurand/geocoder": {
         "version": "4.2.0"
+    },
+    "willdurand/geocoder-bundle": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "b272ad4fbfcd45a20e7cbfdc4ad1b0e27a62fd3b"
+        },
+        "files": [
+            "config/packages/bazinga_geocoder.yaml"
+        ]
     },
     "willdurand/jsonp-callback-validator": {
         "version": "v1.1.0"
