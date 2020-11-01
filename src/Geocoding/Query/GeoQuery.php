@@ -2,27 +2,34 @@
 
 namespace App\Geocoding\Query;
 
+use Geocoder\Model\AddressCollection;
+use Geocoder\Provider\Nominatim\Model\NominatimAddress;
+use Geocoder\Query\GeocodeQuery;
+
 class GeoQuery extends AbstractGeoQuery
 {
     public function query(string $queryString): array
     {
-        $this->curl->get(sprintf(self::QUERY_ADRESS, $queryString));
+        $query = GeocodeQuery::create($queryString);
 
-        $features = $this->curl->response->features;
+        /** @var AddressCollection $addressCollection */
+        $addressCollection = $this->provider->geocodeQuery($query);
 
         $result = [];
 
-        foreach ($features as $feature) {
-            if (!$feature->properties) {
+        /** @var NominatimAddress $nominatimAddress */
+        foreach ($addressCollection->all() as $nominatimAddress) {
+            if (!$nominatimAddress->getCountry() || $nominatimAddress->getCountry()->getName() !== 'Deutschland') {
                 continue;
             }
 
-            if (!$feature->properties->country || $feature->properties->country !== 'Deutschland') {
+            if (!$nominatimAddress->getCoordinates()) {
                 continue;
             }
 
-            $latitude = $feature->geometry->coordinates[1];
-            $longitude = $feature->geometry->coordinates[0];
+            $latitude = $nominatimAddress->getCoordinates()->getLatitude();
+            $longitude = $nominatimAddress->getCoordinates()->getLongitude();
+
             $url = $this->router->generate('display', ['latitude' => $latitude, 'longitude' => $longitude]);
 
             $value = [
@@ -32,31 +39,30 @@ class GeoQuery extends AbstractGeoQuery
                 'icon' => 'map-marker',
             ];
 
-            if (isset($feature->properties->name)) {
-                $value['name'] = $feature->properties->name;
+            if ($nominatimAddress->getDisplayName()) {
+                $value['name'] = $nominatimAddress->getDisplayName();
 
-                if (isset($feature->properties->street)) {
-                    $value['address'] = $feature->properties->street;
+                if ($nominatimAddress->getStreetName()) {
+                    $value['address'] = $nominatimAddress->getStreetName();
                 }
-            } elseif (isset($feature->properties->street)) {
-                $value['name'] = $feature->properties->street;
+            } elseif ($nominatimAddress->getStreetName()) {
+                $value['name'] = $nominatimAddress->getStreetName();
             }
 
-            if (isset($feature->properties->city)) {
-                $value['city'] = $feature->properties->city;
+            if ($nominatimAddress->getLocality()) {
+                $value['city'] = $nominatimAddress->getLocality();
             }
 
-            if (isset($feature->properties->postcode)) {
-                $value['zipCode'] = $feature->properties->postcode;
+            if ($nominatimAddress->getPostalCode()) {
+                $value['zipCode'] = $nominatimAddress->getPostalCode();
             }
 
-            if (isset($feature->properties->osm_key) && isset($feature->properties->osm_value)) {
-                $osmKey = $feature->properties->osm_key;
-                $osmValue = $feature->properties->osm_value;
+            if ($nominatimAddress->getOSMType()) {
+                $osmType = $nominatimAddress->getOSMType();
 
-                if ($osmValue === 'city' || $osmValue === 'suburb') {
+                if ($osmType === 'city' || $osmType === 'suburb') {
                     $value['icon'] = 'university';
-                } elseif ($osmValue === 'building' || $osmValue === 'residental') {
+                } elseif ($osmType === 'building' || $osmType === 'residental') {
                     $value['icon'] = 'road';
                 }
             }

@@ -2,20 +2,18 @@
 
 namespace App\Geocoding\Query;
 
-use Curl\Curl;
+use Geocoder\Provider\Provider;
 use Symfony\Component\Routing\RouterInterface;
 
 abstract class AbstractGeoQuery implements GeoQueryInterface
 {
-    /** @var RouterInterface $router */
-    protected $router;
+    protected RouterInterface $router;
 
-    /** @var Curl $curl */
-    protected $curl;
+    protected Provider $provider;
 
-    public function __construct(RouterInterface $router)
+    public function __construct(RouterInterface $router, Provider $provider)
     {
         $this->router = $router;
-        $this->curl = new Curl();
+        $this->provider = $provider;
     }
 }
