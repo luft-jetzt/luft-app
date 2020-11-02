@@ -1,4 +1,4 @@
-import 'typeahead.js';
+import 'corejs-typeahead';
 import Bloodhound from 'bloodhound-js';
 
 export default class Search {

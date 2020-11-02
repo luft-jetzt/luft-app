@@ -84,3 +84,13 @@ services:
 
     App\Producer\Value\ValueProducerInterface:
         alias: App\Producer\Value\CacheValueProducer
+
+    App\Geocoding\Guesser\CityGuesser:
+        $provider: '@bazinga_geocoder.provider.nominatim'
+
+    App\Geocoding\Geocoder\Geocoder:
+        $provider: '@bazinga_geocoder.provider.nominatim'
+
+    app.geocoding_cache:
+        class: Symfony\Component\Cache\Simple\Psr6Cache
+        arguments: ['@app.cache.geocoding']

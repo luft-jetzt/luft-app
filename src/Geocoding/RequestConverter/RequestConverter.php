@@ -3,22 +3,20 @@
 namespace App\Geocoding\RequestConverter;
 
 use App\Entity\Zip;
-use App\Geocoding\Query\GeoQueryInterface;
+use App\Geocoding\Geocoder\GeocoderInterface;
 use Caldera\GeoBasic\Coord\Coord;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class RequestConverter implements RequestConverterInterface
 {
-    /** @var GeoQueryInterface $geoQuery */
-    protected $geoQuery;
+    protected GeocoderInterface $geocoder;
 
-    /** @var RegistryInterface $registry */
-    protected $registry;
+    protected RegistryInterface $registry;
 
-    public function __construct(GeoQueryInterface $geoQuery, RegistryInterface $registry)
+    public function __construct(GeocoderInterface $geocoder, RegistryInterface $registry)
     {
-        $this->geoQuery = $geoQuery;
+        $this->geocoder = $geocoder;
         $this->registry = $registry;
     }
 
@@ -45,7 +43,7 @@ class RequestConverter implements RequestConverterInterface
         }
 
         if ($query) {
-            $result = $this->geoQuery->query($query);
+            $result = $this->geocoder->query($query);
 
             $firstResult = array_pop($result);
 
