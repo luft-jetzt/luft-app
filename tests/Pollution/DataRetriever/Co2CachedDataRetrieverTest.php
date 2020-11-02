@@ -7,7 +7,7 @@ use App\Entity\Data;
 use App\Entity\Station;
 use App\Pollution\DataCache\DataCacheInterface;
 use App\Pollution\DataRetriever\Co2CachedDataRetriever;
-use App\Provider\HqcasanovaProvider\HqcasanovaProvider;
+use App\Provider\NoaaProvider\NoaaProvider;
 use App\Repository\StationRepository;
 use Caldera\GeoBasic\Coord\Coord;
 use PHPUnit\Framework\TestCase;
@@ -104,7 +104,7 @@ class Co2CachedDataRetrieverTest extends TestCase
             ->setAltitude(3397)
             ->setStationCode('USHIMALO')
             ->setTitle('Mauna Loa Observatory')
-            ->setProvider(HqcasanovaProvider::IDENTIFIER);
+            ->setProvider(NoaaProvider::IDENTIFIER);
 
         return $station;
     }

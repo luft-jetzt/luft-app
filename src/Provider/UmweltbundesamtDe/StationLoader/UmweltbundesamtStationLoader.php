@@ -10,7 +10,6 @@ use App\Provider\StationLoaderInterface;
 use App\Provider\UmweltbundesamtDe\UmweltbundesamtDeProvider;
 use Curl\Curl;
 use Doctrine\ORM\EntityManager;
-use League\Csv\Reader;
 
 class UmweltbundesamtStationLoader extends AbstractStationLoader
 {
