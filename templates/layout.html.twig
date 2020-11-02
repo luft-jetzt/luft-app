@@ -1,21 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-        {{ sonata_seo_metadatas() }}
-        {{ sonata_seo_link_canonical() }}
-        {{ sonata_seo_lang_alternates() }}
-
-        {% block javascripts %}
-            {{ encore_entry_script_tags('js/app') }}
-        {% endblock %}
-
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('css/app') }}
-        {% endblock %}
-    </head>
     <body>
-        {% include 'Includes/menu.html.twig' %}
+    {% include 'Includes/menu.html.twig' %}
 
     <a href="http://sqi.be/ed94a">
         <img class="d-none d-md-block" style="position: absolute; top: 56px; right: 0; border: 0;" src="{{ asset('/img/github/black-topright.png') }}" />
@@ -23,14 +10,9 @@
 
     {{ wo_render_breadcrumbs() }}
 
-        {% block content %}{% endblock %}
+    {% block content %}{% endblock %}
 
     {% include 'Includes/footer.html.twig' %}
 
-    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-
-
-        {% block scripts %}{% endblock %}
     </body>
-</html>
+{% endblock %}

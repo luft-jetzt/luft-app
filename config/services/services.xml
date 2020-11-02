@@ -18,11 +18,12 @@
         </service>
 
         <service id="App\Menu\MapMenuBuilder">
+            <argument type="service" id="Flagception\Manager\FeatureManagerInterface" />
             <argument type="service" id="knp_menu.factory" />
             <argument type="service" id="security.token_storage" />
-            <argument type="service" id="App\Pollution\PollutantList\PollutantListInterface" />
+            <argument type="service" id="App\Air\MeasurementList\MeasurementListInterface" />
             <argument type="service" id="Symfony\Component\Routing\RouterInterface" />
-            <tag name="knp_menu.menu_builder" method="mapMenu" alias="map_menu" />
+            <tag name="knp_menu.menu_builder" method="mainMenu" alias="map_menu" />
         </service>
 
         <service id="App\Analysis\LimitAnalysis\LimitAnalysis">
