@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
+use FOS\ElasticaBundle\Finder\FinderInterface;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -79,10 +80,33 @@ class StationApiController extends AbstractApiController
      */
     public function listStationAction(Request $request, SerializerInterface $serializer): Response
     {
+        $north = $request->get('north');
+        $south = $request->get('south');
+        $west = $request->get('west');
+        $east = $request->get('east');
+
         $providerIdentifier = $request->get('provider_identifier');
 
-        if ($providerIdentifier) {
-            $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStationsByProvider($providerIdentifier, 1000);
+        if ($north && $west && $south && $east) {
+            /** @var FinderInterface $finder */
+            $finder = $this->get('fos_elastica.finder.air_station.station');
+
+            $boolQuery = new \Elastica\Query\BoolQuery();
+
+            $geoQuery = new \Elastica\Query\GeoBoundingBox('pin', [
+                ['lon' => $west, 'lat' => $north,],
+                ['lon' => $east, 'lat' => $south,],
+            ]);
+
+            $boolQuery->addMust($geoQuery);
+
+            $boolQuery->addMust(new \Elastica\Query\Term(['provider' => $providerIdentifier]));
+
+            $query = new \Elastica\Query($boolQuery);
+
+            $stationList = $finder->find($query, 5000);
+        } elseif ($providerIdentifier) {
+            $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStationsByProvider($providerIdentifier, 5000);
         } else {
             $stationList = $this->getDoctrine()->getRepository(Station::class)->findAll();
         }
