@@ -36,12 +36,12 @@
             </div>
         </div>
     </div>
-    <div id="map"></div>
+    <div id="overview-map">Overview Map</div>
 </div>
 
 <div class="modal" tabindex="-1" role="dialog" id="featureModal">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content">c
             <div class="modal-header">
                 <h5 class="modal-title" id="feature-title">Modal title</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -60,13 +60,3 @@
     </div>
 </div>
 {% endblock body %}
-
-{% block scripts %}
-<script src="{{ asset('/js/list.min.js') }}"></script>
-<script src="{{ asset('/js/leaflet.markercluster.js') }}"></script>
-<script src="{{ asset('/js/L.Control.Locate.min.js') }}"></script>
-<!--<script src="{{ asset('/js/leaflet-groupedlayercontrol.min.js') }}"></script>-->
-<script src="{{ asset('/js/leaflet.extra-markers.min.js') }}"></script>
-<script src="{{ asset('/js/leaflet-hash.js') }}"></script>
-<script src="{{ asset('/js/app.min.js') }}"></script>
-{% endblock scripts %}

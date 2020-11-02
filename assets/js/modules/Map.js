@@ -11,8 +11,8 @@ export default class Map {
     }
 
     createAllMaps() {
-        const cityMap = document.querySelector('.city-map');
-        const coordMap = document.querySelector('.coord-map');
+        const cityMap = document.querySelector('div.city-map');
+        const coordMap = document.querySelector('div.coord-map');
 
         if (cityMap) {
             this.createCityMap(cityMap.id);
@@ -21,7 +21,7 @@ export default class Map {
         } else {
             const that = this;
 
-            const mapList = document.querySelectorAll('.map');
+            const mapList = document.querySelectorAll('div.map');
 
             mapList.forEach(function (map) {
                 const mapContainer = map.parentNode;

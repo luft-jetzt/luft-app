@@ -18,6 +18,9 @@ Encore
         from: 'node_modules/leaflet-extra-markers/dist/img/',
         to: 'images/extramarkers/[name].[ext]',
     })
+    .configureBabel(function(babelConfig) {
+        babelConfig.plugins.push('transform-class-properties');
+    })
 ;
 
 module.exports = Encore.getWebpackConfig();
