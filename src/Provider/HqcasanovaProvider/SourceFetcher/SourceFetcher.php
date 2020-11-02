@@ -2,8 +2,9 @@
 
 namespace App\Provider\HqcasanovaProvider\SourceFetcher;
 
+use App\Air\Measurement\CO2;
+use App\Pollution\Value\Value;
 use App\Producer\Value\ValueProducerInterface;
-use App\Provider\HqcasanovaProvider\SourceFetcher\Parser\JsonParser;
 use App\Provider\HqcasanovaProvider\StationLoader\HqcasanovaStationLoader;
 use App\SourceFetcher\FetchProcess;
 use App\SourceFetcher\FetchResult;
@@ -14,14 +15,11 @@ class SourceFetcher implements SourceFetcherInterface
 {
     protected Curl $curl;
 
-    protected JsonParser $jsonParser;
-
     protected ValueProducerInterface $valueProducer;
 
-    public function __construct(HqcasanovaStationLoader $stationLoader, JsonParser $jsonParser, ValueProducerInterface $valueProducer)
+    public function __construct(HqcasanovaStationLoader $stationLoader, ValueProducerInterface $valueProducer)
     {
         $this->stationLoader = $stationLoader;
-        $this->jsonParser = $jsonParser;
         $this->valueProducer = $valueProducer;
 
         $this->curl = new Curl();
@@ -29,24 +27,42 @@ class SourceFetcher implements SourceFetcherInterface
 
     public function fetch(FetchProcess $fetchProcess): FetchResult
     {
-        $response = $this->query();
+        $xmlFile = file_get_contents('https://www.esrl.noaa.gov/gmd/webdata/ccgg/trends/rss.xml');
 
-        $valueList = $this->jsonParser->parse($response);
+        $simpleXml = new \SimpleXMLElement($xmlFile);
 
-        foreach ($valueList as $value) {
-            $this->valueProducer->publish($value);
+        $resultList = [];
+
+        foreach ($simpleXml->channel->item as $item) {
+            $guid = (string) $item->guid;
+
+            if (!$guid || 1 !== preg_match('/^\d{4}-\d{1,2}-\d{1,2}$/', $guid)) {
+                continue;
+            }
+
+            preg_match('/\d{3,3}\.\d{1,2}/', (string) $item->description, $matches);
+
+            $co2Value = array_pop($matches);
+
+            $resultList[$guid] = $co2Value;
         }
 
+        uksort($resultList, 'strnatcmp');
+
+        $lastValueDateTimeString = array_key_last($resultList);
+        $lastCo2Value = (float) $resultList[$lastValueDateTimeString];
+
+        $value = new Value();
+        $value->setValue($lastCo2Value)
+            ->setStation('USHIMALO')
+            ->setPollutant(CO2::MEASUREMENT_CO2)
+            ->setDateTime(new \DateTimeImmutable,($lastValueDateTimeString));
+
+        $this->valueProducer->publish($value);
+
         $fetchResult = new FetchResult();
-        $fetchResult->setCounter('co2', count($valueList));
+        $fetchResult->setCounter('co2', 1);
 
         return $fetchResult;
-    }
-
-    protected function query(): string
-    {
-        $this->curl->get('http://hqcasanova.com/co2/?callback=process');
-
-        return $this->curl->response;
     }
 }
