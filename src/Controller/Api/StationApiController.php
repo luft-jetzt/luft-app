@@ -66,7 +66,7 @@ class StationApiController extends AbstractApiController
      *
      * @SWG\Tag(name="Station")
      * @SWG\Parameter(
-     *     name="provider",
+     *     name="provider_identifier",
      *     in="query",
      *     type="string",
      *     description="Provider identifier"
@@ -79,10 +79,10 @@ class StationApiController extends AbstractApiController
      */
     public function listStationAction(Request $request, SerializerInterface $serializer): Response
     {
-        $providerIdentifier = $request->get('provider');
+        $providerIdentifier = $request->get('provider_identifier');
 
         if ($providerIdentifier) {
-            $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStationsByProvider($providerIdentifier);
+            $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStationsByProvider($providerIdentifier, 1000);
         } else {
             $stationList = $this->getDoctrine()->getRepository(Station::class)->findAll();
         }

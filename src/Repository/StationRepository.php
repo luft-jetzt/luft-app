@@ -59,7 +59,7 @@ class StationRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findActiveStationsByProvider(string $providerIdentifier): array
+    public function findActiveStationsByProvider(string $providerIdentifier, int $maxResults): array
     {
         $qb = $this->createQueryBuilder('s');
 
@@ -67,7 +67,7 @@ class StationRepository extends EntityRepository
             ->where($qb->expr()->isNull('s.untilDate'))
             ->andWhere($qb->expr()->eq('s.provider', ':provider'))
             ->setParameter('provider', $providerIdentifier)
-            ->setMaxResults(10)
+            ->setMaxResults($maxResults)
             ->orderBy('s.stationCode');
 
         return $qb->getQuery()->getResult();
