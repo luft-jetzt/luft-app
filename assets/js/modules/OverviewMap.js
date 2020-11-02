@@ -125,9 +125,9 @@ export default class OverviewMap {
             }
             content += '</table>';
 
-            $('#feature-title').html($marker.station.station_code);
-            $('#feature-info').html(content);
-            $('#featureModal').modal('show');
+            $('#feature-modal-label').html($marker.station.station_code);
+            $('#feature-modal-info').html(content);
+            $('#feature-modal').modal('show');
 
             highlightLayer.clearLayers().addLayer(L.circleMarker($marker.getLatLng(), highlightStyle));
         });
