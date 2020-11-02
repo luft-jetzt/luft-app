@@ -5,7 +5,6 @@ namespace App\Provider\NoaaProvider\SourceFetcher;
 use App\Air\Measurement\CO2;
 use App\Pollution\Value\Value;
 use App\Producer\Value\ValueProducerInterface;
-use App\Provider\NoaaProvider\StationLoader\NoaaStationLoader;
 use App\SourceFetcher\FetchProcess;
 use App\SourceFetcher\FetchResult;
 use App\SourceFetcher\SourceFetcherInterface;
@@ -13,13 +12,10 @@ use Curl\Curl;
 
 class SourceFetcher implements SourceFetcherInterface
 {
-    protected Curl $curl;
-
     protected ValueProducerInterface $valueProducer;
 
-    public function __construct(NoaaStationLoader $stationLoader, ValueProducerInterface $valueProducer)
+    public function __construct(ValueProducerInterface $valueProducer)
     {
-        $this->stationLoader = $stationLoader;
         $this->valueProducer = $valueProducer;
 
         $this->curl = new Curl();
@@ -31,32 +27,12 @@ class SourceFetcher implements SourceFetcherInterface
 
         $simpleXml = new \SimpleXMLElement($xmlFile);
 
-        $resultList = [];
-
-        foreach ($simpleXml->channel->item as $item) {
-            $guid = (string) $item->guid;
-
-            if (!$guid || 1 !== preg_match('/^\d{4}-\d{1,2}-\d{1,2}$/', $guid)) {
-                continue;
-            }
-
-            preg_match('/\d{3,3}\.\d{1,2}/', (string) $item->description, $matches);
-
-            $co2Value = array_pop($matches);
-
-            $resultList[$guid] = $co2Value;
-        }
-
-        uksort($resultList, 'strnatcmp');
+        $resultList = $this->parseXmlFile($simpleXml);
 
         $lastValueDateTimeString = array_key_last($resultList);
         $lastCo2Value = (float) $resultList[$lastValueDateTimeString];
 
-        $value = new Value();
-        $value->setValue($lastCo2Value)
-            ->setStation('USHIMALO')
-            ->setPollutant(CO2::MEASUREMENT_CO2)
-            ->setDateTime(new \DateTimeImmutable,($lastValueDateTimeString));
+        $value = $this->createValue($lastCo2Value, new \DateTimeImmutable($lastValueDateTimeString));
 
         $this->valueProducer->publish($value);
 
@@ -64,5 +40,49 @@ class SourceFetcher implements SourceFetcherInterface
         $fetchResult->setCounter('co2', 1);
 
         return $fetchResult;
+    }
+
+    protected function createValue(float $lastCo2Value, \DateTimeImmutable $dateTime): Value
+    {
+        $value = new Value();
+        $value->setValue($lastCo2Value)
+            ->setStation('USHIMALO')
+            ->setPollutant(CO2::MEASUREMENT_CO2)
+            ->setDateTime($dateTime);
+
+        return $value;
+    }
+
+    protected function parseXmlFile(\SimpleXMLElement $xmlRoot): array
+    {
+        $resultList = [];
+
+        foreach ($xmlRoot->channel->item as $item) {
+            $guid = (string) $item->guid;
+
+            if (!$guid || !$this->isYearMonthDayGuidString($guid)) {
+                continue;
+            }
+
+            $co2Value = $this->fetchCo2ValueFromString((string) $item->description);
+
+            $resultList[$guid] = $co2Value;
+        }
+
+        uksort($resultList, 'strnatcmp');
+
+        return $resultList;
+    }
+
+    protected function isYearMonthDayGuidString(string $guid): bool
+    {
+        return 1 === preg_match('/^\d{4}-\d{1,2}-\d{1,2}$/', $guid);
+    }
+
+    protected function fetchCo2ValueFromString(string $description): float
+    {
+        preg_match('/\d{3,3}\.\d{1,2}/', $description, $matches);
+
+        return (float) array_pop($matches);
     }
 }
