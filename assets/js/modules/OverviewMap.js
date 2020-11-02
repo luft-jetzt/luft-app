@@ -65,16 +65,17 @@ export default class OverviewMap {
         const defaultStationIcon = this.createStandardStationIcon();
         const that = this;
 
+        const apiUrl = Routing.generate('api_station_all', {
+            north: bounds.getNorth(),
+            east: bounds.getEast(),
+            south: bounds.getSouth(),
+            west: bounds.getWest(),
+            remember_stations: true,
+            provider_identifier: 'uba_de',
+        });
+
         $.ajax({
-            url: 'https://luft.wip/api/station',
-            data: {
-                north: bounds.getNorth(),
-                east: bounds.getEast(),
-                south: bounds.getSouth(),
-                west: bounds.getWest(),
-                remember_stations: true,
-                provider_identifier: 'uba_de',
-            },
+            url: apiUrl,
             success: function (result) {
                 let i;
 
@@ -111,8 +112,10 @@ export default class OverviewMap {
 
     showStationModal(e) {
         const $marker = e.target;
+        const stationCode = $marker.station.station_code;
+        const apiUrl = Routing.generate('api_station_station', { stationCode: stationCode} );
 
-        $.get('https://luft.wip/api/' + $marker.station.station_code, {}, function(dataList) {
+        $.get(apiUrl, function(dataList) {
             let content = '<table class="table table-striped table-bordered table-condensed">';
 
             for (let i = 0; i < dataList.length; ++i) {

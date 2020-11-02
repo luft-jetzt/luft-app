@@ -11,10 +11,12 @@
     <route id="api_station_station" path="/api/station/{stationCode}" methods="GET">
         <default key="_controller">App\Controller\Api\StationApiController::stationAction</default>
         <requirement key="stationCode">^([A-Z]{4,6})([0-9]{0,8})$</requirement>
+        <option key="expose">true</option>
     </route>
 
     <route id="api_station_all" path="/api/station" methods="GET">
         <default key="_controller">App\Controller\Api\StationApiController::listStationAction</default>
+        <option key="expose">true</option>
     </route>
 
     <route id="api_city_all" path="/api/city" methods="GET">
