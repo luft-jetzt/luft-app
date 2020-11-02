@@ -57,6 +57,7 @@ export default class OverviewMap {
         this.hash = new L.Hash(this.map);
 
         this.installLocateControl();
+        this.installZoomControl();
     }
 
     loadStations() {
@@ -192,7 +193,7 @@ export default class OverviewMap {
     installZoomControl() {
         L.control.zoom({
             position: 'topright'
-        }).addTo(map);
+        }).addTo(this.map);
     }
 
     /*
