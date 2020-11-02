@@ -4292,10 +4292,10 @@ leaflet-hash@^0.2.1:
   resolved "https://registry.yarnpkg.com/leaflet-hash/-/leaflet-hash-0.2.1.tgz#c36c718347c5243033b57cb4baea26119d82c701"
   integrity sha1-w2xxg0fFJDAztXy0uuomEZ2CxwE=
 
-leaflet.locatecontrol@^0.65.1:
-  version "0.65.2"
-  resolved "https://registry.yarnpkg.com/leaflet.locatecontrol/-/leaflet.locatecontrol-0.65.2.tgz#22d3f79fa32f2ae56c4ed933957ed627a96e905d"
-  integrity sha512-1K7iCt0Uxu6uZmHoCgWZKIX2KckiQB04/KV8tpLwU8/Fy8iD2HLfuRxKXMCyEVKp/zBc2Qbp2SoEX9rdK3SMvQ==
+leaflet.locatecontrol@^0.72.0:
+  version "0.72.0"
+  resolved "https://registry.yarnpkg.com/leaflet.locatecontrol/-/leaflet.locatecontrol-0.72.0.tgz#7de5c109a0e10a928bae85e4996e5efa49a3c905"
+  integrity sha512-enAf10UG9Z1bV0siTP/+vG/ZVncDqSA3V8c6iZ3s6KWL5Ngkk4A4mk9Ssefj46ey98I9HSYWqoS+k2Y7EaKjwQ==
 
 leaflet.markercluster@^1.4.1:
   version "1.4.1"

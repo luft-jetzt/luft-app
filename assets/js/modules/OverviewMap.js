@@ -2,9 +2,11 @@ import 'leaflet';
 import 'leaflet-extra-markers';
 import List from 'list.js';
 import 'leaflet-hash';
+import 'leaflet.locatecontrol';
 
 export default class OverviewMap {
     map;
+    hash;
     stationLayer;
     highlightLayer;
     stationList = [];
@@ -52,7 +54,9 @@ export default class OverviewMap {
             that.syncSidebar();
         });
 
-        let hash = new L.Hash(this.map);
+        this.hash = new L.Hash(this.map);
+
+        this.installLocateControl();
     }
 
     loadStations() {
@@ -143,8 +147,6 @@ export default class OverviewMap {
         this.refreshList();
     }
 
-
-
     adjustHeight() {
         const $nav = $('nav.navbar');
         const $container = $('#container');
@@ -164,27 +166,27 @@ export default class OverviewMap {
             markerStyle: {
                 weight: 1,
                 opacity: 0.8,
-                fillOpacity: 0.8
+                fillOpacity: 0.8,
             },
             circleStyle: {
                 weight: 1,
-                clickable: false
+                clickable: false,
             },
             icon: 'fa fa-location-arrow',
             metric: false,
             strings: {
-                title: "My location",
-                popup: "You are within {distance} {unit} from this point",
-                outsideMapBoundsMsg: "You seem located outside the boundaries of the map"
+                title: 'My location',
+                popup: 'You are within {distance} {unit} from this point',
+                outsideMapBoundsMsg: 'You seem located outside the boundaries of the map',
             },
             locateOptions: {
                 maxZoom: 18,
                 watch: true,
                 enableHighAccuracy: true,
                 maximumAge: 10000,
-                timeout: 10000
+                timeout: 10000,
             }
-        }).addTo(map);
+        }).addTo(this.map);
     }
 
     installZoomControl() {
