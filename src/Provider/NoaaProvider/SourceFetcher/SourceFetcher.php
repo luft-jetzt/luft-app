@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace App\Provider\HqcasanovaProvider\SourceFetcher;
+namespace App\Provider\NoaaProvider\SourceFetcher;
 
 use App\Air\Measurement\CO2;
 use App\Pollution\Value\Value;
 use App\Producer\Value\ValueProducerInterface;
-use App\Provider\HqcasanovaProvider\StationLoader\HqcasanovaStationLoader;
+use App\Provider\NoaaProvider\StationLoader\NoaaStationLoader;
 use App\SourceFetcher\FetchProcess;
 use App\SourceFetcher\FetchResult;
 use App\SourceFetcher\SourceFetcherInterface;
@@ -17,7 +17,7 @@ class SourceFetcher implements SourceFetcherInterface
 
     protected ValueProducerInterface $valueProducer;
 
-    public function __construct(HqcasanovaStationLoader $stationLoader, ValueProducerInterface $valueProducer)
+    public function __construct(NoaaStationLoader $stationLoader, ValueProducerInterface $valueProducer)
     {
         $this->stationLoader = $stationLoader;
         $this->valueProducer = $valueProducer;
