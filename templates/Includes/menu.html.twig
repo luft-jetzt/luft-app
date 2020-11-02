@@ -10,7 +10,7 @@
         {{ knp_menu_render('main_menu') }}
 
         {% if app.request.get('_route') != 'frontpage' %}
-            <form method="get" class="form-inline float-right">
+            <form method="get" class="form-inline float-right" action="{{ path('display') }}">
                 <div class="input-group">
                     <input type="text" class="form-control typeahead" id="query" name="query" placeholder="Suchbegriff, Postleitzahl, Stadtname…" />
                     <div class="input-group-append">

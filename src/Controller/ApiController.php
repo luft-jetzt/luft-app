@@ -35,7 +35,7 @@ class ApiController extends AbstractController
      *   description="Retrieve pollution data for station",
      *   @SWG\Schema(
      *     type="array",
-     *     @SWG\Items(ref=@Model(type=App\Pollution\Box\Box::class))
+     *     @SWG\Items(ref=@Model(type=App\Air\ViewModel\MeasurementViewModel::class))
      *   )
      * )
      * @SWG\Parameter(
@@ -70,7 +70,7 @@ class ApiController extends AbstractController
      *   description="Retrieve pollution data for cities",
      *   @SWG\Schema(
      *     type="array",
-     *     @SWG\Items(ref=@Model(type=App\Pollution\Box\Box::class))
+     *     @SWG\Items(ref=@Model(type=App\Air\ViewModel\MeasurementViewModel::class))
      *   )
      * )
      */
@@ -86,9 +86,9 @@ class ApiController extends AbstractController
         }
 
         $stationList = $this->getStationListForCity($city);
-        $stationsBoxList = $this->createBoxListForStationList($pollutionDataFactory, $stationList);
+        $stationViewModelList = $this->createViewModelListForStationList($pollutionDataFactory, $stationList);
 
-        return new JsonResponse($serializer->serialize($stationsBoxList, 'json'), 200, [], true);
+        return new JsonResponse($serializer->serialize($stationViewModelList, 'json'), 200, [], true);
     }
 
     /**
@@ -118,7 +118,7 @@ class ApiController extends AbstractController
      *   description="Returns pollution data of specified station",
      *   @SWG\Schema(
      *     type="array",
-     *     @SWG\Items(ref=@Model(type=App\Pollution\Box\Box::class))
+     *     @SWG\Items(ref=@Model(type=App\Air\ViewModel\MeasurementViewModel::class))
      *   )
      * )
      */
@@ -269,12 +269,12 @@ class ApiController extends AbstractController
 
     protected function unpackPollutantList(array $pollutantList): array
     {
-        $boxList = [];
+        $viewModelList = [];
 
         foreach ($pollutantList as $pollutant) {
-            $boxList = array_merge($boxList, $pollutant);
+            $viewModelList = array_merge($viewModelList, $pollutant);
         }
 
-        return $boxList;
+        return $viewModelList;
     }
 }

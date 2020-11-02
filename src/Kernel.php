@@ -2,12 +2,12 @@
 
 namespace App;
 
-use App\AirQuality\PollutionLevel\PollutionLevelInterface;
+use App\Air\AirQuality\PollutionLevel\PollutionLevelInterface;
+use App\Air\Measurement\MeasurementInterface;
 use App\DependencyInjection\Compiler\PollutionLevelCompilerPass;
 use App\DependencyInjection\Compiler\ProviderCompilerPass;
 use App\Provider\ProviderInterface;
 use App\DependencyInjection\Compiler\PollutantCompilerPass;
-use App\Pollution\Pollutant\PollutantInterface;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -61,7 +61,7 @@ class Kernel extends BaseKernel
         $container->registerForAutoconfiguration(ProviderInterface::class)->addTag('air_provider');
 
         $container->addCompilerPass(new PollutantCompilerPass());
-        $container->registerForAutoconfiguration(PollutantInterface::class)->addTag('pollutant');
+        $container->registerForAutoconfiguration(MeasurementInterface::class)->addTag('measurement');
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes)

@@ -4,32 +4,42 @@ namespace App\Pollution\DataPersister;
 
 use App\Entity\Data;
 use App\Pollution\Value\Value;
+use App\Pollution\ValueDataConverter\ValueDataConverter;
 
 class Persister extends AbstractPersister
 {
     public function persistValues(array $values): PersisterInterface
     {
+        if (0 === count($values)) {
+            return $this;
+        }
+
+        $this->uniqueStrategy->init($values);
+
         /** @var Value $value */
         foreach ($values as $value) {
-            $data = new Data();
-
-            $data
-                ->setDateTime($value->getDateTime())
-                ->setValue($value->getValue())
-                ->setPollutant($value->getPollutant());
-
             if ($this->stationExists($value->getStation())) {
-                $data->setStation($this->stationCache->getStationReferenceByCode($value->getStation()));
+                $station = $this->getStationByCode($value->getStation());
+
+                $data = ValueDataConverter::convert($value, $station);
             } else {
                 continue;
             }
 
-            $this->entityManager->merge($data);
+            if ($this->uniqueStrategy->isDataDuplicate($data)) {
+                continue;
+            }
+
+            $this->uniqueStrategy->addData($data);
+
+            $this->entityManager->persist($data);
 
             $this->newValueList[] = $data;
         }
 
         $this->entityManager->flush();
+
+        $this->uniqueStrategy->save();
 
         return $this;
     }

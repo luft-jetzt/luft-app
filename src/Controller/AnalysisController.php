@@ -6,10 +6,17 @@ use App\Analysis\FireworksAnalysis\FireworksAnalysisInterface;
 use App\Analysis\KomfortofenAnalysis\KomfortofenAnalysisInterface;
 use App\SeoPage\SeoPageInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Flagception\Bundle\FlagceptionBundle\Annotations\Feature;
 
+/**
+ * @Feature("analysis")
+ */
 class AnalysisController extends AbstractController
 {
-    public function komfortofenAction(KomfortofenAnalysisInterface $komfortofenAnalysis): Response
+    /**
+     * @Feature("analysis_komfortofen")
+     */
+    public function komfortofenAction(KomfortofenAnalysisInterface $komfortofenAnalysis, SeoPageInterface $seoPage): Response
     {
         $interval = new \DateInterval('P30D');
         $untilDateTime = new \DateTimeImmutable();
@@ -21,11 +28,16 @@ class AnalysisController extends AbstractController
 
         $ofens = $komfortofenAnalysis->analyze();
 
+        $seoPage->setTitle('Finde Feinstaub-Belastungen aus Holzöfen in deiner Nähe');
+
         return $this->render('Analysis/komfortofen.html.twig', [
             'ofenList' => $ofens,
         ]);
     }
 
+    /**
+     * @Feature("analysis_fireworks")
+     */
     public function fireworksAction(FireworksAnalysisInterface $fireworksAnalysis, SeoPageInterface $seoPage): Response
     {
         $seoPage

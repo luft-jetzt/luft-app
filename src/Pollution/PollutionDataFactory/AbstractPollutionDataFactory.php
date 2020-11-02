@@ -2,8 +2,8 @@
 
 namespace App\Pollution\PollutionDataFactory;
 
+use App\Air\ViewModelFactory\MeasurementViewModelFactoryInterface;
 use App\Entity\Station;
-use App\Pollution\BoxDecorator\BoxDecoratorInterface;
 use App\Pollution\DataList\DataList;
 use App\Pollution\DataRetriever\DataRetrieverInterface;
 use App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
@@ -18,8 +18,8 @@ abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInter
     /** @var StationFinderInterface $stationFinder */
     protected $stationFinder;
 
-    /** @var StationFinderInterface $boxDecorator */
-    protected $boxDecorator;
+    /** @var MeasurementViewModelFactoryInterface $viewModelFactory */
+    protected $measurementViewModelFactory;
 
     /** @var DataList $dataList */
     protected $dataList;
@@ -30,11 +30,11 @@ abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInter
     /** @var PollutantFactoryStrategyInterface $strategy */
     protected $strategy;
 
-    public function __construct(StationFinderInterface $stationFinder, BoxDecoratorInterface $boxDecorator, DataRetrieverInterface $dataRetriever, PollutantFactoryStrategyInterface $strategy)
+    public function __construct(StationFinderInterface $stationFinder, MeasurementViewModelFactoryInterface $viewModelFactory, DataRetrieverInterface $dataRetriever, PollutantFactoryStrategyInterface $strategy)
     {
         $this->stationFinder = $stationFinder;
         $this->dataList = new DataList();
-        $this->boxDecorator = $boxDecorator;
+        $this->measurementViewModelFactory = $viewModelFactory;
         $this->dataRetriever = $dataRetriever;
         $this->strategy = $strategy;
     }

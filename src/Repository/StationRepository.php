@@ -27,12 +27,12 @@ class StationRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findIndexedByProvider(string $providerIdentifier): array
+    public function findIndexedByProvider(string $providerIdentifier, string $indexedField = 'stationCode'): array
     {
         $qb = $this->createQueryBuilder('s');
 
         $qb
-            ->indexBy('s', 's.stationCode')
+            ->indexBy('s', sprintf('s.%s', $indexedField))
             ->where($qb->expr()->eq('s.provider', ':provider'))
             ->setParameter('provider', $providerIdentifier);
 

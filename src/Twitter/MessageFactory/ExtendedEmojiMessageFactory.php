@@ -2,7 +2,7 @@
 
 namespace App\Twitter\MessageFactory;
 
-use App\Pollution\Box\Box;
+use App\Air\ViewModel\MeasurementViewModel;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class ExtendedEmojiMessageFactory extends AbstractExtendedMessageFactory
@@ -21,9 +21,14 @@ class ExtendedEmojiMessageFactory extends AbstractExtendedMessageFactory
 
         /** @var array $pollutant */
         foreach ($this->pollutantList as $pollutant) {
-            /** @var Box $box */
-            foreach ($pollutant as $box) {
-                $this->message .= sprintf("%s %s: %.0f %s \n", $this->getEmoji($box), $box->getPollutant()->getName(), $box->getData()->getValue(), $box->getPollutant()->getUnitPlain());
+            /** @var MeasurementViewModel $measurementViewModel */
+            foreach ($pollutant as $measurementViewModel) {
+                $this->message .= sprintf("%s %s: %.0f %s \n",
+                    $this->getEmoji($measurementViewModel),
+                    $measurementViewModel->getMeasurement()->getName(),
+                    $measurementViewModel->getData()->getValue(),
+                    $measurementViewModel->getMeasurement()->getUnitPlain()
+                );
             }
         }
 
@@ -32,9 +37,9 @@ class ExtendedEmojiMessageFactory extends AbstractExtendedMessageFactory
 
             /** @var array $pollutant */
             foreach ($this->additionalPollutantList as $pollutant) {
-                /** @var Box $box */
-                foreach ($pollutant as $box) {
-                    $this->message .= sprintf("%s %s: %.0f %s \n", $this->getEmoji($box), $box->getPollutant()->getName(), $box->getData()->getValue(), $box->getPollutant()->getUnitPlain());
+                /** @var MeasurementViewModel $measurementViewModel */
+                foreach ($pollutant as $measurementViewModel) {
+                    $this->message .= sprintf("%s %s: %.0f %s \n", $this->getEmoji($measurementViewModel), $measurementViewModel->getMeasurement()->getName(), $measurementViewModel->getData()->getValue(), $measurementViewModel->getMeasurement()->getUnitPlain());
                 }
             }
 
@@ -46,9 +51,9 @@ class ExtendedEmojiMessageFactory extends AbstractExtendedMessageFactory
         return $this;
     }
 
-    protected function getEmoji(Box $box): string
+    protected function getEmoji(MeasurementViewModel $measurementViewModel): string
     {
-        $translationKey = sprintf('air_quality.index.%d.icon', $box->getPollutionLevel());
+        $translationKey = sprintf('air_quality.index.%d.icon', $measurementViewModel->getPollutionLevel());
 
         return $this->translator->trans($translationKey);
     }

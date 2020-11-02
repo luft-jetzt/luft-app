@@ -3,54 +3,54 @@
 namespace App\Controller;
 
 use App\Analysis\LimitAnalysis\LimitAnalysisInterface;
+use App\Entity\City;
 use App\Entity\Station;
 use App\Plotter\StationPlotter\StationPlotterInterface;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
-use App\SeoPage\SeoPage;
 use App\SeoPage\SeoPageInterface;
 use App\Util\DateTimeUtil;
+use Flagception\Bundle\FlagceptionBundle\Annotations\Feature;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class StationController extends AbstractController
 {
-    public function stationAction(SeoPage $seoPage, string $stationCode, PollutionDataFactory $pollutionDataFactory): Response
+    /**
+     * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
+     */
+    public function stationAction(SeoPageInterface $seoPage, Station $station, PollutionDataFactory $pollutionDataFactory, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
     {
-        /** @var Station $station */
-        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
-
-        if (!$station) {
-            throw $this->createNotFoundException();
-        }
-
-        $boxList = $pollutionDataFactory
+        $viewModelList = $pollutionDataFactory
             ->setStation($station)
             ->createDecoratedPollutantList();
 
         if ($station->getCity()) {
             $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s — Feinstaub, Stickstoffdioxid und Ozon in %s', $station->getStationCode(), $station->getCity()->getName()));
+
+            $breadcrumbs
+                ->addItem('Luft', $router->generate('display'))
+                ->addItem($station->getCity()->getName(), $router->generate('show_city', ['citySlug' => $station->getCity()->getSlug()]))
+                ->addItem($station->getStationCode(), $router->generate('station', ['stationCode' => $station->getStationCode()]));
         } else {
             $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s', $station->getStationCode()));
         }
 
         return $this->render('Default/station.html.twig', [
             'station' => $station,
-            'pollutantList' => $boxList,
+            'pollutantList' => $viewModelList,
         ]);
     }
 
-    public function limitsAction(LimitAnalysisInterface $limitAnalysis, string $stationCode): Response
+    /**
+     * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
+     */
+    public function limitsAction(LimitAnalysisInterface $limitAnalysis, Station $station): Response
     {
-        /** @var Station $station */
-        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
-
-        if (!$station) {
-            throw $this->createNotFoundException();
-        }
-
         $now = new \DateTime('2018-11-30');
 
         $limitAnalysis
@@ -66,7 +66,11 @@ class StationController extends AbstractController
         ]);
     }
 
-    public function historyAction(Request $request, string $stationCode, HistoryDataFactoryInterface $historyDataFactory, SeoPageInterface $seoPage, RouterInterface $router): Response
+    /**
+     * @Feature("station_history")
+     * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
+     */
+    public function historyAction(Request $request, Station $station, SeoPageInterface $seoPage, HistoryDataFactoryInterface $historyDataFactory, RouterInterface $router): Response
     {
         if ($untilDateTimeParam = $request->query->get('until')) {
             try {
@@ -90,11 +94,10 @@ class StationController extends AbstractController
             $fromDateTime->sub(new \DateInterval('P3D'));
         }
 
-        /** @var Station $station */
-        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
-
-        if (!$station) {
-            throw $this->createNotFoundException();
+        if ($station->getCity()) {
+            $seoPage->setTitle(sprintf('Frühere Luftmesswerte für die Station %s — Feinstaub, Stickstoffdioxid und Ozon in %s', $station->getStationCode(), $station->getCity()->getName()));
+        } else {
+            $seoPage->setTitle(sprintf('Frühere Luftmesswerte für die Station %s', $station->getStationCode()));
         }
 
         $seoPage->setOpenGraphPreviewPhoto($router->generate('station_history_plot', [
@@ -103,14 +106,6 @@ class StationController extends AbstractController
             'until' => $untilDateTime->format('Y-m-d'),
             'width' => 1200,
             'height' => 630,
-        ]));
-
-        $seoPage->setTwitterPreviewPhoto($router->generate('station_history_plot', [
-            'stationCode' => $station->getStationCode(),
-            'from' => $fromDateTime->format('Y-m-d'),
-            'until' => $untilDateTime->format('Y-m-d'),
-            'width' => 900,
-            'height' => 450,
         ]));
 
         $dataLists = $historyDataFactory
@@ -139,7 +134,11 @@ class StationController extends AbstractController
         return array_unique($pollutantIdList);
     }
 
-    public function plotHistoryAction(Request $request, string $stationCode, StationPlotterInterface $stationPlotter, string $graphCacheDirectory): BinaryFileResponse
+    /**
+     * @Feature("station_history")
+     * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
+     */
+    public function plotHistoryAction(Request $request, Station $station, StationPlotterInterface $stationPlotter, string $graphCacheDirectory): BinaryFileResponse
     {
         if ($untilDateTimeParam = $request->query->get('until')) {
             try {
@@ -161,13 +160,6 @@ class StationController extends AbstractController
         } else {
             $fromDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
             $fromDateTime->sub(new \DateInterval('P3D'));
-        }
-
-        /** @var Station $station */
-        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
-
-        if (!$station) {
-            throw $this->createNotFoundException();
         }
 
         $width = (int) $request->get('width', 800);
