@@ -1,6 +1,7 @@
 import 'leaflet';
 import 'leaflet-extra-markers';
 import List from 'list.js';
+import 'leaflet-hash';
 
 export default class OverviewMap {
     map;
@@ -51,7 +52,7 @@ export default class OverviewMap {
             that.syncSidebar();
         });
 
-        //let hash = new L.Hash(this.map);
+        let hash = new L.Hash(this.map);
     }
 
     loadStations() {
