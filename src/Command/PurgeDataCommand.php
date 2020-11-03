@@ -58,13 +58,19 @@ class PurgeDataCommand extends Command
 
         $em = $this->registry->getManager();
 
+        $io->progressStart(count($dataList));
+
         foreach ($dataList as $data) {
             $em->remove($data);
+
+            $io->progressAdvance();
         }
+
+        $io->progressFinish();
 
         $em->flush();
 
-        $output->writeln(sprintf('Purged <info>%d</info> values from <comment>%s</comment>', count($dataList), get_class($provider)));
+        $io->success(sprintf('Purged <info>%d</info> values from <comment>%s</comment>', count($dataList), get_class($provider)));
 
         return 0;
     }
