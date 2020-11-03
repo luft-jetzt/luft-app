@@ -52,7 +52,7 @@ class PurgeDataCommand extends Command
 
         $dataList = $this->registry->getRepository(Data::class)->findInInterval(null, $untilDateTime, $provider);
 
-        if ('y' !== strtolower($io->ask(sprintf('Purge <info>%d</info> values from <comment>%s</comment> before <info>%s</info>?', count($dataList), get_class($provider), $untilDateTime->format('Y-m-d H:i:s')), 'n'))) {
+        if ($input->isInteractive() && 'y' !== strtolower($io->ask(sprintf('Purge <info>%d</info> values from <comment>%s</comment> before <info>%s</info>?', count($dataList), get_class($provider), $untilDateTime->format('Y-m-d H:i:s')), 'n'))) {
             return 1;
         }
 
