@@ -70,7 +70,7 @@ class PurgeDataCommand extends Command
 
         $em->flush();
 
-        $io->success(sprintf('Purged <info>%d</info> values from <comment>%s</comment>', count($dataList), get_class($provider)));
+        $io->success(sprintf('Purged %d values from %s.', count($dataList), get_class($provider)));
 
         return 0;
     }
