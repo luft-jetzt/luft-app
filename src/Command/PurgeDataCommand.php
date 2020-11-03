@@ -71,7 +71,11 @@ class PurgeDataCommand extends Command
 
         $em->flush();
 
-        $io->success(sprintf('Purged %d values from %s.', count($dataList), get_class($provider)));
+        if ($provider) {
+            $io->success(sprintf('Purged %d values from %s.', count($dataList), get_class($provider)));
+        } else {
+            $io->success(sprintf('Purged %d values.', count($dataList)));
+        }
 
         return 0;
     }
