@@ -5,22 +5,20 @@ namespace App\Command;
 use App\Entity\Data;
 use App\Provider\ProviderListInterface;
 use App\Util\DateTimeUtil;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PurgeDataCommand extends Command
 {
-    /** @var ProviderListInterface $providerList */
-    protected $providerList;
+    protected ProviderListInterface $providerList;
 
-    /** @var RegistryInterface $registry */
-    protected $registry;
+    protected ManagerRegistry $registry;
 
-    public function __construct(?string $name = null, ProviderListInterface $providerList, RegistryInterface $registry)
+    public function __construct(?string $name = null, ProviderListInterface $providerList, ManagerRegistry $registry)
     {
         $this->providerList = $providerList;
         $this->registry = $registry;
@@ -35,20 +33,27 @@ class PurgeDataCommand extends Command
             ->addArgument('days', InputArgument::REQUIRED);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $io = new SymfonyStyle($input, $output);
+
+        $providerIdentifier = $input->getArgument('provider');
+
+        $provider = $this->providerList->getProvider($providerIdentifier);
+
+        if (!$provider) {
+            $io->error(sprintf('Could not find provider "%s".', $providerIdentifier));
+
+            return 1;
+        }
+
         $interval = new \DateInterval(sprintf('P%dD', $input->getArgument('days')));
         $untilDateTime = DateTimeUtil::getDayEndDateTime((new \DateTimeImmutable())->sub($interval));
 
-        $provider = $this->providerList->getProvider($input->getArgument('provider'));
-
         $dataList = $this->registry->getRepository(Data::class)->findInInterval(null, $untilDateTime, $provider);
 
-        $helper = $this->getHelper('question');
-        $question = new ConfirmationQuestion(sprintf('Purge <info>%d</info> values from <comment>%s</comment> before <info>%s</info>? [no] ', count($dataList), get_class($provider), $untilDateTime->format('Y-m-d H:i:s')), false);
-
-        if (!$helper->ask($input, $output, $question)) {
-            return;
+        if ('y' !== strtolower($io->ask(sprintf('Purge <info>%d</info> values from <comment>%s</comment> before <info>%s</info>?', count($dataList), get_class($provider), $untilDateTime->format('Y-m-d H:i:s')), 'n'))) {
+            return 1;
         }
 
         $em = $this->registry->getManager();
@@ -60,5 +65,7 @@ class PurgeDataCommand extends Command
         $em->flush();
 
         $output->writeln(sprintf('Purged <info>%d</info> values from <comment>%s</comment>', count($dataList), get_class($provider)));
+
+        return 0;
     }
 }
