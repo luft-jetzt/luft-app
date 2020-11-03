@@ -29,8 +29,8 @@ class PurgeDataCommand extends Command
     protected function configure(): void
     {
         $this->setName('luft:purge-data')
-            ->addArgument('provider', InputArgument::REQUIRED)
-            ->addArgument('days', InputArgument::REQUIRED);
+            ->addArgument('days', InputArgument::REQUIRED)
+            ->addArgument('provider', InputArgument::OPTIONAL);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -39,9 +39,9 @@ class PurgeDataCommand extends Command
 
         $providerIdentifier = $input->getArgument('provider');
 
-        $provider = $this->providerList->getProvider($providerIdentifier);
+        $provider = $this->providerList->getProvider($providerIdentifier ?? '');
 
-        if (!$provider) {
+        if ($providerIdentifier && !$provider) {
             $io->error(sprintf('Could not find provider "%s".', $providerIdentifier));
 
             return 1;
