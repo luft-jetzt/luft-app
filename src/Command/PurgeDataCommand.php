@@ -29,8 +29,9 @@ class PurgeDataCommand extends Command
     protected function configure(): void
     {
         $this->setName('luft:purge-data')
-            ->addArgument('days', InputArgument::REQUIRED)
-            ->addArgument('provider', InputArgument::OPTIONAL);
+            ->addArgument('days', InputArgument::REQUIRED, 'Specify number of days. Data older than this value will be purged.')
+            ->addArgument('provider', InputArgument::OPTIONAL, 'Optional: Specify provider to purge.')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
