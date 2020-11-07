@@ -25,7 +25,6 @@ class TypeaheadController extends AbstractController
             $data[] = ['value' => [
                 'url' => $url,
                 'name' => $city->getName(),
-                'icon' => 'university',
             ]];
         }
 
@@ -44,8 +43,8 @@ class TypeaheadController extends AbstractController
 
             $value = [
                 'url' => $url,
-                'name' => $station->getStationCode(),
-                'icon' => 'thermometer-half',
+                'stationCode' => $station->getStationCode(),
+                'title' => $station->getTitle(),
             ];
 
             if ($station->getCity()) {

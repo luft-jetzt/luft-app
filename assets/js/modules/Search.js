@@ -23,7 +23,7 @@ export default class Search {
 
         const prefetchedStations = new Bloodhound({
             datumTokenizer: function (data) {
-                return Bloodhound.tokenizers.whitespace(data.value.name);
+                return Bloodhound.tokenizers.whitespace(data.value.stationCode + data.value.title);
             },
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             prefetch: Routing.generate('prefetch_stations'),
@@ -31,7 +31,7 @@ export default class Search {
             ttl: 60,
         });
 
-        const remoteCities = new Bloodhound({
+        const remoteQueries = new Bloodhound({
             datumTokenizer: function (data) {
                 return Bloodhound.tokenizers.whitespace(data.value);
             },
@@ -59,7 +59,7 @@ export default class Search {
             },
             templates: {
                 header: '<strong>Städte</strong>',
-                suggestion: renderSuggestion,
+                suggestion: renderCity,
             }
         }, {
             name: 'prefetchedStations',
@@ -69,30 +69,32 @@ export default class Search {
             },
             templates: {
                 header: '<strong>Messstationen</strong>',
-                suggestion: renderSuggestion,
+                suggestion: renderStation,
             }
         }, {
-            name: 'remoteCities',
-            source: remoteCities,
+            name: 'remoteQueries',
+            source: remoteQueries,
             display: function(data) {
                 return data.value.name;
             },
             templates: {
                 header: '<strong>Suchergebnisse</strong>',
-                suggestion: renderSuggestion,
+                suggestion: renderQuery,
             }
         }).on('typeahead:selected', redirect);
 
-        function renderSuggestion(data) {
+        function renderQuery(data) {
             let html = '';
 
-            console.log(data);
             html += '<a href="' + data.value.url + '">';
 
             html += '<div class="row">';
             html += '<div class="col-12">';
-            html += '<i class="fa fa-' + data.value.icon + '"></i> ';
-            html += data.value.name;
+            html += '<i class="fa fa-map-marker"></i> ';
+
+            if (data.value.name) {
+                html += data.value.name;
+            }
 
             if (data.value.address || data.value.zipCode || data.value.city) {
                 html += '<address>';
@@ -116,6 +118,56 @@ export default class Search {
                 if (data.value.city) {
                     html += data.value.city;
                 }
+
+                html += '</address>';
+            }
+
+            html += '</div>';
+            html += '</div>';
+
+            html += '</a>';
+
+            return html;
+        }
+
+        function renderCity(data) {
+            let html = '';
+
+            html += '<a href="' + data.value.url + '">';
+
+            html += '<div class="row">';
+            html += '<div class="col-12">';
+            html += '<i class="fa fa-university"></i> ';
+
+            html += data.value.name;
+
+            html += '</div>';
+            html += '</div>';
+
+            html += '</a>';
+
+            return html;
+        }
+
+        function renderStation(data) {
+            let html = '';
+
+            html += '<a href="' + data.value.url + '">';
+
+            html += '<div class="row">';
+            html += '<div class="col-12">';
+            html += '<i class="fa fa-thermometer-half"></i> ';
+
+            if (data.value.title) {
+                html += data.value.title + '<br />';
+            }
+
+            html += data.value.stationCode;
+
+            if (data.value.city) {
+                html += '<address>';
+
+                html += data.value.city;
 
                 html += '</address>';
             }
