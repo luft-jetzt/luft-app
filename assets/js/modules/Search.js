@@ -70,7 +70,7 @@ export default class Search {
             },
             templates: {
                 header: '<strong>Messstationen</strong>',
-                suggestion: renderSuggestion,
+                suggestion: renderStation,
             }
         }, {
             name: 'remoteQueries',
@@ -127,6 +127,37 @@ export default class Search {
                 if (data.value.city) {
                     html += data.value.city;
                 }
+
+                html += '</address>';
+            }
+
+            html += '</div>';
+            html += '</div>';
+
+            html += '</a>';
+
+            return html;
+        }
+
+        function renderStation(data) {
+            let html = '';
+
+            html += '<a href="' + data.value.url + '">';
+
+            html += '<div class="row">';
+            html += '<div class="col-12">';
+            html += '<i class="fa fa-thermometer-half"></i> ';
+
+            if (data.value.title) {
+                html += data.value.title + '<br />';
+            }
+
+            html += data.value.stationCode + '<br />';
+            
+            if (data.value.city) {
+                html += '<address>';
+
+                html += data.value.city;
 
                 html += '</address>';
             }

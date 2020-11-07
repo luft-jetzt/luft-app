@@ -46,7 +46,6 @@ class TypeaheadController extends AbstractController
                 'url' => $url,
                 'stationCode' => $station->getStationCode(),
                 'title' => $station->getTitle(),
-                'icon' => 'thermometer-half',
             ];
 
             if ($station->getCity()) {
