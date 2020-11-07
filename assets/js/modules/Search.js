@@ -1,5 +1,6 @@
 import 'corejs-typeahead';
 import Bloodhound from 'bloodhound-js';
+import Handlebars from 'handlebars';
 
 export default class Search {
     constructor(element, options) {
@@ -150,32 +151,9 @@ export default class Search {
         }
 
         function renderStation(data) {
-            let html = '';
-
-            html += '<a href="' + data.value.url + '">';
-
-            html += '<div class="row">';
-            html += '<div class="col-12">';
-            html += '<i class="fa fa-thermometer-half"></i> ';
-
-            if (data.value.title) {
-                html += data.value.title + '<br />';
-            }
-
-            html += data.value.stationCode;
-
-            if (data.value.city) {
-                html += '<address>';
-
-                html += data.value.city;
-
-                html += '</address>';
-            }
-
-            html += '</div>';
-            html += '</div>';
-
-            html += '</a>';
+            const source = document.getElementById('render-station-template').innerHTML;
+            const template = Handlebars.compile(source);
+            const html = template(data.value);
 
             return html;
         }
