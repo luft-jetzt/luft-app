@@ -132,30 +132,15 @@ export default class Search {
         }
 
         function renderCity(data) {
-            let html = '';
-
-            html += '<a href="' + data.value.url + '">';
-
-            html += '<div class="row">';
-            html += '<div class="col-12">';
-            html += '<i class="fa fa-university"></i> ';
-
-            html += data.value.name;
-
-            html += '</div>';
-            html += '</div>';
-
-            html += '</a>';
-
-            return html;
+            const source = document.getElementById('render-city-template').innerHTML;
+            const template = Handlebars.compile(source);
+            return template(data.value);
         }
 
         function renderStation(data) {
             const source = document.getElementById('render-station-template').innerHTML;
             const template = Handlebars.compile(source);
-            const html = template(data.value);
-
-            return html;
+            return template(data.value);
         }
 
         function redirect(event, datum) {
