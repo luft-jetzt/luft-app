@@ -31,7 +31,6 @@ export default class Search {
             ttl: 60,
         });
 
-
         const remoteQueries = new Bloodhound({
             datumTokenizer: function (data) {
                 return Bloodhound.tokenizers.whitespace(data.value);
@@ -171,7 +170,7 @@ export default class Search {
                 html += data.value.title + '<br />';
             }
 
-            html += data.value.stationCode + '<br />';
+            html += data.value.stationCode;
 
             if (data.value.city) {
                 html += '<address>';
