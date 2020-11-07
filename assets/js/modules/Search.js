@@ -32,7 +32,7 @@ export default class Search {
         });
 
 
-        const remoteCities = new Bloodhound({
+        const remoteQueries = new Bloodhound({
             datumTokenizer: function (data) {
                 return Bloodhound.tokenizers.whitespace(data.value);
             },
@@ -73,8 +73,8 @@ export default class Search {
                 suggestion: renderSuggestion,
             }
         }, {
-            name: 'remoteCities',
-            source: remoteCities,
+            name: 'remoteQueries',
+            source: remoteQueries,
             display: function(data) {
                 return data.value.name;
             },
