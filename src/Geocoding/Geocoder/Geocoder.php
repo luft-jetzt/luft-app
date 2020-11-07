@@ -36,7 +36,6 @@ class Geocoder extends AbstractGeocoder
                 'url' => $url,
                 'latitude' => $latitude,
                 'longitude' => $longitude,
-                'icon' => 'map-marker',
             ];
 
             if ($nominatimAddress->getStreetName() && $nominatimAddress->getStreetNumber()) {

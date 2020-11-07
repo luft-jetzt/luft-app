@@ -79,29 +79,21 @@ export default class Search {
             },
             templates: {
                 header: '<strong>Suchergebnisse</strong>',
-                suggestion: renderSuggestion,
+                suggestion: renderQuery,
             }
         }).on('typeahead:selected', redirect);
 
-        function renderSuggestion(data) {
+        function renderQuery(data) {
             let html = '';
 
             html += '<a href="' + data.value.url + '">';
 
             html += '<div class="row">';
             html += '<div class="col-12">';
-            html += '<i class="fa fa-' + data.value.icon + '"></i> ';
+            html += '<i class="fa fa-map-marker"></i> ';
 
             if (data.value.name) {
                 html += data.value.name;
-            }
-
-            if (data.value.stationCode) {
-                html += data.value.stationCode;
-            }
-
-            if (data.value.title) {
-                html += data.value.title;
             }
 
             if (data.value.address || data.value.zipCode || data.value.city) {
