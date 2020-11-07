@@ -23,13 +23,14 @@ export default class Search {
 
         const prefetchedStations = new Bloodhound({
             datumTokenizer: function (data) {
-                return Bloodhound.tokenizers.whitespace(data.value.name);
+                return Bloodhound.tokenizers.whitespace(data.value.stationCode + data.value.title);
             },
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             prefetch: Routing.generate('prefetch_stations'),
             cache: false,
             ttl: 60,
         });
+
 
         const remoteCities = new Bloodhound({
             datumTokenizer: function (data) {
@@ -86,13 +87,23 @@ export default class Search {
         function renderSuggestion(data) {
             let html = '';
 
-            console.log(data);
             html += '<a href="' + data.value.url + '">';
 
             html += '<div class="row">';
             html += '<div class="col-12">';
             html += '<i class="fa fa-' + data.value.icon + '"></i> ';
-            html += data.value.name;
+
+            if (data.value.name) {
+                html += data.value.name;
+            }
+
+            if (data.value.stationCode) {
+                html += data.value.stationCode;
+            }
+
+            if (data.value.title) {
+                html += data.value.title;
+            }
 
             if (data.value.address || data.value.zipCode || data.value.city) {
                 html += '<address>';

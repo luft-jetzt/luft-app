@@ -44,7 +44,8 @@ class TypeaheadController extends AbstractController
 
             $value = [
                 'url' => $url,
-                'name' => $station->getStationCode(),
+                'stationCode' => $station->getStationCode(),
+                'title' => $station->getTitle(),
                 'icon' => 'thermometer-half',
             ];
 
