@@ -25,7 +25,6 @@ class TypeaheadController extends AbstractController
             $data[] = ['value' => [
                 'url' => $url,
                 'name' => $city->getName(),
-                'icon' => 'university',
             ]];
         }
 

@@ -60,7 +60,7 @@ export default class Search {
             },
             templates: {
                 header: '<strong>Städte</strong>',
-                suggestion: renderSuggestion,
+                suggestion: renderCity,
             }
         }, {
             name: 'prefetchedStations',
@@ -139,6 +139,25 @@ export default class Search {
             return html;
         }
 
+        function renderCity(data) {
+            let html = '';
+
+            html += '<a href="' + data.value.url + '">';
+
+            html += '<div class="row">';
+            html += '<div class="col-12">';
+            html += '<i class="fa fa-university"></i> ';
+
+            html += data.value.name;
+
+            html += '</div>';
+            html += '</div>';
+
+            html += '</a>';
+
+            return html;
+        }
+
         function renderStation(data) {
             let html = '';
 
@@ -153,7 +172,7 @@ export default class Search {
             }
 
             html += data.value.stationCode + '<br />';
-            
+
             if (data.value.city) {
                 html += '<address>';
 
