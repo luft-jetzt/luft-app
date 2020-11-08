@@ -1,6 +1,6 @@
 import 'bootstrap';
-import Geocoding from './modules/Geocoding';
+import Geolocation from './modules/Geolocation';
 import Map from './modules/Map';
 import Search from './modules/Search';
 
-export {Geocoding, Map, Search}
+export {Geolocation, Map, Search}

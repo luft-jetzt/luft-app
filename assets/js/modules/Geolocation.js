@@ -1,4 +1,4 @@
-export default class Geocoding {
+export default class Geolocation {
     constructor(element, options) {
         const defaults = {};
 
@@ -48,6 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const locateButton = document.querySelector('#locate-button');
 
     if (locateButton) {
-        new Geocoding(locateButton);
+        new Geolocation(locateButton);
     }
 });
