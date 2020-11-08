@@ -91,6 +91,7 @@ services:
     App\Producer\Value\ValueProducerInterface:
         #alias: App\Producer\Value\CacheValueProducer
         alias: App\Producer\Value\CacheOrmValueProducer
+        #alias: App\Producer\Value\CacheRabbitValueProducer
 
     App\Geocoding\Guesser\CityGuesser:
         $provider: '@bazinga_geocoder.provider.nominatim'
