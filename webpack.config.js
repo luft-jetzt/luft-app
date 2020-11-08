@@ -18,6 +18,7 @@ Encore
         from: 'node_modules/leaflet-extra-markers/dist/img/',
         to: 'images/extramarkers/[name].[ext]',
     })
+    .enableVersioning()
 ;
 
 module.exports = Encore.getWebpackConfig();
