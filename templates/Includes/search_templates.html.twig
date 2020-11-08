@@ -1,0 +1,61 @@
+{% verbatim %}
+<script id="render-city-template" type="text/x-handlebars-template">
+<a href="{{url}}">
+    <div class="row">
+        <div class="col-12">
+            <i class="fa fa-university"></i>
+            {{name}}
+        </div>
+    </div>
+</a>
+</script>
+
+<script id="render-station-template" type="text/x-handlebars-template">
+<a href="{{url}}">
+    <div class="row">
+        <div class="col-12">
+            <i class="fa fa-thermometer-half"></i>
+            {{#if title }}
+                {{title}}<br />
+            {{/if}}
+
+            {{stationCode}}
+
+            {{#if city}}
+                <address>
+                {{city}}
+                </address>
+            {{/if}}
+       </div>
+    </div>
+</a>
+</script>
+
+<script id="render-query-template" type="text/x-handlebars-template">
+<a href="{{url}}">
+    <div class="row">
+        <div class="col-12">
+            <i class="fa fa-map-marker"></i>
+
+            {{#if name}}
+                {{name}}
+            {{/if}}
+
+            <address>
+                {{#if address}}
+                    {{address}}<br />
+                {{/if}}
+
+                {{#if zipCode}}
+                    {{zipCode}}
+                {{/if}}
+
+                {{#if city}}
+                    {{city}}
+                {{/if}}
+            </address>
+        </div>
+    </div>
+</a>
+</script>
+{% endverbatim %}

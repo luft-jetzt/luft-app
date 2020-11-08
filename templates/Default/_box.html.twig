@@ -22,7 +22,7 @@
     <div class="card card-inverse mb-2">
     {% endif %}
 
-    <div class="card-body text-white text-center box h-100 {{ view_model.measurement.identifier }}" style="background-color: {{ pollution_color(view_model.pollutionLevel) }}" data-station-code="{{ view_model.station.stationCode }}" data-station-latitude="{{ view_model.station.latitude }}" data-station-longitude="{{ view_model.station.longitude }}" data-station-color="{{ pollution_color_name(view_model.pollutionLevel) }}" data-station-map="{{ view_model.showOnMap }}">
+    <div class="card-body text-white text-center box h-100 {{ view_model.measurement.identifier }}" style="background-color: {{ pollution_color(view_model.pollutionLevel) }}" data-station-code="{{ view_model.station.stationCode }}" data-station-latitude="{{ view_model.station.latitude }}" data-station-longitude="{{ view_model.station.longitude }}" data-station-color="{{ pollution_color_name(view_model.pollutionLevel) }}" data-pollution-level="{{ view_model.pollutionLevel }}" data-station-map="{{ view_model.showOnMap }}">
         {% if stationLink %}<a href="{{ path('station', { 'stationCode': view_model.station.stationCode }) }}" class="no-underline text-white" title="Weitere Luftmesswerte der Station {{ view_model.station.stationCode }}{% if view_model.station.city %} aus {{ view_model.station.city.name }}{% endif %}">{% endif %}
         <h4 class="card-title">
             {{ view_model.data.value|number_format(view_model.measurement.decimals, ',', '.') }} {{ view_model.measurement.unitHtml|raw }}

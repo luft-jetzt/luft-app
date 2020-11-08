@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace App\Provider\HqcasanovaProvider\StationLoader;
+namespace App\Provider\NoaaProvider\StationLoader;
 
 use App\Entity\Station;
 use App\Provider\AbstractStationLoader;
-use App\Provider\HqcasanovaProvider\HqcasanovaProvider;
+use App\Provider\NoaaProvider\NoaaProvider;
 use App\Provider\StationLoaderInterface;
 use Doctrine\ORM\EntityManager;
 
-class HqcasanovaStationLoader extends AbstractStationLoader
+class NoaaStationLoader extends AbstractStationLoader
 {
     public function process(callable $callback): StationLoaderInterface
     {
@@ -36,14 +36,14 @@ class HqcasanovaStationLoader extends AbstractStationLoader
             ->setAltitude(3397)
             ->setStationCode('USHIMALO')
             ->setTitle('Mauna Loa Observatory')
-            ->setProvider(HqcasanovaProvider::IDENTIFIER);
+            ->setProvider(NoaaProvider::IDENTIFIER);
 
         return $station;
     }
 
     public function getExistingStationList(): array
     {
-        return $this->registry->getRepository(Station::class)->findIndexedByProvider(HqcasanovaProvider::IDENTIFIER);
+        return $this->registry->getRepository(Station::class)->findIndexedByProvider(NoaaProvider::IDENTIFIER);
     }
 
     public function load(): StationLoaderInterface

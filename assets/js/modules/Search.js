@@ -1,5 +1,6 @@
-import 'typeahead.js';
+import 'corejs-typeahead';
 import Bloodhound from 'bloodhound-js';
+import Handlebars from 'handlebars';
 
 export default class Search {
     constructor(element, options) {
@@ -23,7 +24,7 @@ export default class Search {
 
         const prefetchedStations = new Bloodhound({
             datumTokenizer: function (data) {
-                return Bloodhound.tokenizers.whitespace(data.value.name);
+                return Bloodhound.tokenizers.whitespace(data.value.stationCode + data.value.title);
             },
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             prefetch: Routing.generate('prefetch_stations'),
@@ -31,7 +32,7 @@ export default class Search {
             ttl: 60,
         });
 
-        const remoteCities = new Bloodhound({
+        const remoteQueries = new Bloodhound({
             datumTokenizer: function (data) {
                 return Bloodhound.tokenizers.whitespace(data.value);
             },
@@ -59,7 +60,7 @@ export default class Search {
             },
             templates: {
                 header: '<strong>Städte</strong>',
-                suggestion: renderSuggestion,
+                suggestion: renderCity,
             }
         }, {
             name: 'prefetchedStations',
@@ -69,63 +70,36 @@ export default class Search {
             },
             templates: {
                 header: '<strong>Messstationen</strong>',
-                suggestion: renderSuggestion,
+                suggestion: renderStation,
             }
         }, {
-            name: 'remoteCities',
-            source: remoteCities,
+            name: 'remoteQueries',
+            source: remoteQueries,
             display: function(data) {
                 return data.value.name;
             },
             templates: {
                 header: '<strong>Suchergebnisse</strong>',
-                suggestion: renderSuggestion,
+                suggestion: renderQuery,
             }
         }).on('typeahead:selected', redirect);
 
-        function renderSuggestion(data) {
-            let html = '';
+        function renderQuery(data) {
+            const source = document.getElementById('render-query-template').innerHTML;
+            const template = Handlebars.compile(source);
+            return template(data.value);
+        }
 
-            console.log(data);
-            html += '<a href="' + data.value.url + '">';
+        function renderCity(data) {
+            const source = document.getElementById('render-city-template').innerHTML;
+            const template = Handlebars.compile(source);
+            return template(data.value);
+        }
 
-            html += '<div class="row">';
-            html += '<div class="col-12">';
-            html += '<i class="fa fa-' + data.value.icon + '"></i> ';
-            html += data.value.name;
-
-            if (data.value.address || data.value.zipCode || data.value.city) {
-                html += '<address>';
-
-                if (data.value.address) {
-                    html += data.value.address;
-                }
-
-                if (data.value.address && (data.value.zipCode || data.value.city)) {
-                    html += '<br />';
-                }
-
-                if (data.value.zipCode) {
-                    html += data.value.zipCode;
-                }
-
-                if (data.value.zipCode && data.value.city) {
-                    html += ' ';
-                }
-
-                if (data.value.city) {
-                    html += data.value.city;
-                }
-
-                html += '</address>';
-            }
-
-            html += '</div>';
-            html += '</div>';
-
-            html += '</a>';
-
-            return html;
+        function renderStation(data) {
+            const source = document.getElementById('render-station-template').innerHTML;
+            const template = Handlebars.compile(source);
+            return template(data.value);
         }
 
         function redirect(event, datum) {
