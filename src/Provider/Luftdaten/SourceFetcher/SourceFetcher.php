@@ -36,9 +36,11 @@ class SourceFetcher implements SourceFetcherInterface
 
         /** @var Value $value */
         foreach ($valueList as $value) {
-            $this->valueProducer->publish($value);
+            //$this->valueProducer->publish($value); @todo this is slow, because every single call triggers a flush
             $fetchResult->incCounter((string) $value->getPollutant()); // @todo
         }
+
+        $this->valueProducer->publishValues($valueList);
 
         return $fetchResult;
     }
