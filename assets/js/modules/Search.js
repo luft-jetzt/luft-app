@@ -1,5 +1,6 @@
 import 'corejs-typeahead';
 import Bloodhound from 'bloodhound-js';
+import Handlebars from 'handlebars';
 
 export default class Search {
     constructor(element, options) {
@@ -84,100 +85,21 @@ export default class Search {
         }).on('typeahead:selected', redirect);
 
         function renderQuery(data) {
-            let html = '';
-
-            html += '<a href="' + data.value.url + '">';
-
-            html += '<div class="row">';
-            html += '<div class="col-12">';
-            html += '<i class="fa fa-map-marker"></i> ';
-
-            if (data.value.name) {
-                html += data.value.name;
-            }
-
-            if (data.value.address || data.value.zipCode || data.value.city) {
-                html += '<address>';
-
-                if (data.value.address) {
-                    html += data.value.address;
-                }
-
-                if (data.value.address && (data.value.zipCode || data.value.city)) {
-                    html += '<br />';
-                }
-
-                if (data.value.zipCode) {
-                    html += data.value.zipCode;
-                }
-
-                if (data.value.zipCode && data.value.city) {
-                    html += ' ';
-                }
-
-                if (data.value.city) {
-                    html += data.value.city;
-                }
-
-                html += '</address>';
-            }
-
-            html += '</div>';
-            html += '</div>';
-
-            html += '</a>';
-
-            return html;
+            const source = document.getElementById('render-query-template').innerHTML;
+            const template = Handlebars.compile(source);
+            return template(data.value);
         }
 
         function renderCity(data) {
-            let html = '';
-
-            html += '<a href="' + data.value.url + '">';
-
-            html += '<div class="row">';
-            html += '<div class="col-12">';
-            html += '<i class="fa fa-university"></i> ';
-
-            html += data.value.name;
-
-            html += '</div>';
-            html += '</div>';
-
-            html += '</a>';
-
-            return html;
+            const source = document.getElementById('render-city-template').innerHTML;
+            const template = Handlebars.compile(source);
+            return template(data.value);
         }
 
         function renderStation(data) {
-            let html = '';
-
-            html += '<a href="' + data.value.url + '">';
-
-            html += '<div class="row">';
-            html += '<div class="col-12">';
-            html += '<i class="fa fa-thermometer-half"></i> ';
-
-            if (data.value.title) {
-                html += data.value.title + '<br />';
-            }
-
-            html += data.value.stationCode;
-
-            if (data.value.city) {
-                html += '<address>';
-
-                html += data.value.city;
-
-                html += '</address>';
-            }
-
-            html += '</div>';
-            html += '</div>';
-
-            html += '</a>';
-
-            return html;
+            const source = document.getElementById('render-station-template').innerHTML;
+            const template = Handlebars.compile(source);
+            return template(data.value);
         }
 
         function redirect(event, datum) {
