@@ -2,13 +2,13 @@
 
 namespace App\Analysis\KomfortofenAnalysis;
 
-use App\Pollution\Pollutant\PollutantInterface;
+use App\Air\Measurement\MeasurementInterface;
 
 class KomfortofenAnalysis extends AbstractKomfortofenAnalysis
 {
     public function analyze(): array
     {
-        $pollutantQuery = new \Elastica\Query\Term(['pollutant' => PollutantInterface::POLLUTANT_PM10]);
+        $pollutantQuery = new \Elastica\Query\Term(['pollutant' => MeasurementInterface::MEASUREMENT_PM10]);
 
         $dateTimeQuery = new \Elastica\Query\Range('dateTime', [
             'gt' => $this->fromDateTime->format('Y-m-d H:i:s'),

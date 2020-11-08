@@ -21,6 +21,7 @@ Encore
     .configureBabel(function(babelConfig) {
         babelConfig.plugins.push('transform-class-properties');
     })
+    .enableVersioning()
 ;
 
 module.exports = Encore.getWebpackConfig();
