@@ -36,6 +36,10 @@ class MainMenuBuilder extends AbstractBuilder
 
         $menu->setChildrenAttribute('class', 'nav navbar-nav mr-auto');
 
+        if ($this->featureManager->isActive('overview_map')) {
+            $menu->addChild('Karte', ['route' => 'map', 'attributes' => ['class' => 'nav-item']]);
+        }
+
         $pollutantDropdown = $menu->addChild('Schadstoffe', [
             'attributes' => [
                 'dropdown' => true,

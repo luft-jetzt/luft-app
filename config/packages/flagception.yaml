@@ -10,3 +10,5 @@ flagception:
             default: false
         short_twitter_links:
             default: false
+        overview_map:
+            default: true

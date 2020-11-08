@@ -159,7 +159,7 @@
 {% block linkElement %}
     {% import "knp_menu.html.twig" as macros %}
     {% import _self as ownmacro %}
-    {#{{ ownmacro.setCssClassAttribute(item, 'LinkAttribute', 'nav-link') }}#}
+    {{ ownmacro.setCssClassAttribute(item, 'LinkAttribute', 'nav-link') }}
     {{ ownmacro.setCssClassAttribute(item, 'LinkAttribute') }}
     <a href="{{ item.uri }}"{{ macros.attributes(item.linkAttributes) }}>
         {% if item.attribute('icon') is not empty  %}
