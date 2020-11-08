@@ -14,7 +14,7 @@ class Data
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="int")
+     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
