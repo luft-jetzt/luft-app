@@ -101,7 +101,7 @@ export default class Map {
 
         const markerIcon = this.createIcon('fa-user', 'blue');
 
-        const marker = L.marker([latitude, longitude], {icon: markerIcon}).addTo(markerGroup);
+        L.marker([latitude, longitude], {icon: markerIcon}).addTo(markerGroup);
 
         const that = this;
         const knownStations = [];
@@ -110,7 +110,7 @@ export default class Map {
 
         boxList.forEach(function (box) {
             const stationCode = box.dataset.stationCode;
-            const showOnMap = box.dataset.showOnMap;
+            const showOnMap = box.dataset.stationMap;
 
             if (!showOnMap) {
                 return;
