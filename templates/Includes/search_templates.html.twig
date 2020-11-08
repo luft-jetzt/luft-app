@@ -34,42 +34,28 @@
 <script id="render-query-template" type="text/x-handlebars-template">
 <a href="{{url}}">
     <div class="row">
-        <div class="col-12">';
+        <div class="col-12">
             <i class="fa fa-map-marker"></i>
 
             {{#if name}}
                 {{name}}
             {{/if}}
 
-            {{#if address || zipCode || city}}
-                <address>
-
+            <address>
                 {{#if address}}
-                    {{address}}
-                {{/if}}
-
-                {{#if address && (zipCode || city)}}
-                    <br />
+                    {{address}}<br />
                 {{/if}}
 
                 {{#if zipCode}}
                     {{zipCode}}
                 {{/if}}
 
-                {{#if zipCode && data.value.city}}
-
-                {{/if}}
-
                 {{#if city}}
                     {{city}}
                 {{/if}}
-
-                </address>
-            {{/if}}}
-
-            </div>';
-            </div>';
-
-            </a>';
+            </address>
+        </div>
+    </div>
+</a>
 </script>
 {% endverbatim %}
