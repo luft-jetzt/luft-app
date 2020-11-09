@@ -7,18 +7,32 @@ use App\Pollution\Value\Value;
 
 class CacheValueProducer implements ValueProducerInterface
 {
-    /** @var CachePersister $persister */
-    protected $persister;
+    protected CachePersister $persister;
 
     public function __construct(CachePersister $persister)
     {
         $this->persister = $persister;
     }
 
+    /** @deprecated  */
     public function publish(Value $value): ValueProducerInterface
     {
         $this->persister->persistValues([$value]);
         
+        return $this;
+    }
+
+    public function publishValue(Value $value): ValueProducerInterface
+    {
+        $this->persister->persistValues([$value]);
+
+        return $this;
+    }
+
+    public function publishValues(array $valueList): ValueProducerInterface
+    {
+        $this->persister->persistValues($valueList);
+
         return $this;
     }
 }
