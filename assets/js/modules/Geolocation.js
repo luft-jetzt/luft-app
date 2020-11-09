@@ -1,4 +1,4 @@
-export default class Geocoding {
+export default class Geolocation {
     constructor(element, options) {
         const defaults = {};
 
@@ -26,15 +26,13 @@ export default class Geocoding {
     success(pos) {
         const coords = pos.coords;
 
-        const route = Routing.generate(
+        window.location = Routing.generate(
             'display',
             {
                 latitude: coords.latitude,
                 longitude: coords.longitude
             }
         );
-
-        window.location = route;
     }
 
     error(err) {
@@ -45,9 +43,9 @@ export default class Geocoding {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const locateButton = document.querySelector('#locate-button');
+    const locateButtonList = document.querySelectorAll('.locate-button');
 
-    if (locateButton) {
-        new Geocoding(locateButton);
-    }
+    locateButtonList.forEach(function (locateButton) {
+        new Geolocation(locateButton);
+    });
 });
