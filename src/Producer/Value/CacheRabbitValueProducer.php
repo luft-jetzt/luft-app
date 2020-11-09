@@ -5,24 +5,27 @@ namespace App\Producer\Value;
 use App\Pollution\DataPersister\CacheOrmPersister;
 use App\Pollution\DataPersister\CachePersister;
 use App\Pollution\Value\Value;
+use JMS\Serializer\SerializerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 
 class CacheRabbitValueProducer implements ValueProducerInterface
 {
     protected CachePersister $persister;
     protected ProducerInterface $producer;
+    protected SerializerInterface $serializer;
 
-    public function __construct(CachePersister $persister, ProducerInterface $producer)
+    public function __construct(CachePersister $persister, ProducerInterface $producer, SerializerInterface $serializer)
     {
         $this->persister = $persister;
         $this->producer = $producer;
+        $this->serializer = $serializer;
     }
 
     /** @deprecated  */
     public function publish(Value $value): ValueProducerInterface
     {
         $this->persister->persistValues([$value]);
-        $this->producer->publish($value);
+        $this->producer->publish($this->serializer->serialize($value, 'json'));
         
         return $this;
     }
@@ -30,7 +33,7 @@ class CacheRabbitValueProducer implements ValueProducerInterface
     public function publishValue(Value $value): ValueProducerInterface
     {
         $this->persister->persistValues([$value]);
-        $this->producer->publish($value);
+        $this->producer->publish($this->serializer->serialize($value, 'json'));
 
         return $this;
     }
@@ -41,7 +44,7 @@ class CacheRabbitValueProducer implements ValueProducerInterface
 
         /** @var Value $value */
         foreach ($valueList as $value) {
-            $this->producer->publish($value);
+            $this->producer->publish($this->serializer->serialize($value, 'json'));
         }
 
         return $this;
