@@ -1,13 +1,12 @@
 import Chart from 'chart.js';
-import $ from 'jquery';
 
 export default class History {
-    constructor(element, options) {
+    constructor(chartElement, options) {
         const defaults = {};
 
         this.settings = {...defaults, ...options};
 
-        this.createChart();
+        this.createChart(chartElement);
     }
 
     getTimestamps() {
@@ -26,8 +25,8 @@ export default class History {
         let valueList = [];
         let rowCounter = 0;
 
-        $('td.pollution-value.pollutant-' + pollutantIdentifier).each(function() {
-            let value = $(this).data('value');
+        document.querySelectorAll('td.pollution-value.pollutant-' + pollutantIdentifier).forEach(function(pollutantCell) {
+            let value = pollutantCell.dataset.value;
 
             valueList.push({
                 x: rowCounter,
@@ -64,6 +63,7 @@ export default class History {
                 cubicInterpolationMode: 'monotone',
                 borderColor: pollutantColors[pollutantIdentifier],
                 fill: false,
+                spanGaps: true,
             };
 
             datasetList.push(dataset);
@@ -72,11 +72,11 @@ export default class History {
         return datasetList;
     }
 
-    createChart() {
+    createChart(chartElement) {
         const timestampList = this.getTimestamps();
         const datasetList = this.createDatasets();
 
-        const ctx = document.getElementById('pollutionChart').getContext('2d');
+        const ctx = document.getElementById(chartElement.id).getContext('2d');
         const myChart = new Chart(ctx, {
             type: 'line',
             data: {
@@ -108,5 +108,9 @@ export default class History {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    new History();
+    const chart = document.getElementById('pollutionChart');
+
+    if (chart) {
+        new History(chart);
+    }
 });
