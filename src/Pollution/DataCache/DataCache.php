@@ -9,7 +9,7 @@ use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class DataCache implements DataCacheInterface
 {
-    const TTL = 86400;
+    const TTL = 60 * 60 * 8;
     const NAMESPACE = 'luft-data';
 
     /** @var AdapterInterface $cache */

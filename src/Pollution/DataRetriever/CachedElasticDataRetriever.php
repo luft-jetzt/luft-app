@@ -2,6 +2,7 @@
 
 namespace App\Pollution\DataRetriever;
 
+use App\Entity\Data;
 use App\Entity\Station;
 use App\Pollution\DataCache\DataCacheInterface;
 use App\Pollution\DataCache\KeyGenerator;
@@ -36,6 +37,7 @@ class CachedElasticDataRetriever implements DataRetrieverInterface
         foreach ($stationList as $station) {
             $key = KeyGenerator::generateKeyForStationAndPollutant($station, $pollutantId);
 
+            /** @var Data $data */
             if ($data = $this->dataCache->getData($key)) {
                 $dataList[] = $data;
             }
