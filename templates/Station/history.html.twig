@@ -10,8 +10,8 @@
 {% macro pollution_data(dataList, pollutantId) %}
     {% if dataList[pollutantId] is defined %}
     {% set data = dataList[pollutantId]|first %}
-    <td class="pollution-value pollutant-{{ data.pollutant.identifier }}" data-value="{{ data.data.value }}" style="background-color: {{ pollution_color(data.pollutionLevel) }}">
-        {{ data.data.value }} {{ data.pollutant.unitHtml|raw }}
+    <td class="pollution-value pollutant-{{ data.measurement.identifier }}" data-value="{{ data.data.value }}" style="background-color: {{ pollution_color(data.pollutionLevel) }}">
+        {{ data.data.value }} {{ data.measurement.unitHtml|raw }}
     </td>
     {% else %}
         {% set pollutant = pollutant_by_id(pollutantId) %}
