@@ -89,7 +89,7 @@ services:
             $producer: '@old_sound_rabbit_mq.luft_value_producer'
 
     App\Producer\Value\ValueProducerInterface:
-        alias: App\Producer\Value\CacheValueProducer
+        #alias: App\Producer\Value\CacheValueProducer
         #alias: App\Producer\Value\CacheValueProducer
         #alias: App\Producer\Value\CacheOrmValueProducer
         alias: App\Producer\Value\CacheRabbitValueProducer
