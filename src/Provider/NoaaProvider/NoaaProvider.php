@@ -1,21 +1,21 @@
 <?php declare(strict_types=1);
 
-namespace App\Provider\HqcasanovaProvider;
+namespace App\Provider\NoaaProvider;
 
 use App\Air\Measurement\CO2;
 use App\Provider\AbstractProvider;
-use App\Provider\HqcasanovaProvider\SourceFetcher\SourceFetcher;
-use App\Provider\HqcasanovaProvider\StationLoader\HqcasanovaStationLoader;
+use App\Provider\NoaaProvider\SourceFetcher\SourceFetcher;
+use App\Provider\NoaaProvider\StationLoader\NoaaStationLoader;
 use App\SourceFetcher\FetchProcess;
 use App\SourceFetcher\FetchResult;
 
-class HqcasanovaProvider extends AbstractProvider
+class NoaaProvider extends AbstractProvider
 {
-    const IDENTIFIER = 'hqc';
+    const IDENTIFIER = 'noaa';
 
     protected SourceFetcher $sourceFetcher;
 
-    public function __construct(HqcasanovaStationLoader $stationLoader, SourceFetcher $sourceFetcher)
+    public function __construct(NoaaStationLoader $stationLoader, SourceFetcher $sourceFetcher)
     {
         $this->stationLoader = $stationLoader;
         $this->sourceFetcher = $sourceFetcher;

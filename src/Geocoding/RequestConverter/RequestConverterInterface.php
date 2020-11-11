@@ -2,7 +2,7 @@
 
 namespace App\Geocoding\RequestConverter;
 
-use App\Geocoding\Query\GeoQueryInterface;
+use App\Geocoding\Geocoder\GeocoderInterface;
 use Caldera\GeoBasic\Coord\Coord;
 use Symfony\Component\HttpFoundation\Request;
 

@@ -104,9 +104,7 @@ class SourceFetcher implements SourceFetcherInterface
 
         $valueList = $this->parser->parse($response, $pollutant);
 
-        foreach ($valueList as $value) {
-            $this->valueProducer->publish($value);
-        }
+        $this->valueProducer->publishValues($valueList);
 
         $fetchResult->incCounter((string) $pollutant, count($valueList));
     }

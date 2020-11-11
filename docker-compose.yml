@@ -41,3 +41,14 @@ services:
         - "9300:9300"
       labels:
         com.symfony.server.service-prefix: 'ELASTICSEARCH'
+
+    rabbitmq:
+      image: rabbitmq:management
+      container_name: luft-rabbitmq
+      labels:
+        com.symfony.server.service-prefix: 'RABBITMQ'
+      volumes:
+        - ./docker/rabbitmq:/var/lib/rabbitmq/mnesia/
+      ports:
+        - "5672:5672"
+        - "15672:15672"

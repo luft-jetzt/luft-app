@@ -2,24 +2,20 @@
 
 namespace App\Pollution\DataPersister;
 
-use App\Entity\Data;
 use App\Pollution\DataCache\DataCacheInterface;
 use App\Pollution\StationCache\StationCacheInterface;
-use App\Pollution\UniqueStrategy\UniqueStrategyInterface;
 use App\Pollution\Value\Value;
 use App\Pollution\ValueDataConverter\ValueDataConverter;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CachePersister extends AbstractPersister
 {
-    /** @var DataCacheInterface $dataCache */
-    protected $dataCache;
+    protected DataCacheInterface $dataCache;
 
-    public function __construct(DataCacheInterface $dataCache, RegistryInterface $doctrine, StationCacheInterface $stationCache, UniqueStrategyInterface $uniqueStrategy)
+    public function __construct(DataCacheInterface $dataCache, StationCacheInterface $stationCache)
     {
         $this->dataCache = $dataCache;
 
-        parent::__construct($doctrine, $stationCache, $uniqueStrategy);
+        parent::__construct($stationCache);
     }
 
     public function persistValues(array $values): PersisterInterface
@@ -41,6 +37,16 @@ class CachePersister extends AbstractPersister
             $this->dataCache->addData($data);
         }
         
+        return $this;
+    }
+
+    public function getNewValueList(): array
+    {
+        return [];
+    }
+
+    public function reset(): PersisterInterface
+    {
         return $this;
     }
 }

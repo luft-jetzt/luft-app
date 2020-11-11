@@ -101,25 +101,27 @@ export default class Map {
 
         const markerIcon = this.createIcon('fa-user', 'blue');
 
-        const marker = L.marker([latitude, longitude], {icon: markerIcon}).addTo(markerGroup);
+        L.marker([latitude, longitude], {icon: markerIcon}).addTo(markerGroup);
 
         const that = this;
-        const knownStations = [];
+        const markerList = [];
+        const maxPollutionLevelList = [];
 
         const boxList = document.querySelectorAll('.box');
 
         boxList.forEach(function (box) {
             const stationCode = box.dataset.stationCode;
-            const showOnMap = box.dataset.showOnMap;
+            const showOnMap = box.dataset.stationMap;
 
             if (!showOnMap) {
                 return;
             }
 
-            if (!knownStations.includes(stationCode)) {
+            if (!markerList[stationCode]) {
                 const latitude = box.dataset.stationLatitude;
                 const longitude = box.dataset.stationLongitude;
                 const color = box.dataset.stationColor;
+                const pollutionLevel = box.dataset.pollutionLevel;
 
                 const markerIcon = that.createIcon('fa-thermometer-half', color);
 
@@ -129,7 +131,20 @@ export default class Map {
                     window.location = Routing.generate('station', { stationCode: stationCode });
                 });
 
-                knownStations.push(stationCode);
+                markerList[stationCode] = marker;
+                maxPollutionLevelList[stationCode] = pollutionLevel;
+            } else {
+                const currentPollutionLevel = maxPollutionLevelList[stationCode];
+                const newPollutionLevel = box.dataset.pollutionLevel;
+
+                if (newPollutionLevel > currentPollutionLevel) {
+                    const newColor = box.dataset.stationColor;
+                    const pollutionLevel = box.dataset.pollutionLevel;
+                    const newMarkerIcon = that.createIcon('fa-thermometer-half', newColor);
+
+                    markerList[stationCode].setIcon(newMarkerIcon);
+                    maxPollutionLevelList[stationCode] = newPollutionLevel;
+                }
             }
         });
 

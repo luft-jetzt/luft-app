@@ -9,3 +9,9 @@ framework:
         log: true
     templating:
         engines: ['twig']
+    cache:
+        app: cache.adapter.redis
+        pools:
+            app.cache.geocoding:
+                adapter: cache.app
+                default_lifetime: 600

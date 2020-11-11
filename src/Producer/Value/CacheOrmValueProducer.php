@@ -2,14 +2,14 @@
 
 namespace App\Producer\Value;
 
-use App\Pollution\DataPersister\CachePersister;
+use App\Pollution\DataPersister\CacheOrmPersister;
 use App\Pollution\Value\Value;
 
-class CacheValueProducer implements ValueProducerInterface
+class CacheOrmValueProducer implements ValueProducerInterface
 {
-    protected CachePersister $persister;
+    protected CacheOrmPersister $persister;
 
-    public function __construct(CachePersister $persister)
+    public function __construct(CacheOrmPersister $persister)
     {
         $this->persister = $persister;
     }

@@ -76,11 +76,29 @@ services:
         alias: App\Pollution\UniqueStrategy\CacheUniqueStrategy
 
     App\Pollution\DataPersister\PersisterInterface:
-        alias: App\Pollution\DataPersister\CachePersister
+        #alias: App\Pollution\DataPersister\CachePersister
+        alias: App\Pollution\DataPersister\OrmPersister
+        #alias: App\Pollution\DataPersister\CacheOrmPersister
 
     App\Producer\Value\RabbitValueProducer:
         arguments:
             $producer: '@old_sound_rabbit_mq.luft_value_producer'
 
+    App\Producer\Value\CacheRabbitValueProducer:
+        arguments:
+            $producer: '@old_sound_rabbit_mq.luft_value_producer'
+
     App\Producer\Value\ValueProducerInterface:
-        alias: App\Producer\Value\CacheValueProducer
+        #alias: App\Producer\Value\CacheValueProducer
+        #alias: App\Producer\Value\CacheOrmValueProducer
+        alias: App\Producer\Value\CacheRabbitValueProducer
+
+    App\Geocoding\Guesser\CityGuesser:
+        $provider: '@bazinga_geocoder.provider.nominatim'
+
+    App\Geocoding\Geocoder\Geocoder:
+        $provider: '@bazinga_geocoder.provider.nominatim'
+
+    app.geocoding_cache:
+        class: Symfony\Component\Cache\Simple\Psr6Cache
+        arguments: ['@app.cache.geocoding']

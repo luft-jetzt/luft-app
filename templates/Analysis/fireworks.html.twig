@@ -85,6 +85,15 @@
                             </td>
                         </tr>
                     {% endfor %}
+                    {% if fireworksList|length == 0 %}
+                        <tr>
+                            <td colspan="3">
+                                <div class="alert alert-info">
+                                    Für diese Auswertung liegen momentan leider keine Daten vor.
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
                 </table>
             </div>
         </div>

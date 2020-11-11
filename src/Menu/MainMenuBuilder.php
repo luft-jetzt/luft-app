@@ -55,11 +55,11 @@ class MainMenuBuilder extends AbstractBuilder
             ]);
 
             if ($this->featureManager->isActive('analysis_komfortofen')) {
-                $analysisDropdown->addChild('Komfortofen-Finder', ['route' => 'analysis_komfortofen']);
+                $analysisDropdown->addChild('Komfortofen-Finder <sup>beta</sup>', ['route' => 'analysis_komfortofen']);
             }
 
             if ($this->featureManager->isActive('analysis_fireworks')) {
-                $analysisDropdown->addChild('Silvester-Feuerwerk', ['route' => 'analysis_fireworks']);
+                $analysisDropdown->addChild('Silvester-Feuerwerk <sup>beta</sup>', ['route' => 'analysis_fireworks']);
             }
         }
 
