@@ -1,0 +1,12 @@
+{% verbatim %}
+<script id="map-station-modal" type="text/x-handlebars-template">
+<table class="table table-striped table-bordered table-condensed">
+{{#each this}}
+<tr class="{{#ifEquals pollution_level "1"}}bg-success{{/ifEquals}}{{#ifEquals pollution_level "2"}}bg-warning{{/ifEquals}}{{#ifEquals pollution_level "3"}}bg-danger{{/ifEquals}}">
+    <td>{{{measurement.short_name_html}}}</td>
+    <td>{{data.value}} {{{measurement.unit_html}}}</td>
+</tr>
+{{/each}}
+</table>
+</script>
+{% endverbatim %}

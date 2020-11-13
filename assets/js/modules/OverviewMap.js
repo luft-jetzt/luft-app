@@ -3,6 +3,7 @@ import 'leaflet-extra-markers';
 import List from 'list.js';
 import 'leaflet-hash';
 import 'leaflet.locatecontrol';
+import Handlebars from 'handlebars';
 
 export default class OverviewMap {
     map;
@@ -17,6 +18,10 @@ export default class OverviewMap {
         this.settings = {...defaults, ...options};
 
         this.createMap();
+
+        Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
+            return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+        });
     }
 
     createMap() {
@@ -116,26 +121,11 @@ export default class OverviewMap {
         const apiUrl = Routing.generate('api_station', { stationCode: stationCode} );
 
         $.get(apiUrl, function(dataList) {
-
-            let content = '<table class="table table-striped table-bordered table-condensed">';
-
-            for (let i = 0; i < dataList.length; ++i) {
-                const data = dataList[i];
-
-                let rowBackgroundColor;
-
-                switch (data.pollution_level) {
-                    case 1: rowBackgroundColor = 'bg-success'; break;
-                    case 2: rowBackgroundColor = 'bg-warning'; break;
-                    case 3: rowBackgroundColor = 'bg-danger'; break;
-                }
-
-                content += '<tr class="' + rowBackgroundColor + '"><td>' + data.measurement.short_name_html +'</td><td>' + data.data.value + ' ' + data.measurement.unit_html + '</td></tr>';
-            }
-            content += '</table>';
+            const source = document.getElementById('map-station-modal').innerHTML;
+            const template = Handlebars.compile(source);
 
             $('#feature-modal-label').html($marker.station.station_code);
-            $('#feature-modal-body').html(content);
+            $('#feature-modal-body').html(template(dataList));
             $('#feature-modal').modal('show');
 
             highlightLayer.clearLayers().addLayer(L.circleMarker($marker.getLatLng(), highlightStyle));
