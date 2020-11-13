@@ -100,6 +100,8 @@ class StationApiController extends AbstractApiController
 
             $boolQuery->addMust($geoQuery);
 
+            $boolQuery->addMustNot($query = new \Elastica\Query\Exists('untilDate'));
+
             $boolQuery->addMust(new \Elastica\Query\Term(['provider' => $providerIdentifier]));
 
             $query = new \Elastica\Query($boolQuery);
