@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use FOS\ElasticaBundle\Finder\FinderInterface;
+use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
