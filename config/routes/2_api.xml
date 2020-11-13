@@ -26,6 +26,7 @@
     <route id="api_station" path="/api/{stationCode}" methods="GET">
         <default key="_controller">App\Controller\Api\DisplayApiController::displayStationAction</default>
         <requirement key="stationCode">^([A-Z]{2,6})([A-Z0-9]{0,8})$</requirement>
+        <option key="expose">true</option>
     </route>
 
     <route id="api_analysis_station" path="/api/{stationCode}/analysis" methods="GET">

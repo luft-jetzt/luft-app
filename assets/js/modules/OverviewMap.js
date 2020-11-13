@@ -113,20 +113,29 @@ export default class OverviewMap {
     showStationModal(e) {
         const $marker = e.target;
         const stationCode = $marker.station.station_code;
-        const apiUrl = Routing.generate('api_station_station', { stationCode: stationCode} );
+        const apiUrl = Routing.generate('api_station', { stationCode: stationCode} );
 
         $.get(apiUrl, function(dataList) {
+
             let content = '<table class="table table-striped table-bordered table-condensed">';
 
             for (let i = 0; i < dataList.length; ++i) {
                 const data = dataList[i];
 
-                content += '<tr><td>' + data.pollutant.short_name_html +'</td><td>' + data.data.value + ' ' + data.pollutant.unit_html + '</td></tr>';
+                let rowBackgroundColor;
+
+                switch (data.pollution_level) {
+                    case 1: rowBackgroundColor = 'bg-success'; break;
+                    case 2: rowBackgroundColor = 'bg-warning'; break;
+                    case 3: rowBackgroundColor = 'bg-danger'; break;
+                }
+
+                content += '<tr class="' + rowBackgroundColor + '"><td>' + data.measurement.short_name_html +'</td><td>' + data.data.value + ' ' + data.measurement.unit_html + '</td></tr>';
             }
             content += '</table>';
 
             $('#feature-modal-label').html($marker.station.station_code);
-            $('#feature-modal-info').html(content);
+            $('#feature-modal-body').html(content);
             $('#feature-modal').modal('show');
 
             highlightLayer.clearLayers().addLayer(L.circleMarker($marker.getLatLng(), highlightStyle));
