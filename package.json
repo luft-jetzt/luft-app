@@ -27,6 +27,7 @@
     "datatables.net-bs4": "^1.10.19",
     "font-awesome": "^4.7.0",
     "handlebars": "^4.7.6",
+    "handlebars-dateformat": "^1.1.1",
     "jquery": "^3.5.0",
     "leaflet": "^1.0",
     "leaflet-extra-markers": "^1.0.6",
