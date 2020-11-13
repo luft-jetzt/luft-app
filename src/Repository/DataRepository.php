@@ -106,5 +106,31 @@ class DataRepository extends EntityRepository
 
         return $query->getResult();
     }
+
+    public function deleteData(\DateTimeInterface $untilDateTime, ProviderInterface $provider = null): int
+    {
+        $qb = $this->createQueryBuilder('data')->select('data.id');
+
+        if ($provider) {
+            $qb
+                ->join('data.station', 's')
+                ->where('s.provider = :provider')
+                ->setParameter('provider', $provider->getIdentifier())
+            ;
+        }
+
+        $ids = $qb
+            ->getQuery()
+            ->getResult();
+
+        $this->createQueryBuilder('data')
+            ->where('data.id in (:ids)')
+            ->setParameter('ids', $ids)
+            ->delete()
+            ->getQuery()
+            ->execute();
+
+        return count($ids);
+    }
 }
 
