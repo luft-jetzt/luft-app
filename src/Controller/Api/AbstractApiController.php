@@ -14,6 +14,6 @@ abstract class AbstractApiController extends AbstractController
             $viewModelList = array_merge($viewModelList, $pollutant);
         }
 
-        return $viewModelList;
+        return array_values($viewModelList);
     }
 }

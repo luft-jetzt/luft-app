@@ -97,6 +97,8 @@ class DisplayApiController extends AbstractApiController
 
         $pollutantList = $pollutionDataFactory->setStation($station)->createDecoratedPollutantList();
 
-        return new JsonResponse($serializer->serialize($this->unpackPollutantList($pollutantList), 'json'), 200, [], true);
+        $unpackedPollutantList = $this->unpackPollutantList($pollutantList);
+
+        return new JsonResponse($serializer->serialize($unpackedPollutantList, 'json'), 200, [], true);
     }
 }
