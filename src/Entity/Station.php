@@ -90,12 +90,14 @@ class Station extends Coord
     /**
      * @ORM\Column(type="StationType", nullable=true)
      * @DoctrineAssert\Enum(entity="App\DBAL\Types\StationType")
+     * @JMS\Expose()
      */
     protected $stationType;
 
     /**
      * @ORM\Column(type="AreaType", nullable=true)
      * @DoctrineAssert\Enum(entity="App\DBAL\Types\AreaType")
+     * @JMS\Expose()
      */
     protected $areaType;
 
@@ -108,6 +110,7 @@ class Station extends Coord
     /**
      * @ORM\ManyToOne(targetEntity="Network", inversedBy="stations")
      * @ORM\JoinColumn(name="network_id", referencedColumnName="id")
+     * @JMS\Expose()
      */
     protected $network;
 
