@@ -11,12 +11,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 
-class DataApiController extends AbstractApiController
+class ValueApiController extends AbstractApiController
 {
     /**
      * Add values of stations.
      *
-     * @SWG\Tag(name="Data")
+     * @SWG\Tag(name="Value")
      * @SWG\Parameter(
      *     name="body",
      *     in="body",
@@ -30,10 +30,11 @@ class DataApiController extends AbstractApiController
      *   @Model(type=App\Entity\Data::class)
      * )
      */
-    public function putDataAction(Request $request, SerializerInterface $serializer, PersisterInterface $persister): Response
+    public function putValueAction(Request $request, SerializerInterface $serializer, PersisterInterface $persister): Response
     {
         $body = $request->getContent();
 
+        dd($body);
         /** @var Value $value */
         $value = $serializer->deserialize($body, Value::class, 'json');
 

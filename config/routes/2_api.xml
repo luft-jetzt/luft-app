@@ -58,7 +58,7 @@
         <default key="_controller">App\Controller\Api\DisplayApiController::displayAction</default>
     </route>
 
-    <route id="api_data_put" path="/api/data" methods="PUT">
-        <default key="_controller">App\Controller\Api\DataApiController::putDataAction</default>
+    <route id="api_value_put" path="/api/value" methods="PUT">
+        <default key="_controller">App\Controller\Api\ValueApiController::putValueAction</default>
     </route>
 </routes>
