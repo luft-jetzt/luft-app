@@ -14,7 +14,7 @@ class JsonParser implements JsonParserInterface
         $value = new Value();
         $value->setValue((float) $uvValue->value)
             ->setPollutant(MeasurementInterface::MEASUREMENT_UV)
-            ->setDateTime(new \DateTimeImmutable(sprintf('@%d', $uvValue->date), new \DateTimeZone('UTC')));
+            ->setDateTime(new \DateTime(sprintf('@%d', $uvValue->date), new \DateTimeZone('UTC')));
 
         return $value;
     }
@@ -26,7 +26,7 @@ class JsonParser implements JsonParserInterface
         $value = new Value();
         $value->setValue((float) $temperatureValue->main->temp)
             ->setPollutant(MeasurementInterface::MEASUREMENT_TEMPERATURE)
-            ->setDateTime(new \DateTimeImmutable(sprintf('@%d', $temperatureValue->dt), new \DateTimeZone('UTC')));
+            ->setDateTime(new \DateTime(sprintf('@%d', $temperatureValue->dt), new \DateTimeZone('UTC')));
 
         return $value;
     }
