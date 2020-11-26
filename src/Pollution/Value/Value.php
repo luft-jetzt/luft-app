@@ -13,7 +13,7 @@ class Value
      * @JMS\Expose()
      * @JMS\Type("string")
      */
-    protected ?string $station = null;
+    protected ?string $stationCode = null;
 
     /**
      * @JMS\Expose()
@@ -40,12 +40,12 @@ class Value
 
     public function getStation(): ?string
     {
-        return $this->station;
+        return $this->stationCode;
     }
 
-    public function setStation(string $station): Value
+    public function setStation(string $stationCode): Value
     {
-        $this->station = $station;
+        $this->stationCode = $stationCode;
 
         return $this;
     }
