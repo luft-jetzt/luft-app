@@ -87,7 +87,7 @@ class StationApiController extends AbstractApiController
         $providerIdentifier = $request->get('provider');
 
         if ($providerIdentifier) {
-            $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStationsByProvider($providerIdentifier);
+            $stationList = $this->getDoctrine()->getRepository(Station::class)->findStationsByProvider($providerIdentifier);
         } else {
             $stationList = $this->getDoctrine()->getRepository(Station::class)->findAll();
         }
