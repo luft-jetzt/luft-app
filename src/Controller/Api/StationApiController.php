@@ -4,7 +4,9 @@ namespace App\Controller\Api;
 
 use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
+use App\Pollution\Value\Value;
 use App\Util\EntityMerger\EntityMergerInterface;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\Persistence\ManagerRegistry;
 use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -112,15 +114,45 @@ class StationApiController extends AbstractApiController
      */
     public function putStationAction(Request $request, SerializerInterface $serializer, ManagerRegistry $managerRegistry): Response
     {
-        $requestBody = $request->getContent();
+        $body = $request->getContent();
 
-        $station = $serializer->deserialize($requestBody, Station::class, 'json');
+        try {
+            if ('[' === $body[0]) {
+                /** @var array<Station> $stationList */
+                $stationList = $serializer->deserialize($body, 'array<App\Entity\Station>', 'json');
 
+                $this->persistStationList($managerRegistry, $stationList);
+
+                return new JsonResponse($serializer->serialize($stationList, 'json'), 200, [], true);
+            } else {
+                /** @var Station $station */
+                $station = $serializer->deserialize($body, Station::class, 'json');
+
+                $this->persistStationList($managerRegistry, [$station]);
+
+                return new JsonResponse($serializer->serialize($station, 'json'), 200, [], true);
+            }
+        } catch (UniqueConstraintViolationException $exception) {
+            return new JsonResponse($serializer->serialize([
+                'status' => 'error',
+                'message' => 'This record already exists',
+            ], 'json'), Response::HTTP_CONFLICT, [], true);
+        }
+
+    }
+
+    protected function persistStationList(ManagerRegistry $managerRegistry, array $stationList): array
+    {
         $em = $managerRegistry->getManager();
-        $em->persist($station);
+
+        /** @var Station $station */
+        foreach ($stationList as $station) {
+            $em->persist($station);
+        }
+
         $em->flush();
 
-        return new JsonResponse($serializer->serialize($station, 'json'), 200, [], true);
+        return $stationList;
     }
 
     /**
