@@ -34,21 +34,16 @@ class ValueApiController extends AbstractApiController
     {
         $body = $request->getContent();
 
-        if ('[' === $body[0]) {
-            /** @var array<Value> $valueList */
-            $valueList = $serializer->deserialize($body, 'array<App\Pollution\Value\Value>', 'json');
+        $valueList = $this->deserializeRequestBodyToArray($request, $serializer, Value::class);
 
-            $persister->persistValues($valueList);
+        $persister->persistValues($valueList);
 
-            return new JsonResponse($serializer->serialize($valueList, 'json'), 200, [], true);
-
+        if (1 === count($valueList)) {
+            $result = array_pop($valueList);
         } else {
-            /** @var Value $value */
-            $value = $serializer->deserialize($body, Value::class, 'json');
-
-            $persister->persistValues([$value]);
-
-            return new JsonResponse($serializer->serialize($value, 'json'), 200, [], true);
+            $result = $valueList;
         }
+
+        return new JsonResponse($serializer->serialize($result, 'json'), Response::HTTP_OK, [], true);
     }
 }

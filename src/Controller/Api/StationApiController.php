@@ -116,22 +116,18 @@ class StationApiController extends AbstractApiController
     {
         $body = $request->getContent();
 
+        $stationList = $this->deserializeRequestBodyToArray($request, $serializer, Station::class);
+
         try {
-            if ('[' === $body[0]) {
-                /** @var array<Station> $stationList */
-                $stationList = $serializer->deserialize($body, 'array<App\Entity\Station>', 'json');
+            $this->persistStationList($managerRegistry, $stationList);
 
-                $this->persistStationList($managerRegistry, $stationList);
-
-                return new JsonResponse($serializer->serialize($stationList, 'json'), 200, [], true);
+            if (1 === count($stationList)) {
+                $result = array_pop($stationList);
             } else {
-                /** @var Station $station */
-                $station = $serializer->deserialize($body, Station::class, 'json');
-
-                $this->persistStationList($managerRegistry, [$station]);
-
-                return new JsonResponse($serializer->serialize($station, 'json'), 200, [], true);
+                $result = $stationList;
             }
+
+            return new JsonResponse($serializer->serialize($result, 'json'), Response::HTTP_OK, [], true);
         } catch (UniqueConstraintViolationException $exception) {
             return new JsonResponse($serializer->serialize([
                 'status' => 'error',
