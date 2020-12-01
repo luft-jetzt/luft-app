@@ -24,21 +24,21 @@
             <div class="col-12 text-center">
                 <div class="btn-group-vertical">
                     {% if station.city %}
-                    <a href="{{ path('show_city', { citySlug: station.city.slug }) }}" class="btn btn-primary" title="Zeige weitere Schadstoff-Messwerte aus {{ station.city.name }} an">
+                    <a href="{{ path('show_city', { citySlug: station.city.slug }) }}" class="btn btn-secondary" title="Zeige weitere Schadstoff-Messwerte aus {{ station.city.name }} an">
                         <i class="fa fa-university"></i>
                         weitere Messwerte aus {{ station.city.name }}
                     </a>
                     {% endif %}
 
                     {% if feature('station_history') %}
-                        <a href="{{ path('station_history', { stationCode: station.stationCode }) }}" class="btn btn-primary" title="Frühere Messwerte dieser Station">
+                        <a href="{{ path('station_history', { stationCode: station.stationCode }) }}" class="btn btn-secondary" title="Frühere Messwerte dieser Station">
                             <i class="fa fa-line-chart"></i>
                             frühere Messwerte dieser Station
                         </a>
                     {% endif %}
 
                     {% if station.provider == 'ld' %}
-                        <a href="http://deutschland.maps.sensor.community/#15/{{ station.latitude }}/{{ station.longitude }}" class="btn btn-primary" title="Diese Station auf Luftdaten.info anzeigen">
+                        <a href="http://deutschland.maps.sensor.community/#15/{{ station.latitude }}/{{ station.longitude }}" class="btn btn-secondary" title="Diese Station auf Luftdaten.info anzeigen">
                             <i class="fa fa-map-marker"></i>
                             auf Sensor.community anzeigen
                         </a>
