@@ -26,15 +26,17 @@
                     {% if station.city %}
                     <a href="{{ path('show_city', { citySlug: station.city.slug }) }}" class="btn btn-primary" title="Zeige weitere Schadstoff-Messwerte aus {{ station.city.name }} an">
                         <i class="fa fa-university"></i>
-                        Weitere Messwerte aus {{ station.city.name }}
+                        weitere Messwerte aus {{ station.city.name }}
                     </a>
                     {% endif %}
 
                     {% if feature('station_history') %}
-                    <a href="{{ path('station_history', { stationCode: station.stationCode }) }}" class="btn btn-primary" title="Frühere Messwerte dieser Station">
-                        <i class="fa fa-line-chart"></i>
-                        Frühere Messwerte dieser Station
-                    </a>
+                        <a href="{{ path('station_history', { stationCode: station.stationCode }) }}" class="btn btn-primary" title="Frühere Messwerte dieser Station">
+                            <i class="fa fa-line-chart"></i>
+                            frühere Messwerte dieser Station
+                        </a>
+                    {% endif %}
+
                     {% if station.provider == 'ld' %}
                         <a href="http://deutschland.maps.sensor.community/#15/{{ station.latitude }}/{{ station.longitude }}" class="btn btn-primary" title="Diese Station auf Luftdaten.info anzeigen">
                             <i class="fa fa-map-marker"></i>
