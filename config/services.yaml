@@ -107,3 +107,6 @@ services:
     app.geocoding_cache:
         class: Symfony\Component\Cache\Simple\Psr6Cache
         arguments: ['@app.cache.geocoding']
+
+    App\DataPurger\DataPurgerInterface:
+        alias: App\DataPurger\FastDataPurger

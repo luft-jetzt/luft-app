@@ -2,10 +2,9 @@
 
 namespace App\Command;
 
-use App\Entity\Data;
+use App\DataPurger\DataPurgerInterface;
 use App\Provider\ProviderListInterface;
 use App\Util\DateTimeUtil;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,13 +14,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class PurgeDataCommand extends Command
 {
     protected ProviderListInterface $providerList;
+    protected DataPurgerInterface $dataPurger;
 
-    protected ManagerRegistry $registry;
-
-    public function __construct(?string $name = null, ProviderListInterface $providerList, ManagerRegistry $registry)
+    public function __construct(?string $name = null, ProviderListInterface $providerList, DataPurgerInterface $dataPurger)
     {
         $this->providerList = $providerList;
-        $this->registry = $registry;
+        $this->dataPurger = $dataPurger;
 
         parent::__construct($name);
     }
@@ -51,30 +49,12 @@ class PurgeDataCommand extends Command
         $interval = new \DateInterval(sprintf('P%dD', $input->getArgument('days')));
         $untilDateTime = DateTimeUtil::getDayEndDateTime((new \DateTimeImmutable())->sub($interval));
 
-        $dataList = $this->registry->getRepository(Data::class)->findInInterval(null, $untilDateTime, $provider);
-
-        if ($input->isInteractive() && 'y' !== strtolower($io->ask(sprintf('Purge <info>%d</info> values from <comment>%s</comment> before <info>%s</info>?', count($dataList), get_class($provider), $untilDateTime->format('Y-m-d H:i:s')), 'n'))) {
-            return 1;
-        }
-
-        $em = $this->registry->getManager();
-
-        $io->progressStart(count($dataList));
-
-        foreach ($dataList as $data) {
-            $em->remove($data);
-
-            $io->progressAdvance();
-        }
-
-        $io->progressFinish();
-
-        $em->flush();
+        $counter = $this->dataPurger->purgeData($untilDateTime, $provider);
 
         if ($provider) {
-            $io->success(sprintf('Purged %d values from %s.', count($dataList), get_class($provider)));
+            $io->success(sprintf('Purged %d values from %s.', $counter, get_class($provider)));
         } else {
-            $io->success(sprintf('Purged %d values.', count($dataList)));
+            $io->success(sprintf('Purged %d values.', $counter));
         }
 
         return 0;
