@@ -7,6 +7,6 @@ flagception:
         analysis_komfortofen:
             default: true
         station_history:
-            default: false
+            default: true
         short_twitter_links:
             default: false

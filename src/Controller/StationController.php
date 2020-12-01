@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Analysis\LimitAnalysis\LimitAnalysisInterface;
-use App\Entity\City;
 use App\Entity\Station;
 use App\Plotter\StationPlotter\StationPlotterInterface;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;

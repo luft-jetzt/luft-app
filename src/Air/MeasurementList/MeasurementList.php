@@ -27,7 +27,7 @@ class MeasurementList implements MeasurementListInterface
 
         /** @var MeasurementInterface $measurement */
         foreach ($this->list as $measurement) {
-            $measurementId = constant(sprintf('App\\Pollution\\Pollutant\\PollutantInterface::POLLUTANT_%s', strtoupper($measurement->getIdentifier())));
+            $measurementId = constant(sprintf('App\\Air\\Measurement\\MeasurementInterface::MEASUREMENT_%s', strtoupper($measurement->getIdentifier())));
 
             $measurementListWithIds[$measurementId] = $measurement;
         }
