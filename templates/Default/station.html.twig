@@ -35,6 +35,11 @@
                         <i class="fa fa-line-chart"></i>
                         Frühere Messwerte dieser Station
                     </a>
+                    {% if station.provider == 'ld' %}
+                        <a href="http://deutschland.maps.sensor.community/#15/{{ station.latitude }}/{{ station.longitude }}" class="btn btn-primary" title="Diese Station auf Luftdaten.info anzeigen">
+                            <i class="fa fa-map-marker"></i>
+                            auf Sensor.community anzeigen
+                        </a>
                     {% endif %}
                 </div>
             </div>
