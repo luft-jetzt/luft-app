@@ -25,6 +25,7 @@ class DataCache implements DataCacheInterface
         $client = RedisAdapter::createConnection($redisHost);
 
         $this->cache = new RedisAdapter($client,self::NAMESPACE, 5 * self::TTL);
+        
     }
 
     public function addData(Data $data): DataCacheInterface

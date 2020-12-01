@@ -10,8 +10,8 @@
 {% macro pollution_data(dataList, pollutantId) %}
     {% if dataList[pollutantId] is defined %}
     {% set data = dataList[pollutantId]|first %}
-    <td class="pollution-value pollutant-{{ data.pollutant.identifier }}" data-value="{{ data.data.value }}" style="background-color: {{ pollution_color(data.pollutionLevel) }}">
-        {{ data.data.value }} {{ data.pollutant.unitHtml|raw }}
+    <td class="pollution-value pollutant-{{ data.measurement.identifier }}" data-value="{{ data.data.value }}" style="background-color: {{ pollution_color(data.pollutionLevel) }}">
+        {{ data.data.value|number_format(2, ',', '.') }} {{ data.measurement.unitHtml|raw }}
     </td>
     {% else %}
         {% set pollutant = pollutant_by_id(pollutantId) %}
@@ -24,7 +24,7 @@
         <div class="row">
             <div class="col-12 text-center">
                 <h2 class="h3">
-                    Historische Messwerte der Station {{ station.stationCode }}
+                    Frühere Messwerte der Station {{ station.stationCode }}
                 </h2>
 
                 <p class="lead">
@@ -78,9 +78,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block scripts %}
-    <script src="{{ asset('/js/Chart.bundle.min.js') }}"></script>
-    <script src="{{ asset('/js/history.min.js') }}"></script>
 {% endblock %}

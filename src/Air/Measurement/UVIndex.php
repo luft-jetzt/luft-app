@@ -14,4 +14,9 @@ class UVIndex extends AbstractMeasurement
         $this->includeInTweets = false;
         $this->decimals = 0;
     }
+
+    public function getIdentifier(): string
+    {
+        return 'uvindex';
+    }
 }
