@@ -13,14 +13,8 @@ use JMS\Serializer\Annotation as JMS;
 class Data
 {
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
-
-    /**
      * @var Station $station
+     * @ORM\Id
      * @ORM\ManyToOne(targetEntity="Station", inversedBy="datas")
      * @ORM\JoinColumn(name="station_id", referencedColumnName="id")
      * @JMS\Expose()
@@ -29,6 +23,7 @@ class Data
     protected $station;
 
     /**
+     * @ORM\Id
      * @ORM\Column(type="datetime", nullable=false)
      * @JMS\Expose()
      * @JMS\Type("DateTimeImmutable<'U'>")
@@ -42,22 +37,11 @@ class Data
     protected $value;
 
     /**
+     * @ORM\Id
      * @ORM\Column(type="smallint", nullable=false)
      * @JMS\Expose()
      */
     protected $pollutant;
-
-    public function setId(int $id): Data
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getStation(): Station
     {
