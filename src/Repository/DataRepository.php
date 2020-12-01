@@ -109,28 +109,32 @@ class DataRepository extends EntityRepository
 
     public function deleteData(\DateTimeInterface $untilDateTime, ProviderInterface $provider = null): int
     {
-        $qb = $this->createQueryBuilder('data')->select('data.id');
-
         if ($provider) {
-            $qb
-                ->join('data.station', 's')
-                ->where('s.provider = :provider')
-                ->setParameter('provider', $provider->getIdentifier())
-            ;
+            $providerStationIdResult = $this->getEntityManager()->createQuery(
+                'SELECT s.id FROM App:Station s
+                WHERE s.provider = :provider'
+            )->setParameter('provider', $provider->getIdentifier())->execute();
+
+            $providerStationIdList = array_map(function (array $stationRsult) {
+                return $stationRsult['id'];
+            }, $providerStationIdResult);
+
+            $query = $this->getEntityManager()->createQuery(
+                'DELETE App:Data d 
+                WHERE d.dateTime < :untilDateTime AND d.station IN (:stationIdList)')
+                ->setParameter('untilDateTime', $untilDateTime)
+                ->setParameter('stationIdList', $providerStationIdList);
+
+            $result = $query->execute();
+        } else {
+            $query = $this->getEntityManager()->createQuery(
+                'DELETE App:Data d 
+                WHERE d.dateTime < :untilDateTime')
+                ->setParameter('untilDateTime', $untilDateTime);
+
+            $result = $query->execute();
         }
 
-        $ids = $qb
-            ->getQuery()
-            ->getResult();
-
-        $this->createQueryBuilder('data')
-            ->where('data.id in (:ids)')
-            ->setParameter('ids', $ids)
-            ->delete()
-            ->getQuery()
-            ->execute();
-
-        return count($ids);
+        return $result;
     }
 }
-

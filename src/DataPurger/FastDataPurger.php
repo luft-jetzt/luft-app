@@ -58,34 +58,8 @@ class FastDataPurger implements DataPurgerInterface
             ];
         }
 
-        //dd(json_encode($query));
-
         $this->client->request('air_data/_delete_by_query', Request::POST, $query);
 
         return 0;
     }
 }
-
-
-/*
- * {
-   "query":{
-      "bool":{
-         "must":[
-            {
-               "range":{
-                  "dateTime":{
-                     "lt":"2020-11-02 23:59:59"
-                  }
-               }
-            },
-            {
-               "match":{
-                  "provider":"ld"
-               }
-            }
-         ]
-      }
-   }
-}
- */
