@@ -14,11 +14,15 @@ class ValueDataConverter
 
     }
 
-    public static function convert(Value $value, Station $station = null): Data
+    public static function convert(Value $value, Station $station = null): ?Data
     {
         $data = new Data();
 
         $pollutantId = static::convertPollutant($value->getPollutant());
+
+        if (!$pollutantId) {
+            return null;
+        }
 
         $data
             ->setDateTime($value->getDateTime())
