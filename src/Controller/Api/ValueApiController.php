@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Pollution\DataPersister\PersisterInterface;
 use App\Pollution\Value\Value;
+use App\Producer\Value\ValueProducerInterface;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,13 +31,11 @@ class ValueApiController extends AbstractApiController
      *   @Model(type=App\Entity\Data::class)
      * )
      */
-    public function putValueAction(Request $request, SerializerInterface $serializer, PersisterInterface $persister): Response
+    public function putValueAction(Request $request, SerializerInterface $serializer, ValueProducerInterface $producer): Response
     {
-        $body = $request->getContent();
-
         $valueList = $this->deserializeRequestBodyToArray($request, $serializer, Value::class);
 
-        $persister->persistValues($valueList);
+        $producer->publishValues($valueList);
 
         if (1 === count($valueList)) {
             $result = array_pop($valueList);
