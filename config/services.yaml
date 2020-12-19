@@ -77,7 +77,7 @@ services:
 
     App\Pollution\DataPersister\PersisterInterface:
         #alias: App\Pollution\DataPersister\CachePersister
-        #alias: App\Pollution\DataPersister\OrmPersister
+        alias: App\Pollution\DataPersister\OrmPersister
         #alias: App\Pollution\DataPersister\CacheOrmPersister
 
     App\Producer\Value\RabbitValueProducer:
