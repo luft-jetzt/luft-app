@@ -30,7 +30,7 @@ class AdhocDataRetriever implements DataRetrieverInterface
             return [];
         }
 
-        if (MeasurementInterface::MEASUREMENT_UV === $pollutantId) {
+        if (MeasurementInterface::MEASUREMENT_UVINDEX === $pollutantId) {
             $data = $this->retrieveUVIndexForCoord($coord);
 
             return [$data];

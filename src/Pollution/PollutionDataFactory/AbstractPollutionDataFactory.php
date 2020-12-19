@@ -12,23 +12,17 @@ use Caldera\GeoBasic\Coord\CoordInterface;
 
 abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInterface
 {
-    /** @var CoordInterface $coord */
-    protected $coord;
+    protected CoordInterface $coord;
 
-    /** @var StationFinderInterface $stationFinder */
-    protected $stationFinder;
+    protected StationFinderInterface $stationFinder;
 
-    /** @var MeasurementViewModelFactoryInterface $viewModelFactory */
-    protected $measurementViewModelFactory;
+    protected MeasurementViewModelFactoryInterface $measurementViewModelFactory;
 
-    /** @var DataList $dataList */
-    protected $dataList;
+    protected DataList $dataList;
 
-    /** @var DataRetrieverInterface $dataRetriever*/
-    protected $dataRetriever;
+    protected DataRetrieverInterface $dataRetriever;
 
-    /** @var PollutantFactoryStrategyInterface $strategy */
-    protected $strategy;
+    protected PollutantFactoryStrategyInterface $strategy;
 
     public function __construct(StationFinderInterface $stationFinder, MeasurementViewModelFactoryInterface $viewModelFactory, DataRetrieverInterface $dataRetriever, PollutantFactoryStrategyInterface $strategy)
     {
