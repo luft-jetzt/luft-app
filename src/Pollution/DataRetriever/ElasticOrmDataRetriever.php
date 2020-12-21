@@ -6,7 +6,7 @@ use App\Entity\Station;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use FOS\ElasticaBundle\Finder\FinderInterface;
 
-class ElasticDataRetriever implements DataRetrieverInterface
+class ElasticOrmDataRetriever implements DataRetrieverInterface
 {
     /** @var FinderInterface $dataFinder */
     protected $dataFinder;

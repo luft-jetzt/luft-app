@@ -56,11 +56,11 @@ services:
     App\Pollution\PollutionDataFactory\PollutionDataFactoryInterface:
         alias: App\Pollution\PollutionDataFactory\PollutionDataFactory
 
-    App\Pollution\DataRetriever\ElasticDataRetriever:
+    App\Pollution\DataRetriever\ElasticOrmDataRetriever:
         arguments:
             $dataFinder: '@fos_elastica.finder.air_data.data'
 
-    App\Pollution\DataRetriever\CachedElasticDataRetriever:
+    App\Pollution\DataRetriever\CachedElasticOrmDataRetriever:
         arguments:
             $dataFinder: '@fos_elastica.finder.air_station.station'
 
