@@ -5,64 +5,64 @@ namespace App\Pollution\Value;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * @JMS\ExclusionPolicy("all")
+ * @JMS\ExclusionPolicy("ALL")
  */
 class Value
 {
     /**
-     * @JMS\Expose
+     * @JMS\Expose()
      * @JMS\Type("string")
      */
-    protected string $station;
+    protected ?string $stationCode = null;
 
     /**
-     * @JMS\Expose
-     * @JMS\Type("DateTimeImmutable<'U'>")
+     * @JMS\Expose()
+     * @JMS\Type("DateTime<'U'>")
      */
-    protected \DateTimeImmutable $dateTime;
+    protected ?\DateTime $dateTime = null;
 
     /**
-     * @JMS\Expose
+     * @JMS\Expose()
      * @JMS\Type("float")
      */
-    protected float $value;
+    protected ?float $value = null;
 
     /**
-     * @JMS\Expose
-     * @JMS\Type("int")
+     * @JMS\Expose()
+     * @JMS\Type("string")
      */
-    protected int $pollutant;
+    protected ?string $pollutant = null;
 
     public function __construct()
     {
 
     }
 
-    public function getStation(): string
+    public function getStation(): ?string
     {
-        return $this->station;
+        return $this->stationCode;
     }
 
-    public function setStation(string $station): Value
+    public function setStation(string $stationCode): Value
     {
-        $this->station = $station;
+        $this->stationCode = $stationCode;
 
         return $this;
     }
 
-    public function getDateTime(): \DateTimeInterface
+    public function getDateTime(): ?\DateTimeInterface
     {
         return $this->dateTime;
     }
 
-    public function setDateTime(\DateTimeInterface $dateTime): Value
+    public function setDateTime(\DateTime $dateTime): Value
     {
         $this->dateTime = $dateTime;
 
         return $this;
     }
 
-    public function getValue(): float
+    public function getValue(): ?float
     {
         return $this->value;
     }
@@ -74,16 +74,15 @@ class Value
         return $this;
     }
 
-    public function getPollutant(): int
+    public function getPollutant(): ?string
     {
         return $this->pollutant;
     }
 
-    public function setPollutant(int $pollutant): Value
+    public function setPollutant(string $pollutant): Value
     {
         $this->pollutant = $pollutant;
 
         return $this;
     }
-
 }
