@@ -44,10 +44,10 @@ class ElasticDataRetriever implements DataRetrieverInterface
 
         $boolQuery = new \Elastica\Query\BoolQuery();
         $boolQuery
-            //->addMust($pollutantQuery)
-            //->addMust($stationQuery)
+            ->addMust($pollutantQuery)
+            ->addMust($stationQuery)
         ;
-/*
+
         if ($fromDateTime && $dateInterval) {
             $untilDateTime = clone $fromDateTime;
             $untilDateTime->add($dateInterval);
@@ -60,7 +60,7 @@ class ElasticDataRetriever implements DataRetrieverInterface
 
             $boolQuery->addMust($dateTimeQuery);
         }
-*/
+
         $query = new \Elastica\Query($boolQuery);
 
         $query
@@ -85,10 +85,17 @@ class ElasticDataRetriever implements DataRetrieverInterface
         foreach ($resultList as $key => $elasticResult) {
             $data = new Data();
 
+            $station = $this->stationCache->getStationByCode($elasticResult->getData()['station']['stationCode']);
+
+            if (!$station) {
+                unset($resultList[$key]);
+                continue;
+            }
+
             $data
                 ->setValue($elasticResult->getData()['value'])
                 ->setPollutant($elasticResult->getData()['pollutant'])
-                ->setStation($this->stationCache->getStationByCode($elasticResult->getData()['station']['stationCode']))
+                ->setStation($station)
                 ->setDateTime(new \DateTime($elasticResult->getData()['dateTime']))
             ;
 

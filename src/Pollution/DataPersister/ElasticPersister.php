@@ -2,17 +2,21 @@
 
 namespace App\Pollution\DataPersister;
 
+use App\Pollution\StationCache\StationCacheInterface;
 use App\Pollution\Value\Value;
+use App\Pollution\ValueDataConverter\ValueDataConverter;
 use Elastica\Document;
 use Elastica\Index;
 
 class ElasticPersister implements PersisterInterface
 {
     protected Index $index;
+    protected StationCacheInterface $stationCache;
 
-    public function __construct(Index $index)
+    public function __construct(Index $index, StationCacheInterface $stationCache)
     {
         $this->index = $index;
+        $this->stationCache = $stationCache;
     }
 
     public function persistValues(array $values): PersisterInterface
@@ -22,18 +26,36 @@ class ElasticPersister implements PersisterInterface
         /** @var Value $value */
         foreach ($values as $value) {
             $document = new Document();
-            $document->setData([
-                'value' => $value->getValue(),
-                'pollutant' => (int) $value->getPollutant(),
-                'dateTime' => $value->getDateTime()->format('Y-m-d H:i:s'),
-                'station' => ['stationCode' => $value->getStation()],
-            ])
+
+            $data = ValueDataConverter::convert($value);
+            $station = $this->stationCache->getStationByCode($value->getStation());
+
+            if (!$data || !$station) {
+                continue;
+            }
+
+            $document
+                ->setData([
+                    'value' => $data->getValue(),
+                    'pollutant' => $data->getPollutant(),
+                    'dateTime' => $data->getDateTime()->format('Y-m-d H:i:s'),
+                    'station' => [
+                        'stationCode' => $station->getStationCode(),
+                        'pin' => [
+                            'lat' => $station->getLatitude(),
+                            'lon' => $station->getLongitude(),
+                        ],
+                    ],
+                ])
                 ->setType('data');
 
             $documentList[] = $document;
         }
 
-        $this->index->addDocuments($documentList);
+        if (0 !== count($documentList)) {
+            $result = $this->index->addDocuments($documentList);
+
+        }
 
         return $this;
     }
