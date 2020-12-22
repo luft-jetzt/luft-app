@@ -111,3 +111,7 @@ services:
 
     App\DataPurger\DataPurgerInterface:
         alias: App\DataPurger\FastDataPurger
+
+    App\Pollution\DataRetriever\ElasticFinder\Finder:
+        arguments:
+            $searchable: '@fos_elastica.index.air_data.data'
