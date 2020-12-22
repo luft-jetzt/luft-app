@@ -52,4 +52,9 @@ class AnalysisController extends AbstractController
             'fireworksList' => $fireworksAnalysis,
         ]);
     }
+
+    public function coronaFireworksAction(): Response
+    {
+        return $this->render('Analysis/corona_fireworks.html.twig');
+    }
 }
