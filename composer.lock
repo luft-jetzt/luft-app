@@ -4,63 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eef3aaaca3ab38cd05ed509c7b1c4c0b",
+    "content-hash": "23094ef1b2b972e8aaf0a7a84fad56cb",
     "packages": [
-        {
-            "name": "amenadiel/jpgraph",
-            "version": "3.6.17",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/HuasoFoundries/jpgraph.git",
-                "reference": "feb3fd636279e474b31cce2a1ee258ffefc0184c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/HuasoFoundries/jpgraph/zipball/feb3fd636279e474b31cce2a1ee258ffefc0184c",
-                "reference": "feb3fd636279e474b31cce2a1ee258ffefc0184c",
-                "shasum": ""
-            },
-            "require": {
-                "ext-gd": "*",
-                "php": ">=5.4.0",
-                "symfony/dotenv": "^4.0"
-            },
-            "require-dev": {
-                "codeception/codeception": "~2.4.1",
-                "ext-xdebug": "*",
-                "friendsofphp/php-cs-fixer": "^2.4",
-                "kint-php/kint": "^2.2",
-                "monolog/monolog": "^1.23",
-                "php-console/php-console": "^3.1",
-                "phpunit/phpunit": "^6"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Amenadiel\\JpGraph\\": "src/",
-                    "Amenadiel\\JpGraph\\Graph\\": "src/graph",
-                    "Amenadiel\\JpGraph\\Image\\": "src/image",
-                    "Amenadiel\\JpGraph\\Plot\\": "src/plot",
-                    "Amenadiel\\JpGraph\\Text\\": "src/text",
-                    "Amenadiel\\JpGraph\\Themes\\": "src/themes",
-                    "Amenadiel\\JpGraph\\Util\\": "src/util"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "QPL-1.0"
-            ],
-            "description": "jpGraph, library to make graphs and charts",
-            "homepage": "http://jpgraph.net/",
-            "keywords": [
-                "chart",
-                "data",
-                "graph",
-                "jpgraph",
-                "pie"
-            ],
-            "time": "2018-05-15T23:57:56+00:00"
-        },
         {
             "name": "cache/adapter-common",
             "version": "1.1.0",
@@ -7870,63 +7815,6 @@
             "time": "2020-09-27T14:14:06+00:00"
         },
         {
-            "name": "symfony/dotenv",
-            "version": "v4.4.15",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/dotenv.git",
-                "reference": "f17675595fd7527c57d11bd3d733eb5d41600128"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dotenv/zipball/f17675595fd7527c57d11bd3d733eb5d41600128",
-                "reference": "f17675595fd7527c57d11bd3d733eb5d41600128",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1.3"
-            },
-            "require-dev": {
-                "symfony/process": "^3.4.2|^4.0|^5.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.4-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Dotenv\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Registers environment variables from a .env file",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "dotenv",
-                "env",
-                "environment"
-            ],
-            "time": "2020-09-02T16:08:58+00:00"
-        },
-        {
             "name": "symfony/error-handler",
             "version": "v4.4.15",
             "source": {
@@ -13618,6 +13506,63 @@
             "time": "2020-09-02T16:23:27+00:00"
         },
         {
+            "name": "symfony/dotenv",
+            "version": "v4.4.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/dotenv.git",
+                "reference": "f17675595fd7527c57d11bd3d733eb5d41600128"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/dotenv/zipball/f17675595fd7527c57d11bd3d733eb5d41600128",
+                "reference": "f17675595fd7527c57d11bd3d733eb5d41600128",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.3"
+            },
+            "require-dev": {
+                "symfony/process": "^3.4.2|^4.0|^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Dotenv\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Registers environment variables from a .env file",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "dotenv",
+                "env",
+                "environment"
+            ],
+            "time": "2020-09-02T16:08:58+00:00"
+        },
+        {
             "name": "symfony/maker-bundle",
             "version": "v1.21.1",
             "source": {
@@ -13828,7 +13773,8 @@
     "platform": {
         "php": "^7.4",
         "ext-iconv": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-simplexml": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.0.0"
