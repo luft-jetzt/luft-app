@@ -78,7 +78,8 @@ services:
 
     App\Pollution\DataPersister\PersisterInterface:
         #alias: App\Pollution\DataPersister\CachePersister
-        alias: App\Pollution\DataPersister\OrmPersister
+        #alias: App\Pollution\DataPersister\OrmPersister
+        alias: App\Pollution\DataPersister\ElasticPersister
         #alias: App\Pollution\DataPersister\CacheOrmPersister
 
     App\Producer\Value\RabbitValueProducer:
@@ -115,3 +116,7 @@ services:
     App\Pollution\DataRetriever\ElasticDataRetriever:
         arguments:
             $searchable: '@fos_elastica.index.air_data.data'
+
+    App\Pollution\DataPersister\ElasticPersister:
+        arguments:
+            $index: '@fos_elastica.index.air_data'
