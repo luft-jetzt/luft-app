@@ -4,6 +4,7 @@ namespace App\Pollution\DataRetriever;
 
 use App\Entity\Data;
 use App\Entity\Station;
+use App\Pollution\DataFinder\ElasticFinder;
 use App\Pollution\StationCache\StationCacheInterface;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Elastica\Query;
@@ -14,11 +15,11 @@ class ElasticDataRetriever implements DataRetrieverInterface
 {
     protected StationCacheInterface $stationCache;
 
-    protected SearchableInterface $searchable;
+    protected ElasticFinder $finder;
 
-    public function __construct(SearchableInterface $searchable, StationCacheInterface $stationCache)
+    public function __construct(ElasticFinder $finder, StationCacheInterface $stationCache)
     {
-        $this->searchable = $searchable;
+        $this->finder = $finder;
         $this->stationCache = $stationCache;
     }
 
@@ -79,7 +80,7 @@ class ElasticDataRetriever implements DataRetrieverInterface
 
         $query->setSize($maxResults);
 
-        $resultList = $this->find($query);
+        $resultList = $this->finder->find($query);
 
         /** @var Result $elasticResult */
         foreach ($resultList as $key => $elasticResult) {
@@ -103,17 +104,5 @@ class ElasticDataRetriever implements DataRetrieverInterface
         }
 
         return $resultList;
-    }
-
-    public function find($query, $limit = null, $options = []): array
-    {
-        $queryObject = Query::create($query);
-        if (null !== $limit) {
-            $queryObject->setSize($limit);
-        }
-
-        $results = $this->searchable->search($queryObject, $options)->getResults();
-
-        return $results;
     }
 }

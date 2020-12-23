@@ -113,10 +113,13 @@ services:
     App\DataPurger\DataPurgerInterface:
         alias: App\DataPurger\FastDataPurger
 
-    App\Pollution\DataRetriever\ElasticDataRetriever:
+    App\Pollution\DataFinder\ElasticFinder:
         arguments:
             $searchable: '@fos_elastica.index.air_data.data'
 
     App\Pollution\DataPersister\ElasticPersister:
         arguments:
             $index: '@fos_elastica.index.air_data'
+
+    App\Pollution\DataFinder\FinderInterface:
+        alias: App\Pollution\DataFinder\ElasticFinder
