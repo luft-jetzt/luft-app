@@ -16,15 +16,5 @@
             <argument type="service" id="Symfony\Component\Routing\RouterInterface" />
             <tag name="knp_menu.menu_builder" method="mainMenu" alias="main_menu" />
         </service>
-
-        <service id="App\Analysis\LimitAnalysis\LimitAnalysis">
-            <argument type="service" id="fos_elastica.finder.air_data.data" />
-            <argument type="service" id="App\Air\MeasurementList\MeasurementListInterface" />
-        </service>
-
-        <service id="App\Analysis\KomfortofenAnalysis\KomfortofenAnalysis">
-            <argument type="service" id="fos_elastica.finder.air_data.data" />
-            <argument type="service" id="App\Analysis\KomfortofenAnalysis\KomfortofenModelFactoryInterface" />
-        </service>
     </services>
 </container>
