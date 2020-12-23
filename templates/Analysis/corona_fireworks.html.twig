@@ -13,5 +13,26 @@
                 </p>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3 text-center">
+                <form method="get" action="{{ path('analysis_fireworks_corona') }}">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control form-control-lg typeahead" id="query" name="query" placeholder="Suchbegriff, Postleitzahl, Stadtname…" />
+                        <div class="input-group-append">
+                            <button class="btn btn-primary btn-lg locate-button" type="button" title="Deinen Aufenthaltsort automatisch bestimmen">
+                                <i class="fa fa-location-arrow"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button id="search-button" type="submit" class="btn btn-primary btn-lg">
+                            Weiter
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 {% endblock %}
