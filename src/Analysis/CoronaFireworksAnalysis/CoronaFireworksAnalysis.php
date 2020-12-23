@@ -2,36 +2,60 @@
 
 namespace App\Analysis\CoronaFireworksAnalysis;
 
+use App\Air\Measurement\MeasurementInterface;
+use App\Air\ViewModelFactory\DistanceCalculator;
+use App\Analysis\FireworksAnalysis\FireworksModelFactoryInterface;
+use App\Entity\Data;
 use App\Pollution\PollutionDataFactory\PollutionDataFactoryInterface;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
+use Elastica\Query\BoolQuery;
+use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 
 class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
 {
-    protected PollutionDataFactoryInterface $pollutionDataFactory;
+    protected PaginatedFinderInterface $finder;
 
-    public function __construct(PollutionDataFactoryInterface $pollutionDataFactory)
+    public function __construct(PaginatedFinderInterface $finder)
     {
-        $this->pollutionDataFactory = $pollutionDataFactory;
+        $this->finder = $finder;
     }
 
     public function analyze(CoordInterface $coord): array
     {
         $yearList = $this->initYearList();
+        $valueList = $this->fetchValues($coord);
 
         foreach ($yearList as $year => $hourList) {
-            foreach ($hourList as $timestamp => $data) {
-                $dateTime = Carbon::createFromTimestamp($timestamp);
+            foreach ($hourList as $dateTimeString => $data) {
+                $dateTime = new Carbon($dateTimeString);
+                $candidateList = [];
 
-                /*$result = $this->pollutionDataFactory
-                    ->setCoord($coord)
-                    ->createDecoratedPollutantList($dateTime, new CarbonInterval('PT30M'), 1)
-                ;*/
+                /** @var Data $candidate */
+                foreach ($valueList as $key => $candidate) {
+                    if ($dateTime->diffInMinutes($candidate->getDateTime()) < 30) {
+                        $candidateList[$key] = $candidate;
+                    }
+                }
 
-                $result = null;
+                $minDistance = null;
+                $nearestData = null;
 
-                $yearList[$year][$timestamp] = $result;
+                foreach ($candidateList as $candidate) {
+                    $distance = DistanceCalculator::distance($coord, $candidate->getStation());
+
+                    if (!$minDistance || $distance < $minDistance) {
+                        $minDistance = $distance;
+                        $nearestData = $candidate;
+                    }
+                }
+
+                $yearList[$year][$dateTimeString] = $nearestData;
+
+                foreach ($candidateList as $key => $deleteableCandidate) {
+                    unset($valueList[$key]);
+                }
             }
         }
 
@@ -56,11 +80,69 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
             $dateTime = $endDateTime->copy();
 
             do {
-                $yearList[$year][$dateTime->format('Y-m-d-H-i-00')] = null;
-                $dateTime->subMinutes(30);
+                $yearList[$year][$dateTime->format('Y-m-d H:i:00')] = null;
+                $dateTime->subMinutes(60);
             } while ($dateTime > $startDateTime);
         }
 
         return $yearList;
+    }
+
+    protected function fetchValues(CoordInterface $coord, float $maxDistance = 100.0): array
+    {
+        $stationGeoQuery = new \Elastica\Query\GeoDistance('station.pin', [
+            'lat' => $coord->getLatitude(),
+            'lon' => $coord->getLongitude(),
+        ],
+            sprintf('%fkm', $maxDistance));
+
+        $stationQuery = new \Elastica\Query\Nested();
+        $stationQuery->setPath('station');
+        $stationQuery->setQuery($stationGeoQuery);
+
+        $pm10Query = new \Elastica\Query\Term(['pollutant' => MeasurementInterface::MEASUREMENT_PM10]);
+        //$pm25Query = new \Elastica\Query\Term(['pollutant' => PollutantInterface::POLLUTANT_PM25]);
+
+        $pollutantQuery = new BoolQuery();
+        $pollutantQuery->addShould($pm10Query);
+        //$pollutantQuery->addShould($pm25Query);
+
+        $dateTimeQuery = $this->createDateTimeQuery();
+
+        $providerQuery = new \Elastica\Query\Term(['provider' => 'uba_de']);
+
+        $boolQuery = new \Elastica\Query\BoolQuery();
+        $boolQuery
+            ->addMust($pollutantQuery)
+            ->addMust($dateTimeQuery)
+            ->addMust($providerQuery)
+            ->addMust($stationQuery);
+
+        $query = new \Elastica\Query($boolQuery);
+
+        return $this->finder->find($query, 5000);
+    }
+
+    protected function createDateTimeQuery(): BoolQuery
+    {
+        $currentYear = (new Carbon())->year;
+        $years = range($currentYear - 4, $currentYear + 1);
+
+        $dateTimeQuery = new BoolQuery();
+
+        foreach ($years as $year) {
+            $fromDateTime = new Carbon(sprintf('%d-12-31 12:00:00', $year));
+            $untilDateTime = $fromDateTime->copy()->addHours(36);
+
+            $rangeQuery = new \Elastica\Query\Range('dateTime', [
+                'gt' => $fromDateTime->format('Y-m-d H:i:s'),
+                'lte' => $untilDateTime->format('Y-m-d H:i:s'),
+                'format' => 'yyyy-MM-dd HH:mm:ss'
+            ]);
+
+            $dateTimeQuery->addShould($rangeQuery);
+        }
+
+        return $dateTimeQuery;
     }
 }
