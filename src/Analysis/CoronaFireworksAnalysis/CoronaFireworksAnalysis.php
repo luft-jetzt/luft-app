@@ -28,8 +28,10 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
         $valueList = $this->fetchValues($coord);
 
         foreach ($yearList as $year => $hourList) {
-            foreach ($hourList as $dateTimeString => $data) {
-                $dateTime = new Carbon($dateTimeString);
+            $startDatTime = $this->calculateStartDateTime($year);
+
+            foreach ($hourList as $minutesSinceStartDateTime => $data) {
+                $dateTime = $startDatTime->copy()->addMinutes($minutesSinceStartDateTime);
                 $candidateList = [];
 
                 /** @var Data $candidate */
@@ -51,7 +53,7 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
                     }
                 }
 
-                $yearList[$year][$dateTimeString] = $nearestData;
+                $yearList[$year][$minutesSinceStartDateTime] = $nearestData;
 
                 foreach ($candidateList as $key => $deleteableCandidate) {
                     unset($valueList[$key]);
@@ -73,14 +75,13 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
         }
 
         foreach ($yearList as $year => $hourList) {
-            $startDateTimeSpec = '%d-12-31 12:00:00';
-            $startDateTime = new Carbon(sprintf($startDateTimeSpec, $year));
+            $startDateTime = $this->calculateStartDateTime($year);
             $endDateTime = $startDateTime->copy()->addHours(36);
 
             $dateTime = $endDateTime->copy();
 
             do {
-                $yearList[$year][$dateTime->format('Y-m-d H:i:00')] = null;
+                $yearList[$year][$dateTime->diffInMinutes($startDateTime)] = null;
                 $dateTime->subMinutes(60);
             } while ($dateTime > $startDateTime);
         }
@@ -144,5 +145,11 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
         }
 
         return $dateTimeQuery;
+    }
+
+    protected function calculateStartDateTime(int $year): Carbon
+    {
+        $startDateTimeSpec = '%d-12-31 12:00:00';
+        return new Carbon(sprintf($startDateTimeSpec, $year));
     }
 }

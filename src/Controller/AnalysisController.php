@@ -74,10 +74,23 @@ class AnalysisController extends AbstractController
 
         $coord = new Coord((float) $latitude, (float) $longitude);
 
-        $yearList = $coronaFireworksAnalysis->analyze($coord);
+        $dataList = $coronaFireworksAnalysis->analyze($coord);
 
-        dd($yearList);
+        $newDataList = [];
 
-        return $this->render('Analysis/corona_fireworks.html.twig');
+        foreach ($dataList as $year => $hourList) {
+            foreach ($hourList as $timestamp => $dataSet) {
+                if (!array_key_exists($timestamp, $newDataList)) {
+                    $newDataList[$timestamp] = [];
+                }
+
+                $newDataList[$timestamp][$year] = $dataSet;
+            }
+        }
+
+        return $this->render('Analysis/corona_fireworks.html.twig', [
+            'data_list' => $newDataList,
+            'years' => array_keys($dataList),
+        ]);
     }
 }
