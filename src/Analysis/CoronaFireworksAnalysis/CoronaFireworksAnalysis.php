@@ -2,8 +2,12 @@
 
 namespace App\Analysis\CoronaFireworksAnalysis;
 
+use App\Air\AirQuality\Calculator\AirQualityCalculatorInterface;
 use App\Air\Measurement\MeasurementInterface;
+use App\Air\Measurement\PM10;
+use App\Air\ViewModel\MeasurementViewModel;
 use App\Air\ViewModelFactory\DistanceCalculator;
+use App\Air\ViewModelFactory\MeasurementViewModelFactoryInterface;
 use App\Analysis\FireworksAnalysis\FireworksModelFactoryInterface;
 use App\Entity\Data;
 use App\Pollution\PollutionDataFactory\PollutionDataFactoryInterface;
@@ -16,10 +20,14 @@ use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
 {
     protected PaginatedFinderInterface $finder;
+    protected MeasurementViewModelFactoryInterface $measurementViewModelFactory;
+    protected AirQualityCalculatorInterface $airQualityCalculator;
 
-    public function __construct(PaginatedFinderInterface $finder)
+    public function __construct(PaginatedFinderInterface $finder, MeasurementViewModelFactoryInterface $measurementViewModelFactory, AirQualityCalculatorInterface $airQualityCalculator)
     {
         $this->finder = $finder;
+        $this->measurementViewModelFactory = $measurementViewModelFactory;
+        $this->airQualityCalculator = $airQualityCalculator;
     }
 
     public function analyze(CoordInterface $coord): array
@@ -28,7 +36,7 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
         $valueList = $this->fetchValues($coord);
 
         foreach ($yearList as $year => $hourList) {
-            $startDatTime = $this->calculateStartDateTime($year);
+            $startDatTime = StartDateTimeCalculator::calculateStartDateTime($year);
 
             foreach ($hourList as $minutesSinceStartDateTime => $data) {
                 $dateTime = $startDatTime->copy()->addMinutes($minutesSinceStartDateTime);
@@ -53,7 +61,9 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
                     }
                 }
 
-                $yearList[$year][$minutesSinceStartDateTime] = $nearestData;
+                if ($nearestData) {
+                    $yearList[$year][$minutesSinceStartDateTime] = $this->decorateData($nearestData, $coord);
+                }
 
                 foreach ($candidateList as $key => $deleteableCandidate) {
                     unset($valueList[$key]);
@@ -64,9 +74,25 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
         return $yearList;
     }
 
+    /**
+     * @todo Use ViewModelFactory for this
+     */
+    protected function decorateData(Data $data, CoordInterface $coord): MeasurementViewModel
+    {
+        $viewModel = new MeasurementViewModel($data);
+        $viewModel
+            ->setStation($data->getStation())
+            ->setMeasurement(new PM10())
+            ->setDistance(DistanceCalculator::distance($coord, $data->getStation()))
+            ->setPollutionLevel($this->airQualityCalculator->calculateViewModel($viewModel))
+        ;
+
+        return $viewModel;
+    }
+
     protected function initYearList(): array
     {
-        $year = (new Carbon())->subDays(360);
+        $year = StartDateTimeCalculator::calculateStartDateTime();
         $yearList = [];
 
         for ($yearSub = 0; $yearSub <= 2; ++$yearSub) {
@@ -75,7 +101,7 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
         }
 
         foreach ($yearList as $year => $hourList) {
-            $startDateTime = $this->calculateStartDateTime($year);
+            $startDateTime = StartDateTimeCalculator::calculateStartDateTime($year);
             $endDateTime = $startDateTime->copy()->addHours(36);
 
             $dateTime = $endDateTime->copy();
@@ -145,11 +171,5 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
         }
 
         return $dateTimeQuery;
-    }
-
-    protected function calculateStartDateTime(int $year): Carbon
-    {
-        $startDateTimeSpec = '%d-12-31 12:00:00';
-        return new Carbon(sprintf($startDateTimeSpec, $year));
     }
 }

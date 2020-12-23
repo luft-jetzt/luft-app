@@ -48,16 +48,32 @@
                 {% endfor %}
                 </thead>
                 <tbody>
-                {% for timestamp, data_set_list in data_list %}
+                {% for timestamp, view_model_set in data_list %}
+                    {% if corona_fireworks_datetime(timestamp)|date('m d H i') == '01 01 00 00' %}
+                    <tr>
+                        <th colspan="4" class="text-center">
+                            Jahreswechsel
+                        </th>
+                    </tr>
+                    {% endif %}
+
                      <tr>
                          <td>
-                             {{ timestamp }}
+                             {{ corona_fireworks_datetime(timestamp)|date('d. F') }}
+                             <br />
+                             {{ corona_fireworks_datetime(timestamp)|date('H:i') }}&nbsp;Uhr
                          </td>
 
                          {% for year in years %}
                              <td>
-                                 {% if data_set_list[year] is defined %}
-                                 {{ dump(data_set_list[year]) }}
+                                 {% if view_model_set[year] is defined and view_model_set[year] %}
+                                     <div class="card">
+                                        {% include 'Default/_box.html.twig' with { 'view_model': view_model_set[year], 'showStationTitle': true, 'combined': true } %}
+                                     </div>
+                                 {% else %}
+                                     <div class="alert alert-info">
+                                         Keine Daten gefunden.
+                                     </div>
                                  {% endif %}
                              </td>
                          {% endfor %}
