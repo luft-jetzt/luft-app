@@ -80,29 +80,6 @@ class ElasticDataRetriever implements DataRetrieverInterface
 
         $query->setSize($maxResults);
 
-        $resultList = $this->finder->find($query);
-
-        /** @var Result $elasticResult */
-        foreach ($resultList as $key => $elasticResult) {
-            $data = new Data();
-
-            $station = $this->stationCache->getStationByCode($elasticResult->getData()['station']['stationCode']);
-
-            if (!$station) {
-                unset($resultList[$key]);
-                continue;
-            }
-
-            $data
-                ->setValue($elasticResult->getData()['value'])
-                ->setPollutant($elasticResult->getData()['pollutant'])
-                ->setStation($station)
-                ->setDateTime(new \DateTime($elasticResult->getData()['dateTime']))
-            ;
-
-            $resultList[$key] = $data;
-        }
-
-        return $resultList;
+        return $this->finder->find($query);
     }
 }
