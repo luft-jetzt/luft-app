@@ -11,12 +11,12 @@ use Elastica\SearchableInterface;
 class ElasticFinder implements FinderInterface
 {
     protected SearchableInterface $searchable;
-    protected StationCacheInterface $stationCache;
+    protected DataConverterInterface $dataConverter;
 
-    public function __construct(SearchableInterface $searchable, StationCacheInterface $stationCache)
+    public function __construct(SearchableInterface $searchable, DataConverterInterface $dataConverter)
     {
         $this->searchable = $searchable;
-        $this->stationCache = $stationCache;
+        $this->dataConverter = $dataConverter;
     }
 
     public function find(Query $query, int $limit = null, array $options = []): array
@@ -29,7 +29,7 @@ class ElasticFinder implements FinderInterface
         $resultList = $this->searchable->search($queryObject, $options)->getResults();
 
         foreach ($resultList as $key => $result) {
-            $data = $this->convertToData($result);
+            $data = $this->dataConverter->convert($result);
             if ($data) {
                 $resultList[$key] = $data;
             } else {
@@ -50,25 +50,5 @@ class ElasticFinder implements FinderInterface
         $result = $this->searchable->search($queryObject, $options)->getAggregations();
 
         return $result;
-    }
-
-    protected function convertToData(Result $elasticResult): ?Data
-    {
-        $data = new Data();
-
-        $station = $this->stationCache->getStationByCode($elasticResult->getData()['station']['stationCode']);
-
-        if (!$station) {
-            return null;
-        }
-
-        $data
-            ->setValue($elasticResult->getData()['value'])
-            ->setPollutant($elasticResult->getData()['pollutant'])
-            ->setStation($station)
-            ->setDateTime(new \DateTime($elasticResult->getData()['dateTime']))
-        ;
-
-        return $data;
     }
 }
