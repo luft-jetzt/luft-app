@@ -39,6 +39,8 @@ fos_elastica:
                             type: float
                         pollutant:
                             type: integer
+                        tag:
+                            type: text
                         station:
                             type: nested
                             properties:
