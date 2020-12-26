@@ -49,6 +49,7 @@ class Data
 
     /**
      * @ORM\Column(type="string", length=32, nullable=true)
+     * @JMS\Expose()
      */
     private $tag;
 
