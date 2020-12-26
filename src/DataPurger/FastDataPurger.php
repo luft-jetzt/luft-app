@@ -47,6 +47,13 @@ class FastDataPurger implements DataPurgerInterface
                                     ]
                             ]
                         ]
+                    ],
+                    'must_not' => [
+                        [
+                            'exists' => [
+                                'field' => 'tag',
+                            ]
+                        ]
                     ]
                 ]
             ]
