@@ -19,21 +19,21 @@ class FastDataPurger implements DataPurgerInterface
         $this->client = $client;
     }
 
-    public function purgeData(\DateTimeInterface $untilDateTime, ProviderInterface $provider = null): int
+    public function purgeData(\DateTime $untilDateTime, ProviderInterface $provider = null, bool $withTags): int
     {
-        $counter = $this->purgeDatabase($untilDateTime, $provider);
+        $counter = $this->purgeDatabase($untilDateTime, $provider, $withTags);
 
-        $this->purgeElasticsearch($untilDateTime, $provider);
+        $this->purgeElasticsearch($untilDateTime, $provider, $withTags);
 
         return $counter;
     }
 
-    public function purgeDatabase(\DateTimeInterface $untilDateTime, ProviderInterface $provider = null): int
+    public function purgeDatabase(\DateTime $untilDateTime, ProviderInterface $provider = null, bool $withTags): int
     {
-        return $this->managerRegistry->getRepository(Data::class)->deleteData($untilDateTime, $provider);
+        return $this->managerRegistry->getRepository(Data::class)->deleteData($untilDateTime, $provider, $withTags);
     }
 
-    public function purgeElasticsearch(\DateTimeInterface $untilDateTime, ProviderInterface $provider = null): int
+    public function purgeElasticsearch(\DateTime $untilDateTime, ProviderInterface $provider = null, bool $withTags): int
     {
         $query = [
             'query' => [
@@ -56,6 +56,10 @@ class FastDataPurger implements DataPurgerInterface
             $query['query']['bool']['must'][]['match'] = [
                 'provider' => $provider->getIdentifier(),
             ];
+        }
+
+        if (!$withTags) {
+            $query['query']['bool']['must_not'][]['exists'] = ['field' => 'tag'];
         }
 
         $this->client->request('air_data/_delete_by_query', Request::POST, $query);

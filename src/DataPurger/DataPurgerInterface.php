@@ -8,5 +8,5 @@ use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 interface DataPurgerInterface
 {
-    public function purgeData(\DateTime $untilDateTime, ProviderInterface $provider): int;
+    public function purgeData(\DateTime $untilDateTime, ProviderInterface $provider, bool $withTags): int;
 }
