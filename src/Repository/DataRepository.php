@@ -202,10 +202,17 @@ class DataRepository extends EntityRepository
             }
 
             $result = $query->execute();
+        } elseif ($tagged) {
+            $query = $this->getEntityManager()->createQuery(
+                'DELETE App:Data d 
+                WHERE d.dateTime < :untilDateTime AND d.tag IS NOT NULL')
+                ->setParameter('untilDateTime', $untilDateTime);
+
+            $result = $query->execute();
         } else {
             $query = $this->getEntityManager()->createQuery(
                 'DELETE App:Data d 
-                WHERE d.dateTime < :untilDateTime')
+                WHERE d.dateTime < :untilDateTime AND d.tag IS NULL')
                 ->setParameter('untilDateTime', $untilDateTime);
 
             $result = $query->execute();
