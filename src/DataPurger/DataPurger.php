@@ -15,7 +15,7 @@ class DataPurger implements DataPurgerInterface
         $this->managerRegistry = $managerRegistry;
     }
 
-    public function purgeData(\DateTimeInterface $untilDateTime, ProviderInterface $provider = null): int
+    public function purgeData(\DateTime $untilDateTime, ProviderInterface $provider = null): int
     {
         $dataList = $this->managerRegistry->getRepository(Data::class)->findUntaggedInInterval(null, $untilDateTime, $provider);
 
