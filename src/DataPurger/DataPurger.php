@@ -15,9 +15,13 @@ class DataPurger implements DataPurgerInterface
         $this->managerRegistry = $managerRegistry;
     }
 
-    public function purgeData(\DateTimeInterface $untilDateTime, ProviderInterface $provider = null): int
+    public function purgeData(\DateTime $untilDateTime, ProviderInterface $provider = null, bool $withTags): int
     {
-        $dataList = $this->managerRegistry->getRepository(Data::class)->findInInterval(null, $untilDateTime, $provider);
+        if ($withTags) {
+            $dataList = $this->managerRegistry->getRepository(Data::class)->findInInterval(null, $untilDateTime, $provider);
+        } else {
+            $dataList = $this->managerRegistry->getRepository(Data::class)->findUntaggedInInterval(null, $untilDateTime, $provider);
+        }
 
         $counter = count($dataList);
 
