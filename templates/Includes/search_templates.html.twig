@@ -1,6 +1,6 @@
 {% verbatim %}
 <script id="render-city-template" type="text/x-handlebars-template">
-<a href="?latitude={{latitude}}&longitude={{longitude}}">
+<a href="{{url}}">
     <div class="row">
         <div class="col-12">
             <i class="fa fa-university"></i>
@@ -11,7 +11,7 @@
 </script>
 
 <script id="render-station-template" type="text/x-handlebars-template">
-<a href="?latitude={{latitude}}&longitude={{longitude}}">
+<a href="{{url}}">
     <div class="row">
         <div class="col-12">
             <i class="fa fa-thermometer-half"></i>
@@ -32,7 +32,7 @@
 </script>
 
 <script id="render-query-template" type="text/x-handlebars-template">
-<a href="?latitude={{latitude}}&longitude={{longitude}}">
+<a href="{{url}}">
     <div class="row">
         <div class="col-12">
             <i class="fa fa-map-marker"></i>

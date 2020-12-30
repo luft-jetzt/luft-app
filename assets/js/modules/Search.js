@@ -8,10 +8,13 @@ export default class Search {
 
         this.settings = {...defaults, ...options};
 
-        this.init();
+        this.init(element);
     }
 
-    init() {
+    init(element) {
+        const form = element.closest('form');
+        const actionUri = form.action;
+
         const prefetchedCities = new Bloodhound({
             datumTokenizer: function (data) {
                 return Bloodhound.tokenizers.whitespace(data.value.name);
@@ -45,7 +48,7 @@ export default class Search {
             },
         });
 
-        $('.typeahead').typeahead({
+        $('#' + element.id).typeahead({
             hint: true,
             highlight: true,
             minLength: 2,
@@ -84,21 +87,30 @@ export default class Search {
             }
         }).on('typeahead:selected', redirect);
 
+        function buildUri(data) {
+            return actionUri + '?latitude=' + data.value.latitude + '&longitude=' + data.value.longitude;
+        }
+
         function renderQuery(data) {
             const source = document.getElementById('render-query-template').innerHTML;
             const template = Handlebars.compile(source);
+
+            data.value.url = buildUri(data);
+
             return template(data.value);
         }
 
         function renderCity(data) {
             const source = document.getElementById('render-city-template').innerHTML;
             const template = Handlebars.compile(source);
+
             return template(data.value);
         }
 
         function renderStation(data) {
             const source = document.getElementById('render-station-template').innerHTML;
             const template = Handlebars.compile(source);
+
             return template(data.value);
         }
 
@@ -109,5 +121,11 @@ export default class Search {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    new Search();
+    const typeaheadInputList = document.querySelectorAll('input.typeahead');
+
+    typeaheadInputList.forEach(function (typeaheadInput) {
+        new Search(typeaheadInput);
+    });
+
+
 });
