@@ -33,9 +33,10 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
     public function analyze(CoordInterface $coord): array
     {
         $yearList = $this->initYearList();
-        $valueList = $this->fetchValues($coord);
 
         foreach ($yearList as $year => $hourList) {
+            $valueList = $this->fetchValues($coord, $year);
+
             $startDatTime = StartDateTimeCalculator::calculateStartDateTime($year);
 
             foreach ($hourList as $minutesSinceStartDateTime => $data) {
@@ -115,7 +116,7 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
         return $yearList;
     }
 
-    protected function fetchValues(CoordInterface $coord, float $maxDistance = 100.0): array
+    protected function fetchValues(CoordInterface $coord, int $year, float $maxDistance = 100.0): array
     {
         $stationGeoQuery = new \Elastica\Query\GeoDistance('station.pin', [
             'lat' => $coord->getLatitude(),
@@ -134,42 +135,39 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
         $pollutantQuery->addShould($pm10Query);
         //$pollutantQuery->addShould($pm25Query);
 
-        $dateTimeQuery = $this->createDateTimeQuery();
+        $fromDateTime = new Carbon(sprintf('%d-12-31 12:00:00', $year));
+        $untilDateTime = $fromDateTime->copy()->addHours(36);
+
+        $rangeQuery = new \Elastica\Query\Range('dateTime', [
+            'gt' => $fromDateTime->format('Y-m-d H:i:s'),
+            'lte' => $untilDateTime->format('Y-m-d H:i:s'),
+            'format' => 'yyyy-MM-dd HH:mm:ss'
+        ]);
 
         $providerQuery = new \Elastica\Query\Term(['provider' => 'uba_de']);
 
         $boolQuery = new \Elastica\Query\BoolQuery();
         $boolQuery
             ->addMust($pollutantQuery)
-            ->addMust($dateTimeQuery)
-            ->addMust($providerQuery)
+            ->addMust($rangeQuery)
+   //         ->addMust($providerQuery)
             ->addMust($stationQuery);
 
         $query = new \Elastica\Query($boolQuery);
 
-        return $this->finder->find($query, 5000);
-    }
-
-    protected function createDateTimeQuery(): BoolQuery
-    {
-        $currentYear = (new Carbon())->year;
-        $years = range($currentYear - 4, $currentYear + 1);
-
-        $dateTimeQuery = new BoolQuery();
-
-        foreach ($years as $year) {
-            $fromDateTime = new Carbon(sprintf('%d-12-31 12:00:00', $year));
-            $untilDateTime = $fromDateTime->copy()->addHours(36);
-
-            $rangeQuery = new \Elastica\Query\Range('dateTime', [
-                'gt' => $fromDateTime->format('Y-m-d H:i:s'),
-                'lte' => $untilDateTime->format('Y-m-d H:i:s'),
-                'format' => 'yyyy-MM-dd HH:mm:ss'
+        $query
+            ->addSort([
+                '_geo_distance' => [
+                    'station.pin' => [
+                        'lat' => $coord->getLatitude(),
+                        'lon' => $coord->getLongitude()
+                    ],
+                    'order' => 'asc',
+                    'unit' => 'km',
+                    'nested_path' => 'station',
+                ]
             ]);
 
-            $dateTimeQuery->addShould($rangeQuery);
-        }
-
-        return $dateTimeQuery;
+        return $this->finder->find($query, 500);
     }
 }
