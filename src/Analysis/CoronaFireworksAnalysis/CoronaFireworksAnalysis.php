@@ -57,7 +57,7 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
 
                 /** @var Data $candidate */
                 foreach ($dataList as $key => $candidate) {
-                    if ($dateTime->diffInMinutes($candidate->getDateTime()) < 30) {
+                    if ($dateTime->diffInMinutes($candidate->getDateTime()) <= 30) {
                         $candidateList[$key] = $candidate;
                     }
                 }
@@ -71,6 +71,8 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
                     if (!$minDistance || $distance < $minDistance) {
                         $minDistance = $distance;
                         $nearestData = $candidate;
+                    } elseif ($distance === $minDistance && $nearestData && $nearestData->getValue() < $candidate->getValue()) {
+                        $nearestData = $candidate;
                     }
                 }
 
@@ -79,7 +81,7 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
                 }
 
                 foreach ($candidateList as $key => $deleteableCandidate) {
-                    unset($valueList[$key]);
+                    unset($dataList[$key]);
                 }
             }
         }
@@ -121,7 +123,7 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
 
             do {
                 $yearList[$year][$dateTime->diffInMinutes($startDateTime)] = null;
-                $dateTime->subMinutes(60);
+                $dateTime->subMinutes(30);
             } while ($dateTime > $startDateTime);
         }
 
