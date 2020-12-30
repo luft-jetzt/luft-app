@@ -36,52 +36,50 @@
             </div>
         </div>
         {% else %}
-            <table class="table">
-                <thead>
-                <th>
-                    Uhrzeit
-                </th>
-                {% for year in years %}
-                <th>
-                    {{ year }}
-                </th>
-                {% endfor %}
-                </thead>
-                <tbody>
-                {% for timestamp, view_model_set in data_list %}
-                    {% if corona_fireworks_datetime(timestamp)|date('m d H i') == '01 01 00 00' %}
-                    <tr>
-                        <th colspan="4" class="text-center">
-                            Jahreswechsel
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    {% for year in years %}
+                        <th>
+                            {{ year }}
                         </th>
-                    </tr>
-                    {% endif %}
+                    {% endfor %}
+                    </thead>
+                    <tbody>
+                    {% for timestamp, view_model_set in data_list %}
+                        {% if corona_fireworks_datetime(timestamp)|date('m d H i') == '01 01 00 00' %}
+                            <tr>
+                                <th colspan="3" class="text-center">
+                                    Jahreswechsel
+                                </th>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <th colspan="3" class="text-center">
+                                    {{ corona_fireworks_datetime(timestamp)|date('d.m. H:i') }}&nbsp;Uhr
+                                </th>
+                            </tr>
+                        {% endif %}
 
-                     <tr>
-                         <td>
-                             {{ corona_fireworks_datetime(timestamp)|date('d. F') }}
-                             <br />
-                             {{ corona_fireworks_datetime(timestamp)|date('H:i') }}&nbsp;Uhr
-                         </td>
-
-                         {% for year in years %}
-                             <td>
-                                 {% if view_model_set[year] is defined and view_model_set[year] %}
-                                     <div class="card">
-                                        {% include 'Default/_box.html.twig' with { 'view_model': view_model_set[year], 'showStationTitle': true, 'combined': true } %}
-                                     </div>
-                                 {% else %}
-                                     <div class="alert alert-info">
-                                         Keine Daten gefunden.
-                                     </div>
-                                 {% endif %}
-                             </td>
-                         {% endfor %}
-                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-
+                        <tr>
+                            {% for year in years %}
+                                <td>
+                                    {% if view_model_set[year] is defined and view_model_set[year] %}
+                                        <div class="card">
+                                            {% include 'Default/_box.html.twig' with { 'view_model': view_model_set[year], 'showStationTitle': true, 'combined': true } %}
+                                        </div>
+                                    {% else %}
+                                        <div class="alert alert-info">
+                                            Keine Daten gefunden.
+                                        </div>
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         {% endif %}
     </div>
 {% endblock %}
