@@ -35,7 +35,19 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
         $yearList = $this->initYearList();
 
         foreach ($yearList as $year => $hourList) {
-            $valueList = $this->fetchValues($coord, $year);
+            $dataList = $this->fetchValues($coord, $year);
+
+            /**
+             * @var Data $data
+             * @todo get timezone handling done!!! This is really nasty
+             */
+            foreach ($dataList as $data) {
+                if ('ld' === $data->getProvider()) {
+                    $dateTime = Carbon::parse($data->getDateTime());
+                    $dateTime->addHour();
+                    $data->setDateTime($dateTime);
+                }
+            }
 
             $startDatTime = StartDateTimeCalculator::calculateStartDateTime($year);
 
@@ -44,7 +56,7 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
                 $candidateList = [];
 
                 /** @var Data $candidate */
-                foreach ($valueList as $key => $candidate) {
+                foreach ($dataList as $key => $candidate) {
                     if ($dateTime->diffInMinutes($candidate->getDateTime()) < 30) {
                         $candidateList[$key] = $candidate;
                     }
