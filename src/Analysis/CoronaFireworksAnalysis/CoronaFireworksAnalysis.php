@@ -152,7 +152,7 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
         return $yearList;
     }
 
-    protected function fetchValues(CoordInterface $coord, int $year, float $maxDistance = 100.0): array
+    protected function fetchValues(CoordInterface $coord, int $year, float $maxDistance = 15): array
     {
         $stationGeoQuery = new \Elastica\Query\GeoDistance('station.pin', [
             'lat' => $coord->getLatitude(),
@@ -204,6 +204,6 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
                 ]
             ]);
 
-        return $this->finder->find($query, 500);
+        return $this->finder->find($query, 1000);
     }
 }
