@@ -77,7 +77,7 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
                 foreach ($candidateList as $candidate) {
                     $distance = DistanceCalculator::distance($coord, $candidate->getStation());
 
-                    if (!$minDistance || $distance < $minDistance) {
+                    if ($minDistance === null || $distance < $minDistance) {
                         $minDistance = $distance;
                         $nearestData = $candidate;
                     } elseif ($distance === $minDistance && $nearestData && $nearestData->getValue() < $candidate->getValue()) {
