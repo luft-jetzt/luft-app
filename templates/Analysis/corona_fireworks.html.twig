@@ -72,7 +72,7 @@
                                 <td>
                                     {% if view_model_set[year] is defined and view_model_set[year] %}
                                         <div class="card">
-                                            {% include 'Default/_box.html.twig' with { 'view_model': view_model_set[year], 'showStationTitle': true, 'combined': true } %}
+                                            {% include 'Default/_box.html.twig' with { 'view_model': view_model_set[year], 'showStationTitle': true, 'combined': true, 'linkToStation': true } %}
                                         </div>
                                     {% else %}
                                         <div class="alert alert-info">
