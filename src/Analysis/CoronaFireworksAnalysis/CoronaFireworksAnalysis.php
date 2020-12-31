@@ -98,7 +98,7 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
         /**
          * @todo quick fix to hide future values
          */
-        $startDateTime2020 = new Carbon('2020-12-31 12:00:00', new CarbonTimeZone('Europe/Berlin'));
+        $startDateTime2020 = new Carbon('2020-12-31 12:00:00', new CarbonTimeZone('UTC'));
 
         foreach ($yearList as $year => $hourList) {
             foreach ($hourList as $minutesSinceStartDateTime => $data) {
