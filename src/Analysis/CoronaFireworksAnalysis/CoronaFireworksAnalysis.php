@@ -149,8 +149,8 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
         $pollutantQuery->addShould($pm10Query);
         //$pollutantQuery->addShould($pm25Query);
 
-        $fromDateTime = new Carbon(sprintf('%d-12-31 13:00:00', $year));
-        $untilDateTime = $fromDateTime->copy()->addHours(34);
+        $fromDateTime = new Carbon(sprintf('%d-12-31 11:00:00', $year));
+        $untilDateTime = $fromDateTime->copy()->addHours(36);
 
         $rangeQuery = new \Elastica\Query\Range('dateTime', [
             'gt' => $fromDateTime->format('Y-m-d H:i:s'),
