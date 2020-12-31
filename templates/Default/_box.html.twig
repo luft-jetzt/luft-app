@@ -47,7 +47,7 @@
         {% endif %}
 
         <small>
-            <span title="{{ view_model.data.dateTime|date('d.m.Y H:i') }} Uhr">
+            <span title="{{ view_model.data.dateTime|date('d.m.Y H:i', 'Europe/Berlin') }} Uhr">
                 <i class="fa fa-clock-o"></i> {{ view_model.data.dateTime|time_ago_in_words }}
             </span>
             {% if stationTitle %}

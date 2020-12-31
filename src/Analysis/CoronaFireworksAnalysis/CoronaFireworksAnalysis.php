@@ -14,6 +14,7 @@ use App\Pollution\PollutionDataFactory\PollutionDataFactoryInterface;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
+use Carbon\CarbonTimeZone;
 use Elastica\Query\BoolQuery;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 
@@ -49,8 +50,8 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
                      * … but do not adjust datetime for current values directly from json api for the current year
                      * @todo FIX TIMEZONE HANDLING!!!
                      */
-                    if ($dateTime->diffInMonths(Carbon::now()) > 1) {
-                        $dateTime->addHour();
+                    if ($dateTime->diffInDays(Carbon::now()) > 31) {
+                        //$dateTime->subHour();
                         $data->setDateTime($dateTime);
                     }
                 }
@@ -60,11 +61,12 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
 
             foreach ($hourList as $minutesSinceStartDateTime => $data) {
                 $dateTime = $startDatTime->copy()->addMinutes($minutesSinceStartDateTime);
+
                 $candidateList = [];
 
                 /** @var Data $candidate */
                 foreach ($dataList as $key => $candidate) {
-                    if ($dateTime->diffInMinutes($candidate->getDateTime()) <= 30) {
+                    if ($dateTime->diffInMinutes($candidate->getDateTime()) <= 30 && $candidate->getDateTime() < $dateTime) {
                         $candidateList[$key] = $candidate;
                     }
                 }
@@ -89,6 +91,19 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
 
                 foreach ($candidateList as $key => $deleteableCandidate) {
                     unset($dataList[$key]);
+                }
+            }
+        }
+
+        /**
+         * @todo quick fix to hide future values
+         */
+        $startDateTime2020 = new Carbon('2020-12-31 12:00:00', new CarbonTimeZone('Europe/Berlin'));
+
+        foreach ($yearList as $year => $hourList) {
+            foreach ($hourList as $minutesSinceStartDateTime => $data) {
+                if ($minutesSinceStartDateTime > (Carbon::now()->diffInMinutes($startDateTime2020))) {
+                    unset($yearList[$year][$minutesSinceStartDateTime]);
                 }
             }
         }

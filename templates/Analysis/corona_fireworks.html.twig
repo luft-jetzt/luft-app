@@ -36,6 +36,12 @@
             </div>
         </div>
         {% else %}
+            <div class="row mb-3">
+                <div class="col-12">
+                    Die folgende Tabelle zeigt dir für jedes Halbstundeninterval den höchsten Messwert der nächsten Luftmessstation an deinem Standort an.
+                </div>
+            </div>
+
             <div class="table-responsive">
                 <table class="table">
                     <thead>
@@ -56,7 +62,7 @@
                         {% else %}
                             <tr>
                                 <th colspan="3" class="text-center">
-                                    {{ corona_fireworks_datetime(timestamp)|date('d.m. H:i') }}&nbsp;Uhr
+                                    {{ corona_fireworks_datetime(timestamp)|date('d.m. H:i', 'Europe/Berlin') }}&nbsp;Uhr
                                 </th>
                             </tr>
                         {% endif %}
