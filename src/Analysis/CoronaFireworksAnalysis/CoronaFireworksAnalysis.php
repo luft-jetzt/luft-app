@@ -44,8 +44,15 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
             foreach ($dataList as $data) {
                 if ('ld' === $data->getProvider()) {
                     $dateTime = Carbon::parse($data->getDateTime());
-                    $dateTime->addHour();
-                    $data->setDateTime($dateTime);
+
+                    /**
+                     * … but do not adjust datetime for current values directly from json api for the current year
+                     * @todo FIX TIMEZONE HANDLING!!!
+                     */
+                    if ($dateTime->diffInMonths(Carbon::now()) > 1) {
+                        $dateTime->addHour();
+                        $data->setDateTime($dateTime);
+                    }
                 }
             }
 
