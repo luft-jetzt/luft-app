@@ -30,8 +30,12 @@ class AdhocDataRetriever implements DataRetrieverInterface
             return [];
         }
 
-        if (MeasurementInterface::MEASUREMENT_UV === $pollutantId) {
+        if (MeasurementInterface::MEASUREMENT_UVINDEX === $pollutantId) {
             $data = $this->retrieveUVIndexForCoord($coord);
+
+            if (!$data) {
+                return [];
+            }
 
             return [$data];
         }
@@ -39,13 +43,17 @@ class AdhocDataRetriever implements DataRetrieverInterface
         if (MeasurementInterface::MEASUREMENT_TEMPERATURE === $pollutantId) {
             $data = $this->retrieveTemperatureForCoord($coord);
 
+            if (!$data) {
+                return [];
+            }
+            
             return [$data];
         }
 
         return [];
     }
 
-    protected function retrieveUVIndexForCoord(CoordInterface $coord): Data
+    protected function retrieveUVIndexForCoord(CoordInterface $coord): ?Data
     {
         $jsonData = $this->sourceFetcher->queryUVIndex($coord);
 
@@ -55,7 +63,7 @@ class AdhocDataRetriever implements DataRetrieverInterface
         return ValueDataConverter::convert($value, $station);
     }
 
-    protected function retrieveTemperatureForCoord(CoordInterface $coord): Data
+    protected function retrieveTemperatureForCoord(CoordInterface $coord): ?Data
     {
         $jsonData = $this->sourceFetcher->queryTemperature($coord);
 

@@ -30,6 +30,10 @@ class CachePersister extends AbstractPersister
                 $station = $this->getStationByCode($value->getStation());
 
                 $data = ValueDataConverter::convert($value, $station);
+
+                if (!$data) {
+                    continue;
+                }
             } else {
                 continue;
             }

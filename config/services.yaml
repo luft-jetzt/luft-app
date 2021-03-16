@@ -90,8 +90,13 @@ services:
 
     App\Producer\Value\ValueProducerInterface:
         #alias: App\Producer\Value\CacheValueProducer
+        #alias: App\Producer\Value\CacheValueProducer
         #alias: App\Producer\Value\CacheOrmValueProducer
         alias: App\Producer\Value\CacheRabbitValueProducer
+
+    App\Pollution\PollutionDataFactory\HistoryDataFactory:
+        arguments:
+            $dataRetriever: '@App\Pollution\DataRetriever\ElasticDataRetriever'
 
     App\Geocoding\Guesser\CityGuesser:
         $provider: '@bazinga_geocoder.provider.nominatim'
@@ -102,3 +107,6 @@ services:
     app.geocoding_cache:
         class: Symfony\Component\Cache\Simple\Psr6Cache
         arguments: ['@app.cache.geocoding']
+
+    App\DataPurger\DataPurgerInterface:
+        alias: App\DataPurger\FastDataPurger

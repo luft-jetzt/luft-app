@@ -31,7 +31,7 @@ class Data
     /**
      * @ORM\Column(type="datetime", nullable=false)
      * @JMS\Expose()
-     * @JMS\Type("DateTimeImmutable<'U'>")
+     * @JMS\Type("DateTime<'U'>")
      */
     protected $dateTime;
 
@@ -46,6 +46,12 @@ class Data
      * @JMS\Expose()
      */
     protected $pollutant;
+
+    /**
+     * @ORM\Column(type="string", length=32, nullable=true)
+     * @JMS\Expose()
+     */
+    private $tag;
 
     public function setId(int $id): Data
     {
@@ -132,5 +138,17 @@ class Data
         $dateTime->sub(new \DateInterval('P1W'));
 
         return $dateTime >= $this->dateTime;
+    }
+
+    public function getTag(): ?string
+    {
+        return $this->tag;
+    }
+
+    public function setTag(?string $tag): self
+    {
+        $this->tag = $tag;
+
+        return $this;
     }
 }
