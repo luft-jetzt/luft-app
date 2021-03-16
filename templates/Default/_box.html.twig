@@ -47,7 +47,7 @@
         {% endif %}
 
         <small>
-            <i class="fa fa-clock-o"></i> {{ view_model.data.dateTime|time_ago_in_words }}
+            <i class="fa fa-clock-o"></i> <time data-time-ago-timestamp="{{ view_model.data.dateTime|date('U') }}">{{ view_model.data.dateTime|time_ago_in_words }}</time>
             {% if stationTitle %}
             <br /><i class="fa fa-compass"></i> {{ view_model.distance|number_format(2, ',', '.') }} km entfernt
             {% endif %}
