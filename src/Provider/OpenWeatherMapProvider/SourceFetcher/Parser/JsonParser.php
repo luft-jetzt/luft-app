@@ -12,7 +12,7 @@ class JsonParser implements JsonParserInterface
 
         $value = new Value();
         $value->setValue((float) $uvValue->value)
-            ->setPollutant('uv')
+            ->setPollutant('uvindex')
             ->setDateTime(new \DateTime(sprintf('@%d', $uvValue->date), new \DateTimeZone('UTC')));
 
         return $value;
