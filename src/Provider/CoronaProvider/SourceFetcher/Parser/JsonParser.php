@@ -13,7 +13,7 @@ class JsonParser implements JsonParserInterface
         $value = new Value();
         $value->setValue((float) $coronaValue->cases7_per100_k)
             ->setPollutant('coronaincidence')
-            ->setDateTime(new \DateTime(sprintf('@%d', $coronaValue->last_update), new \DateTimeZone('UTC')));
+            ->setDateTime(new \DateTime($coronaValue->last_update, new \DateTimeZone('Europe/Berlin')));
 
         return $value;
     }
