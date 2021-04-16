@@ -15,4 +15,8 @@
     <route id="analysis_fireworks" path="/analysis/silvester">
         <default key="_controller">App\Controller\AnalysisController::fireworksAction</default>
     </route>
+
+    <route id="analysis_fireworks_corona" path="/analysis/corona-silvester">
+        <default key="_controller">App\Controller\AnalysisController::coronaFireworksAction</default>
+    </route>
 </routes>
