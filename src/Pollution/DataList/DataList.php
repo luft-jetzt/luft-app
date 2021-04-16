@@ -52,6 +52,7 @@ class DataList implements DataListInterface
             MeasurementInterface::MEASUREMENT_CO2 => [],
             MeasurementInterface::MEASUREMENT_UVINDEX => [],
             MeasurementInterface::MEASUREMENT_TEMPERATURE => [],
+            MeasurementInterface::MEASUREMENT_CORONAINCIDENCE => [],
         ];
 
         return $this;
