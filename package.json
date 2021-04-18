@@ -20,6 +20,7 @@
   "dependencies": {
     "bloodhound-js": "^1.2.3",
     "bootstrap": "^4.6",
+    "bootstrap-dark-4": "^0.0.9",
     "calendar_heatmap": "^1.3.0",
     "chart.js": "^2.9.4",
     "corejs-typeahead": "^1.3.1",
