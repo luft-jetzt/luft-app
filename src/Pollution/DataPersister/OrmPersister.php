@@ -2,6 +2,7 @@
 
 namespace App\Pollution\DataPersister;
 
+use App\Pollution\DataTableManager\DataTableManagerInterface;
 use App\Pollution\StationCache\StationCacheInterface;
 use App\Pollution\UniqueStrategy\UniqueStrategyInterface;
 use App\Pollution\Value\Value;
@@ -14,16 +15,18 @@ class OrmPersister extends AbstractPersister
     protected ManagerRegistry $doctrine;
     protected ObjectManager $entityManager;
     protected array $stationList = [];
+    protected DataTableManagerInterface $dataTableManager;
 
     protected array $newValueList = [];
 
     protected UniqueStrategyInterface $uniqueStrategy;
 
-    public function __construct(ManagerRegistry $doctrine, StationCacheInterface $stationCache, UniqueStrategyInterface $uniqueStrategy)
+    public function __construct(DataTableManagerInterface $dataTableManager, ManagerRegistry $doctrine, StationCacheInterface $stationCache, UniqueStrategyInterface $uniqueStrategy)
     {
         $this->doctrine = $doctrine;
         $this->entityManager = $doctrine->getManager();
         $this->uniqueStrategy = $uniqueStrategy;
+        $this->dataTableManager = $dataTableManager;
 
         parent::__construct($stationCache);
     }
@@ -56,6 +59,7 @@ class OrmPersister extends AbstractPersister
 
             $this->uniqueStrategy->addData($data);
 
+            $this->dataTableManager->saveData($data);
             $this->entityManager->persist($data);
 
             $this->newValueList[] = $data;
