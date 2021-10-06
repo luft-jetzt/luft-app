@@ -48,8 +48,8 @@ services:
 
     App\Pollution\DataRetriever\DataRetrieverInterface:
         #alias: App\Pollution\DataRetriever\CachedElasticDataRetriever
-        #alias: App\Pollution\DataRetriever\ChainedDataRetriever
-        alias: App\Pollution\DataRetriever\ElasticDataRetriever
+        alias: App\Pollution\DataRetriever\ChainedDataRetriever
+        #alias: App\Pollution\DataRetriever\ElasticDataRetriever
 
     App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface:
         alias: App\Pollution\PollutantFactoryStrategy\LuftdatenPollutantFactoryStrategy

@@ -6,13 +6,12 @@ use Caldera\GeoBasic\Coord\CoordInterface;
 
 class ChainedDataRetriever implements DataRetrieverInterface
 {
-    /** @var array $chain */
-    protected $chain = [];
+    protected array $chain = [];
 
-    public function __construct(CachedElasticOrmDataRetriever $cachedElasticDataRetriever, Co2CachedDataRetriever $co2CachedDataRetriever, AdhocDataRetriever $adhocDataRetriever)
+    public function __construct(ElasticDataRetriever $elasticDataRetriever, Co2CachedDataRetriever $co2CachedDataRetriever, AdhocDataRetriever $adhocDataRetriever)
     {
         $this->chain = [
-            $cachedElasticDataRetriever,
+            $elasticDataRetriever,
             $co2CachedDataRetriever,
             $adhocDataRetriever,
         ];
