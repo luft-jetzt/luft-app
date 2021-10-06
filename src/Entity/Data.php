@@ -46,6 +46,12 @@ class Data
      */
     protected ?int $pollutant = null;
 
+    /**
+     * @ORM\Column(type="string", length=32, nullable=true)
+     * @JMS\Expose()
+     */
+    private $tag;
+
     public function setId(int $id): Data
     {
         $this->id = $id;
@@ -131,5 +137,17 @@ class Data
         $dateTime->sub(new \DateInterval('P1W'));
 
         return $dateTime >= $this->dateTime;
+    }
+
+    public function getTag(): ?string
+    {
+        return $this->tag;
+    }
+
+    public function setTag(?string $tag): self
+    {
+        $this->tag = $tag;
+
+        return $this;
     }
 }

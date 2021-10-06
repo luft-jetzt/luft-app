@@ -5,6 +5,7 @@ namespace App\Air\ViewModelFactory;
 use App\Air\AirQuality\Calculator\AirQualityCalculatorInterface;
 use App\Air\Measurement\CO;
 use App\Air\Measurement\CO2;
+use App\Air\Measurement\CoronaIncidence;
 use App\Air\Measurement\MeasurementInterface;
 use App\Air\Measurement\NO2;
 use App\Air\Measurement\O3;
@@ -17,14 +18,11 @@ use Caldera\GeoBasic\Coord\CoordInterface;
 
 abstract class AbstractMeasurementViewModelFactory implements MeasurementViewModelFactoryInterface
 {
-    /** @var array $pollutantList */
-    protected $pollutantList = [];
+    protected array $pollutantList = [];
 
-    /** @var AirQualityCalculatorInterface $airQualityCalculator */
-    protected $airQualityCalculator;
+    protected AirQualityCalculatorInterface $airQualityCalculator;
 
-    /** @var CoordInterface $coord */
-    protected $coord;
+    protected CoordInterface $coord;
 
     public function __construct(AirQualityCalculatorInterface $airQualityCalculator)
     {
@@ -55,6 +53,7 @@ abstract class AbstractMeasurementViewModelFactory implements MeasurementViewMod
             case 7: return new CO2();
             case 8: return new UVIndex();
             case 9: return new Temperature();
+            case 10: return new CoronaIncidence();
         }
     }
 

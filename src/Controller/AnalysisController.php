@@ -2,9 +2,16 @@
 
 namespace App\Controller;
 
+use App\Analysis\CoronaFireworksAnalysis\CoronaFireworksAnalysisInterface;
 use App\Analysis\FireworksAnalysis\FireworksAnalysisInterface;
 use App\Analysis\KomfortofenAnalysis\KomfortofenAnalysisInterface;
+use App\Pollution\PollutionDataFactory\PollutionDataFactoryInterface;
 use App\SeoPage\SeoPageInterface;
+use Caldera\GeoBasic\Coord\Coord;
+use Carbon\Carbon;
+use Carbon\CarbonInterval;
+use JMS\Serializer\Tests\Fixtures\Discriminator\Car;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Flagception\Bundle\FlagceptionBundle\Annotations\Feature;
 
@@ -50,6 +57,40 @@ class AnalysisController extends AbstractController
 
         return $this->render('Analysis/fireworks.html.twig', [
             'fireworksList' => $fireworksAnalysis,
+        ]);
+    }
+
+    /**
+     * @Feature("analysis_fireworks")
+     */
+    public function coronaFireworksAction(Request $request, CoronaFireworksAnalysisInterface $coronaFireworksAnalysis): Response
+    {
+        $latitude = $request->get('latitude');
+        $longitude = $request->get('longitude');
+
+        if (!$latitude || !$longitude) {
+            return $this->render('Analysis/corona_fireworks.html.twig');
+        }
+
+        $coord = new Coord((float) $latitude, (float) $longitude);
+
+        $dataList = $coronaFireworksAnalysis->analyze($coord);
+
+        $newDataList = [];
+
+        foreach ($dataList as $year => $hourList) {
+            foreach ($hourList as $timestamp => $dataSet) {
+                if (!array_key_exists($timestamp, $newDataList)) {
+                    $newDataList[$timestamp] = [];
+                }
+
+                $newDataList[$timestamp][$year] = $dataSet;
+            }
+        }
+
+        return $this->render('Analysis/corona_fireworks.html.twig', [
+            'data_list' => $newDataList,
+            'years' => array_keys($dataList),
         ]);
     }
 }

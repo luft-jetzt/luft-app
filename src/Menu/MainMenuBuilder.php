@@ -60,6 +60,7 @@ class MainMenuBuilder extends AbstractBuilder
 
             if ($this->featureManager->isActive('analysis_fireworks')) {
                 $analysisDropdown->addChild('Silvester-Feuerwerk <sup>beta</sup>', ['route' => 'analysis_fireworks']);
+                $analysisDropdown->addChild('Corona-Feuerwerk <sup>beta</sup>', ['route' => 'analysis_fireworks_corona']);
             }
         }
 

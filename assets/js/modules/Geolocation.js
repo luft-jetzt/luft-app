@@ -9,10 +9,11 @@ export default class Geolocation {
 
     init(element) {
         const that = this;
+        this.element = element;
 
         element.addEventListener('click', function () {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(that.success, that.error, {
+                navigator.geolocation.getCurrentPosition(that.success.bind(that), that.error.bind(that), {
                     enableHighAccuracy: true,
                     timeout: 5000,
                     maximumAge: 0
@@ -26,13 +27,13 @@ export default class Geolocation {
     success(pos) {
         const coords = pos.coords;
 
-        window.location = Routing.generate(
-            'display',
-            {
-                latitude: coords.latitude,
-                longitude: coords.longitude
-            }
-        );
+        const action = this.element.closest('form').getAttribute('action');
+
+        // @todo use this: https://gomakethings.com/how-to-build-a-query-string-from-an-object-with-vanilla-js/
+
+        const coordAction = action + '?latitude=' + coords.latitude + '&longitude=' + coords.longitude;
+
+        window.location = coordAction;
     }
 
     error(err) {

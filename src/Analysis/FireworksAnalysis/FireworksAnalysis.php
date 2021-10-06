@@ -31,7 +31,10 @@ class FireworksAnalysis extends AbstractFireworksAnalysis
         ;
 
         $query = new \Elastica\Query($boolQuery);
-        $query->addSort(['value' => 'desc']);
+        $query
+                ->addSort(['value' => 'desc'])
+            ->addSort(['dateTime' => 'desc'])
+        ;
 
         $results = $this->finder->find($query, 5000);
 
