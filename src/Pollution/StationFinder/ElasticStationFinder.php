@@ -7,15 +7,9 @@ use FOS\ElasticaBundle\Finder\FinderInterface;
 
 class ElasticStationFinder implements StationFinderInterface
 {
-    /**
-     * @var CoordInterface $coord
-     */
-    protected $coord;
+    protected CoordInterface $coord;
 
-    /**
-     * @var FinderInterface $stationFinder
-     */
-    protected $stationFinder;
+    protected FinderInterface $stationFinder;
 
     public function __construct(FinderInterface $stationFinder)
     {

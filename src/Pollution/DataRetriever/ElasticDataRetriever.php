@@ -2,14 +2,10 @@
 
 namespace App\Pollution\DataRetriever;
 
-use App\Entity\Data;
 use App\Entity\Station;
 use App\Pollution\DataFinder\ElasticFinder;
 use App\Pollution\StationCache\StationCacheInterface;
 use Caldera\GeoBasic\Coord\CoordInterface;
-use Elastica\Query;
-use Elastica\Result;
-use Elastica\SearchableInterface;
 
 class ElasticDataRetriever implements DataRetrieverInterface
 {
