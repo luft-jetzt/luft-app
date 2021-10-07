@@ -33,7 +33,7 @@ fos_elastica:
                 data:
                     properties:
                         provider:
-                            type: text
+                            type: keyword
                             property_path: provider
                         value:
                             type: float
