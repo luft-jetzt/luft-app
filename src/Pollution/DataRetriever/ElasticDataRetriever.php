@@ -60,7 +60,20 @@ class ElasticDataRetriever implements DataRetrieverInterface
 
         $query = new \Elastica\Query($boolQuery);
 
+        $agg1 = new \Elastica\Aggregation\Terms('pollutant_agg');
+        $agg1->setField('pollutant');
+        $query->addAggregation($agg1);
+
+        $agg2 = new \Elastica\Aggregation\Terms('provider_agg');
+        $agg2->setField('provider');
+        $agg1->addAggregation($agg2);
+
+        $agg3 = new \Elastica\Aggregation\TopHits('top_hits_agg');
+        $agg3->setSort(['dateTime' => 'DESC']);
+        $agg2->addAggregation($agg3);
+
         $query
+            ->addSort(['dateTime' => 'desc'])
             ->addSort([
                 '_geo_distance' => [
                     'station.pin' => [
@@ -72,9 +85,11 @@ class ElasticDataRetriever implements DataRetrieverInterface
                     'nested_path' => 'station',
                 ]
             ])
-            ->addSort(['dateTime' => 'desc']);
+        ;
 
-        $query->setSize($maxResults);
+        $query->setSize(1);
+
+        $result = $this->finder->find($query);
 
         return $this->finder->find($query);
     }

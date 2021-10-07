@@ -26,6 +26,22 @@ class ElasticFinder implements FinderInterface
             $queryObject->setSize($limit);
         }
 
+        $aggregation = $this->searchable->search($queryObject, $options)->getAggregation('pollutant_agg');
+
+        if (count($aggregation) > 0) {
+            $pollutantBuckets = $aggregation['buckets'];
+
+            if (count($pollutantBuckets) > 0) {
+                $providerBuckets = $pollutantBuckets[0]['provider_agg']['buckets'];
+
+                foreach ($providerBuckets as $providerBucket) {
+                    $topHits = $providerBucket['top_hits_agg']['hits']['hits'][0]['_source'];
+
+                    dump($topHits);
+                }
+            }
+        }
+
         $resultList = $this->searchable->search($queryObject, $options)->getResults();
 
         foreach ($resultList as $key => $result) {
