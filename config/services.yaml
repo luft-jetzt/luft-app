@@ -61,14 +61,6 @@ services:
         arguments:
             $finder: '@fos_elastica.finder.air_data.data'
 
-    App\Pollution\DataRetriever\ElasticOrmDataRetriever:
-        arguments:
-            $dataFinder: '@fos_elastica.finder.air_data.data'
-
-    App\Pollution\DataRetriever\CachedElasticOrmDataRetriever:
-        arguments:
-            $dataFinder: '@fos_elastica.finder.air_station.station'
-
     App\Pollution\StationFinder\ElasticStationFinder:
         arguments:
             $stationFinder: '@fos_elastica.finder.air_station.station'
