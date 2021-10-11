@@ -40,6 +40,7 @@ class ElasticPersister implements PersisterInterface
                     'pollutant' => $data->getPollutant(),
                     'dateTime' => $data->getDateTime()->format('Y-m-d H:i:s'),
                     'provider' => $station->getProvider(),
+                    'stationCode' => $station->getStationCode(),
                     'station' => [
                         'stationCode' => $station->getStationCode(),
                         'pin' => [

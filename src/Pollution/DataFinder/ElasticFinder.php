@@ -27,26 +27,12 @@ class ElasticFinder implements FinderInterface
         }
 
         $aggregation = $this->searchable->search($queryObject, $options)->getAggregation('pollutant_agg');
-        $resultList = [];
 
-        if (count($aggregation) > 0) {
-            $pollutantBuckets = $aggregation['buckets'];
-
-            if (count($pollutantBuckets) > 0) {
-                $providerBuckets = $pollutantBuckets[0]['provider_agg']['buckets'];
-
-                foreach ($providerBuckets as $providerBucket) {
-                    $topHit = $providerBucket['top_hits_agg']['hits']['hits'][0]['_source'];
-
-                    $resultList[] = $topHit;
-                }
-            }
-        }
-
-        //$resultList = $this->searchable->search($queryObject, $options)->getResults();
+        $resultList = $this->unfoldAggregation($aggregation);
 
         foreach ($resultList as $key => $result) {
             $data = $this->dataConverter->convertArray($result);
+
             if ($data) {
                 $resultList[$key] = $data;
             } else {
@@ -67,5 +53,30 @@ class ElasticFinder implements FinderInterface
         $result = $this->searchable->search($queryObject, $options)->getAggregations();
 
         return $result;
+    }
+
+    protected function unfoldAggregation(array $aggregation): array
+    {
+        $resultList = [];
+
+        if (array_key_exists('buckets', $aggregation)) {
+            foreach ($aggregation['buckets'] as $bucket) {
+                $resultList = array_merge($resultList, $this->unfoldAggregation($bucket));
+            }
+        } elseif (array_key_exists('hits', $aggregation)) {
+            $hitsList = $aggregation['hits']['hits'];
+
+            $firstHit = array_pop($hitsList);
+
+            $resultList[] = $firstHit['_source'];
+        } else {
+            foreach ($aggregation as $key => $property) {
+                if (str_ends_with($key, '_agg')) {
+                    $resultList = array_merge($resultList, $this->unfoldAggregation($property));
+                }
+            }
+        }
+
+        return $resultList;
     }
 }

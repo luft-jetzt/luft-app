@@ -35,6 +35,9 @@ fos_elastica:
                         provider:
                             type: keyword
                             property_path: provider
+                        stationCode:
+                            type: keyword
+                            property_path: stationCode
                         value:
                             type: float
                         pollutant:
@@ -44,8 +47,10 @@ fos_elastica:
                         station:
                             type: nested
                             properties:
-                                id: ~
-                                stationCode: ~
+                                id:
+                                    type: keyword
+                                stationCode:
+                                    type: keyword
                                 pin:
                                     type: geo_point
                                 untilDate:
