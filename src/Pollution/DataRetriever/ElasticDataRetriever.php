@@ -69,7 +69,19 @@ class ElasticDataRetriever implements DataRetrieverInterface
         $agg1->addAggregation($agg2);
 
         $agg3 = new \Elastica\Aggregation\TopHits('top_hits_agg');
-        $agg3->setSort(['dateTime' => 'DESC']);
+        $agg3->setSort([
+            '_geo_distance' => [
+                'station.pin' => [
+                    'lat' => $coord->getLatitude(),
+                    'lon' => $coord->getLongitude()
+                ],
+                'order' => 'asc',
+                'unit' => 'km',
+                'nested_path' => 'station',
+            ],
+            'dateTime' => 'DESC',
+        ]);
+
         $agg2->addAggregation($agg3);
 
         $query
@@ -91,6 +103,6 @@ class ElasticDataRetriever implements DataRetrieverInterface
 
         $result = $this->finder->find($query);
 
-        return $this->finder->find($query);
+        return $result;
     }
 }

@@ -27,6 +27,7 @@ class ElasticFinder implements FinderInterface
         }
 
         $aggregation = $this->searchable->search($queryObject, $options)->getAggregation('pollutant_agg');
+        $resultList = [];
 
         if (count($aggregation) > 0) {
             $pollutantBuckets = $aggregation['buckets'];
@@ -35,17 +36,17 @@ class ElasticFinder implements FinderInterface
                 $providerBuckets = $pollutantBuckets[0]['provider_agg']['buckets'];
 
                 foreach ($providerBuckets as $providerBucket) {
-                    $topHits = $providerBucket['top_hits_agg']['hits']['hits'][0]['_source'];
+                    $topHit = $providerBucket['top_hits_agg']['hits']['hits'][0]['_source'];
 
-                    dump($topHits);
+                    $resultList[] = $topHit;
                 }
             }
         }
 
-        $resultList = $this->searchable->search($queryObject, $options)->getResults();
+        //$resultList = $this->searchable->search($queryObject, $options)->getResults();
 
         foreach ($resultList as $key => $result) {
-            $data = $this->dataConverter->convert($result);
+            $data = $this->dataConverter->convertArray($result);
             if ($data) {
                 $resultList[$key] = $data;
             } else {

@@ -51,7 +51,6 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
             }
         }
 
-        die;
         return $this->dataList->getList();
     }
 
