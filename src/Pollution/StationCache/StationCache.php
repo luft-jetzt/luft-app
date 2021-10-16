@@ -9,18 +9,15 @@ use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class StationCache implements StationCacheInterface
 {
-    const TTL = 3600;
+    const TTL = 3;
 
     const CACHE_KEY = 'luft_stations';
 
-    /** @var array $list */
-    protected $list;
+    protected array $list = [];
 
-    /** @var RegistryInterface $registry */
-    protected $registry;
+    protected RegistryInterface $registry;
 
-    /** @var AbstractAdapter $cache */
-    protected $cache;
+    protected AbstractAdapter $cache;
 
     public function __construct(RegistryInterface $registry, string $redisHost)
     {
@@ -78,12 +75,12 @@ class StationCache implements StationCacheInterface
         return $this->registry->getRepository(Station::class)->findAllIndexed();
     }
 
-    protected function loadFromCache(): ?array
+    protected function loadFromCache(): array
     {
         $cacheItem = $this->cache->getItem(self::CACHE_KEY);
 
         if (!$cacheItem->isHit()) {
-            return null;
+            return [];
         }
 
         return $cacheItem->get();
