@@ -26,8 +26,9 @@ class ElasticFinder implements FinderInterface
             $queryObject->setSize($limit);
         }
 
-        $aggregation = $this->searchable->search($queryObject, $options)->getAggregation('pollutant_agg');
+        $aggregation = $this->searchable->search($queryObject, $options)->getAggregation('datetime_agg');
 
+        //dd($aggregation);
         $resultList = $this->unfoldAggregation($aggregation);
 
         foreach ($resultList as $key => $result) {
@@ -66,9 +67,11 @@ class ElasticFinder implements FinderInterface
         } elseif (array_key_exists('hits', $aggregation)) {
             $hitsList = $aggregation['hits']['hits'];
 
-            $firstHit = array_pop($hitsList);
+            if (1 === count($hitsList)) {
+                $firstHit = array_pop($hitsList);
 
-            $resultList[] = $firstHit['_source'];
+                $resultList[] = $firstHit['_source'];
+            }
         } else {
             foreach ($aggregation as $key => $property) {
                 if (str_ends_with($key, '_agg')) {

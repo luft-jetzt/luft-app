@@ -38,25 +38,14 @@ fos_elastica:
                         stationCode:
                             type: keyword
                             property_path: stationCode
+                        pin:
+                            type: geo_point
                         value:
                             type: float
                         pollutant:
                             type: integer
                         tag:
                             type: text
-                        station:
-                            type: nested
-                            properties:
-                                id:
-                                    type: keyword
-                                stationCode:
-                                    type: keyword
-                                pin:
-                                    type: geo_point
-                                untilDate:
-                                    type: date
-                                    format: "yyyy-MM-dd HH:mm:ss"
-                                    property_path: untilDateFormatted
                         dateTime:
                             type: date
                             format: "yyyy-MM-dd HH:mm:ss"

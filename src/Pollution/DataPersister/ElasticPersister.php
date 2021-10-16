@@ -41,6 +41,10 @@ class ElasticPersister implements PersisterInterface
                     'dateTime' => $data->getDateTime()->format('Y-m-d H:i:s'),
                     'provider' => $station->getProvider(),
                     'stationCode' => $station->getStationCode(),
+                    'pin' => [
+                        'lat' => $station->getLatitude(),
+                        'lon' => $station->getLongitude(),
+                    ],
                     'station' => [
                         'stationCode' => $station->getStationCode(),
                         'pin' => [
