@@ -11,8 +11,10 @@ export default class Geolocation {
         const that = this;
         this.element = element;
 
-        element.addEventListener('click', function () {
+        element.addEventListener('click', (event) => {
             if (navigator.geolocation) {
+                that.disableButton(event.target);
+
                 navigator.geolocation.getCurrentPosition(that.success.bind(that), that.error.bind(that), {
                     enableHighAccuracy: true,
                     timeout: 5000,
@@ -22,6 +24,20 @@ export default class Geolocation {
                 that.error();
             }
         });
+    }
+
+    disableButton(target) {
+        const button = target.closest('button');
+        button.querySelector('i').remove();
+        button.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+        button.disabled = true;
+    }
+
+    enableButton(target) {
+        const button = target.closest('button');
+        button.querySelector('i').remove();
+        button.innerHTML = '<i class="fa fa-location-arrow"></i>';
+        button.disabled = false;
     }
 
     success(pos) {
@@ -37,9 +53,14 @@ export default class Geolocation {
     }
 
     error(err) {
+        const that = this;
         const errorMessageContainer = document.querySelector('#geolocation-failed');
 
         errorMessageContainer.classList.remove('d-none');
+
+        document.querySelectorAll('button.locate-button').forEach((button) => {
+            that.enableButton(button);
+        });
     }
 }
 
