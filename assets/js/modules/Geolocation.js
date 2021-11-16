@@ -43,7 +43,14 @@ export default class Geolocation {
     success(pos) {
         const coords = pos.coords;
 
-        const action = this.element.closest('form').getAttribute('action');
+        const closestForm = this.element.closest('form');
+        let action;
+
+        if (closestForm) {
+            action = closestForm.getAttribute('action');
+        } else {
+            action = '/display';
+        }
 
         // @todo use this: https://gomakethings.com/how-to-build-a-query-string-from-an-object-with-vanilla-js/
 
