@@ -71,9 +71,6 @@ services:
     App\Pollution\DataPersister\PersisterInterface:
         alias: App\Pollution\DataPersister\ElasticPersister
 
-    App\Producer\Value\ValueProducerInterface:
-        alias: App\Producer\Value\ElasticValueProducer
-
     App\Pollution\PollutionDataFactory\HistoryDataFactory:
         arguments:
             $dataRetriever: '@App\Pollution\DataRetriever\ElasticDataRetriever'
