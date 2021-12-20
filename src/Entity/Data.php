@@ -17,35 +17,34 @@ class Data
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
-     * @var Station $station
      * @ORM\ManyToOne(targetEntity="Station", inversedBy="datas")
      * @ORM\JoinColumn(name="station_id", referencedColumnName="id")
      * @JMS\Expose()
      * @JMS\Type("App\Entity\Station")
      */
-    protected $station;
+    protected ?Station $station = null;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
      * @JMS\Expose()
      * @JMS\Type("DateTime<'U'>")
      */
-    protected $dateTime;
+    protected ?\DateTime $dateTime = null;
 
     /**
      * @ORM\Column(type="float", nullable=false)
      * @JMS\Expose()
      */
-    protected $value;
+    protected ?float $value = null;
 
     /**
      * @ORM\Column(type="smallint", nullable=false)
      * @JMS\Expose()
      */
-    protected $pollutant;
+    protected ?int $pollutant = null;
 
     /**
      * @ORM\Column(type="string", length=32, nullable=true)
@@ -65,7 +64,7 @@ class Data
         return $this->id;
     }
 
-    public function getStation(): Station
+    public function getStation(): ?Station
     {
         return $this->station;
     }
@@ -103,7 +102,7 @@ class Data
         return $this;
     }
 
-    public function getValue(): float
+    public function getValue(): ?float
     {
         return $this->value;
     }
@@ -115,7 +114,7 @@ class Data
         return $this;
     }
 
-    public function getPollutant(): int
+    public function getPollutant(): ?int
     {
         return $this->pollutant;
     }
@@ -127,7 +126,7 @@ class Data
         return $this;
     }
 
-    public function getProvider(): string
+    public function getProvider(): ?string
     {
         return $this->station->getProvider();
     }

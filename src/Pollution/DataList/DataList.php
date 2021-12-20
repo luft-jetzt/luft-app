@@ -8,8 +8,7 @@ use App\Pollution\UniqueStrategy\Hasher;
 
 class DataList implements DataListInterface
 {
-    /** @var array $list */
-    protected $list = [];
+    protected array $list = [];
 
     public function __construct()
     {
