@@ -22,7 +22,6 @@ return [
     FOS\ElasticaBundle\FOSElasticaBundle::class => ['all' => true],
     Fresh\DoctrineEnumBundle\FreshDoctrineEnumBundle::class => ['all' => true],
     Knp\Bundle\MenuBundle\KnpMenuBundle::class => ['all' => true],
-    OldSound\RabbitMqBundle\OldSoundRabbitMqBundle::class => ['all' => true],
     Presta\SitemapBundle\PrestaSitemapBundle::class => ['all' => true],
     Flagception\Bundle\FlagceptionBundle\FlagceptionBundle::class => ['all' => true],
     WhiteOctober\BreadcrumbsBundle\WhiteOctoberBreadcrumbsBundle::class => ['all' => true],
