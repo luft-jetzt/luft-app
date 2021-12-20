@@ -2,8 +2,8 @@
 
 namespace App\Provider\Luftdaten\SourceFetcher;
 
+use App\Pollution\DataPersister\PersisterInterface;
 use App\Pollution\Value\Value;
-use App\Producer\Value\ValueProducerInterface;
 use App\Provider\Luftdaten\SourceFetcher\Parser\JsonParserInterface;
 use App\SourceFetcher\FetchProcess;
 use App\SourceFetcher\FetchResult;
@@ -16,11 +16,11 @@ class SourceFetcher implements SourceFetcherInterface
 
     protected JsonParserInterface $parser;
 
-    protected ValueProducerInterface $valueProducer;
+    protected PersisterInterface $persister;
 
-    public function __construct(ValueProducerInterface $valueProducer, JsonParserInterface $parser)
+    public function __construct(PersisterInterface $persister, JsonParserInterface $parser)
     {
-        $this->valueProducer = $valueProducer;
+        $this->persister = $persister;
         $this->parser = $parser;
 
         $this->curl = new Curl();
@@ -36,11 +36,10 @@ class SourceFetcher implements SourceFetcherInterface
 
         /** @var Value $value */
         foreach ($valueList as $value) {
-            //$this->valueProducer->publish($value); @todo this is slow, because every single call triggers a flush
             $fetchResult->incCounter((string) $value->getPollutant()); // @todo
         }
 
-        $this->valueProducer->publishValues($valueList);
+        $this->persister->persistValues($valueList);
 
         return $fetchResult;
     }
