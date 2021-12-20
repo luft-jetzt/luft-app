@@ -69,24 +69,10 @@ services:
         alias: App\Pollution\UniqueStrategy\CacheUniqueStrategy
 
     App\Pollution\DataPersister\PersisterInterface:
-        #alias: App\Pollution\DataPersister\CachePersister
-        #alias: App\Pollution\DataPersister\OrmPersister
         alias: App\Pollution\DataPersister\ElasticPersister
-        #alias: App\Pollution\DataPersister\CacheOrmPersister
-
-    App\Producer\Value\RabbitValueProducer:
-        arguments:
-            $producer: '@old_sound_rabbit_mq.luft_value_producer'
-
-    App\Producer\Value\CacheRabbitValueProducer:
-        arguments:
-            $producer: '@old_sound_rabbit_mq.luft_value_producer'
 
     App\Producer\Value\ValueProducerInterface:
         alias: App\Producer\Value\ElasticValueProducer
-        #alias: App\Producer\Value\CacheValueProducer
-        #alias: App\Producer\Value\CacheOrmValueProducer
-        #alias: App\Producer\Value\CacheRabbitValueProducer
 
     App\Pollution\PollutionDataFactory\HistoryDataFactory:
         arguments:
