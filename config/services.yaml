@@ -98,3 +98,7 @@ services:
 
     App\Pollution\DataFinder\FinderInterface:
         alias: App\Pollution\DataFinder\ElasticFinder
+
+    App\DataPurger\FastDataPurger:
+        arguments:
+            $client: '@fos_elastica.client.default'
