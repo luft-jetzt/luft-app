@@ -3,8 +3,8 @@
 namespace App\Provider\NoaaProvider\SourceFetcher;
 
 use App\Air\Measurement\CO2;
+use App\Pollution\DataPersister\PersisterInterface;
 use App\Pollution\Value\Value;
-use App\Producer\Value\ValueProducerInterface;
 use App\SourceFetcher\FetchProcess;
 use App\SourceFetcher\FetchResult;
 use App\SourceFetcher\SourceFetcherInterface;
@@ -12,11 +12,11 @@ use Curl\Curl;
 
 class SourceFetcher implements SourceFetcherInterface
 {
-    protected ValueProducerInterface $valueProducer;
+    protected PersisterInterface $persister;
 
-    public function __construct(ValueProducerInterface $valueProducer)
+    public function __construct(PersisterInterface $persister)
     {
-        $this->valueProducer = $valueProducer;
+        $this->persister = $persister;
 
         $this->curl = new Curl();
     }
@@ -34,7 +34,7 @@ class SourceFetcher implements SourceFetcherInterface
 
         $value = $this->createValue($lastCo2Value, new \DateTimeImmutable($lastValueDateTimeString));
 
-        $this->valueProducer->publish($value);
+        $this->persister->persistValues($value);
 
         $fetchResult = new FetchResult();
         $fetchResult->setCounter('co2', 1);

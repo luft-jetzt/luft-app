@@ -3,6 +3,7 @@
 namespace App\Provider\UmweltbundesamtDe\SourceFetcher;
 
 use App\Air\Measurement\MeasurementInterface;
+use App\Pollution\DataPersister\PersisterInterface;
 use App\Producer\Value\ValueProducerInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Parser\ParserInterface;
 use App\Provider\UmweltbundesamtDe\SourceFetcher\Query\UbaCOQuery;
@@ -21,14 +22,14 @@ class SourceFetcher implements SourceFetcherInterface
 {
     protected Curl $curl;
 
-    protected ValueProducerInterface $valueProducer;
+    protected PersisterInterface $persister;
 
     protected ParserInterface $parser;
 
-    public function __construct(ValueProducerInterface $valueProducer, ParserInterface $parser)
+    public function __construct(PersisterInterface $persister, ParserInterface $parser)
     {
         $this->curl = new Curl();
-        $this->valueProducer = $valueProducer;
+        $this->persister = $persister;
         $this->parser = $parser;
     }
 
@@ -104,7 +105,7 @@ class SourceFetcher implements SourceFetcherInterface
 
         $valueList = $this->parser->parse($response, $pollutant);
 
-        $this->valueProducer->publishValues($valueList);
+        $this->persister->persistValues($valueList);
 
         $fetchResult->incCounter((string) $pollutant, count($valueList));
     }
