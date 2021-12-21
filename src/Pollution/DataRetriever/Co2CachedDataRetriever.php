@@ -11,11 +11,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class Co2CachedDataRetriever implements DataRetrieverInterface
 {
-    /** @var DataCacheInterface $dataCache */
-    protected $dataCache;
-
-    /** @var RegistryInterface $registry */
-    protected $registry;
+    protected DataCacheInterface $dataCache;
+    protected RegistryInterface $registry;
 
     public function __construct(DataCacheInterface $dataCache, RegistryInterface $registry)
     {

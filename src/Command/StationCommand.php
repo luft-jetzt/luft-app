@@ -15,8 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class StationCommand extends Command
 {
-    /** @var ProviderListInterface $providerList */
-    protected $providerList;
+    protected ProviderListInterface $providerList;
 
     public function __construct(?string $name = null, ProviderListInterface $providerList)
     {

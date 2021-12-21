@@ -4,9 +4,6 @@ namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Query;
 
 class UbaSO2Query extends AbstractUbaQuery
 {
-    /** @var int $component */
-    protected $component = 4;
-
-    /** @var array $scope */
-    protected $scope = [1, 2, 3];
+    protected int $component = 4;
+    protected array $scope = [1, 2, 3];
 }

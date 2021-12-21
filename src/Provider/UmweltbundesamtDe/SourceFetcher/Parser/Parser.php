@@ -9,11 +9,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class Parser implements ParserInterface
 {
-    /** @var array $stationList */
-    protected $stationList;
-
-    /** @var RegistryInterface $registry */
-    protected $registry;
+    protected array $stationList;
+    protected RegistryInterface $registry;
 
     public function __construct(RegistryInterface $registry)
     {

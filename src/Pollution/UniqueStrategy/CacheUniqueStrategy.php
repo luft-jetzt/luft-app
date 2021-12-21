@@ -7,8 +7,7 @@ use App\ImportCache\ImportCacheInterface;
 
 class CacheUniqueStrategy implements UniqueStrategyInterface
 {
-    /** @var ImportCacheInterface */
-    protected $importCache;
+    protected ImportCacheInterface $importCache;
 
     public function __construct(ImportCacheInterface $importCache)
     {

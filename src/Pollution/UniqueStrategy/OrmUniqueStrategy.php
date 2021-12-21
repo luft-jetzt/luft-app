@@ -8,11 +8,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class OrmUniqueStrategy implements UniqueStrategyInterface
 {
-    /** @var RegistryInterface $registry */
-    protected $registry;
-
-    /** @var array $existentDataList */
-    protected $existentDataList = [];
+    protected RegistryInterface $registry;
+    protected array $existentDataList = [];
 
     public function __construct(RegistryInterface $registry)
     {

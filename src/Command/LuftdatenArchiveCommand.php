@@ -14,14 +14,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class LuftdatenArchiveCommand extends ContainerAwareCommand
 {
-    /** @var ArchiveFetcherInterface $archiveFetcher */
-    protected $archiveFetcher;
-
-    /** @var ArchiveSourceFetcherInterface $archiveSourceFetcher */
-    protected $archiveSourceFetcher;
-
-    /** @var LuftdatenProvider $provider */
-    protected $provider;
+    protected ArchiveFetcherInterface $archiveFetcher;
+    protected ArchiveSourceFetcherInterface $archiveSourceFetcher;
+    protected LuftdatenProvider $provider;
 
     public function __construct(?string $name = null, ArchiveSourceFetcherInterface $archiveSourceFetcher,  ArchiveFetcherInterface $archiveFetcher, LuftdatenProvider $luftdatenProvider)
     {

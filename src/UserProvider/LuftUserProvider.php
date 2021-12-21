@@ -12,8 +12,7 @@ use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;
 
 class LuftUserProvider implements OAuthAwareUserProviderInterface
 {
-    /** @var Doctrine $doctrine */
-    protected $doctrine;
+    protected Doctrine $doctrine;
 
     public function __construct(Doctrine $doctrine)
     {

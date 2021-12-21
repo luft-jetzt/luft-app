@@ -28,8 +28,7 @@ class PollutionLevelTwigExtension extends \Twig_Extension
         6 => 'red',
     ];
 
-    /** @var AirQualityCalculatorInterface $airQualityCalculator */
-    protected $airQualityCalculator;
+    protected AirQualityCalculatorInterface $airQualityCalculator;
 
     public function __construct(AirQualityCalculatorInterface $airQualityCalculator)
     {
@@ -85,4 +84,3 @@ class PollutionLevelTwigExtension extends \Twig_Extension
         return 'pollution_level_extension';
     }
 }
-

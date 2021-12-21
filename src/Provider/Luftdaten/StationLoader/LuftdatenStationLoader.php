@@ -13,8 +13,7 @@ class LuftdatenStationLoader extends AbstractStationLoader
 {
     const SOURCE_URL = 'https://api.luftdaten.info/static/v2/data.dust.min.json';
 
-    /** @var \stdClass $sensorData */
-    protected $sensorData;
+    protected \stdClass $sensorData;
 
     public function process(callable $callback): StationLoaderInterface
     {
