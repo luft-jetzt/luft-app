@@ -6,48 +6,42 @@ use App\Entity\TwitterSchedule;
 use App\Pollution\PollutantFactoryStrategy\SimplePollutantFactoryStrategy;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\Twitter\MessageFactory\MessageFactoryInterface;
-use App\YourlsApiManager\LuftYourlsApiManager;
 use Caldera\GeoBasic\Coord\Coord;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Codebird\Codebird;
 use Symfony\Bridge\Doctrine\RegistryInterface as Doctrine;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 abstract class AbstractTwitter implements TwitterInterface
 {
-    /** @var Doctrine $doctrine */
-    protected $doctrine;
+    protected RouterInterface $router;
 
-    /** @var PollutionDataFactory $pollutionDataFactory */
-    protected $pollutionDataFactory;
+    protected Doctrine $doctrine;
 
-    /** @var MessageFactoryInterface $messageFactory */
-    protected $messageFactory;
+    protected PollutionDataFactory $pollutionDataFactory;
 
-    /** @var LoggerInterface $logger */
-    protected $logger;
+    protected MessageFactoryInterface $messageFactory;
 
-    /** @var string $twitterClientId */
-    protected $twitterClientId;
+    protected LoggerInterface $logger;
 
-    /** @var string $twitterClientSecret */
-    protected $twitterClientSecret;
+    protected string $twitterClientId;
 
-    /** @var array $validScheduleList */
-    protected $validScheduleList = [];
+    protected string $twitterClientSecret;
 
-    /** @var \DateTime $dateTime */
-    protected $dateTime;
+    protected array $validScheduleList = [];
 
-    /** @var bool $dryRun */
-    protected $dryRun = false;
+    protected \DateTime $dateTime;
 
-    public function __construct(Doctrine $doctrine, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, LoggerInterface $logger, string $twitterClientId, string $twitterClientSecret)
+    protected bool $dryRun = false;
+
+    public function __construct(Doctrine $doctrine, RouterInterface $router, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, LoggerInterface $logger, string $twitterClientId, string $twitterClientSecret)
     {
         $this->doctrine = $doctrine;
         $this->messageFactory = $messageFactory;
         $this->logger = $logger;
         $this->dateTime = new \DateTime();
+        $this->router = $router;
 
         $this->twitterClientId = $twitterClientId;
         $this->twitterClientSecret = $twitterClientSecret;
