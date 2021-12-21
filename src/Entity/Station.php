@@ -48,13 +48,13 @@ class Station extends Coord
      * @ORM\Column(type="float", nullable=false)
      * @JMS\Expose()
      */
-    protected $latitude;
+    protected ?float $latitude = null;
 
     /**
      * @ORM\Column(type="float", nullable=false)
      * @JMS\Expose()
      */
-    protected $longitude;
+    protected ?float $longitude = null;
 
     /**
      * @ORM\OneToMany(targetEntity="TwitterSchedule", mappedBy="station")
