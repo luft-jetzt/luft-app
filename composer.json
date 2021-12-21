@@ -8,7 +8,6 @@
         "ext-simplexml": "*",
         "amenadiel/jpgraph": "^3.6",
         "calderacc/geobasic": "^0.2.0",
-        "calderacc/yourls-api-manager": "^0.2.0",
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "dragonmantank/cron-expression": "^2.1",
         "flagception/flagception-bundle": "^3.2",
