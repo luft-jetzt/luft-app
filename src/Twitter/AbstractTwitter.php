@@ -11,9 +11,12 @@ use Caldera\GeoBasic\Coord\CoordInterface;
 use Codebird\Codebird;
 use Symfony\Bridge\Doctrine\RegistryInterface as Doctrine;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 abstract class AbstractTwitter implements TwitterInterface
 {
+    protected RouterInterface $router;
+
     protected Doctrine $doctrine;
 
     protected PollutionDataFactory $pollutionDataFactory;
@@ -32,12 +35,13 @@ abstract class AbstractTwitter implements TwitterInterface
 
     protected bool $dryRun = false;
 
-    public function __construct(Doctrine $doctrine, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, LoggerInterface $logger, string $twitterClientId, string $twitterClientSecret)
+    public function __construct(Doctrine $doctrine, RouterInterface $router, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, LoggerInterface $logger, string $twitterClientId, string $twitterClientSecret)
     {
         $this->doctrine = $doctrine;
         $this->messageFactory = $messageFactory;
         $this->logger = $logger;
         $this->dateTime = new \DateTime();
+        $this->router = $router;
 
         $this->twitterClientId = $twitterClientId;
         $this->twitterClientSecret = $twitterClientSecret;
