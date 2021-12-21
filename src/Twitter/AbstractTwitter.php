@@ -6,16 +6,15 @@ use App\Entity\TwitterSchedule;
 use App\Pollution\PollutantFactoryStrategy\SimplePollutantFactoryStrategy;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\Twitter\MessageFactory\MessageFactoryInterface;
-use App\YourlsApiManager\LuftYourlsApiManager;
 use Caldera\GeoBasic\Coord\Coord;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Codebird\Codebird;
-use Symfony\Bridge\Doctrine\RegistryInterface as Doctrine;
+use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 
 abstract class AbstractTwitter implements TwitterInterface
 {
-    /** @var Doctrine $doctrine */
+    /** @var ManagerRegistry $doctrine */
     protected $doctrine;
 
     /** @var PollutionDataFactory $pollutionDataFactory */
@@ -42,7 +41,7 @@ abstract class AbstractTwitter implements TwitterInterface
     /** @var bool $dryRun */
     protected $dryRun = false;
 
-    public function __construct(Doctrine $doctrine, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, LoggerInterface $logger, string $twitterClientId, string $twitterClientSecret)
+    public function __construct(ManagerRegistry $doctrine, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, LoggerInterface $logger, string $twitterClientId, string $twitterClientSecret)
     {
         $this->doctrine = $doctrine;
         $this->messageFactory = $messageFactory;

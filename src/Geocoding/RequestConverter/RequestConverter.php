@@ -5,16 +5,16 @@ namespace App\Geocoding\RequestConverter;
 use App\Entity\Zip;
 use App\Geocoding\Geocoder\GeocoderInterface;
 use Caldera\GeoBasic\Coord\Coord;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 
 class RequestConverter implements RequestConverterInterface
 {
     protected GeocoderInterface $geocoder;
 
-    protected RegistryInterface $registry;
+    protected ManagerRegistry $registry;
 
-    public function __construct(GeocoderInterface $geocoder, RegistryInterface $registry)
+    public function __construct(GeocoderInterface $geocoder, ManagerRegistry $registry)
     {
         $this->geocoder = $geocoder;
         $this->registry = $registry;

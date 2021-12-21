@@ -3,7 +3,7 @@
 namespace App\Pollution\StationCache;
 
 use App\Entity\Station;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 
@@ -15,11 +15,11 @@ class StationCache implements StationCacheInterface
 
     protected array $list = [];
 
-    protected RegistryInterface $registry;
+    protected ManagerRegistry $registry;
 
     protected AbstractAdapter $cache;
 
-    public function __construct(RegistryInterface $registry, string $redisHost)
+    public function __construct(ManagerRegistry $registry, string $redisHost)
     {
         $this->registry = $registry;
         $this->cache = $this->createConnection($redisHost);

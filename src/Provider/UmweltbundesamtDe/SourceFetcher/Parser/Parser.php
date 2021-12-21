@@ -5,17 +5,16 @@ namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Parser;
 use App\Entity\Station;
 use App\Pollution\Value\Value;
 use App\Provider\UmweltbundesamtDe\UmweltbundesamtDeProvider;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 class Parser implements ParserInterface
 {
     /** @var array $stationList */
     protected $stationList;
 
-    /** @var RegistryInterface $registry */
-    protected $registry;
+    protected ManagerRegistry $registry;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;
     }

@@ -5,7 +5,7 @@ namespace App\Command;
 use App\Entity\City;
 use App\Entity\Station;
 use App\Geocoding\Guesser\CityGuesserInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,13 +14,12 @@ use Symfony\Component\Console\Question\Question;
 
 class AssignStationCommand extends Command
 {
-    /** @var RegistryInterface $registry */
-    protected $registry;
+    protected ManagerRegistry $registry;
 
     /** @var CityGuesserInterface $cityGuesser */
     protected $cityGuesser;
 
-    public function __construct(?string $name = null, RegistryInterface $registry, CityGuesserInterface $cityGuesser)
+    public function __construct(?string $name = null, ManagerRegistry $registry, CityGuesserInterface $cityGuesser)
     {
         $this->registry = $registry;
         $this->cityGuesser = $cityGuesser;
