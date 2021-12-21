@@ -6,7 +6,6 @@ use App\Entity\TwitterSchedule;
 use App\Pollution\PollutantFactoryStrategy\SimplePollutantFactoryStrategy;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\Twitter\MessageFactory\MessageFactoryInterface;
-use App\YourlsApiManager\LuftYourlsApiManager;
 use Caldera\GeoBasic\Coord\Coord;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Codebird\Codebird;
@@ -15,32 +14,23 @@ use Psr\Log\LoggerInterface;
 
 abstract class AbstractTwitter implements TwitterInterface
 {
-    /** @var Doctrine $doctrine */
-    protected $doctrine;
+    protected Doctrine $doctrine;
 
-    /** @var PollutionDataFactory $pollutionDataFactory */
-    protected $pollutionDataFactory;
+    protected PollutionDataFactory $pollutionDataFactory;
 
-    /** @var MessageFactoryInterface $messageFactory */
-    protected $messageFactory;
+    protected MessageFactoryInterface $messageFactory;
 
-    /** @var LoggerInterface $logger */
-    protected $logger;
+    protected LoggerInterface $logger;
 
-    /** @var string $twitterClientId */
-    protected $twitterClientId;
+    protected string $twitterClientId;
 
-    /** @var string $twitterClientSecret */
-    protected $twitterClientSecret;
+    protected string $twitterClientSecret;
 
-    /** @var array $validScheduleList */
-    protected $validScheduleList = [];
+    protected array $validScheduleList = [];
 
-    /** @var \DateTime $dateTime */
-    protected $dateTime;
+    protected \DateTime $dateTime;
 
-    /** @var bool $dryRun */
-    protected $dryRun = false;
+    protected bool $dryRun = false;
 
     public function __construct(Doctrine $doctrine, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, LoggerInterface $logger, string $twitterClientId, string $twitterClientSecret)
     {
