@@ -87,7 +87,7 @@ class Twitter extends AbstractTwitter
         if ($this->dryRun) {
             $this->messageFactory->setLink('https://localhost/foobarbaz');
         } else {
-            $this->messageFactory->setLink($this->permalinkManager->createPermalinkForTweet($twitterSchedule));
+            $this->messageFactory->setLink($this->createPermaLinkForTweet($twitterSchedule));
         }
 
         $message = $this->messageFactory
@@ -111,7 +111,7 @@ class Twitter extends AbstractTwitter
         return $list;
     }
 
-    protected function createPermaLink(TwitterSchedule $twitterSchedule): string
+    protected function createPermaLinkForTweet(TwitterSchedule $twitterSchedule): string
     {
         $dateTime = new \DateTime();
 
