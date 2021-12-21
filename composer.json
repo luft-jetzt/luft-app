@@ -39,6 +39,7 @@
         "sonata-project/seo-bundle": "^2.5",
         "symfony/apache-pack": "^1.0",
         "symfony/asset": "^4.0",
+        "symfony/cache": "^5.2",
         "symfony/console": "^4.0",
         "symfony/expression-language": "^4.0",
         "symfony/flex": "^2.0",
