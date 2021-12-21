@@ -24,9 +24,6 @@ abstract class AbstractTwitter implements TwitterInterface
     /** @var MessageFactoryInterface $messageFactory */
     protected $messageFactory;
 
-    /** @var LuftYourlsApiManager $permalinkManager */
-    protected $permalinkManager;
-
     /** @var LoggerInterface $logger */
     protected $logger;
 
@@ -45,11 +42,10 @@ abstract class AbstractTwitter implements TwitterInterface
     /** @var bool $dryRun */
     protected $dryRun = false;
 
-    public function __construct(Doctrine $doctrine, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, LuftYourlsApiManager $permalinkManager, LoggerInterface $logger, string $twitterClientId, string $twitterClientSecret)
+    public function __construct(Doctrine $doctrine, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, LoggerInterface $logger, string $twitterClientId, string $twitterClientSecret)
     {
         $this->doctrine = $doctrine;
         $this->messageFactory = $messageFactory;
-        $this->permalinkManager = $permalinkManager;
         $this->logger = $logger;
         $this->dateTime = new \DateTime();
 
