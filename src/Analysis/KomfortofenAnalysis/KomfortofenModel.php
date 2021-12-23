@@ -7,14 +7,9 @@ use App\Entity\Station;
 
 class KomfortofenModel
 {
-    /** @var Station $station */
-    protected $station;
-
-    /** @var Data $data */
-    protected $data;
-
-    /** @var float $slope */
-    protected $slope;
+    protected Station $station;
+    protected Data $data;
+    protected float $slope;
 
     public function __construct(Station $station, Data $data, float $slope)
     {

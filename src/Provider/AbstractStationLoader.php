@@ -2,19 +2,13 @@
 
 namespace App\Provider;
 
-use App\Entity\Station;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 abstract class AbstractStationLoader implements StationLoaderInterface
 {
-    /** @var array $existingStationList */
-    protected $existingStationList = [];
-
-    /** @var array $newStationList */
-    protected $newStationList = [];
-
-    /** @var RegistryInterface $registry */
-    protected $registry;
+    protected array $existingStationList = [];
+    protected array $newStationList = [];
+    protected RegistryInterface $registry;
 
     public function __construct(RegistryInterface $registry)
     {

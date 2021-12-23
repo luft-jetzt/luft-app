@@ -7,8 +7,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class FireworksModelFactory implements FireworksModelFactoryInterface
 {
-    /** @var RegistryInterface $registry */
-    protected $registry;
+    protected RegistryInterface $registry;
 
     public function __construct(RegistryInterface $registry)
     {

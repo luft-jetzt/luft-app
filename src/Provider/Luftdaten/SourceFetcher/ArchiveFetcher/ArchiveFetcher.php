@@ -8,17 +8,10 @@ use Curl\Curl;
 
 class ArchiveFetcher implements ArchiveFetcherInterface
 {
-    /** @var Curl $curl */
-    protected $curl;
-
-    /** @var array $csvLinkList */
-    protected $csvLinkList = [];
-
-    /** @var CsvParserInterface $csvParser */
-    protected $csvParser;
-
-    /** @var ArchiveSourceFetcherInterface $archiveSourceFetcher */
-    protected $archiveSourceFetcher;
+    protected Curl $curl;
+    protected array $csvLinkList = [];
+    protected CsvParserInterface $csvParser;
+    protected ArchiveSourceFetcherInterface $archiveSourceFetcher;
 
     public function __construct(CsvParserInterface $csvParser, ArchiveSourceFetcherInterface $archiveSourceFetcher)
     {
