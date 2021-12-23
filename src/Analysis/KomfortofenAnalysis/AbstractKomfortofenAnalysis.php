@@ -2,6 +2,7 @@
 
 namespace App\Analysis\KomfortofenAnalysis;
 
+use App\Air\Measurement\MeasurementInterface;
 use App\Pollution\DataFinder\FinderInterface;
 
 abstract class AbstractKomfortofenAnalysis implements KomfortofenAnalysisInterface
@@ -10,7 +11,7 @@ abstract class AbstractKomfortofenAnalysis implements KomfortofenAnalysisInterfa
 
     protected float $maxSlope = 300.0;
 
-    protected PollutantInterface $pollutant;
+    protected MeasurementInterface $pollutant;
 
     protected FinderInterface $finder;
 
@@ -33,7 +34,7 @@ abstract class AbstractKomfortofenAnalysis implements KomfortofenAnalysisInterfa
         return $this;
     }
 
-    public function setPollutant(PollutantInterface $pollutant): KomfortofenAnalysisInterface
+    public function setPollutant(MeasurementInterface $pollutant): KomfortofenAnalysisInterface
     {
         $this->pollutant = $pollutant;
 
