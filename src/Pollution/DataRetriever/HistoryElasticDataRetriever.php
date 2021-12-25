@@ -6,8 +6,9 @@ use App\Entity\Station;
 use App\Pollution\DataFinder\ElasticFinder;
 use App\Pollution\StationCache\StationCacheInterface;
 use Caldera\GeoBasic\Coord\CoordInterface;
+use Elastica\Aggregation\DateHistogram;
 
-class ElasticDataRetriever implements DataRetrieverInterface
+class HistoryElasticDataRetriever implements DataRetrieverInterface
 {
     protected StationCacheInterface $stationCache;
 
@@ -21,14 +22,15 @@ class ElasticDataRetriever implements DataRetrieverInterface
 
     public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId = null, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 750): array
     {
-        $fromDateTime = new \DateTime();
-        $fromDateTime->sub(new \DateInterval('PT8H'));
+        if (!$fromDateTime) {
+            $fromDateTime = new \DateTime();
+        }
 
         $query = new \Elastica\Query(new \Elastica\Query\MatchAll());
         $query->setSize(0);
 
         if ($fromDateTime && $dateInterval) {
-            $untilDateTime = (clone $fromDateTime)->add($dateInterval);
+            $untilDateTime = (clone $fromDateTime)->sub($dateInterval);
             $untilDateTime = new \DateTime();
 
             $dateTimeAggregation = new \Elastica\Aggregation\Range('datetime_agg');
@@ -72,6 +74,14 @@ class ElasticDataRetriever implements DataRetrieverInterface
             $providerAggregation->addAggregation($geodistanceAggregation);
         }
 
+        $histogramAggregation = new DateHistogram('date_histogram_agg', 'dateTime', '1h');
+
+        if ($coord instanceof Station) {
+            $stationAggregation->addAggregation($histogramAggregation);
+        } else {
+            $geodistanceAggregation->addAggregation($histogramAggregation);
+        }
+
         $topHitsAggregation = new \Elastica\Aggregation\TopHits('top_hits_agg');
         $topHitsAggregation->setSize(1);
         $topHitsAggregation->setSort([[
@@ -87,11 +97,7 @@ class ElasticDataRetriever implements DataRetrieverInterface
         ],
         ]);
 
-        if ($coord instanceof Station) {
-            $stationAggregation->addAggregation($topHitsAggregation);
-        } else {
-            $geodistanceAggregation->addAggregation($topHitsAggregation);
-        }
+        $histogramAggregation->addAggregation($topHitsAggregation);
 
         //dd(json_encode($query->toArray()));
         $result = $this->finder->find($query);

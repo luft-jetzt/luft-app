@@ -71,10 +71,6 @@ services:
     App\Pollution\DataPersister\PersisterInterface:
         alias: App\Pollution\DataPersister\ElasticPersister
 
-    App\Pollution\PollutionDataFactory\HistoryDataFactory:
-        arguments:
-            $dataRetriever: '@App\Pollution\DataRetriever\ElasticDataRetriever'
-
     App\Geocoding\Guesser\CityGuesser:
         $provider: '@bazinga_geocoder.provider.nominatim'
 
