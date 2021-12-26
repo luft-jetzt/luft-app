@@ -194,13 +194,12 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
         $query
             ->addSort([
                 '_geo_distance' => [
-                    'station.pin' => [
+                    'pin' => [
                         'lat' => $coord->getLatitude(),
                         'lon' => $coord->getLongitude()
                     ],
                     'order' => 'asc',
                     'unit' => 'km',
-                    'nested_path' => 'station',
                 ]
             ]);
 
