@@ -4,9 +4,7 @@ namespace App\Analysis\CoronaFireworksAnalysis;
 
 use App\Pollution\DataFinder\ElasticFinder;
 use Caldera\GeoBasic\Coord\CoordInterface;
-use Carbon\Carbon;
-use Elastica\Query\BoolQuery;
-use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
+use Elastica\Aggregation\DateHistogram;
 
 class ValueFetcher implements ValueFetcherInterface
 {
@@ -19,55 +17,60 @@ class ValueFetcher implements ValueFetcherInterface
 
     public function fetchValues(CoordInterface $coord, float $maxDistance = 15): array
     {
-        $stationGeoQuery = new \Elastica\Query\GeoDistance('station.pin', [
-            'lat' => $coord->getLatitude(),
-            'lon' => $coord->getLongitude(),
+        $query = new \Elastica\Query(new \Elastica\Query\MatchAll());
+        $query->setSize(0);
+
+        $dateTimeAggregation = new \Elastica\Aggregation\Range('datetime_agg');
+        $dateTimeAggregation->setField('dateTime');
+        $dateTimeAggregation->addRange(
+            '2021-12-27 12:00:00',
+            '2021-12-29 12:00:00'
+        );
+
+        $query->addAggregation($dateTimeAggregation);
+
+        $pollutantAggregation = new \Elastica\Aggregation\Terms('pollutant_agg');
+        $pollutantAggregation->setField('pollutant');
+
+        $dateTimeAggregation->addAggregation($pollutantAggregation);
+
+        $providerAggregation = new \Elastica\Aggregation\Terms('provider_agg');
+        $providerAggregation->setField('provider');
+        $pollutantAggregation->addAggregation($providerAggregation);
+
+        $geodistanceAggregation = new \Elastica\Aggregation\GeoDistance(
+            'geodistance_agg',
+            'pin',
+            $coord->toLatLonArray()
+        );
+        $geodistanceAggregation->addRange(null, $maxDistance);
+        $geodistanceAggregation->setUnit('km');
+
+        $providerAggregation->addAggregation($geodistanceAggregation);
+
+        $histogramAggregation = new DateHistogram('date_histogram_agg', 'dateTime', '1h');
+
+        $geodistanceAggregation->addAggregation($histogramAggregation);
+
+        $topHitsAggregation = new \Elastica\Aggregation\TopHits('top_hits_agg');
+        $topHitsAggregation->setSize(1);
+        $topHitsAggregation->setSort([[
+            '_geo_distance' => [
+                'pin' => [
+                    'lat' => $coord->getLatitude(),
+                    'lon' => $coord->getLongitude(),
+                ],
+                'order' => 'ASC',
+                'unit' => 'km',
+            ],
+            'dateTime' => 'DESC',
         ],
-            sprintf('%fkm', $maxDistance));
-
-        $stationQuery = new \Elastica\Query\Nested();
-        $stationQuery->setPath('station');
-        $stationQuery->setQuery($stationGeoQuery);
-
-        $pm10Query = new \Elastica\Query\Term(['pollutant' => MeasurementInterface::MEASUREMENT_PM10]);
-        //$pm25Query = new \Elastica\Query\Term(['pollutant' => PollutantInterface::POLLUTANT_PM25]);
-
-        $pollutantQuery = new BoolQuery();
-        $pollutantQuery->addShould($pm10Query);
-        //$pollutantQuery->addShould($pm25Query);
-
-        $fromDateTime = new Carbon(sprintf('%d-12-31 11:00:00', $year));
-        $untilDateTime = $fromDateTime->copy()->addHours(36);
-
-        $rangeQuery = new \Elastica\Query\Range('dateTime', [
-            'gt' => $fromDateTime->format('Y-m-d H:i:s'),
-            'lte' => $untilDateTime->format('Y-m-d H:i:s'),
-            'format' => 'yyyy-MM-dd HH:mm:ss'
         ]);
 
-        $providerQuery = new \Elastica\Query\Term(['provider' => 'uba_de']);
+        $histogramAggregation->addAggregation($topHitsAggregation);
 
-        $boolQuery = new \Elastica\Query\BoolQuery();
-        $boolQuery
-            ->addMust($pollutantQuery)
-            ->addMust($rangeQuery)
-            //         ->addMust($providerQuery)
-            ->addMust($stationQuery);
+        $result = $this->finder->find($query);
 
-        $query = new \Elastica\Query($boolQuery);
-
-        $query
-            ->addSort([
-                '_geo_distance' => [
-                    'pin' => [
-                        'lat' => $coord->getLatitude(),
-                        'lon' => $coord->getLongitude()
-                    ],
-                    'order' => 'asc',
-                    'unit' => 'km',
-                ]
-            ]);
-
-        return $this->finder->find($query, 1000);
+        return $result;
     }
 }

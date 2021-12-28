@@ -28,64 +28,27 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
     public function analyze(CoordInterface $coord): array
     {
         $yearList = $this->initYearList();
+        $dataList = $this->valueFetcher->fetchValues($coord);
         $startDateTime2020 = StartDateTimeCalculator::calculateStartDateTime();
 
-        foreach ($yearList as $year => $hourList) {
-            $dataList = $this->valueFetcher->fetchValues($coord, $year);
+        /**
+         * @var Data $data
+         * @todo get timezone handling done!!! This is really nasty
+         */
+        foreach ($dataList as $data) {
+            if ('ld' === $data->getProvider()) {
+                $dateTime = Carbon::parse($data->getDateTime());
 
-            /**
-             * @var Data $data
-             * @todo get timezone handling done!!! This is really nasty
-             */
-            foreach ($dataList as $data) {
-                if ('ld' === $data->getProvider()) {
-                    $dateTime = Carbon::parse($data->getDateTime());
+                $diff = $dateTime->diffInMinutes($startDateTime2020);
 
-                    /**
-                     * … but do not adjust datetime for current values directly from json api for the current year
-                     * @todo FIX TIMEZONE HANDLING!!!
-                     */
-                    if ($dateTime->diffInDays(Carbon::now()) > 31) {
-                        //$dateTime->subHour();
-                        $data->setDateTime($dateTime);
+                foreach ($yearList[$dateTime->year] as $timeSlot => $dataList) {
+                    if ($timeSlot > $diff) {
+                        $viewModel = $this->decorateData($data, $coord);
+
+                        $yearList[$dateTime->year][$timeSlot] = $viewModel;
+
+                        continue;
                     }
-                }
-            }
-
-            $startDatTime = StartDateTimeCalculator::calculateStartDateTime($year);
-
-            foreach ($hourList as $minutesSinceStartDateTime => $data) {
-                $dateTime = $startDatTime->copy()->addMinutes($minutesSinceStartDateTime);
-
-                $candidateList = [];
-
-                /** @var Data $candidate */
-                foreach ($dataList as $key => $candidate) {
-                    if ($dateTime->diffInMinutes($candidate->getDateTime()) <= 30 && $candidate->getDateTime() < $dateTime) {
-                        $candidateList[$key] = $candidate;
-                    }
-                }
-
-                $minDistance = null;
-                $nearestData = null;
-
-                foreach ($candidateList as $candidate) {
-                    $distance = DistanceCalculator::distance($coord, $candidate->getStation());
-
-                    if ($minDistance === null || $distance < $minDistance) {
-                        $minDistance = $distance;
-                        $nearestData = $candidate;
-                    } elseif ($distance === $minDistance && $nearestData && $nearestData->getValue() < $candidate->getValue()) {
-                        $nearestData = $candidate;
-                    }
-                }
-
-                if ($nearestData) {
-                    $yearList[$year][$minutesSinceStartDateTime] = $this->decorateData($nearestData, $coord);
-                }
-
-                foreach ($candidateList as $key => $deleteableCandidate) {
-                    unset($dataList[$key]);
                 }
             }
         }
@@ -93,8 +56,6 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
         /**
          * @todo quick fix to hide future values
          */
-        $startDateTime2020 = new Carbon('2020-12-31 12:00:00', new CarbonTimeZone('UTC'));
-
         foreach ($yearList as $year => $hourList) {
             foreach ($hourList as $minutesSinceStartDateTime => $data) {
                 if ($minutesSinceStartDateTime > (Carbon::now()->diffInMinutes($startDateTime2020))) {
@@ -146,6 +107,4 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
 
         return $yearList;
     }
-
-
 }
