@@ -57,7 +57,7 @@ services:
     App\Pollution\PollutionDataFactory\PollutionDataFactoryInterface:
         alias: App\Pollution\PollutionDataFactory\PollutionDataFactory
 
-    App\Analysis\CoronaFireworksAnalysis\CoronaFireworksAnalysis:
+    App\Analysis\CoronaFireworksAnalysis\ValueFetcher:
         arguments:
             $finder: '@fos_elastica.finder.air_data.data'
 

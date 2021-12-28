@@ -23,6 +23,6 @@ class StartDateTimeCalculator
 
     public static function calculateStartYear(): int
     {
-        return (int) (new Carbon())->subDays(360)->format('Y');
+        return (int) (new Carbon())->subDays(350)->format('Y');
     }
 }
