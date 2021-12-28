@@ -23,8 +23,16 @@ class ValueFetcher implements ValueFetcherInterface
         $dateTimeAggregation = new \Elastica\Aggregation\Range('datetime_agg');
         $dateTimeAggregation->setField('dateTime');
         $dateTimeAggregation->addRange(
-            '2021-12-27 12:00:00',
-            '2021-12-29 12:00:00'
+            '2021-12-31 12:00:00',
+            '2022-01-01 12:00:00'
+        );
+        $dateTimeAggregation->addRange(
+            '2020-12-31 12:00:00',
+            '2021-01-01 12:00:00'
+        );
+        $dateTimeAggregation->addRange(
+            '2019-12-31 12:00:00',
+            '2020-01-01 12:00:00'
         );
 
         $query->addAggregation($dateTimeAggregation);
@@ -48,7 +56,7 @@ class ValueFetcher implements ValueFetcherInterface
 
         $providerAggregation->addAggregation($geodistanceAggregation);
 
-        $histogramAggregation = new DateHistogram('date_histogram_agg', 'dateTime', '1h');
+        $histogramAggregation = new DateHistogram('date_histogram_agg', 'dateTime', '30m');
 
         $geodistanceAggregation->addAggregation($histogramAggregation);
 

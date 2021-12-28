@@ -29,7 +29,7 @@ class DataConverter implements DataConverterInterface
             ->setValue($elasticResult->getData()['value'])
             ->setPollutant($elasticResult->getData()['pollutant'])
             ->setStation($station)
-            ->setDateTime(new \DateTime($elasticResult->getData()['dateTime']))
+            ->setDateTime(new \DateTime($elasticResult->getData()['dateTime'], new \DateTimeZone('UTC')))
         ;
 
         return $data;
