@@ -2,7 +2,7 @@
 
 namespace App\Analysis\CoronaFireworksAnalysis;
 
-use App\Air\Measurement\MeasurementInterface;
+use App\Pollution\DataFinder\ElasticFinder;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Carbon\Carbon;
 use Elastica\Query\BoolQuery;
@@ -10,9 +10,9 @@ use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 
 class ValueFetcher implements ValueFetcherInterface
 {
-    protected PaginatedFinderInterface $finder;
+    protected ElasticFinder $finder;
 
-    public function __construct(PaginatedFinderInterface $finder)
+    public function __construct(ElasticFinder $finder)
     {
         $this->finder = $finder;
     }
