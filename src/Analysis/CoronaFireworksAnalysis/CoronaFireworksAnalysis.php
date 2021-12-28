@@ -28,6 +28,7 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
     public function analyze(CoordInterface $coord): array
     {
         $yearList = $this->initYearList();
+        $startDateTime2020 = StartDateTimeCalculator::calculateStartDateTime();
 
         foreach ($yearList as $year => $hourList) {
             $dataList = $this->valueFetcher->fetchValues($coord, $year);
