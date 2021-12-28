@@ -17,7 +17,7 @@ class ValueFetcher implements ValueFetcherInterface
         $this->finder = $finder;
     }
 
-    public function fetchValues(CoordInterface $coord, int $year, float $maxDistance = 15): array
+    public function fetchValues(CoordInterface $coord, float $maxDistance = 15): array
     {
         $stationGeoQuery = new \Elastica\Query\GeoDistance('station.pin', [
             'lat' => $coord->getLatitude(),
