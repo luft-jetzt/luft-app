@@ -22,6 +22,7 @@
         "league/geotools": "^0.8.0",
         "nelmio/api-doc-bundle": "^3.1",
         "nesbot/carbon": "^2.43",
+        "php-amqplib/rabbitmq-bundle": "^2.11",
         "php-curl-class/php-curl-class": "^8.0",
         "php-http/guzzle6-adapter": "^1.1",
         "php-http/httplug-bundle": "^1.9",
