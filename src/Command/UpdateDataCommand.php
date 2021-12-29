@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\Station;
 use Doctrine\Persistence\ManagerRegistry;
 use Elastica\Client;
 use Elastica\Request;
@@ -40,15 +41,20 @@ class UpdateDataCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $stationCode = $input->getArgument('station-code');
 
+        /** @var Station $station */
+        $station = $this->managerRegistry->getRepository(Station::class)->findOneByStationCode($stationCode);
+
         $query = $this->buildQuery($stationCode);
         $result = $this->client->request('air_data/_search?size=10000', Request::GET, $query);
 
         $hits = $result->getData()['hits']['hits'];
 
         $newPin = [
-            'lat' => 5,
-            'lon' => 3,
+            'lat' => $station->getLatitude(),
+            'lon' => $station->getLongitude(),
         ];
+
+        $io->progressStart(count($hits));
 
         foreach ($hits as $key => $hit) {
             $id = $hit['_id'];
@@ -58,8 +64,13 @@ class UpdateDataCommand extends Command
             $source['pin'] = $newPin;
             $source['station']['pin'] = $newPin;
 
-            $result = $this->client->request('air_data/_doc/'.$id, Request::PUT, $source);
+            $path = sprintf('air_data/_doc/%s', $id);
+            $result = $this->client->request($path, Request::PUT, $source);
+
+            $io->progressAdvance();
         }
+
+        $io->progressFinish();
 
         return 0;
     }
