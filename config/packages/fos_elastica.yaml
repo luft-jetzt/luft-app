@@ -1,6 +1,8 @@
 fos_elastica:
     clients:
-        default: { host: localhost, port: 9200 }
+        default:
+            host: 127.0.0.1
+            port: 9200
     indexes:
         air_station:
             client: default
