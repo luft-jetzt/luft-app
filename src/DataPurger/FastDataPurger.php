@@ -2,7 +2,6 @@
 
 namespace App\DataPurger;
 
-use App\Entity\Data;
 use App\Provider\ProviderInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Elastica\Client;
