@@ -40,7 +40,7 @@ class YearSlot
 
         foreach ($this->modelList as $timeSlot => $value) {
             if ($timeSlot < $diff) {
-                $this->modelList[$timeSlot] = $model;
+                $this->modelList[$timeSlot + 30] = $model;
 
                 return;
             }
