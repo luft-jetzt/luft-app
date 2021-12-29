@@ -55,8 +55,12 @@ class UpdateDataCommand extends Command
 
             $source = $hit['_source'];
 
-            dump($source);
+            $source['pin'] = $newPin;
+            $source['station']['pin'] = $newPin;
+
+            $result = $this->client->request('air_data/_doc/'.$id, Request::PUT, $source);
         }
+
         return 0;
     }
 
