@@ -7,6 +7,7 @@ use App\Air\Measurement\PM10;
 use App\Air\ViewModel\MeasurementViewModel;
 use App\Air\ViewModelFactory\DistanceCalculator;
 use App\Air\ViewModelFactory\MeasurementViewModelFactoryInterface;
+use App\Analysis\CoronaFireworksAnalysis\Slot\YearSlot;
 use App\Entity\Data;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Carbon\Carbon;
@@ -29,7 +30,6 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
     {
         $yearList = $this->initYearList();
         $dataList = $this->valueFetcher->fetchValues($coord);
-        $startDateTime2020 = StartDateTimeCalculator::calculateStartDateTime();
 
         /**
          * @var Data $data
@@ -37,17 +37,12 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
          */
         foreach ($dataList as $data) {
             if ('ld' === $data->getProvider()) {
-                $dateTime = Carbon::parse($data->getDateTime());
-
-                $diff = $dateTime->diffInMinutes($startDateTime2020);
-
-                foreach ($yearList[$dateTime->year] as $timeSlot => $dataList) {
-                    if ($timeSlot > $diff) {
+                /** @var YearSlot $yearSlot */
+                foreach ($yearList as $yearSlot) {
+                    if ($yearSlot->accepts($data)) {
                         $viewModel = $this->decorateData($data, $coord);
 
-                        $yearList[$dateTime->year][$timeSlot] = $viewModel;
-
-                        continue;
+                        $yearSlot->addModel($viewModel);
                     }
                 }
             }
@@ -56,13 +51,13 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
         /**
          * @todo quick fix to hide future values
          */
-        foreach ($yearList as $year => $hourList) {
+        /*foreach ($yearList as $year => $hourList) {
             foreach ($hourList as $minutesSinceStartDateTime => $data) {
                 if ($minutesSinceStartDateTime > (Carbon::now()->diffInMinutes($startDateTime2020))) {
                     unset($yearList[$year][$minutesSinceStartDateTime]);
                 }
             }
-        }
+        }*/
 
         return $yearList;
     }
@@ -89,7 +84,7 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
         $yearList = [];
 
         for ($yearSub = 0; $yearSub <= 2; ++$yearSub) {
-            $yearList[$year->year] = [];
+            $yearList[$year->year] = new YearSlot($year->year);
             $year->subYear();
         }
 
@@ -100,7 +95,10 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
             $dateTime = $endDateTime->copy();
 
             do {
-                $yearList[$year][$dateTime->diffInMinutes($startDateTime)] = null;
+                $slot = $dateTime->diffInMinutes($startDateTime);
+
+                $yearList[$year]->addSlot($slot);
+
                 $dateTime->subMinutes(30);
             } while ($dateTime > $startDateTime);
         }
