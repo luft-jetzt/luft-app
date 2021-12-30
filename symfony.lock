@@ -392,9 +392,6 @@
     "ruflin/elastica": {
         "version": "6.0.1"
     },
-    "salavert/time-ago-in-words": {
-        "version": "v1.7"
-    },
     "sebastian/code-unit-reverse-lookup": {
         "version": "1.0.1"
     },
