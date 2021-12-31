@@ -4,6 +4,8 @@ namespace App\Analysis\CoronaFireworksAnalysis;
 
 use App\Pollution\DataFinder\ElasticFinder;
 use Caldera\GeoBasic\Coord\CoordInterface;
+use Carbon\Carbon;
+use Carbon\CarbonTimeZone;
 use Elastica\Aggregation\DateHistogram;
 
 class ValueFetcher implements ValueFetcherInterface
@@ -15,25 +17,24 @@ class ValueFetcher implements ValueFetcherInterface
         $this->finder = $finder;
     }
 
-    public function fetchValues(CoordInterface $coord, float $maxDistance = 15): array
+    public function fetchValues(CoordInterface $coord, array $yearList = [], int $startHour = 12, int $rangeInMinutes = 1440, float $maxDistance = 15): array
     {
         $query = new \Elastica\Query(new \Elastica\Query\MatchAll());
         $query->setSize(0);
 
         $dateTimeAggregation = new \Elastica\Aggregation\Range('datetime_agg');
         $dateTimeAggregation->setField('dateTime');
-        $dateTimeAggregation->addRange(
-            '2021-12-31 11:00:00',
-            '2022-01-01 12:00:00'
-        );
-        $dateTimeAggregation->addRange(
-            '2020-12-31 11:00:00',
-            '2021-01-01 12:00:00'
-        );
-        $dateTimeAggregation->addRange(
-            '2019-12-31 11:00:00',
-            '2020-01-01 12:00:00'
-        );
+
+        foreach ($yearList as $year) {
+            $dateTimeSpec = sprintf('%d-12-31 %d:00:00', $year, $startHour);
+            $startDateTime = new Carbon($dateTimeSpec, new CarbonTimeZone('UTC'));
+            $untilDateTime = $startDateTime->copy()->addMinutes($rangeInMinutes);
+
+            $dateTimeAggregation->addRange(
+                $startDateTime->format('Y-m-d H:i:s'),
+                $untilDateTime->format('Y-m-d H:i:s'),
+            );
+        }
 
         $query->addAggregation($dateTimeAggregation);
 

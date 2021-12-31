@@ -11,7 +11,6 @@ use App\Analysis\CoronaFireworksAnalysis\Slot\YearSlot;
 use App\Entity\Data;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Carbon\Carbon;
-use Carbon\CarbonTimeZone;
 
 class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
 {
@@ -29,7 +28,7 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
     public function analyze(CoordInterface $coord): array
     {
         $yearList = $this->initYearList();
-        $dataList = $this->valueFetcher->fetchValues($coord);
+        $dataList = $this->valueFetcher->fetchValues($coord, array_keys($yearList), 11);
 
         /**
          * @var Data $data

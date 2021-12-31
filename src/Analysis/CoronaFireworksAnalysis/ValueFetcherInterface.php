@@ -6,5 +6,5 @@ use Caldera\GeoBasic\Coord\CoordInterface;
 
 interface ValueFetcherInterface
 {
-    public function fetchValues(CoordInterface $coord, float $maxDistance = 15): array;
+    public function fetchValues(CoordInterface $coord, array $yearList = [], int $startHour = 12, int $rangeInMinutes = 1440, float $maxDistance = 15): array;
 }
