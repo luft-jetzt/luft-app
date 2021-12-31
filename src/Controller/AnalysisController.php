@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Analysis\CoronaFireworksAnalysis\CoronaFireworksAnalysisInterface;
 use App\Analysis\FireworksAnalysis\FireworksAnalysisInterface;
 use App\Analysis\KomfortofenAnalysis\KomfortofenAnalysisInterface;
+use App\Geocoding\RequestConverter\RequestConverterInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactoryInterface;
 use App\SeoPage\SeoPageInterface;
 use Caldera\GeoBasic\Coord\Coord;
@@ -63,34 +64,33 @@ class AnalysisController extends AbstractController
     /**
      * @Feature("analysis_fireworks")
      */
-    public function coronaFireworksAction(Request $request, CoronaFireworksAnalysisInterface $coronaFireworksAnalysis): Response
+    public function coronaFireworksAction(Request $request, RequestConverterInterface $requestConverter, CoronaFireworksAnalysisInterface $coronaFireworksAnalysis): Response
     {
-        $latitude = $request->get('latitude');
-        $longitude = $request->get('longitude');
+        $coord = $requestConverter->getCoordByRequest($request);
 
-        if (!$latitude || !$longitude) {
+        if (!$coord) {
             return $this->render('Analysis/corona_fireworks.html.twig');
         }
 
-        $coord = new Coord((float) $latitude, (float) $longitude);
+        $yearSlotList = $coronaFireworksAnalysis->analyze($coord);
 
-        $dataList = $coronaFireworksAnalysis->analyze($coord);
+        $dataList = [];
 
-        $newDataList = [];
-
-        foreach ($dataList as $year => $hourList) {
-            foreach ($hourList as $timestamp => $dataSet) {
-                if (!array_key_exists($timestamp, $newDataList)) {
-                    $newDataList[$timestamp] = [];
+        /** @var YearSlot $yearSlot */
+        foreach ($yearSlotList as $year => $yearSlot) {
+            /** @var MeasurementViewModel $model */
+            foreach ($yearSlot->getList() as $slot => $model) {
+                if (!array_key_exists($slot, $dataList)) {
+                    $dataList[$slot] = [];
                 }
 
-                $newDataList[$timestamp][$year] = $dataSet;
+                $dataList[$slot][$year] = $model;
             }
         }
 
         return $this->render('Analysis/corona_fireworks.html.twig', [
-            'data_list' => $newDataList,
-            'years' => array_keys($dataList),
+            'data_list' => $dataList,
+            'years' => array_keys($yearSlotList),
         ]);
     }
 }
