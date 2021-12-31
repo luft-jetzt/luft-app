@@ -19,7 +19,7 @@ class CoronaFireworksTwigExtension extends AbstractExtension
 
     public function coronaFireworksDateTime(string $minutesSinceStartDateTime): Carbon
     {
-        $startDateTime = StartDateTimeCalculator::calculateStartDateTime(2020);
+        $startDateTime = StartDateTimeCalculator::calculateStartDateTime(2021);
 
         return $startDateTime->addMinutes((int) $minutesSinceStartDateTime);
     }

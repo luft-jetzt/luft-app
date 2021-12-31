@@ -3,6 +3,7 @@
 namespace App\Analysis\CoronaFireworksAnalysis;
 
 use Carbon\Carbon;
+use Carbon\CarbonTimeZone;
 
 class StartDateTimeCalculator
 {
@@ -18,7 +19,7 @@ class StartDateTimeCalculator
         }
 
         $startDateTimeSpec = '%d-12-31 12:00:00';
-        return new Carbon(sprintf($startDateTimeSpec, $year));
+        return new Carbon(sprintf($startDateTimeSpec, $year), new CarbonTimeZone('Europe/Berlin'));
     }
 
     public static function calculateStartYear(): int

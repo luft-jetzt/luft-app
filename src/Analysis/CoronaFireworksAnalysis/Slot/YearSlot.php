@@ -5,23 +5,26 @@ namespace App\Analysis\CoronaFireworksAnalysis\Slot;
 use App\Air\ViewModel\MeasurementViewModel;
 use App\Entity\Data;
 use Carbon\Carbon;
+use Carbon\CarbonTimeZone;
 
 class YearSlot
 {
     protected int $startYear;
     protected array $modelList = [];
+    protected \DateTimeZone $dateTimeZone;
 
     public function __construct(int $startYear)
     {
         $this->startYear = $startYear;
+        $this->dateTimeZone = new CarbonTimeZone('Europe/Berlin');
     }
 
     public function accepts(Data $data): bool
     {
         $fromDateTimeSpec = sprintf('%d-12-31 12:00:00', $this->startYear);
         $untilDateTimeSpec = sprintf('%d-01-01 12:00:00', ($this->startYear + 1));
-        $fromDateTime = new Carbon($fromDateTimeSpec);
-        $untilDateTime = new Carbon($untilDateTimeSpec);
+        $fromDateTime = new Carbon($fromDateTimeSpec, $this->dateTimeZone);
+        $untilDateTime = new Carbon($untilDateTimeSpec, $this->dateTimeZone);
 
         return ($fromDateTime < $data->getDateTime()) && ($data->getDateTime() < $untilDateTime);
     }
@@ -34,13 +37,13 @@ class YearSlot
     public function addModel(MeasurementViewModel $model): void
     {
         $fromDateTimeSpec = sprintf('%d-12-31 12:00:00', $this->startYear);
-        $fromDateTime = new Carbon($fromDateTimeSpec);
+        $fromDateTime = new Carbon($fromDateTimeSpec, $this->dateTimeZone);
 
         $diff = $fromDateTime->diffInMinutes($model->getData()->getDateTime());
 
         foreach ($this->modelList as $timeSlot => $value) {
             if ($timeSlot < $diff) {
-                $this->modelList[$timeSlot + 30] = $model;
+                $this->modelList[$timeSlot] = $model;
 
                 return;
             }

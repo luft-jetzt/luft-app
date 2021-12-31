@@ -23,15 +23,15 @@ class ValueFetcher implements ValueFetcherInterface
         $dateTimeAggregation = new \Elastica\Aggregation\Range('datetime_agg');
         $dateTimeAggregation->setField('dateTime');
         $dateTimeAggregation->addRange(
-            '2021-12-31 12:00:00',
+            '2021-12-31 11:00:00',
             '2022-01-01 12:00:00'
         );
         $dateTimeAggregation->addRange(
-            '2020-12-31 12:00:00',
+            '2020-12-31 11:00:00',
             '2021-01-01 12:00:00'
         );
         $dateTimeAggregation->addRange(
-            '2019-12-31 12:00:00',
+            '2019-12-31 11:00:00',
             '2020-01-01 12:00:00'
         );
 
