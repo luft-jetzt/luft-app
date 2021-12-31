@@ -33,7 +33,6 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
 
         /**
          * @var Data $data
-         * @todo get timezone handling done!!! This is really nasty
          */
         foreach ($dataList as $data) {
             if ('ld' === $data->getProvider()) {
@@ -48,16 +47,20 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
             }
         }
 
+        $startDateTime = StartDateTimeCalculator::calculateStartDateTime(2021);
+        $diff = Carbon::now()->diffInMinutes($startDateTime);
+
         /**
-         * @todo quick fix to hide future values
+         * @var int $year
+         * @var YearSlot $slotList
          */
-        /*foreach ($yearList as $year => $hourList) {
-            foreach ($hourList as $minutesSinceStartDateTime => $data) {
-                if ($minutesSinceStartDateTime > (Carbon::now()->diffInMinutes($startDateTime2020))) {
-                    unset($yearList[$year][$minutesSinceStartDateTime]);
+        foreach ($yearList as $year => $yearSlot) {
+            foreach ($yearSlot->getList() as $minutesSinceStartDateTime => $data) {
+                if (Carbon::now() < $startDateTime || $minutesSinceStartDateTime > $diff) {
+                    $yearSlot->removeSlot($minutesSinceStartDateTime);
                 }
             }
-        }*/
+        }
 
         return $yearList;
     }

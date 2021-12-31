@@ -50,6 +50,11 @@ class YearSlot
         }
     }
 
+    public function removeSlot(int $key): void
+    {
+        unset($this->modelList[$key]);
+    }
+
     public function getList(): array
     {
         return $this->modelList;
