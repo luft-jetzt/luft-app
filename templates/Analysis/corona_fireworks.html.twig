@@ -53,7 +53,7 @@
                     </thead>
                     <tbody>
                     {% for timestamp, view_model_set in data_list %}
-                        {% if corona_fireworks_datetime(timestamp)|date('m d H i', 'Europe/Berlin') == '01 01 00 00' %}
+                        {% if corona_fireworks_datetime(timestamp + 30)|date('m d H i', 'Europe/Berlin') == '01 01 00 00' %}
                             <tr>
                                 <th colspan="3" class="text-center">
                                     Jahreswechsel
@@ -62,7 +62,7 @@
                         {% else %}
                             <tr>
                                 <th colspan="3" class="text-center">
-                                    {{ corona_fireworks_datetime(timestamp)|date('d.m. H:i', 'Europe/Berlin') }}&nbsp;Uhr
+                                    {{ corona_fireworks_datetime(timestamp + 30)|date('d.m. H:i', 'Europe/Berlin') }}&nbsp;Uhr
                                 </th>
                             </tr>
                         {% endif %}

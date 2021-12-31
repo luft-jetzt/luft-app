@@ -90,7 +90,7 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
 
         foreach ($yearList as $year => $hourList) {
             $startDateTime = StartDateTimeCalculator::calculateStartDateTime($year);
-            $endDateTime = $startDateTime->copy()->addHours(24);
+            $endDateTime = $startDateTime->copy()->addHours(24)->subMinutes(30);
 
             $dateTime = $endDateTime->copy();
 
@@ -100,7 +100,7 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
                 $yearList[$year]->addSlot($slot);
 
                 $dateTime->subMinutes(30);
-            } while ($dateTime > $startDateTime);
+            } while ($dateTime >= $startDateTime);
         }
 
         return $yearList;
