@@ -72,25 +72,23 @@ class AnalysisController extends AbstractController
             return $this->render('Analysis/corona_fireworks.html.twig');
         }
 
-        $yearSlotList = $coronaFireworksAnalysis->analyze($coord);
+        $dataList = $coronaFireworksAnalysis->analyze($coord);
 
-        $dataList = [];
+        $newDataList = [];
 
-        /** @var YearSlot $yearSlot */
-        foreach ($yearSlotList as $year => $yearSlot) {
-            /** @var MeasurementViewModel $model */
-            foreach ($yearSlot->getList() as $slot => $model) {
-                if (!array_key_exists($slot, $dataList)) {
-                    $dataList[$slot] = [];
+        foreach ($dataList as $year => $hourList) {
+            foreach ($hourList as $timestamp => $dataSet) {
+                if (!array_key_exists($timestamp, $newDataList)) {
+                    $newDataList[$timestamp] = [];
                 }
 
-                $dataList[$slot][$year] = $model;
+                $newDataList[$timestamp][$year] = $dataSet;
             }
         }
 
         return $this->render('Analysis/corona_fireworks.html.twig', [
-            'data_list' => $dataList,
-            'years' => array_keys($yearSlotList),
+            'data_list' => $newDataList,
+            'years' => array_keys($dataList),
         ]);
     }
 }
