@@ -74,6 +74,11 @@ class ValueFetcher implements ValueFetcherInterface
             ],
             'dateTime' => 'DESC',
         ],
+            [
+                'value' => [
+                    'order' => 'DESC',
+                ]
+            ]
         ]);
 
         $histogramAggregation->addAggregation($topHitsAggregation);
