@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Air\ViewModel\MeasurementViewModel;
 use App\Analysis\CoronaFireworksAnalysis\CoronaFireworksAnalysisInterface;
+use App\Analysis\CoronaFireworksAnalysis\Slot\YearSlot;
 use App\Analysis\FireworksAnalysis\FireworksAnalysisInterface;
 use App\Analysis\KomfortofenAnalysis\KomfortofenAnalysisInterface;
 use App\Geocoding\RequestConverter\RequestConverterInterface;
@@ -72,23 +74,25 @@ class AnalysisController extends AbstractController
             return $this->render('Analysis/corona_fireworks.html.twig');
         }
 
-        $dataList = $coronaFireworksAnalysis->analyze($coord);
+        $yearSlotList = $coronaFireworksAnalysis->analyze($coord);
 
-        $newDataList = [];
+        $dataList = [];
 
-        foreach ($dataList as $year => $hourList) {
-            foreach ($hourList as $timestamp => $dataSet) {
-                if (!array_key_exists($timestamp, $newDataList)) {
-                    $newDataList[$timestamp] = [];
+        /** @var YearSlot $yearSlot */
+        foreach ($yearSlotList as $year => $yearSlot) {
+            /** @var MeasurementViewModel $model */
+            foreach ($yearSlot->getList() as $slot => $model) {
+                if (!array_key_exists($slot, $dataList)) {
+                    $dataList[$slot] = [];
                 }
 
-                $newDataList[$timestamp][$year] = $dataSet;
+                $dataList[$slot][$year] = $model;
             }
         }
 
         return $this->render('Analysis/corona_fireworks.html.twig', [
-            'data_list' => $newDataList,
-            'years' => array_keys($dataList),
+            'data_list' => $dataList,
+            'years' => array_keys($yearSlotList),
         ]);
     }
 }
