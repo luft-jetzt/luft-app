@@ -20,6 +20,7 @@
         "knplabs/knp-menu-bundle": "^2.2",
         "league/csv": "^9.1",
         "league/geotools": "^0.8.0",
+        "maltehuebner/impress-bundle": "^0.1.0",
         "nelmio/api-doc-bundle": "^3.1",
         "nesbot/carbon": "^2.43",
         "php-amqplib/rabbitmq-bundle": "^2.11",

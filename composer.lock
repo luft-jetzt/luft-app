@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0b981178a3afe2df1a3b93b9506f99f4",
+    "content-hash": "a1e1afcb9e739d19332221c0f59fc6af",
     "packages": [
         {
             "name": "cache/adapter-common",
@@ -3840,6 +3840,55 @@
                 "longitude"
             ],
             "time": "2020-01-30T14:23:42+00:00"
+        },
+        {
+            "name": "maltehuebner/impress-bundle",
+            "version": "0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/maltehuebner/impress-bundle.git",
+                "reference": "f678ea6320364a21ce1251b8090831430fc52c67"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/maltehuebner/impress-bundle/zipball/f678ea6320364a21ce1251b8090831430fc52c67",
+                "reference": "f678ea6320364a21ce1251b8090831430fc52c67",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": ">5.0",
+                "jms/serializer": "^2.0|^3.0",
+                "php": "^7.4|^8.0",
+                "symfony/cache": "^3.0|^4.0|^5.0|^6.0",
+                "symfony/config": "^4.0|^5.0|^6.0",
+                "symfony/dependency-injection": "^4.0|^5.0|^6.0",
+                "twig/twig": "^2.0|^3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MalteHuebner\\ImpressBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Malte Huebner",
+                    "email": "malte@caldera.cc"
+                }
+            ],
+            "description": "Keep your impress up to date",
+            "support": {
+                "issues": "https://github.com/maltehuebner/impress-bundle/issues",
+                "source": "https://github.com/maltehuebner/impress-bundle/tree/0.1"
+            },
+            "time": "2022-01-22T21:47:57+00:00"
         },
         {
             "name": "monolog/monolog",

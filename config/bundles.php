@@ -28,4 +28,5 @@ return [
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
     Bazinga\GeocoderBundle\BazingaGeocoderBundle::class => ['all' => true],
     OldSound\RabbitMqBundle\OldSoundRabbitMqBundle::class => ['all' => true],
+    MalteHuebner\ImpressBundle\MalteHuebnerImpressBundle::class => ['all' => true],
 ];

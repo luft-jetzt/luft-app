@@ -209,6 +209,9 @@
     "league/geotools": {
         "version": "0.8.0"
     },
+    "maltehuebner/impress-bundle": {
+        "version": "0.1"
+    },
     "michelf/php-markdown": {
         "version": "1.8.0"
     },
