@@ -15,11 +15,12 @@
         "friendsofsymfony/jsrouting-bundle": "^2.2",
         "geocoder-php/nominatim-provider": "^5.2",
         "hwi/oauth-bundle": "^0.6.1",
-        "jms/serializer-bundle": "^2.3",
+        "jms/serializer-bundle": "^3.0",
         "jublonet/codebird-php": "^3.1",
         "knplabs/knp-menu-bundle": "^2.2",
         "league/csv": "^9.1",
         "league/geotools": "^0.8.0",
+        "maltehuebner/impress-bundle": "^0.1.0",
         "nelmio/api-doc-bundle": "^3.1",
         "nesbot/carbon": "^2.43",
         "php-amqplib/rabbitmq-bundle": "^2.11",
@@ -66,7 +67,12 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "composer/installers": true,
+            "symfony/flex": true
+        }
     },
     "autoload": {
         "psr-4": {
