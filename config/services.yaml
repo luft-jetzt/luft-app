@@ -20,6 +20,7 @@ services:
                             # The best practice is to be explicit about your dependencies anyway.
         bind:
             $twitterClientId: '%env(TWITTER_CLIENT_ID)%'
+            $twitterApiKey: '%env(TWITTER_API_KEY)%'
             $twitterClientSecret: '%env(TWITTER_CLIENT_SECRET)%'
             $apiUrl: '%env(YOURLS_API_URL)%'
             $apiUsername: '%env(YOURLS_API_USERNAME)%'
