@@ -14,6 +14,8 @@ class TweetCommand extends Command
 {
     protected TwitterInterface $twitter;
 
+    protected static $defaultName = 'luft:tweet';
+
     public function __construct(TwitterInterface $twitter)
     {
         $this->twitter = $twitter;
@@ -24,10 +26,10 @@ class TweetCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('luft:tweet')
             ->setDescription('Post current data')
             ->addOption('dry-run')
-            ->addOption('dateTime', null, InputOption::VALUE_REQUIRED);
+            ->addOption('dateTime', null, InputOption::VALUE_REQUIRED)
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

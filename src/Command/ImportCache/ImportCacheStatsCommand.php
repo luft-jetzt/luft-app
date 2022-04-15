@@ -16,8 +16,7 @@ class ImportCacheStatsCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->setDescription('Add a short description for your command');
+        $this->setDescription('Add a short description for your command');
     }
 
     public function __construct(UniqueStrategyInterface $cacheUniqueStrategy)

@@ -22,7 +22,8 @@ class PopulateImportCacheCommand extends Command
     {
         $this
             ->setDescription('Add a short description for your command')
-            ->addOption('interval', 'i', InputOption::VALUE_REQUIRED, 'Provide an interval starting from today backwards', 'P3D');
+            ->addOption('interval', 'i', InputOption::VALUE_REQUIRED, 'Provide an interval starting from today backwards', 'P3D')
+        ;
     }
 
     public function __construct(UniqueStrategyInterface $cacheUniqueStrategy, ManagerRegistry $registry)

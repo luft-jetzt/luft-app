@@ -17,6 +17,8 @@ class StationCommand extends Command
 {
     protected ProviderListInterface $providerList;
 
+    protected static $defaultName = 'luft:load-station';
+
     public function __construct(ProviderListInterface $providerList)
     {
         $this->providerList = $providerList;
@@ -27,10 +29,10 @@ class StationCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('luft:load-station')
             ->addOption('update', 'u', InputOption::VALUE_NONE, 'Update existing station data')
             ->addArgument('provider', InputArgument::REQUIRED, 'Providers to fetch from')
-            ->setDescription('Fetch station list');
+            ->setDescription('Fetch station list')
+        ;
     }
 
 
