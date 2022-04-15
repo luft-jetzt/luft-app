@@ -4,8 +4,10 @@ namespace App\Twig\Extension;
 
 use App\Air\Measurement\MeasurementInterface;
 use App\Air\MeasurementList\MeasurementListInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class MeasurementTwigExtension extends \Twig_Extension
+class MeasurementTwigExtension extends AbstractExtension
 {
     protected MeasurementListInterface $measurementList;
 
@@ -17,10 +19,10 @@ class MeasurementTwigExtension extends \Twig_Extension
     public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('pollutant_list', [$this, 'measurementList'], ['is_safe' => ['raw']]),
-            new \Twig_SimpleFunction('measurement_list', [$this, 'measurementList'], ['is_safe' => ['raw']]),
-            new \Twig_SimpleFunction('pollutant_by_id', [$this, 'measurementById'], ['is_safe' => ['raw']]),
-            new \Twig_SimpleFunction('measurement_by_id', [$this, 'measurementById'], ['is_safe' => ['raw']]),
+            new TwigFunction('pollutant_list', [$this, 'measurementList'], ['is_safe' => ['raw']]),
+            new TwigFunction('measurement_list', [$this, 'measurementList'], ['is_safe' => ['raw']]),
+            new TwigFunction('pollutant_by_id', [$this, 'measurementById'], ['is_safe' => ['raw']]),
+            new TwigFunction('measurement_by_id', [$this, 'measurementById'], ['is_safe' => ['raw']]),
         ];
     }
 

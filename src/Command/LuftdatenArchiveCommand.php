@@ -18,13 +18,13 @@ class LuftdatenArchiveCommand extends ContainerAwareCommand
     protected ArchiveSourceFetcherInterface $archiveSourceFetcher;
     protected LuftdatenProvider $provider;
 
-    public function __construct(?string $name = null, ArchiveSourceFetcherInterface $archiveSourceFetcher,  ArchiveFetcherInterface $archiveFetcher, LuftdatenProvider $luftdatenProvider)
+    public function __construct(ArchiveSourceFetcherInterface $archiveSourceFetcher,  ArchiveFetcherInterface $archiveFetcher, LuftdatenProvider $luftdatenProvider)
     {
         $this->archiveFetcher = $archiveFetcher;
         $this->archiveSourceFetcher = $archiveSourceFetcher;
         $this->provider = $luftdatenProvider;
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure(): void

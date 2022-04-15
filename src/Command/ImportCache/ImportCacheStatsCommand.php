@@ -20,11 +20,11 @@ class ImportCacheStatsCommand extends Command
             ->setDescription('Add a short description for your command');
     }
 
-    public function __construct(?string $name = null, UniqueStrategyInterface $cacheUniqueStrategy)
+    public function __construct(UniqueStrategyInterface $cacheUniqueStrategy)
     {
         $this->cacheUniqueStrategy = $cacheUniqueStrategy->init([]);
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): void

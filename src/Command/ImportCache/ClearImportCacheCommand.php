@@ -3,7 +3,6 @@
 namespace App\Command\ImportCache;
 
 use App\Pollution\UniqueStrategy\UniqueStrategyInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,11 +19,11 @@ class ClearImportCacheCommand extends Command
         $this->setDescription('Add a short description for your command');
     }
 
-    public function __construct(?string $name = null, UniqueStrategyInterface $cacheUniqueStrategy, RegistryInterface $registry)
+    public function __construct(UniqueStrategyInterface $cacheUniqueStrategy)
     {
         $this->cacheUniqueStrategy = $cacheUniqueStrategy->init([]);
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): void

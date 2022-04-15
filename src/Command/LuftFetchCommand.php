@@ -22,12 +22,12 @@ class LuftFetchCommand extends Command
 
     protected MeasurementListInterface $measurementList;
 
-    public function __construct(string $name = null, ProviderListInterface $providerList, MeasurementListInterface $measurementList)
+    public function __construct(ProviderListInterface $providerList, MeasurementListInterface $measurementList)
     {
         $this->providerList = $providerList;
         $this->measurementList = $measurementList;
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure(): void

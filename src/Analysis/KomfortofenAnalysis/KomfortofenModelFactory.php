@@ -4,7 +4,6 @@ namespace App\Analysis\KomfortofenAnalysis;
 
 use App\Entity\Data;
 use App\Pollution\DataFinder\DataConverterInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class KomfortofenModelFactory implements KomfortofenModelFactoryInterface
 {

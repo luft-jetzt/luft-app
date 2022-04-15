@@ -13,11 +13,11 @@ class LoadCitiesCommand extends Command
 {
     protected EntityManagerInterface $entityManager;
 
-    public function __construct(?string $name = null, EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure()

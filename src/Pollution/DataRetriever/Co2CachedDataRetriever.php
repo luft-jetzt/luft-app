@@ -7,14 +7,14 @@ use App\Entity\Station;
 use App\Pollution\DataCache\DataCacheInterface;
 use App\Pollution\DataCache\KeyGenerator;
 use Caldera\GeoBasic\Coord\CoordInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 class Co2CachedDataRetriever implements DataRetrieverInterface
 {
     protected DataCacheInterface $dataCache;
-    protected RegistryInterface $registry;
+    protected ManagerRegistry $registry;
 
-    public function __construct(DataCacheInterface $dataCache, RegistryInterface $registry)
+    public function __construct(DataCacheInterface $dataCache, ManagerRegistry $registry)
     {
         $this->dataCache = $dataCache;
         $this->registry = $registry;

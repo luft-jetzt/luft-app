@@ -76,7 +76,7 @@ services:
         $provider: '@bazinga_geocoder.provider.nominatim'
 
     app.geocoding_cache:
-        class: Symfony\Component\Cache\Simple\Psr6Cache
+        class: Symfony\Component\Cache\Psr16Cache
         arguments: ['@app.cache.geocoding']
 
     App\DataPurger\DataPurgerInterface:
@@ -84,7 +84,7 @@ services:
 
     App\Pollution\DataFinder\ElasticFinder:
         arguments:
-            $searchable: '@fos_elastica.index.air_data.data'
+            $searchable: '@fos_elastica.index.air_data'
 
     App\Pollution\DataPersister\ElasticPersister:
         arguments:
@@ -93,6 +93,15 @@ services:
     App\Pollution\DataFinder\FinderInterface:
         alias: App\Pollution\DataFinder\ElasticFinder
 
+    App\DataPurger\FastDataPurger:
+        arguments:
+            $client: '@fos_elastica.client.default'
+
+    App\Command\UpdateDataCommand:
+        arguments:
+            $client: '@fos_elastica.client.default'
+
     App\Pollution\DataRetriever\CachedElasticDataRetriever:
         arguments:
             $dataFinder: '@fos_elastica.finder.air_station'
+

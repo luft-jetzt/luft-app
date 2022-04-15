@@ -4,7 +4,7 @@ namespace App\Command\ImportCache;
 
 use App\Entity\Data;
 use App\Pollution\UniqueStrategy\UniqueStrategyInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -14,7 +14,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class PopulateImportCacheCommand extends Command
 {
     protected UniqueStrategyInterface $cacheUniqueStrategy;
-    protected RegistryInterface $registry;
+    protected ManagerRegistry $registry;
 
     protected static $defaultName = 'luft:import-cache:populate';
 
@@ -25,12 +25,12 @@ class PopulateImportCacheCommand extends Command
             ->addOption('interval', 'i', InputOption::VALUE_REQUIRED, 'Provide an interval starting from today backwards', 'P3D');
     }
 
-    public function __construct(?string $name = null, UniqueStrategyInterface $cacheUniqueStrategy, RegistryInterface $registry)
+    public function __construct(UniqueStrategyInterface $cacheUniqueStrategy, ManagerRegistry $registry)
     {
         $this->cacheUniqueStrategy = $cacheUniqueStrategy->init([]);
         $this->registry = $registry;
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): void

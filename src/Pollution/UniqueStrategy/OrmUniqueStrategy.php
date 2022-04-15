@@ -4,14 +4,14 @@ namespace App\Pollution\UniqueStrategy;
 
 use App\Entity\Data;
 use App\Pollution\Value\Value;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 class OrmUniqueStrategy implements UniqueStrategyInterface
 {
-    protected RegistryInterface $registry;
+    protected ManagerRegistry $registry;
     protected array $existentDataList = [];
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;
     }
