@@ -34,7 +34,7 @@ class StationCommand extends Command
     }
 
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var ProviderInterface $provider */
         foreach ($this->providerList->getList() as $provider) {
@@ -66,6 +66,9 @@ class StationCommand extends Command
             $output->writeln('New stations');
             $this->printTable($output, $stationLoader->getNewStationList());
         }
+
+        //return Command::SUCCESS;
+        return 0;
     }
 
     protected function printTable(OutputInterface $output, array $stationList): void

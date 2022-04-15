@@ -21,7 +21,7 @@ class TweetCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('luft:tweet')
@@ -30,7 +30,7 @@ class TweetCommand extends Command
             ->addOption('dateTime', null, InputOption::VALUE_REQUIRED);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($input->getOption('dry-run')) {
             $this->twitter->setDryRun(true);
@@ -62,5 +62,8 @@ class TweetCommand extends Command
         }
 
         $table->render();
+
+        //return Command::SUCCESS;
+        return 0;
     }
 }

@@ -32,7 +32,7 @@ class AssignStationCommand extends Command
             ->setDescription('Assign station to city');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $stationList = $this->registry->getRepository(Station::class)->findWithoutCity();
 
@@ -72,6 +72,9 @@ class AssignStationCommand extends Command
 
             $this->registry->getManager()->flush();
         }
+
+        //return Command::SUCCESS;
+        return 0;
     }
 
     protected function generateCitySlugByCityName(string $cityName): string

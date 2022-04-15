@@ -59,6 +59,7 @@ class PurgeDataCommand extends Command
             $io->success(sprintf('Purged %d values.', $counter));
         }
 
+        //return Command::SUCCESS;
         return 0;
     }
 }

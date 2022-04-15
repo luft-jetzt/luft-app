@@ -28,7 +28,7 @@ class UpdateDataCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Update stored values with new station pin')
@@ -72,6 +72,7 @@ class UpdateDataCommand extends Command
 
         $io->progressFinish();
 
+        //return Command::SUCCESS;
         return 0;
     }
 

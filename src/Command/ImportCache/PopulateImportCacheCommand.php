@@ -33,7 +33,7 @@ class PopulateImportCacheCommand extends Command
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $intervalSpec = $input->getOption('interval');
 
@@ -48,5 +48,8 @@ class PopulateImportCacheCommand extends Command
 
         $io = new SymfonyStyle($input, $output);
         $io->success(sprintf('Stored %d data elements from %s to %s', count($dataList), $fromDateTime->format('Y-m-d H:i:s'), $untilDateTime->format('Y-m-d H:i:s')));
+
+        //return Command::SUCCESS;
+        return 0;
     }
 }
