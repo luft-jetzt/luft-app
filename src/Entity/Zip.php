@@ -26,12 +26,12 @@ class Zip extends Coord
     /**
      * @ORM\Column(type="float", nullable=false)
      */
-    protected $latitude;
+    protected ?float $latitude = null;
 
     /**
      * @ORM\Column(type="float", nullable=false)
      */
-    protected $longitude;
+    protected ?float $longitude = null;
 
     public function getId(): int
     {
