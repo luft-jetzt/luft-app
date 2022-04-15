@@ -20,12 +20,12 @@ class UpdateDataCommand extends Command
     protected Client $client;
     protected ManagerRegistry $managerRegistry;
 
-    public function __construct(string $name = null, ManagerRegistry $managerRegistry, Client $client)
+    public function __construct(ManagerRegistry $managerRegistry, Client $client)
     {
         $this->managerRegistry = $managerRegistry;
         $this->client = $client;
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure()

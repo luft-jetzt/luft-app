@@ -17,11 +17,11 @@ class StationCommand extends Command
 {
     protected ProviderListInterface $providerList;
 
-    public function __construct(?string $name = null, ProviderListInterface $providerList)
+    public function __construct(ProviderListInterface $providerList)
     {
         $this->providerList = $providerList;
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure(): void

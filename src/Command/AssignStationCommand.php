@@ -17,12 +17,12 @@ class AssignStationCommand extends Command
     protected ManagerRegistry $registry;
     protected CityGuesserInterface $cityGuesser;
 
-    public function __construct(?string $name = null, ManagerRegistry $registry, CityGuesserInterface $cityGuesser)
+    public function __construct(ManagerRegistry $registry, CityGuesserInterface $cityGuesser)
     {
         $this->registry = $registry;
         $this->cityGuesser = $cityGuesser;
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure(): void

@@ -14,11 +14,11 @@ class TweetCommand extends Command
 {
     protected TwitterInterface $twitter;
 
-    public function __construct(?string $name = null, TwitterInterface $twitter)
+    public function __construct(TwitterInterface $twitter)
     {
         $this->twitter = $twitter;
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure()

@@ -25,12 +25,12 @@ class PopulateImportCacheCommand extends Command
             ->addOption('interval', 'i', InputOption::VALUE_REQUIRED, 'Provide an interval starting from today backwards', 'P3D');
     }
 
-    public function __construct(?string $name = null, UniqueStrategyInterface $cacheUniqueStrategy, ManagerRegistry $registry)
+    public function __construct(UniqueStrategyInterface $cacheUniqueStrategy, ManagerRegistry $registry)
     {
         $this->cacheUniqueStrategy = $cacheUniqueStrategy->init([]);
         $this->registry = $registry;
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): void

@@ -17,12 +17,12 @@ class PurgeDataCommand extends Command
     protected ProviderListInterface $providerList;
     protected DataPurgerInterface $dataPurger;
 
-    public function __construct(?string $name = null, ProviderListInterface $providerList, DataPurgerInterface $dataPurger)
+    public function __construct(ProviderListInterface $providerList, DataPurgerInterface $dataPurger)
     {
         $this->providerList = $providerList;
         $this->dataPurger = $dataPurger;
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure(): void
