@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "643b134ec1367c24438efdde15e68565",
+    "content-hash": "cdd0ad4ef456a41b5ae8749456f74b7a",
     "packages": [
         {
             "name": "cache/adapter-common",
@@ -4131,6 +4131,63 @@
                 "source": "https://github.com/maltehuebner/impress-bundle/tree/0.1"
             },
             "time": "2022-01-22T21:47:57+00:00"
+        },
+        {
+            "name": "mhujer/breadcrumbs-bundle",
+            "version": "1.5.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mhujer/BreadcrumbsBundle.git",
+                "reference": "2a262e182d7baead37e64408081bd17e53938c06"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mhujer/BreadcrumbsBundle/zipball/2a262e182d7baead37e64408081bd17e53938c06",
+                "reference": "2a262e182d7baead37e64408081bd17e53938c06",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~7.4|~8.0",
+                "symfony/framework-bundle": "^4.4|^5.4|^6.0",
+                "symfony/translation-contracts": "^1.1|^2.0|^3.0",
+                "symfony/twig-bundle": "^4.4|^5.4|^6.0",
+                "twig/twig": "^1.38.1|^2.7.1|^3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "9.5.10",
+                "symfony/browser-kit": "^4.4|^5.4|^6.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "WhiteOctober\\BreadcrumbsBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rich Sage",
+                    "email": "rich.sage@gmail.com"
+                },
+                {
+                    "name": "Martin Hujer",
+                    "email": "mail@martinhujer.cz"
+                }
+            ],
+            "description": "Breadcrumbs bundle for Symfony",
+            "homepage": "https://github.com/mhujer/BreadcrumbsBundle",
+            "keywords": [
+                "breadcrumbs",
+                "symfony"
+            ],
+            "support": {
+                "issues": "https://github.com/mhujer/BreadcrumbsBundle/issues",
+                "source": "https://github.com/mhujer/BreadcrumbsBundle/tree/1.5.8"
+            },
+            "time": "2021-12-20T18:13:52+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -14340,59 +14397,6 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.10.0"
             },
             "time": "2021-03-09T10:59:23+00:00"
-        },
-        {
-            "name": "whiteoctober/breadcrumbs-bundle",
-            "version": "1.4.5",
-            "target-dir": "WhiteOctober/BreadcrumbsBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sampart/BreadcrumbsBundle.git",
-                "reference": "ad813b53f4f12fa7450d75bceb7a5d7ab9c39672"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sampart/BreadcrumbsBundle/zipball/ad813b53f4f12fa7450d75bceb7a5d7ab9c39672",
-                "reference": "ad813b53f4f12fa7450d75bceb7a5d7ab9c39672",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2",
-                "symfony/framework-bundle": "~2.0|~3.0|^4.0",
-                "symfony/templating": "~2.7|~3.0|^4.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^6.4",
-                "symfony/browser-kit": "~2.7|~3.0|^4.0"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-0": {
-                    "WhiteOctober\\BreadcrumbsBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Rich Sage",
-                    "email": "rich.sage@gmail.com"
-                }
-            ],
-            "description": "A small breadcrumbs bundle for Symfony2",
-            "homepage": "https://github.com/whiteoctober/BreadcrumbsBundle",
-            "keywords": [
-                "breadcrumbs",
-                "symfony"
-            ],
-            "support": {
-                "issues": "https://github.com/sampart/BreadcrumbsBundle/issues",
-                "source": "https://github.com/sampart/BreadcrumbsBundle/tree/1.4.5"
-            },
-            "abandoned": "mhujer/breadcrumbs-bundle",
-            "time": "2019-10-18T12:03:08+00:00"
         },
         {
             "name": "willdurand/geocoder",
