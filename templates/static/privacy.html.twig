@@ -17,15 +17,17 @@
             </h3>
 
             <p>
-                Malte Hübner<br />
-                Niebuhrstraße 48<br />
-                24118 Kiel
+                {{ impress_property('firstName') }} {{ impress_property('lastName') }}
+                <br />
+                {{ impress_property('street') }} {{ impress_property('houseNumber') }}
+                <br />
+                {{ impress_property('zipCode') }} {{ impress_property('city') }}
             </p>
 
             <p>
-                E-Mail: <a href="mailto:malte@caldera.cc">malte@caldera.cc</a>
-                <br />
-                Telefon: <a href="tel:015117277032">0151 17277032</a>
+                Telefon: {{ impress_property('phoneNumber') }}
+                <br/>
+                E-Mail: <a href="mailto:luft@caldera.cc">luft@caldera.cc</a>
             </p>
 
             <h3>

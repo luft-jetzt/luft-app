@@ -8,6 +8,7 @@ use App\Util\DateTimeUtil;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -16,12 +17,12 @@ class PurgeDataCommand extends Command
     protected ProviderListInterface $providerList;
     protected DataPurgerInterface $dataPurger;
 
-    public function __construct(?string $name = null, ProviderListInterface $providerList, DataPurgerInterface $dataPurger)
+    public function __construct(ProviderListInterface $providerList, DataPurgerInterface $dataPurger)
     {
         $this->providerList = $providerList;
         $this->dataPurger = $dataPurger;
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure(): void
@@ -29,6 +30,7 @@ class PurgeDataCommand extends Command
         $this->setName('luft:purge-data')
             ->addArgument('days', InputArgument::REQUIRED, 'Specify number of days. Data older than this value will be purged.')
             ->addArgument('provider', InputArgument::OPTIONAL, 'Optional: Specify provider to purge.')
+            ->addOption('with-tags', 'wt', InputOption::VALUE_NONE, 'Also delete tagged data')
         ;
     }
 
@@ -47,9 +49,9 @@ class PurgeDataCommand extends Command
         }
 
         $interval = new \DateInterval(sprintf('P%dD', $input->getArgument('days')));
-        $untilDateTime = DateTimeUtil::getDayEndDateTime((new \DateTimeImmutable())->sub($interval));
+        $untilDateTime = DateTimeUtil::getDayEndDateTime((new \DateTime())->sub($interval));
 
-        $counter = $this->dataPurger->purgeData($untilDateTime, $provider);
+        $counter = $this->dataPurger->purgeData($untilDateTime, $provider, $input->getOption('with-tags'));
 
         if ($provider) {
             $io->success(sprintf('Purged %d values from %s.', $counter, get_class($provider)));

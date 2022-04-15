@@ -6,20 +6,19 @@ use App\Entity\TwitterSchedule;
 use App\Twitter\TwitterInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class TweetCommand extends Command
 {
-    protected $twitter;
+    protected TwitterInterface $twitter;
 
-    public function __construct(?string $name = null, TwitterInterface $twitter)
+    public function __construct(TwitterInterface $twitter)
     {
         $this->twitter = $twitter;
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure()

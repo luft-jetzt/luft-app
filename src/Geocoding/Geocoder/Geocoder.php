@@ -30,10 +30,7 @@ class Geocoder extends AbstractGeocoder
             $latitude = $nominatimAddress->getCoordinates()->getLatitude();
             $longitude = $nominatimAddress->getCoordinates()->getLongitude();
 
-            $url = $this->router->generate('display', ['latitude' => $latitude, 'longitude' => $longitude]);
-
             $value = [
-                'url' => $url,
                 'latitude' => $latitude,
                 'longitude' => $longitude,
             ];

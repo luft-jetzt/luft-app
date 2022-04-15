@@ -3,11 +3,6 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="salavert.twig.time_ago" class="Salavert\Twig\Extension\TimeAgoExtension">
-            <tag name="twig.extension" />
-            <argument type="service" id="translator" />
-        </service>
-
         <service id="App\Menu\MainMenuBuilder">
             <argument type="service" id="Flagception\Manager\FeatureManagerInterface" />
             <argument type="service" id="knp_menu.factory" />
@@ -15,21 +10,6 @@
             <argument type="service" id="App\Air\MeasurementList\MeasurementListInterface" />
             <argument type="service" id="Symfony\Component\Routing\RouterInterface" />
             <tag name="knp_menu.menu_builder" method="mainMenu" alias="main_menu" />
-        </service>
-
-        <service id="App\Analysis\LimitAnalysis\LimitAnalysis">
-            <argument type="service" id="fos_elastica.finder.air_data.data" />
-            <argument type="service" id="App\Air\MeasurementList\MeasurementListInterface" />
-        </service>
-
-        <service id="App\Analysis\KomfortofenAnalysis\KomfortofenAnalysis">
-            <argument type="service" id="fos_elastica.finder.air_data.data" />
-            <argument type="service" id="App\Analysis\KomfortofenAnalysis\KomfortofenModelFactoryInterface" />
-        </service>
-
-        <service id="App\Analysis\FireworksAnalysis\FireworksAnalysis">
-            <argument type="service" id="fos_elastica.finder.air_data.data" />
-            <argument type="service" id="App\Analysis\FireworksAnalysis\FireworksModelFactoryInterface" />
         </service>
     </services>
 </container>

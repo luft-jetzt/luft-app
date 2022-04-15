@@ -7,8 +7,7 @@ use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class ImportCache implements ImportCacheInterface
 {
-    /** @var AdapterInterface $cacheAdapter */
-    protected $cacheAdapter;
+    protected AdapterInterface $cacheAdapter;
 
     public function __construct(string $redisHost)
     {

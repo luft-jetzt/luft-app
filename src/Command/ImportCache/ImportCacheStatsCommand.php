@@ -2,7 +2,7 @@
 
 namespace App\Command\ImportCache;
 
-use App\Pollution\UniqueStrategy\CacheUniqueStrategy;
+use App\Pollution\UniqueStrategy\UniqueStrategyInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -10,8 +10,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ImportCacheStatsCommand extends Command
 {
-    /** @var CacheUniqueStrategy $cacheUniqueStrategy */
-    protected $cacheUniqueStrategy;
+    protected UniqueStrategyInterface $cacheUniqueStrategy;
 
     protected static $defaultName = 'luft:import-cache:stats';
 
@@ -21,11 +20,11 @@ class ImportCacheStatsCommand extends Command
             ->setDescription('Add a short description for your command');
     }
 
-    public function __construct(?string $name = null, CacheUniqueStrategy $cacheUniqueStrategy)
+    public function __construct(UniqueStrategyInterface $cacheUniqueStrategy)
     {
         $this->cacheUniqueStrategy = $cacheUniqueStrategy->init([]);
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): void

@@ -33,6 +33,12 @@ class Value
      */
     protected ?string $pollutant = null;
 
+    /**
+     * @JMS\Expose()
+     * @JMS\Type("string")
+     */
+    protected ?string $tag = null;
+
     public function __construct()
     {
 
@@ -50,7 +56,7 @@ class Value
         return $this;
     }
 
-    public function getDateTime(): ?\DateTimeInterface
+    public function getDateTime(): ?\DateTime
     {
         return $this->dateTime;
     }
@@ -82,6 +88,18 @@ class Value
     public function setPollutant(string $pollutant): Value
     {
         $this->pollutant = $pollutant;
+
+        return $this;
+    }
+
+    public function getTag(): ?string
+    {
+        return $this->tag;
+    }
+
+    public function setTag(string $tag): Value
+    {
+        $this->tag = $tag;
 
         return $this;
     }

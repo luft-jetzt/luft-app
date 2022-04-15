@@ -11,11 +11,9 @@ use FOS\ElasticaBundle\Finder\FinderInterface;
 
 class CachedElasticDataRetriever implements DataRetrieverInterface
 {
-    /** @var FinderInterface $dataFinder */
-    protected $dataFinder;
+    protected FinderInterface $dataFinder;
 
-    /** @var DataCacheInterface $dataCache */
-    protected $dataCache;
+    protected DataCacheInterface $dataCache;
 
     public function __construct(DataCacheInterface $dataCache, FinderInterface $dataFinder)
     {
@@ -23,14 +21,14 @@ class CachedElasticDataRetriever implements DataRetrieverInterface
         $this->dataCache = $dataCache;
     }
 
-    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 750): array
+    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId = null, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 750): array
     {
         if ($coord instanceof Station) {
             $stationList = [$coord];
         } else {
             $stationList = $this->getStationList($coord, $maxDistance, 750); // @TODO: get rid of working set size in Pollution Data Factory
         }
-        
+
         $dataList = [];
 
         /** @var Station $station */

@@ -7,8 +7,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class ExtendedEmojiMessageFactory extends AbstractExtendedMessageFactory
 {
-    /** @var TranslatorInterface $translator */
-    protected $translator;
+    protected TranslatorInterface $translator;
 
     public function __construct(TranslatorInterface $translator)
     {

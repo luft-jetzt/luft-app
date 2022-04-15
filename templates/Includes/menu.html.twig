@@ -17,7 +17,7 @@
         {% if app.request.get('_route') != 'frontpage' %}
             <form method="get" class="form-inline float-right" action="{{ path('display') }}">
                 <div class="input-group">
-                    <input type="text" class="form-control typeahead" id="query" name="query" placeholder="Suchbegriff, Postleitzahl, Stadtname…" />
+                    <input type="text" class="form-control typeahead" id="nav-query" name="query" placeholder="Suchbegriff, Postleitzahl, Stadtname…" />
                     <div class="input-group-append">
                         <button class="btn btn-primary locate-button d-none d-md-block" type="button" title="Deinen Aufenthaltsort automatisch bestimmen">
                             <i class="fa fa-location-arrow"></i>

@@ -27,7 +27,9 @@ class ValueDataConverter
         $data
             ->setDateTime($value->getDateTime())
             ->setValue($value->getValue())
-            ->setPollutant($pollutantId);
+            ->setPollutant($pollutantId)
+            ->setTag($value->getTag())
+        ;
 
         if ($station) {
             $data->setStation($station);

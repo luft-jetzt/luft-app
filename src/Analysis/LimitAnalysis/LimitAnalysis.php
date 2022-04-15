@@ -8,20 +8,11 @@ use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 
 class LimitAnalysis implements LimitAnalysisInterface
 {
-    /** @var Station $station */
-    protected $station;
-
-    /** @var MeasurementInterface $measurement */
-    protected $measurement;
-
-    /** @var PaginatedFinderInterface $finder */
-    protected $finder;
-
-    /** @var \DateTimeInterface $fromDateTime */
-    protected $fromDateTime;
-
-    /** @var \DateTimeInterface $untilDateTime */
-    protected $untilDateTime;
+    protected ?Station $station = null;
+    protected ?MeasurementInterface $measurement = null;
+    protected ?PaginatedFinderInterface $finder = null;
+    protected ?\DateTimeInterface $fromDateTime = null;
+    protected ?\DateTimeInterface $untilDateTime = null;
 
     public function __construct(PaginatedFinderInterface $finder)
     {
