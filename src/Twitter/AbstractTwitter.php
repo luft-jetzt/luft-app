@@ -25,7 +25,7 @@ abstract class AbstractTwitter implements TwitterInterface
 
     protected LoggerInterface $logger;
 
-    protected string $twitterClientId;
+    protected string $twitterApiKey;
 
     protected string $twitterClientSecret;
 
@@ -35,7 +35,7 @@ abstract class AbstractTwitter implements TwitterInterface
 
     protected bool $dryRun = false;
 
-    public function __construct(Doctrine $doctrine, RouterInterface $router, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, LoggerInterface $logger, string $twitterClientId, string $twitterClientSecret)
+    public function __construct(Doctrine $doctrine, RouterInterface $router, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, LoggerInterface $logger, string $twitterApiKey, string $twitterClientSecret)
     {
         $this->doctrine = $doctrine;
         $this->messageFactory = $messageFactory;
@@ -43,7 +43,7 @@ abstract class AbstractTwitter implements TwitterInterface
         $this->dateTime = new \DateTime();
         $this->router = $router;
 
-        $this->twitterClientId = $twitterClientId;
+        $this->twitterApiKey = $twitterApiKey;
         $this->twitterClientSecret = $twitterClientSecret;
 
         // @todo do this via services please!
@@ -64,7 +64,7 @@ abstract class AbstractTwitter implements TwitterInterface
 
     protected function getCodeBird(): Codebird
     {
-        Codebird::setConsumerKey($this->twitterClientId, $this->twitterClientSecret);
+        Codebird::setConsumerKey($this->twitterApiKey, $this->twitterClientSecret);
 
         return Codebird::getInstance();
     }
