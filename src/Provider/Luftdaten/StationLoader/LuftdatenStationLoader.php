@@ -13,7 +13,7 @@ class LuftdatenStationLoader extends AbstractStationLoader
 {
     const SOURCE_URL = 'https://api.luftdaten.info/static/v2/data.dust.min.json';
 
-    protected \stdClass $sensorData;
+    protected array $sensorData;
 
     public function process(callable $callback): StationLoaderInterface
     {
@@ -30,7 +30,6 @@ class LuftdatenStationLoader extends AbstractStationLoader
             $station = $this->createStation($data['location']);
 
             if (!$this->stationExists($station->getStationCode())) {
-
                 $em->persist($station);
 
                 $this->newStationList[$station->getStationCode()] = $station;
