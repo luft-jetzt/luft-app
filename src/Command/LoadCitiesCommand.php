@@ -11,8 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class LoadCitiesCommand extends Command
 {
-    /** @var EntityManagerInterface */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     public function __construct(?string $name = null, EntityManagerInterface $entityManager)
     {

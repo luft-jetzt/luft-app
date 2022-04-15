@@ -11,9 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class Co2CachedDataRetriever implements DataRetrieverInterface
 {
-    /** @var DataCacheInterface $dataCache */
-    protected $dataCache;
-
+    protected DataCacheInterface $dataCache;
     protected ManagerRegistry $registry;
 
     public function __construct(DataCacheInterface $dataCache, ManagerRegistry $registry)
@@ -22,7 +20,7 @@ class Co2CachedDataRetriever implements DataRetrieverInterface
         $this->registry = $registry;
     }
 
-    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 750): array
+    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId = null, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 750): array
     {
         if ($coord instanceof Station) { // TODO this should be regulated through a service
             return [];

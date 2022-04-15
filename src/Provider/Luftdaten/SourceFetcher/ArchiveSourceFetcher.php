@@ -8,14 +8,9 @@ class ArchiveSourceFetcher implements ArchiveSourceFetcherInterface
 {
     const HOST = 'http://archive.luftdaten.info';
 
-    /** @var Curl $curl */
-    protected $curl;
-
-    /** @var array $csvLinkList */
-    protected $csvLinkList;
-
-    /** @var \DateTimeInterface $dateTime */
-    protected $dateTime;
+    protected Curl $curl;
+    protected array $csvLinkList;
+    protected \DateTimeInterface $dateTime;
 
     public function __construct()
     {

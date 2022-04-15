@@ -2,9 +2,8 @@
 
 namespace App\Analysis\KomfortofenAnalysis;
 
+use App\Air\Measurement\MeasurementInterface;
 use App\Pollution\DataFinder\FinderInterface;
-use App\Pollution\Pollutant\PollutantInterface;
-use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 
 abstract class AbstractKomfortofenAnalysis implements KomfortofenAnalysisInterface
 {
@@ -12,16 +11,13 @@ abstract class AbstractKomfortofenAnalysis implements KomfortofenAnalysisInterfa
 
     protected float $maxSlope = 300.0;
 
-    /** @var PollutantInterface $pollutant */
-    protected $pollutant;
+    protected MeasurementInterface $pollutant;
 
     protected FinderInterface $finder;
 
-    /** @var \DateTimeInterface $fromDateTime */
-    protected $fromDateTime;
+    protected \DateTimeInterface $fromDateTime;
 
-    /** @var \DateTimeInterface $untilDateTime */
-    protected $untilDateTime;
+    protected \DateTimeInterface $untilDateTime;
 
     protected KomfortofenModelFactoryInterface $komfortofenModelFactory;
 
@@ -38,7 +34,7 @@ abstract class AbstractKomfortofenAnalysis implements KomfortofenAnalysisInterfa
         return $this;
     }
 
-    public function setPollutant(PollutantInterface $pollutant): KomfortofenAnalysisInterface
+    public function setPollutant(MeasurementInterface $pollutant): KomfortofenAnalysisInterface
     {
         $this->pollutant = $pollutant;
 

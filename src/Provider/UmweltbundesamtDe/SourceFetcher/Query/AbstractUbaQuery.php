@@ -2,23 +2,12 @@
 
 namespace App\Provider\UmweltbundesamtDe\SourceFetcher\Query;
 
-use App\Provider\UmweltbundesamtDe\SourceFetcher\Filter\FilterInterface;
-use App\Provider\UmweltbundesamtDe\SourceFetcher\Filter\NoopFilter;
-use App\Provider\UmweltbundesamtDe\SourceFetcher\Reporting\ReportingInterface;
-
 abstract class AbstractUbaQuery implements UbaQueryInterface
 {
-    /** @var int $component */
-    protected $component;
-
-    /** @var array $scope */
-    protected $scope = [];
-
-    /** @var \DateTime $fromDateTime */
-    protected $fromDateTime;
-
-    /** @var \DateTime $untilDateTime */
-    protected $untilDateTime;
+    protected int $component;
+    protected array $scope = [];
+    protected \DateTime $fromDateTime;
+    protected \DateTime $untilDateTime;
 
     public function __construct()
     {

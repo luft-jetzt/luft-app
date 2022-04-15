@@ -20,6 +20,7 @@ services:
                             # The best practice is to be explicit about your dependencies anyway.
         bind:
             $twitterClientId: '%env(TWITTER_CLIENT_ID)%'
+            $twitterApiKey: '%env(TWITTER_API_KEY)%'
             $twitterClientSecret: '%env(TWITTER_CLIENT_SECRET)%'
             $apiUrl: '%env(YOURLS_API_URL)%'
             $apiUsername: '%env(YOURLS_API_USERNAME)%'
@@ -57,10 +58,6 @@ services:
     App\Pollution\PollutionDataFactory\PollutionDataFactoryInterface:
         alias: App\Pollution\PollutionDataFactory\PollutionDataFactory
 
-    App\Analysis\CoronaFireworksAnalysis\CoronaFireworksAnalysis:
-        arguments:
-            $finder: '@fos_elastica.finder.air_data.data'
-
     App\SeoPage\SeoPage:
         arguments:
             $sonataSeoPage: '@sonata.seo.page.default'
@@ -69,11 +66,8 @@ services:
         alias: App\Pollution\UniqueStrategy\CacheUniqueStrategy
 
     App\Pollution\DataPersister\PersisterInterface:
-        alias: App\Pollution\DataPersister\ElasticPersister
-
-    App\Pollution\PollutionDataFactory\HistoryDataFactory:
-        arguments:
-            $dataRetriever: '@App\Pollution\DataRetriever\ElasticDataRetriever'
+        #alias: App\Pollution\DataPersister\ElasticPersister
+        alias: App\Pollution\DataPersister\CachePersister
 
     App\Geocoding\Guesser\CityGuesser:
         $provider: '@bazinga_geocoder.provider.nominatim'
@@ -102,3 +96,12 @@ services:
     App\DataPurger\FastDataPurger:
         arguments:
             $client: '@fos_elastica.client.default'
+
+    App\Command\UpdateDataCommand:
+        arguments:
+            $client: '@fos_elastica.client.default'
+
+    App\Pollution\DataRetriever\CachedElasticDataRetriever:
+        arguments:
+            $dataFinder: '@fos_elastica.finder.air_station'
+

@@ -8,7 +8,7 @@ class ChainedDataRetriever implements DataRetrieverInterface
 {
     protected array $chain = [];
 
-    public function __construct(ElasticDataRetriever $elasticDataRetriever, Co2CachedDataRetriever $co2CachedDataRetriever, AdhocDataRetriever $adhocDataRetriever)
+    public function __construct(CachedElasticDataRetriever $elasticDataRetriever, Co2CachedDataRetriever $co2CachedDataRetriever, AdhocDataRetriever $adhocDataRetriever)
     {
         $this->chain = [
             $elasticDataRetriever,
@@ -17,7 +17,7 @@ class ChainedDataRetriever implements DataRetrieverInterface
         ];
     }
 
-    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 250): array
+    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId = null, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 250): array
     {
         $dataList = [];
 

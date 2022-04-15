@@ -24,8 +24,10 @@
         "knplabs/knp-menu-bundle": "^3.1",
         "league/csv": "^9.1",
         "league/geotools": "^0.8.0",
+        "maltehuebner/impress-bundle": "^0.1.0",
         "nelmio/api-doc-bundle": "^3.1",
         "nesbot/carbon": "^2.43",
+        "php-amqplib/rabbitmq-bundle": "^2.11",
         "php-curl-class/php-curl-class": "^8.0",
         "php-http/guzzle6-adapter": "^2.0.2",
         "php-http/httplug-bundle": "^1.20.0",
@@ -34,7 +36,6 @@
         "phpstan/phpdoc-parser": "^1.2",
         "predis/predis": "^1.1",
         "presta/sitemap-bundle": "^1.5",
-        "salavert/time-ago-in-words": "^1.7",
         "sensio/framework-extra-bundle": "^5.1",
         "sonata-project/seo-bundle": "^2.5",
         "symfony/apache-pack": "^1.0",
@@ -75,7 +76,12 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "composer/installers": true,
+            "symfony/flex": true
+        }
     },
     "autoload": {
         "psr-4": {

@@ -27,11 +27,9 @@ class UmweltbundesamtStationLoader extends AbstractStationLoader
     const FIELD_AREA_TYPE = 15;
     const FIELD_STATION_TYPE = 16;
 
-    /** @var bool $update */
-    protected $update = false;
+    protected bool $update = false;
 
-    /** @var array $ubaStationList */
-    protected $ubaStationList = [];
+    protected array $ubaStationList = [];
 
     public function process(callable $callback): StationLoaderInterface
     {

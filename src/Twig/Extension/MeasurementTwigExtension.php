@@ -7,8 +7,7 @@ use App\Air\MeasurementList\MeasurementListInterface;
 
 class MeasurementTwigExtension extends \Twig_Extension
 {
-    /** @var MeasurementListInterface $measurementList */
-    protected $measurementList;
+    protected MeasurementListInterface $measurementList;
 
     public function __construct(MeasurementListInterface $measurementList)
     {

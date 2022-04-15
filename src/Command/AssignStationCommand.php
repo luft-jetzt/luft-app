@@ -15,9 +15,7 @@ use Symfony\Component\Console\Question\Question;
 class AssignStationCommand extends Command
 {
     protected ManagerRegistry $registry;
-
-    /** @var CityGuesserInterface $cityGuesser */
-    protected $cityGuesser;
+    protected CityGuesserInterface $cityGuesser;
 
     public function __construct(?string $name = null, ManagerRegistry $registry, CityGuesserInterface $cityGuesser)
     {

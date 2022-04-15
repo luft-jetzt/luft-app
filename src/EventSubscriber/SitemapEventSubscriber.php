@@ -15,16 +15,10 @@ use Symfony\Component\Routing\RouterInterface;
 
 class SitemapEventSubscriber implements EventSubscriberInterface
 {
-    /** @var UrlGeneratorInterface $urlGenerator */
-    protected $urlGenerator;
-
-    /** @var RouterInterface $router */
-    protected $router;
-
+    protected UrlGeneratorInterface $urlGenerator;
+    protected RouterInterface $router;
     protected ManagerRegistry $registry;
-
-    /** @var MeasurementListInterface $measurementList */
-    protected $measurementList;
+    protected MeasurementListInterface $measurementList;
 
     public function __construct(UrlGeneratorInterface $urlGenerator, RouterInterface $router, ManagerRegistry $registry, MeasurementListInterface $measurementList)
     {

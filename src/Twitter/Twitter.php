@@ -3,9 +3,11 @@
 namespace App\Twitter;
 
 use App\Air\ViewModel\MeasurementViewModel;
+use App\Entity\Station;
 use App\Entity\TwitterSchedule;
 use Caldera\GeoBasic\Coord\Coord;
 use Cron\CronExpression;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class Twitter extends AbstractTwitter
 {
@@ -85,7 +87,7 @@ class Twitter extends AbstractTwitter
         if ($this->dryRun) {
             $this->messageFactory->setLink('https://localhost/foobarbaz');
         } else {
-            $this->messageFactory->setLink($this->permalinkManager->createPermalinkForTweet($twitterSchedule));
+            $this->messageFactory->setLink($this->createPermaLinkForTweet($twitterSchedule));
         }
 
         $message = $this->messageFactory
@@ -107,5 +109,38 @@ class Twitter extends AbstractTwitter
         }
 
         return $list;
+    }
+
+    protected function createPermaLinkForTweet(TwitterSchedule $twitterSchedule): string
+    {
+        $dateTime = new \DateTime();
+
+        if ($twitterSchedule->getStation()) {
+            $url = $this->generateUrlForStation($twitterSchedule->getStation(), $dateTime);
+        } else {
+            $coord = new Coord($twitterSchedule->getLatitude(), $twitterSchedule->getLongitude());
+
+            $url = $this->generateUrlForCoord($coord, $dateTime);
+        }
+
+        return $url;
+    }
+
+    protected function generateUrlForStation(Station $station, \DateTimeInterface $dateTime): string
+    {
+        $url = $this->router->generate('station', ['stationCode' => $station->getStationCode(), 'timestamp' => $dateTime->format('U')], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        $url = str_replace('http://', 'https://', $url);
+
+        return $url;
+    }
+
+    protected function generateUrlForCoord(Coord $coord, \DateTimeInterface $dateTime): string
+    {
+        $url = $this->router->generate('display', ['latitude' => $coord->getLatitude(), 'longitude' => $coord->getLongitude(), 'timestamp' => $dateTime->format('U')], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        $url = str_replace('http://', 'https://', $url);
+
+        return $url;
     }
 }

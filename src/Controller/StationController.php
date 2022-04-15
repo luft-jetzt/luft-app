@@ -99,14 +99,6 @@ class StationController extends AbstractController
             $seoPage->setTitle(sprintf('Frühere Luftmesswerte für die Station %s', $station->getStationCode()));
         }
 
-        $seoPage->setOpenGraphPreviewPhoto($router->generate('station_history_plot', [
-            'stationCode' => $station->getStationCode(),
-            'from' => $fromDateTime->format('Y-m-d'),
-            'until' => $untilDateTime->format('Y-m-d'),
-            'width' => 1200,
-            'height' => 630,
-        ]));
-
         $dataLists = $historyDataFactory
             ->setStation($station)
             ->createDecoratedPollutantListForInterval($fromDateTime, $untilDateTime);

@@ -19,7 +19,7 @@ class ElasticDataRetriever implements DataRetrieverInterface
         $this->stationCache = $stationCache;
     }
 
-    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 750): array
+    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId = null, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 750): array
     {
         $fromDateTime = new \DateTime();
         $fromDateTime->sub(new \DateInterval('PT8H'));

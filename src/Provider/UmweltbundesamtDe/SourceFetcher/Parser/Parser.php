@@ -9,9 +9,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class Parser implements ParserInterface
 {
-    /** @var array $stationList */
-    protected $stationList;
-
+    protected array $stationList;
     protected ManagerRegistry $registry;
 
     public function __construct(ManagerRegistry $registry)

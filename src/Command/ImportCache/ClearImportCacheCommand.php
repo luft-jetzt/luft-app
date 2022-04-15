@@ -2,7 +2,7 @@
 
 namespace App\Command\ImportCache;
 
-use App\Pollution\UniqueStrategy\CacheUniqueStrategy;
+use App\Pollution\UniqueStrategy\UniqueStrategyInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -10,8 +10,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ClearImportCacheCommand extends Command
 {
-    /** @var CacheUniqueStrategy $cacheUniqueStrategy */
-    protected $cacheUniqueStrategy;
+    protected UniqueStrategyInterface $cacheUniqueStrategy;
 
     protected static $defaultName = 'luft:import-cache:clear';
 
@@ -20,7 +19,7 @@ class ClearImportCacheCommand extends Command
         $this->setDescription('Add a short description for your command');
     }
 
-    public function __construct(?string $name = null, CacheUniqueStrategy $cacheUniqueStrategy)
+    public function __construct(?string $name = null, UniqueStrategyInterface $cacheUniqueStrategy)
     {
         $this->cacheUniqueStrategy = $cacheUniqueStrategy->init([]);
 

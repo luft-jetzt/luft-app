@@ -4,17 +4,10 @@ namespace App\Twitter\MessageFactory;
 
 abstract class AbstractMessageFactory implements MessageFactoryInterface
 {
-    /** @var array $pollutantList */
-    protected $pollutantList = [];
-
-    /** @var string $message */
-    protected $message = '';
-
-    /** @var string $title */
-    protected $title = '';
-
-    /** @var string $link */
-    protected $link = '';
+    protected array $pollutantList = [];
+    protected string $message = '';
+    protected string $title = '';
+    protected string $link = '';
 
     public function setPollutantList(array $pollutantList = []): MessageFactoryInterface
     {

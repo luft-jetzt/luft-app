@@ -9,9 +9,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class OrmUniqueStrategy implements UniqueStrategyInterface
 {
     protected ManagerRegistry $registry;
-
-    /** @var array $existentDataList */
-    protected $existentDataList = [];
+    protected array $existentDataList = [];
 
     public function __construct(ManagerRegistry $registry)
     {
