@@ -1,10 +1,10 @@
 flagception:
     features:
         analysis:
-            default: true
+            default: false
         analysis_fireworks:
-            default: true
+            default: false
         analysis_komfortofen:
-            default: true
+            default: false
         station_history:
-            default: true
+            default: false
