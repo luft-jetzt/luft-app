@@ -7,11 +7,11 @@ use App\Entity\Station;
 use App\Pollution\DataList\DataList;
 use App\Pollution\DataRetriever\DataRetrieverInterface;
 use App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
-use Caldera\GeoBasic\Coord\CoordInterface;
+use Caldera\GeoBasic\Coordinate\CoordinateInterface;
 
 abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInterface
 {
-    protected CoordInterface $coord;
+    protected CoordinateInterface $coord;
 
     protected MeasurementViewModelFactoryInterface $measurementViewModelFactory;
 
@@ -29,7 +29,7 @@ abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInter
         $this->strategy = $strategy;
     }
 
-    public function setCoord(CoordInterface $coord): PollutionDataFactoryInterface
+    public function setCoord(CoordinateInterface $coord): PollutionDataFactoryInterface
     {
         $this->coord = $coord;
 
