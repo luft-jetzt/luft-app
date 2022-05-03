@@ -12,7 +12,7 @@
     </div>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-        {{ knp_menu_render('main_menu') }}
+        {{ knp_menu_render('main') }}
 
         {% if app.request.get('_route') != 'frontpage' %}
             <form method="get" class="form-inline float-right" action="{{ path('display') }}">
