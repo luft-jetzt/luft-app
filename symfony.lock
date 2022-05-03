@@ -654,6 +654,9 @@
             "ref": "cda8b550123383d25827705d05a42acf6819fe4e"
         }
     },
+    "symfony/runtime": {
+        "version": "v5.4.8"
+    },
     "symfony/security-bundle": {
         "version": "3.3",
         "recipe": {
