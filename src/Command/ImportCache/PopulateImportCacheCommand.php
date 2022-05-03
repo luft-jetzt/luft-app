@@ -22,7 +22,8 @@ class PopulateImportCacheCommand extends Command
     {
         $this
             ->setDescription('Add a short description for your command')
-            ->addOption('interval', 'i', InputOption::VALUE_REQUIRED, 'Provide an interval starting from today backwards', 'P3D');
+            ->addOption('interval', 'i', InputOption::VALUE_REQUIRED, 'Provide an interval starting from today backwards', 'P3D')
+        ;
     }
 
     public function __construct(UniqueStrategyInterface $cacheUniqueStrategy, ManagerRegistry $registry)
@@ -33,7 +34,7 @@ class PopulateImportCacheCommand extends Command
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $intervalSpec = $input->getOption('interval');
 
@@ -48,5 +49,8 @@ class PopulateImportCacheCommand extends Command
 
         $io = new SymfonyStyle($input, $output);
         $io->success(sprintf('Stored %d data elements from %s to %s', count($dataList), $fromDateTime->format('Y-m-d H:i:s'), $untilDateTime->format('Y-m-d H:i:s')));
+
+        //return Command::SUCCESS;
+        return 0;
     }
 }

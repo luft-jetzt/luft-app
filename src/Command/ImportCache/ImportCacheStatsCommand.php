@@ -16,8 +16,7 @@ class ImportCacheStatsCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->setDescription('Add a short description for your command');
+        $this->setDescription('Add a short description for your command');
     }
 
     public function __construct(UniqueStrategyInterface $cacheUniqueStrategy)
@@ -27,7 +26,7 @@ class ImportCacheStatsCommand extends Command
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $dataList = $this->cacheUniqueStrategy->init([])->getDataList();
 
@@ -54,5 +53,8 @@ class ImportCacheStatsCommand extends Command
         ksort($rows);
 
         $io->table(['DateTime', 'Counter'], $rows);
+
+        //return Command::SUCCESS;
+        return 0;
     }
 }
