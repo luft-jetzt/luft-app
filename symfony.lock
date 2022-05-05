@@ -361,13 +361,18 @@
         "version": "2.1.2"
     },
     "phpunit/phpunit": {
-        "version": "4.7",
+        "version": "9.5",
         "recipe": {
             "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "4.7",
-            "ref": "f6f9ee3a511e9d9ad6a53d92fbaa1a709ed8c1ca"
-        }
+            "branch": "main",
+            "version": "9.3",
+            "ref": "a6249a6c4392e9169b87abf93225f7f9f59025e6"
+        },
+        "files": [
+            ".env.test",
+            "phpunit.xml.dist",
+            "tests/bootstrap.php"
+        ]
     },
     "predis/predis": {
         "version": "v1.1.6"
