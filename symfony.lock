@@ -301,13 +301,16 @@
         "version": "v1.1.0"
     },
     "php-http/httplug-bundle": {
-        "version": "1.6",
+        "version": "1.26",
         "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
             "version": "1.6",
-            "ref": "4655962c64e2de96c418caf576c57215711c7877"
-        }
+            "ref": "87b3d491d593d2c6e3b90bf0689ac69a188bfa5f"
+        },
+        "files": [
+            "config/packages/httplug.yaml"
+        ]
     },
     "php-http/logger-plugin": {
         "version": "v1.0.0"
