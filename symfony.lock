@@ -142,13 +142,16 @@
         "version": "v1.0.7"
     },
     "friendsofsymfony/elastica-bundle": {
-        "version": "5.0",
+        "version": "6.1",
         "recipe": {
             "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
+            "branch": "main",
             "version": "5.0",
-            "ref": "3f73f240ee0c3719e89f1c994ce66904e2ef84f6"
-        }
+            "ref": "46c9cd2c1e07f0fcfd97e96f12b03b2e0845c4cd"
+        },
+        "files": [
+            "config/packages/fos_elastica.yaml"
+        ]
     },
     "friendsofsymfony/jsrouting-bundle": {
         "version": "2.0",
