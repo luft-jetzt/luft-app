@@ -154,13 +154,16 @@
         ]
     },
     "friendsofsymfony/jsrouting-bundle": {
-        "version": "2.0",
+        "version": "2.8",
         "recipe": {
             "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "2.0",
-            "ref": "370bcf99b04c0dfd0b545745aad622d757af5e1b"
-        }
+            "branch": "main",
+            "version": "2.3",
+            "ref": "a9f2e49180f75cdc71ae279a929c4b2e0638de84"
+        },
+        "files": [
+            "config/routes/fos_js_routing.yaml"
+        ]
     },
     "geocoder-php/common-http": {
         "version": "4.1.0"
