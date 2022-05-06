@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "613aa569af90da92ab796dde9235a8cf",
+    "content-hash": "e11f085c229526e6bab579f4aa795653",
     "packages": [
         {
             "name": "cache/adapter-common",
@@ -3951,30 +3951,31 @@
         },
         {
             "name": "league/geotools",
-            "version": "0.8.3",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/geotools.git",
-                "reference": "4869ab26f3b88417901274f51fc6fde7e3189b91"
+                "reference": "9ddb49c708408b95c37f53fda06ca791c6ce9244"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/geotools/zipball/4869ab26f3b88417901274f51fc6fde7e3189b91",
-                "reference": "4869ab26f3b88417901274f51fc6fde7e3189b91",
+                "url": "https://api.github.com/repos/thephpleague/geotools/zipball/9ddb49c708408b95c37f53fda06ca791c6ce9244",
+                "reference": "9ddb49c708408b95c37f53fda06ca791c6ce9244",
                 "shasum": ""
             },
             "require": {
                 "cache/array-adapter": "^1.0",
                 "ext-bcmath": "*",
+                "ext-json": "*",
                 "php": "^7.3 || ^7.4 || ^8.0",
                 "php-http/discovery": "^1.0",
-                "psr/cache": "^1.0",
+                "psr/cache": "^1.0 || ^2.0 || ^3.0",
                 "react/event-loop": "^1.0",
-                "react/promise": "^2.2",
-                "symfony/console": "^3.4 || ^4.4 || ^5.0",
-                "symfony/property-access": "^3.4 || ^4.4 || ^5.0",
-                "symfony/serializer": "^3.4 || ^4.4 || ^5.0",
-                "willdurand/geocoder": "^4.2"
+                "react/promise": "^2.8",
+                "symfony/console": "^4.4 || ^5.0 || ^6.0",
+                "symfony/property-access": "^4.4 || ^5.0 || ^6.0",
+                "symfony/serializer": "^4.4 || ^5.0 || ^6.0",
+                "willdurand/geocoder": "^4.5"
             },
             "replace": {
                 "toin0u/geotools": "*"
@@ -3986,11 +3987,6 @@
                 "bin/geotools"
             ],
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.7-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "League\\Geotools\\": "src",
@@ -4030,7 +4026,7 @@
                 "issues": "https://github.com/thephpleague/geotools/issues",
                 "source": "https://github.com/thephpleague/geotools"
             },
-            "time": "2021-07-07T14:49:40+00:00"
+            "time": "2022-02-11T08:56:59+00:00"
         },
         {
             "name": "maltehuebner/impress-bundle",
@@ -6785,20 +6781,20 @@
         },
         {
             "name": "psr/cache",
-            "version": "1.0.1",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/cache.git",
-                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8"
+                "reference": "213f9dbc5b9bfbc4f8db86d2838dc968752ce13b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/cache/zipball/d11b50ad223250cf17b86e38383413f5a6764bf8",
-                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8",
+                "url": "https://api.github.com/repos/php-fig/cache/zipball/213f9dbc5b9bfbc4f8db86d2838dc968752ce13b",
+                "reference": "213f9dbc5b9bfbc4f8db86d2838dc968752ce13b",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=8.0.0"
             },
             "type": "library",
             "extra": {
@@ -6818,7 +6814,7 @@
             "authors": [
                 {
                     "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
+                    "homepage": "https://www.php-fig.org/"
                 }
             ],
             "description": "Common interface for caching libraries",
@@ -6828,9 +6824,9 @@
                 "psr-6"
             ],
             "support": {
-                "source": "https://github.com/php-fig/cache/tree/master"
+                "source": "https://github.com/php-fig/cache/tree/2.0.0"
             },
-            "time": "2016-08-06T20:24:11+00:00"
+            "time": "2021-02-03T23:23:37+00:00"
         },
         {
             "name": "psr/container",
