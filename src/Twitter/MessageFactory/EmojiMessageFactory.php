@@ -35,6 +35,6 @@ class EmojiMessageFactory extends AbstractMessageFactory
     {
         $translationKey = sprintf('air_quality.index.%d.icon', $measurementViewModel->getPollutionLevel());
 
-        return $this->translator->trans($translationKey);
+        return $this->translator->trans($translationKey, [], 'messages', 'de');
     }
 }
