@@ -3,7 +3,7 @@
 namespace App\Twitter\MessageFactory;
 
 use App\Air\ViewModel\MeasurementViewModel;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ExtendedEmojiMessageFactory extends AbstractExtendedMessageFactory
 {

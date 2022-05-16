@@ -13,6 +13,8 @@ class LoadCitiesCommand extends Command
 {
     protected EntityManagerInterface $entityManager;
 
+    protected static $defaultName = 'luft:load-cities';
+
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -20,14 +22,12 @@ class LoadCitiesCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
-        $this
-            ->setName('luft:load-cities')
-            ->setDescription('Load zip codes');
+        $this->setDescription('Load zip codes');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $zipLoader = new ZipLoader();
 
@@ -48,5 +48,8 @@ class LoadCitiesCommand extends Command
 
         $this->entityManager->flush();
         $progress->finish();
+
+        //return Command::SUCCESS;
+        return 0;
     }
 }

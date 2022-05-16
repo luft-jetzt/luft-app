@@ -17,6 +17,8 @@ class PurgeDataCommand extends Command
     protected ProviderListInterface $providerList;
     protected DataPurgerInterface $dataPurger;
 
+    protected static $defaultName = 'luft:purge-data';
+
     public function __construct(ProviderListInterface $providerList, DataPurgerInterface $dataPurger)
     {
         $this->providerList = $providerList;
@@ -27,7 +29,7 @@ class PurgeDataCommand extends Command
 
     protected function configure(): void
     {
-        $this->setName('luft:purge-data')
+        $this
             ->addArgument('days', InputArgument::REQUIRED, 'Specify number of days. Data older than this value will be purged.')
             ->addArgument('provider', InputArgument::OPTIONAL, 'Optional: Specify provider to purge.')
             ->addOption('with-tags', 'wt', InputOption::VALUE_NONE, 'Also delete tagged data')
@@ -59,6 +61,7 @@ class PurgeDataCommand extends Command
             $io->success(sprintf('Purged %d values.', $counter));
         }
 
+        //return Command::SUCCESS;
         return 0;
     }
 }

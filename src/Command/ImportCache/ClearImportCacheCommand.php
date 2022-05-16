@@ -26,12 +26,15 @@ class ClearImportCacheCommand extends Command
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
         $this->cacheUniqueStrategy->clear();
 
         $io->success('Import cache cleared.');
+
+        //return Command::SUCCESS;
+        return 0;
     }
 }

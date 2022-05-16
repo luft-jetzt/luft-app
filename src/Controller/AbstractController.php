@@ -6,10 +6,10 @@ use App\Entity\City;
 use App\Entity\Station;
 use App\Entity\TwitterSchedule;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as FrameworkAbstractController;
 
-abstract class AbstractController extends Controller
+abstract class AbstractController extends FrameworkAbstractController
 {
     protected function getStationListForCity(City $city): array
     {

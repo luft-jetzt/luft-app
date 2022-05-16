@@ -10,7 +10,7 @@ final class AreaType extends AbstractEnumType
     public const SUBURBAN = 'suburban';
     public const RURAL = 'rural';
 
-    protected static $choices = [
+    protected static array $choices = [
         self::URBAN => 'station.area.urban',
         self::SUBURBAN => 'station.area.suburban',
         self::RURAL => 'station.area.rural',
