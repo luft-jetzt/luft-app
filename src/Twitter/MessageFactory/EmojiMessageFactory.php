@@ -3,7 +3,7 @@
 namespace App\Twitter\MessageFactory;
 
 use App\Air\ViewModel\MeasurementViewModel;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EmojiMessageFactory extends AbstractMessageFactory
 {
@@ -35,6 +35,6 @@ class EmojiMessageFactory extends AbstractMessageFactory
     {
         $translationKey = sprintf('air_quality.index.%d.icon', $measurementViewModel->getPollutionLevel());
 
-        return $this->translator->trans($translationKey);
+        return $this->translator->trans($translationKey, [], 'messages', 'de');
     }
 }
