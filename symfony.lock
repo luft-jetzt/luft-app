@@ -215,9 +215,6 @@
     "laminas/laminas-code": {
         "version": "3.4.1"
     },
-    "league/csv": {
-        "version": "9.1.4"
-    },
     "league/geotools": {
         "version": "0.8.0"
     },
