@@ -8,8 +8,7 @@ use App\Pollution\UniqueStrategy\Hasher;
 
 class DataList implements DataListInterface
 {
-    /** @var array $list */
-    protected $list = [];
+    protected array $list = [];
 
     public function __construct()
     {
@@ -50,8 +49,9 @@ class DataList implements DataListInterface
             MeasurementInterface::MEASUREMENT_SO2 => [],
             MeasurementInterface::MEASUREMENT_CO => [],
             MeasurementInterface::MEASUREMENT_CO2 => [],
-            MeasurementInterface::MEASUREMENT_UV => [],
+            MeasurementInterface::MEASUREMENT_UVINDEX => [],
             MeasurementInterface::MEASUREMENT_TEMPERATURE => [],
+            MeasurementInterface::MEASUREMENT_CORONAINCIDENCE => [],
         ];
 
         return $this;

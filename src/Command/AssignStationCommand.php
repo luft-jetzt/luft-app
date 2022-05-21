@@ -5,7 +5,7 @@ namespace App\Command;
 use App\Entity\City;
 use App\Entity\Station;
 use App\Geocoding\Guesser\CityGuesserInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,28 +14,25 @@ use Symfony\Component\Console\Question\Question;
 
 class AssignStationCommand extends Command
 {
-    /** @var RegistryInterface $registry */
-    protected $registry;
+    protected ManagerRegistry $registry;
+    protected CityGuesserInterface $cityGuesser;
 
-    /** @var CityGuesserInterface $cityGuesser */
-    protected $cityGuesser;
+    protected static $defaultName = 'luft:assign-station';
 
-    public function __construct(?string $name = null, RegistryInterface $registry, CityGuesserInterface $cityGuesser)
+    public function __construct(ManagerRegistry $registry, CityGuesserInterface $cityGuesser)
     {
         $this->registry = $registry;
         $this->cityGuesser = $cityGuesser;
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure(): void
     {
-        $this
-            ->setName('luft:assign-station')
-            ->setDescription('Assign station to city');
+        $this->setDescription('Assign station to city');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $stationList = $this->registry->getRepository(Station::class)->findWithoutCity();
 
@@ -75,6 +72,9 @@ class AssignStationCommand extends Command
 
             $this->registry->getManager()->flush();
         }
+
+        //return Command::SUCCESS;
+        return 0;
     }
 
     protected function generateCitySlugByCityName(string $cityName): string

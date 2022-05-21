@@ -6,16 +6,15 @@ use App\Entity\City;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\UserProvider\Exception\LuftUsernameException;
-use Symfony\Bridge\Doctrine\RegistryInterface as Doctrine;
+use Doctrine\Persistence\ManagerRegistry;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;
 
 class LuftUserProvider implements OAuthAwareUserProviderInterface
 {
-    /** @var Doctrine $doctrine */
-    protected $doctrine;
+    protected ManagerRegistry $doctrine;
 
-    public function __construct(Doctrine $doctrine)
+    public function __construct(ManagerRegistry $doctrine)
     {
         $this->doctrine = $doctrine;
     }

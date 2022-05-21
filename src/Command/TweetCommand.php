@@ -6,32 +6,33 @@ use App\Entity\TwitterSchedule;
 use App\Twitter\TwitterInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class TweetCommand extends Command
 {
-    protected $twitter;
+    protected TwitterInterface $twitter;
 
-    public function __construct(?string $name = null, TwitterInterface $twitter)
+    protected static $defaultName = 'luft:tweet';
+
+    public function __construct(TwitterInterface $twitter)
     {
         $this->twitter = $twitter;
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setName('luft:tweet')
             ->setDescription('Post current data')
             ->addOption('dry-run')
-            ->addOption('dateTime', null, InputOption::VALUE_REQUIRED);
+            ->addOption('dateTime', null, InputOption::VALUE_REQUIRED)
+        ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($input->getOption('dry-run')) {
             $this->twitter->setDryRun(true);
@@ -63,5 +64,8 @@ class TweetCommand extends Command
         }
 
         $table->render();
+
+        //return Command::SUCCESS;
+        return 0;
     }
 }

@@ -8,11 +8,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 abstract class AbstractBuilder
 {
-    /** @var FactoryInterface $factory */
-    protected $factory;
-
-    /** @var TokenStorageInterface $tokenStorage */
-    protected $tokenStorage;
+    protected FactoryInterface $factory;
+    protected TokenStorageInterface $tokenStorage;
 
     public function __construct(FactoryInterface $factory, TokenStorageInterface $tokenStorage)
     {

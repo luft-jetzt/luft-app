@@ -2,12 +2,15 @@
 
 namespace App\Twig\Extension;
 
-class TypeTwigExtension extends \Twig_Extension
+use Twig\Extension\AbstractExtension;
+use Twig\TwigTest;
+
+class TypeTwigExtension extends AbstractExtension
 {
     public function getTests(): array
     {
         return [
-            new \Twig_Test('numeric', function ($value) { return  is_numeric($value); }),
+            new TwigTest('numeric', function ($value) { return  is_numeric($value); }),
         ];
     }
 

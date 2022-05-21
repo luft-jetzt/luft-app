@@ -31,7 +31,7 @@
         {% for level,limit in levels.levels|merge(['air_quality.list.more_than'|trans({'%limit%': last_limit})]) %}
             <tr>
                 <td>
-                    {{ ('air_quality.index.' ~ loop.index ~ '.icon')|trans }}
+                    {{ ('air_quality.index.' ~ loop.index ~ '.icon')|trans([], 'messages', 'de') }}
                 </td>
 
                 <td>
@@ -39,7 +39,7 @@
                 </td>
 
                 <td>
-                    {{ ('air_quality.index.' ~ loop.index ~ '.name')|trans }}
+                    {{ ('air_quality.index.' ~ loop.index ~ '.name')|trans([], 'messages', 'de') }}
                 </td>
 
                 <td>
