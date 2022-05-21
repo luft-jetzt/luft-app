@@ -2,28 +2,32 @@
 
 namespace App\Twig\Extension;
 
+use App\Air\AirQuality\Calculator\AirQualityCalculatorInterface;
 use App\Air\AirQuality\LevelColorHandler\LevelColorHandlerInterface;
 use App\Air\AirQuality\PollutionLevel\PollutionLevelInterface;
 use App\Air\ViewModel\MeasurementViewModel;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class PollutionLevelTwigExtension extends \Twig_Extension
+class PollutionLevelTwigExtension extends AbstractExtension
 {
-    /** @var LevelColorHandlerInterface $levelColorHandler */
-    protected $levelColorHandler;
+    protected AirQualityCalculatorInterface $airQualityCalculator;
+    protected LevelColorHandlerInterface $levelColorHandler;
 
-    public function __construct(LevelColorHandlerInterface $levelColorHandler)
+    public function __construct(AirQualityCalculatorInterface $airQualityCalculator, LevelColorHandlerInterface $levelColorHandler)
     {
+        $this->airQualityCalculator = $airQualityCalculator;
         $this->levelColorHandler = $levelColorHandler;
     }
 
     public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('max_pollution_level', [$this, 'maxPollutionLevel'], ['is_safe' => ['raw']]),
-            new \Twig_SimpleFunction('max_pollution_color_name', [$this, 'maxPollutionColorName'], ['is_safe' => ['raw']]),
-            new \Twig_SimpleFunction('pollution_color', [$this, 'pollutionColor'], ['is_safe' => ['raw']]),
-            new \Twig_SimpleFunction('pollution_color_name', [$this, 'pollutionColorName'], ['is_safe' => ['raw']]),
-            new \Twig_SimpleFunction('pollution_levels', [$this, 'getLevelsForMeasurement'], ['is_safe' => ['raw']]),
+            new TwigFunction('max_pollution_level', [$this, 'maxPollutionLevel'], ['is_safe' => ['raw']]),
+            new TwigFunction('max_pollution_color_name', [$this, 'maxPollutionColorName'], ['is_safe' => ['raw']]),
+            new TwigFunction('pollution_color', [$this, 'pollutionColor'], ['is_safe' => ['raw']]),
+            new TwigFunction('pollution_color_name', [$this, 'pollutionColorName'], ['is_safe' => ['raw']]),
+            new TwigFunction('pollution_levels', [$this, 'getLevelsForMeasurement'], ['is_safe' => ['raw']]),
         ];
     }
 

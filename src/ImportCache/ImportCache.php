@@ -7,13 +7,12 @@ use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class ImportCache implements ImportCacheInterface
 {
-    /** @var AdapterInterface $cacheAdapter */
-    protected $cacheAdapter;
+    protected AdapterInterface $cacheAdapter;
 
-    public function __construct()
+    public function __construct(string $redisHost)
     {
         $this->cacheAdapter = new RedisAdapter(
-            RedisAdapter::createConnection('redis://localhost'),
+            RedisAdapter::createConnection($redisHost),
             self::CACHE_NAMESPACE,
             self::TTL
         );

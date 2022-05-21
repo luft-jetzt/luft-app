@@ -5,13 +5,12 @@ namespace App\EventSubscriber;
 use App\SeoPage\SeoPageInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class KernelEventSubscriber implements EventSubscriberInterface
 {
-    /** @var SeoPageInterface $seoPage */
-    protected $seoPage;
+    protected SeoPageInterface $seoPage;
 
     public function __construct(SeoPageInterface $seoPage)
     {
@@ -25,7 +24,7 @@ class KernelEventSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onController(FilterControllerEvent $filterControllerEvent): void
+    public function onController(ControllerEvent $filterControllerEvent): void
     {
         if (!$filterControllerEvent->isMasterRequest()) {
             return;

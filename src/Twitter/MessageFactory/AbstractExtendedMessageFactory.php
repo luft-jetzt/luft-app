@@ -4,8 +4,7 @@ namespace App\Twitter\MessageFactory;
 
 abstract class AbstractExtendedMessageFactory extends AbstractMessageFactory implements ExtendedMessageFactoryInterface
 {
-    /** @var array $additionalPollutantList */
-    protected $additionalPollutantList = [];
+    protected array $additionalPollutantList = [];
 
     public function setAdditionalPollutantList(array $additionalPollutantList = []): ExtendedMessageFactoryInterface
     {

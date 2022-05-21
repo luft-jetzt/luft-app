@@ -10,8 +10,8 @@
 {% macro pollution_data(dataList, pollutantId) %}
     {% if dataList[pollutantId] is defined %}
     {% set data = dataList[pollutantId]|first %}
-    <td class="pollution-value pollutant-{{ data.pollutant.identifier }}" data-value="{{ data.data.value }}" style="background-color: {{ pollution_color(data.pollutionLevel) }}">
-        {{ data.data.value }} {{ data.pollutant.unitHtml|raw }}
+    <td class="pollution-value pollutant-{{ data.measurement.identifier }}" data-value="{{ data.data.value }}" style="background-color: {{ pollution_color(data.pollutionLevel) }}">
+        {{ data.data.value|number_format(2, ',', '.') }} {{ data.measurement.unitHtml|raw }}
     </td>
     {% else %}
         {% set pollutant = pollutant_by_id(pollutantId) %}
@@ -24,11 +24,11 @@
         <div class="row">
             <div class="col-12 text-center">
                 <h2 class="h3">
-                    Historische Messwerte der Station {{ station.stationCode }}
+                    Frühere Messwerte der Station {{ station.stationCode }}
                 </h2>
 
                 <p class="lead">
-                    An der Station <a href="{{ path('station', { stationCode: station.stationCode } ) }}" title="Mehr Informationen über die Luftmessstation {{ station.stationCode }}{% if station.city %} in {{ station.city.name }}{% endif %}">{{ station.stationCode }}</a>{% if station.city %} in <a href="{{ path('show_city', { citySlug: station.city.slug }) }}" title="Zeige weitere Schadstoff-Messwerte aus {{ station.city.name }} an">{{ station.city.name }}</a>{% endif %} wurden {% if same_day %}am{% else %}von {{ fromDateTime|format_date('eeee, dd. MMMM YYYY') }}, bis{% endif %} {{ untilDateTime|format_date('eeee, dd. MMMM YYYY') }}, die folgenden Werte gemessen:
+                    An der Station <a href="{{ path('station', { stationCode: station.stationCode } ) }}" title="Mehr Informationen über die Luftmessstation {{ station.stationCode }}{% if station.city %} in {{ station.city.name }}{% endif %}">{{ station.stationCode }}</a>{% if station.city %} in <a href="{{ path('show_city', { citySlug: station.city.slug }) }}" title="Zeige weitere Schadstoff-Messwerte aus {{ station.city.name }} an">{{ station.city.name }}</a>{% endif %} wurden {% if same_day %}am{% else %}von {{ fromDateTime|format_date('full') }}, bis{% endif %} {{ untilDateTime|format_date('full') }}, die folgenden Werte gemessen:
                 </p>
             </div>
         </div>
@@ -78,11 +78,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block scripts %}
-    <script src="{{ asset('/js/leaflet.extra-markers.min.js') }}"></script>
-    <script src="{{ asset('/js/map.min.js') }}"></script>
-    <script src="{{ asset('/js/Chart.bundle.min.js') }}"></script>
-    <script src="{{ asset('/js/history.min.js') }}"></script>
 {% endblock %}
