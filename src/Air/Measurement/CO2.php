@@ -12,5 +12,6 @@ class CO2 extends AbstractMeasurement
         $this->shortNameHtml = 'CO<sub>2</sub>';
         $this->showOnMap = false;
         $this->includeInTweets = false;
+        $this->decimals = 2;
     }
 }

@@ -46,4 +46,9 @@ class SO2Test extends TestCase
     {
         $this->assertTrue((new SO2())->includeInTweets());
     }
+
+    public function testDecimals(): void
+    {
+        $this->assertEquals(0, (new SO2())->getDecimals());
+    }
 }

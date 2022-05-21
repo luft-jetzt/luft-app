@@ -4,7 +4,7 @@ namespace App\Tests\Air\Provider\HqcasanovaProvider\SourceFetcher\Parser;
 
 use App\Air\Measurement\MeasurementInterface;
 use App\Pollution\Value\Value;
-use App\Provider\HqcasanovaProvider\SourceFetcher\Parser\JsonParser;
+use App\Provider\NoaaProvider\SourceFetcher\Parser\JsonParser;
 use PHPUnit\Framework\TestCase;
 
 class JsonParserTest extends TestCase

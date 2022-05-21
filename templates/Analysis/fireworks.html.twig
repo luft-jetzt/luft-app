@@ -42,7 +42,7 @@
                                 <a href="{{ path('station', { stationCode: firework.station.stationCode }) }}">
                                     {{ firework.station.stationCode }}
                                 </a>
-                                {% if firework.station.city %}
+                                {% if false and firework.station.city %}
                                     <a href="{{ path('show_city', { citySlug: firework.station.city.slug }) }}" title="Zeige weitere Luftmessstationen aus {{ firework.station.city.name }}">
                                         <small class="text-muted">
                                             {{ firework.station.city.name }}
@@ -85,6 +85,15 @@
                             </td>
                         </tr>
                     {% endfor %}
+                    {% if fireworksList|length == 0 %}
+                        <tr>
+                            <td colspan="3">
+                                <div class="alert alert-info">
+                                    Für diese Auswertung liegen momentan leider keine Daten vor.
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
                 </table>
             </div>
         </div>

@@ -7,14 +7,11 @@ use App\Entity\Station;
 
 class FireworksModel
 {
-    /** @var Station $station */
-    protected $station;
+    protected Station $station;
 
-    /** @var Data $data */
-    protected $data;
+    protected Data $data;
 
-    /** @var float $slope */
-    protected $slope;
+    protected float $slope;
 
     public function __construct(Station $station, Data $data, float $slope)
     {

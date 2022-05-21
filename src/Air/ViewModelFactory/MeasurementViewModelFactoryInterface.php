@@ -2,12 +2,12 @@
 
 namespace App\Air\ViewModelFactory;
 
-use Caldera\GeoBasic\Coord\CoordInterface;
+use Caldera\GeoBasic\Coordinate\CoordinateInterface;
 
 interface MeasurementViewModelFactoryInterface
 {
     public function setPollutantList(array $pollutantList): self;
     public function getPollutantList(): array;
-    public function setCoord(CoordInterface $coord): self;
+    public function setCoord(CoordinateInterface $coord): self;
     public function decorate(): self;
 }

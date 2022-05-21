@@ -46,4 +46,9 @@ class PM25Test extends TestCase
     {
         $this->assertTrue((new PM25())->includeInTweets());
     }
+
+    public function testDecimals(): void
+    {
+        $this->assertEquals(0, (new PM25())->getDecimals());
+    }
 }

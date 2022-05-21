@@ -46,4 +46,9 @@ class COTest extends TestCase
     {
         $this->assertTrue((new CO())->includeInTweets());
     }
+
+    public function testDecimals(): void
+    {
+        $this->assertEquals(0, (new CO())->getDecimals());
+    }
 }

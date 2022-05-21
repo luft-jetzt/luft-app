@@ -6,18 +6,18 @@ use Caldera\GeoBasic\Coord\CoordInterface;
 
 class ChainedDataRetriever implements DataRetrieverInterface
 {
-    /** @var array $chain */
-    protected $chain = [];
+    protected array $chain = [];
 
-    public function __construct(CachedElasticDataRetriever $cachedElasticDataRetriever, Co2CachedDataRetriever $co2CachedDataRetriever)
+    public function __construct(CachedElasticDataRetriever $elasticDataRetriever, Co2CachedDataRetriever $co2CachedDataRetriever, AdhocDataRetriever $adhocDataRetriever)
     {
         $this->chain = [
-            $cachedElasticDataRetriever,
+            $elasticDataRetriever,
             $co2CachedDataRetriever,
+            $adhocDataRetriever,
         ];
     }
 
-    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 250): array
+    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId = null, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 250): array
     {
         $dataList = [];
 

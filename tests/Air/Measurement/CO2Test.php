@@ -46,4 +46,9 @@ class CO2Test extends TestCase
     {
         $this->assertFalse((new CO2())->includeInTweets());
     }
+
+    public function testDecimals(): void
+    {
+        $this->assertEquals(2, (new CO2())->getDecimals());
+    }
 }

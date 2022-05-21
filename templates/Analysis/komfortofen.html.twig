@@ -38,7 +38,7 @@
                                 <a href="{{ path('station', { stationCode: ofen.station.stationCode }) }}">
                                     {{ ofen.station.stationCode }}
                                 </a>
-                                {% if ofen.station.city %}
+                                {% if false and ofen.station.city %}
                                     <a href="{{ path('show_city', { citySlug: ofen.station.city.slug }) }}" title="Zeige weitere Luftmessstationen aus {{ ofen.station.city.name }}">
                                         <small class="text-muted">
                                             {{ ofen.station.city.name }}
@@ -77,6 +77,15 @@
                             </td>
                         </tr>
                     {% endfor %}
+                    {% if ofenList|length == 0 %}
+                        <tr>
+                            <td colspan="3">
+                                <div class="alert alert-info">
+                                    Für diese Auswertung liegen momentan leider keine Daten vor.
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
                 </table>
             </div>
         </div>

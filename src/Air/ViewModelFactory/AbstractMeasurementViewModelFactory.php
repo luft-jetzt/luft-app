@@ -5,24 +5,25 @@ namespace App\Air\ViewModelFactory;
 use App\Air\AirQuality\Calculator\AirQualityCalculatorInterface;
 use App\Air\Measurement\CO;
 use App\Air\Measurement\CO2;
+use App\Air\Measurement\CoronaIncidence;
 use App\Air\Measurement\MeasurementInterface;
 use App\Air\Measurement\NO2;
 use App\Air\Measurement\O3;
 use App\Air\Measurement\PM10;
 use App\Air\Measurement\PM25;
 use App\Air\Measurement\SO2;
+use App\Air\Measurement\Temperature;
+use App\Air\Measurement\UVIndex;
 use Caldera\GeoBasic\Coord\CoordInterface;
+use Caldera\GeoBasic\Coordinate\CoordinateInterface;
 
 abstract class AbstractMeasurementViewModelFactory implements MeasurementViewModelFactoryInterface
 {
-    /** @var array $pollutantList */
-    protected $pollutantList = [];
+    protected array $pollutantList = [];
 
-    /** @var AirQualityCalculatorInterface $airQualityCalculator */
-    protected $airQualityCalculator;
+    protected AirQualityCalculatorInterface $airQualityCalculator;
 
-    /** @var CoordInterface $coord */
-    protected $coord;
+    protected CoordInterface $coord;
 
     public function __construct(AirQualityCalculatorInterface $airQualityCalculator)
     {
@@ -51,10 +52,13 @@ abstract class AbstractMeasurementViewModelFactory implements MeasurementViewMod
             case 4: return new SO2();
             case 5: return new CO();
             case 7: return new CO2();
+            case 8: return new UVIndex();
+            case 9: return new Temperature();
+            case 10: return new CoronaIncidence();
         }
     }
 
-    public function setCoord(CoordInterface $coord): MeasurementViewModelFactoryInterface
+    public function setCoord(CoordinateInterface $coord): MeasurementViewModelFactoryInterface
     {
         $this->coord = $coord;
 
