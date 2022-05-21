@@ -8,8 +8,7 @@ use App\Util\ClassUtil;
 
 class LevelColorCollection implements LevelColorCollectionInterface
 {
-    /** @var array $levelColorsList */
-    protected $levelColorsList = [];
+    protected array $levelColorsList = [];
 
     public function addLevelColors(LevelColorsInterface $levelColors): LevelColorCollectionInterface
     {

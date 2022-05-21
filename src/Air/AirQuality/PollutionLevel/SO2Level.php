@@ -4,5 +4,5 @@ namespace App\Air\AirQuality\PollutionLevel;
 
 class SO2Level extends AbstractPollutionLevel
 {
-    protected $levels = [25, 50, 120, 350, 1000];
+    protected array $levels = [25, 50, 120, 350, 1000];
 }

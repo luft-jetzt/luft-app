@@ -4,5 +4,5 @@ namespace App\Air\AirQuality\PollutionLevel;
 
 class CO2Level extends AbstractPollutionLevel
 {
-    protected $levels = [3 => 300, 4 => 350];
+    protected array $levels = [3 => 300, 4 => 350];
 }

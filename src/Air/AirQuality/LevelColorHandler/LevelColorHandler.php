@@ -9,11 +9,8 @@ use App\Air\ViewModel\MeasurementViewModel;
 
 class LevelColorHandler implements LevelColorHandlerInterface
 {
-    /** @var AirQualityCalculatorInterface $airQualityCalculator */
-    protected $airQualityCalculator;
-
-    /** @var LevelColorCollectionInterface $levelColorCollection */
-    protected $levelColorCollection;
+    protected AirQualityCalculatorInterface $airQualityCalculator;
+    protected LevelColorCollectionInterface $levelColorCollection;
 
     public function __construct(AirQualityCalculatorInterface $airQualityCalculator, LevelColorCollectionInterface $levelColorCollection)
     {

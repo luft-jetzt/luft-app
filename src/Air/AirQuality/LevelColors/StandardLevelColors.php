@@ -4,7 +4,7 @@ namespace App\Air\AirQuality\LevelColors;
 
 class StandardLevelColors extends AbstractLevelColors
 {
-    protected $backgroundColors = [
+    protected array $backgroundColors = [
         0 => 'white',
         1 => '#28a745',
         2 => '#28a745',
@@ -14,7 +14,7 @@ class StandardLevelColors extends AbstractLevelColors
         6 => '#dc3545',
     ];
 
-    protected $backgroundColorNames = [
+    protected array $backgroundColorNames = [
         0 => 'white',
         1 => 'green',
         2 => 'green',

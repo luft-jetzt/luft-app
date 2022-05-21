@@ -4,7 +4,7 @@ namespace App\Air\AirQuality\PollutionLevel;
 
 class TemperatureLevel extends AbstractPollutionLevel
 {
-    protected $levels = [
+    protected array $levels = [
         0 => 23,
         1 => 28,
         2 => 33,

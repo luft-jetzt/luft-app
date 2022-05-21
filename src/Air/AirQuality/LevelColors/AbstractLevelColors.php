@@ -4,11 +4,8 @@ namespace App\Air\AirQuality\LevelColors;
 
 abstract class AbstractLevelColors implements LevelColorsInterface
 {
-    /** @var array $backgroundColors */
-    protected $backgroundColors = [];
-
-    /** @var array $backgroundColorNames */
-    protected $backgroundColorNames = [];
+    protected array $backgroundColors = [];
+    protected array $backgroundColorNames = [];
 
     public function getBackgroundColors(): array
     {
