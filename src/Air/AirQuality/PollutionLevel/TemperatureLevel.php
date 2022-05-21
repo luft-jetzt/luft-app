@@ -8,6 +8,6 @@ class TemperatureLevel extends AbstractPollutionLevel
         0 => 23,
         1 => 28,
         2 => 33,
-        2 => 38,
+        3 => 38,
     ];
 }
