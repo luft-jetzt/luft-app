@@ -8,6 +8,8 @@ use Caldera\GeoBasic\Coord\Coord;
 use Caldera\GeoBasic\Coordinate\Coordinate;
 use Caldera\GeoBasic\Coordinate\CoordinateInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Geocoder\Provider\Nominatim\Model\NominatimAddress;
+use Geocoder\Provider\Nominatim\Nominatim;
 use Symfony\Component\HttpFoundation\Request;
 
 class RequestConverter implements RequestConverterInterface
@@ -30,9 +32,14 @@ class RequestConverter implements RequestConverterInterface
         $zipCode = $request->query->get('zip');
 
         if (($query && preg_match('/^([0-9]{5,5})$/', $query)) || $zipCode) {
-            $zip = $this->registry->getRepository(Zip::class)->findOneByZip($zipCode ?? $query);
+            $cityList = $this->geocoder->queryZip($query ?? $zipCode);
 
-            return $zip;
+            if (count($cityList) > 0) {
+                /** @var NominatimAddress $firstResult */
+                $firstResult = $cityList->first();
+
+                return new Coordinate($firstResult->getCoordinates()->getLatitude(), $firstResult->getCoordinates()->getLongitude());
+            }
         }
 
         if ($latitude && $longitude) {
