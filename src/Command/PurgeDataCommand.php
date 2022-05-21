@@ -61,7 +61,7 @@ class PurgeDataCommand extends Command
         $question = new ConfirmationQuestion(sprintf('Purge <info>%d</info> values from <comment>%s</comment> before <info>%s</info>? [no] ', count($dataList), get_class($provider), $untilDateTime->format('Y-m-d H:i:s')), false);
 
         if (!$helper->ask($input, $output, $question)) {
-            return;
+            return 1;
         }
 
         $counter = $this->dataPurger->purgeData($untilDateTime, $provider, $input->getOption('with-tags'));
