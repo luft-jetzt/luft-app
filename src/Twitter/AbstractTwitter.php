@@ -6,54 +6,43 @@ use App\Entity\TwitterSchedule;
 use App\Pollution\PollutantFactoryStrategy\SimplePollutantFactoryStrategy;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\Twitter\MessageFactory\MessageFactoryInterface;
-use App\YourlsApiManager\LuftYourlsApiManager;
 use Caldera\GeoBasic\Coord\Coord;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Codebird\Codebird;
-use Symfony\Bridge\Doctrine\RegistryInterface as Doctrine;
+use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 abstract class AbstractTwitter implements TwitterInterface
 {
-    /** @var Doctrine $doctrine */
-    protected $doctrine;
+    protected ManagerRegistry $doctrine;
+    protected RouterInterface $router;
 
-    /** @var PollutionDataFactory $pollutionDataFactory */
-    protected $pollutionDataFactory;
+    protected PollutionDataFactory $pollutionDataFactory;
 
-    /** @var MessageFactoryInterface $messageFactory */
-    protected $messageFactory;
+    protected MessageFactoryInterface $messageFactory;
 
-    /** @var LuftYourlsApiManager $permalinkManager */
-    protected $permalinkManager;
+    protected LoggerInterface $logger;
 
-    /** @var LoggerInterface $logger */
-    protected $logger;
+    protected string $twitterApiKey;
 
-    /** @var string $twitterClientId */
-    protected $twitterClientId;
+    protected string $twitterClientSecret;
 
-    /** @var string $twitterClientSecret */
-    protected $twitterClientSecret;
+    protected array $validScheduleList = [];
 
-    /** @var array $validScheduleList */
-    protected $validScheduleList = [];
+    protected \DateTime $dateTime;
 
-    /** @var \DateTime $dateTime */
-    protected $dateTime;
+    protected bool $dryRun = false;
 
-    /** @var bool $dryRun */
-    protected $dryRun = false;
-
-    public function __construct(Doctrine $doctrine, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, LuftYourlsApiManager $permalinkManager, LoggerInterface $logger, string $twitterClientId, string $twitterClientSecret)
+    public function __construct(ManagerRegistry $doctrine, RouterInterface $router, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, LoggerInterface $logger, string $twitterApiKey, string $twitterClientSecret)
     {
         $this->doctrine = $doctrine;
         $this->messageFactory = $messageFactory;
-        $this->permalinkManager = $permalinkManager;
         $this->logger = $logger;
         $this->dateTime = new \DateTime();
+        $this->router = $router;
 
-        $this->twitterClientId = $twitterClientId;
+        $this->twitterApiKey = $twitterApiKey;
         $this->twitterClientSecret = $twitterClientSecret;
 
         // @todo do this via services please!
@@ -74,7 +63,7 @@ abstract class AbstractTwitter implements TwitterInterface
 
     protected function getCodeBird(): Codebird
     {
-        Codebird::setConsumerKey($this->twitterClientId, $this->twitterClientSecret);
+        Codebird::setConsumerKey($this->twitterApiKey, $this->twitterClientSecret);
 
         return Codebird::getInstance();
     }

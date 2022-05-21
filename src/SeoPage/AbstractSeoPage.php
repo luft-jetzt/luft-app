@@ -10,11 +10,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 abstract class AbstractSeoPage implements SeoPageInterface
 {
-    /** @var SonataSeoPageInterface $sonataSeoPage*/
-    protected $sonataSeoPage;
+    protected SonataSeoPageInterface $sonataSeoPage;
 
-    /** @var RequestStack $requestStack */
-    protected $requestStack;
+    protected RequestStack $requestStack;
 
     public function __construct(SonataSeoPageInterface $sonataSeoPage, RequestStack $requestStack)
     {

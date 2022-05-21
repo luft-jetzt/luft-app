@@ -6,8 +6,7 @@ use JMS\Serializer\Handler\SubscribingHandlerInterface;
 
 class DateTimeImmutableHandler implements SubscribingHandlerInterface
 {
-    /** @var string */
-    private $format;
+    private string $format;
 
     public static function getSubscribingMethods()
     {
@@ -21,10 +20,7 @@ class DateTimeImmutableHandler implements SubscribingHandlerInterface
         ];
     }
 
-    /**
-     * @param string $format
-     */
-    public function __construct($format = DATE_ISO8601)
+    public function __construct(string $format = DATE_ISO8601)
     {
         $this->format = $format;
     }

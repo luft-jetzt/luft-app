@@ -3,7 +3,7 @@
 namespace App\Air\ViewModelFactory;
 
 use App\Entity\Station;
-use Caldera\GeoBasic\Coord\CoordInterface;
+use Caldera\GeoBasic\Coordinate\CoordinateInterface;
 
 class DistanceCalculator
 {
@@ -12,7 +12,7 @@ class DistanceCalculator
 
     }
 
-    public static function distance(CoordInterface $coord, Station $station): ?float
+    public static function distance(CoordinateInterface $coord, Station $station): ?float
     {
         $geotools = new \League\Geotools\Geotools();
 
