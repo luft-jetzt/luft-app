@@ -16,7 +16,13 @@
         {{ sonata_seo_link_canonical() }}
         {{ sonata_seo_lang_alternates() }}
 
-        <link rel="stylesheet" href="{{ asset('/css/luft.min.css') }}" />
+        {% block javascripts %}
+            {{ encore_entry_script_tags('js/app') }}
+        {% endblock %}
+
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('css/app') }}
+        {% endblock %}
     </head>
     <body>
         {% include 'Includes/menu.html.twig' %}
@@ -31,19 +37,11 @@
 
         {% include 'Includes/footer.html.twig' %}
 
-        <script src="{{ asset('/js/jquery.min.js') }}"></script>
-        <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
-        <script src="{{ asset('/js/bloodhound.min.js') }}"></script>
-        <script src="{{ asset('/js/typeahead.jquery.min.js') }}"></script>
-        <script src="{{ asset('/js/leaflet.js') }}"></script>
         <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-        <script src="{{ asset('/js/geolocation.min.js') }}"></script>
-        <script src="{{ asset('/js/typeahead.min.js') }}"></script>
-        <script src="{{ asset('/js/search.min.js') }}"></script>
+
+        {% include 'Includes/search_templates.html.twig' %}
 
         {% block scripts %}{% endblock %}
-
-        {% include 'Includes/piwik.html.twig' %}
     </body>
 </html>

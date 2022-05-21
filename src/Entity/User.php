@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User implements UserInterface, \Serializable
+class User implements UserInterface
 {
     const ROLE_USER = 'ROLE_USER';
     const ROLE_ADMIN = 'ROLE_ADMIN';
@@ -21,57 +21,54 @@ class User implements UserInterface, \Serializable
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=60, unique=true)
      */
-    protected $email;
+    protected ?string $email = null;
 
     /**
      * @ORM\Column(type="string", length=60, unique=true)
      */
-    protected $username;
+    protected ?string $username = null;
 
     /**
      * @ORM\Column(type="string", length=64)
      */
-    protected $password;
+    protected ?string $password = null;
 
     /**
      * @ORM\Column(type="array")
      */
-    protected $roles;
+    protected array $roles = [];
 
-    /**
-     * @var string $plainPassword
-     */
-    protected $plainPassword;
+    protected ?string $plainPassword = null;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    protected $createdAt;
+    protected ?\DateTime $createdAt = null;
 
     /**
      * @ORM\OneToOne(targetEntity="City", mappedBy="user")
      */
-    protected $city;
+    protected ?City $city = null;
 
     /**
      * @ORM\Column(name="twitter_id", type="string", length=255, nullable=true)
      */
-    protected $twitterId;
+    protected ?string $twitterId = null;
 
     /**
      * @ORM\Column(name="twitter_access_token", type="string", length=255, nullable=true)
      */
-    protected $twitterAccessToken;
+    protected ?string $twitterAccessToken = null;
 
     /**
      * @ORM\Column(name="twitter_secret", type="string", length=255, nullable=true)
      */
-    protected $twitterSecret;
+    protected ?string $twitterSecret = null;
 
     public function __construct()
     {

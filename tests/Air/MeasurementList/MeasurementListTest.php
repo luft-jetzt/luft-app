@@ -37,8 +37,8 @@ class MeasurementListTest extends TestCase
 
         $actualMeasurementList = $measurementList->getMeasurements();
         $expectedMeasurementList = [
-            new CO(),
-            new NO2(),
+            'co' => new CO(),
+            'no2' => new NO2(),
         ];
 
         $this->assertEquals($expectedMeasurementList, $actualMeasurementList);

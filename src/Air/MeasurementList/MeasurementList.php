@@ -6,8 +6,7 @@ use App\Air\Measurement\MeasurementInterface;
 
 class MeasurementList implements MeasurementListInterface
 {
-    /** @var array $list */
-    protected $list = [];
+    protected array $list = [];
 
     public function addMeasurement(MeasurementInterface $measurement): MeasurementListInterface
     {
@@ -27,7 +26,7 @@ class MeasurementList implements MeasurementListInterface
 
         /** @var MeasurementInterface $measurement */
         foreach ($this->list as $measurement) {
-            $measurementId = constant(sprintf('App\\Pollution\\Pollutant\\PollutantInterface::POLLUTANT_%s', strtoupper($measurement->getIdentifier())));
+            $measurementId = constant(sprintf('App\\Air\\Measurement\\MeasurementInterface::MEASUREMENT_%s', strtoupper($measurement->getIdentifier())));
 
             $measurementListWithIds[$measurementId] = $measurement;
         }

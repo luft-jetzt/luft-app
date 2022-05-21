@@ -10,7 +10,7 @@ final class StationType extends AbstractEnumType
     public const BACKGROUND = 'background';
     public const INDUSTRIAL= 'industrial';
 
-    protected static $choices = [
+    protected static array $choices = [
         self::TRAFFIC => 'station.type.traffic',
         self::BACKGROUND => 'station.type.background',
         self::INDUSTRIAL => 'station.type.industrial',

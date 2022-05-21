@@ -1,24 +1,22 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace App\Pollution\DataPersister;
 
-use App\Entity\Data;
 use App\Pollution\DataCache\DataCacheInterface;
 use App\Pollution\StationCache\StationCacheInterface;
-use App\Pollution\UniqueStrategy\UniqueStrategyInterface;
 use App\Pollution\Value\Value;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use App\Pollution\ValueDataConverter\ValueDataConverter;
 
 class CachePersister extends AbstractPersister
 {
-    /** @var DataCacheInterface $dataCache */
-    protected $dataCache;
+    protected DataCacheInterface $dataCache;
 
-    public function __construct(DataCacheInterface $dataCache, RegistryInterface $doctrine, StationCacheInterface $stationCache, UniqueStrategyInterface $uniqueStrategy)
+    public function __construct(DataCacheInterface $dataCache, StationCacheInterface $stationCache)
     {
         $this->dataCache = $dataCache;
 
-        parent::__construct($doctrine, $stationCache, $uniqueStrategy);
+        parent::__construct($stationCache);
     }
 
     public function persistValues(array $values): PersisterInterface
@@ -29,22 +27,31 @@ class CachePersister extends AbstractPersister
 
         /** @var Value $value */
         foreach ($values as $value) {
-            $data = new Data();
-
-            $data
-                ->setDateTime($value->getDateTime())
-                ->setValue($value->getValue())
-                ->setPollutant($value->getPollutant());
-
             if ($this->stationExists($value->getStation())) {
-                $data->setStation($this->getStationByCode($value->getStation()));
+                $station = $this->getStationByCode($value->getStation());
+
+                $data = ValueDataConverter::convert($value, $station);
+
+                if (!$data) {
+                    continue;
+                }
             } else {
                 continue;
             }
 
             $this->dataCache->addData($data);
         }
-        
+
+        return $this;
+    }
+
+    public function getNewValueList(): array
+    {
+        return [];
+    }
+
+    public function reset(): PersisterInterface
+    {
         return $this;
     }
 }

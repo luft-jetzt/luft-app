@@ -1,24 +1,31 @@
 var Encore = require('@symfony/webpack-encore');
 
+// Manually configure the runtime environment if not already configured yet by the "encore" command.
+// It's useful when you use tools that rely on webpack.config.js file.
+if (!Encore.isRuntimeEnvironmentConfigured()) {
+    Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
+}
+
 Encore
-    // the project directory where compiled assets will be stored
     .setOutputPath('public/build/')
-    // the public path used by the web server to access the previous directory
     .setPublicPath('/build')
     .cleanupOutputBeforeBuild()
+    .enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
-    // uncomment to create hashed filenames (e.g. app.abc123.css)
-    // .enableVersioning(Encore.isProduction())
-
-    // uncomment to define the assets of the project
-    // .addEntry('js/app', './assets/js/app.js')
-    // .addStyleEntry('css/app', './assets/css/app.scss')
-
-    // uncomment if you use Sass/SCSS files
-    // .enableSassLoader()
-
-    // uncomment for legacy applications that require $/jQuery as a global variable
-    // .autoProvidejQuery()
+    .enableSingleRuntimeChunk()
+    .addEntry('js/app', './assets/js/app.js')
+    .addStyleEntry('css/app', './assets/scss/app.scss')
+    .enableSassLoader()
+    .autoProvidejQuery()
+    .copyFiles({
+        from: './assets/img',
+        to: 'images/[path][name].[ext]',
+    })
+    .copyFiles({
+        from: 'node_modules/leaflet-extra-markers/dist/img/',
+        to: 'images/extramarkers/[name].[ext]',
+    })
+    .enableVersioning()
 ;
 
 module.exports = Encore.getWebpackConfig();
