@@ -2,11 +2,10 @@
 
 namespace App\Geocoding\RequestConverter;
 
-use App\Geocoding\Query\GeoQueryInterface;
-use Caldera\GeoBasic\Coord\Coord;
+use Caldera\GeoBasic\Coordinate\CoordinateInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 interface RequestConverterInterface
 {
-    public function getCoordByRequest(Request $request): ?Coord;
+    public function getCoordByRequest(Request $request): ?CoordinateInterface;
 }

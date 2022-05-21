@@ -2,8 +2,9 @@
 
 namespace App\Menu;
 
-use App\Pollution\Pollutant\PollutantInterface;
-use App\Pollution\PollutantList\PollutantListInterface;
+use App\Air\Measurement\MeasurementInterface;
+use App\Air\MeasurementList\MeasurementListInterface;
+use Flagception\Manager\FeatureManagerInterface;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -11,16 +12,15 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class MainMenuBuilder extends AbstractBuilder
 {
-    /** @var PollutantListInterface $pollutantList */
-    protected $pollutantList;
+    protected MeasurementListInterface $measurementList;
+    protected RouterInterface $router;
+    protected FeatureManagerInterface $featureManager;
 
-    /** @var RouterInterface $router */
-    protected $router;
-
-    public function __construct(FactoryInterface $factory, TokenStorageInterface $tokenStorage, PollutantListInterface $pollutantList, RouterInterface $router)
+    public function __construct(FeatureManagerInterface $featureManager, FactoryInterface $factory, TokenStorageInterface $tokenStorage, MeasurementListInterface $measurementList, RouterInterface $router)
     {
-        $this->pollutantList = $pollutantList;
+        $this->measurementList = $measurementList;
         $this->router = $router;
+        $this->featureManager = $featureManager;
 
         parent::__construct($factory, $tokenStorage);
     }
@@ -37,18 +37,27 @@ class MainMenuBuilder extends AbstractBuilder
             ],
         ]);
 
-        $this->buildPollutantMenuItems($pollutantDropdown);
+        $this->addMeasurementDropdown($pollutantDropdown);
 
         $pollutantDropdown->addChild('Grenzwerte', ['route' => 'limits', 'attributes' => ['divider_prepend' => true]]);
         $pollutantDropdown->addChild('Fahrverbote', ['uri' => 'https://sqi.be/i7vfr']);
 
-        $analysisDropdown = $menu->addChild('Analyse', [
-            'attributes' => [
-                'dropdown' => true,
-            ],
-        ]);
+        if ($this->featureManager->isActive('analysis')) {
+            $analysisDropdown = $menu->addChild('Analyse', [
+                'attributes' => [
+                    'dropdown' => true,
+                ],
+            ]);
 
-        $analysisDropdown->addChild('Komfortofen-Finder', ['route' => 'analysis_komfortofen']);
+            if ($this->featureManager->isActive('analysis_komfortofen')) {
+                $analysisDropdown->addChild('Komfortofen-Finder <sup>beta</sup>', ['route' => 'analysis_komfortofen']);
+            }
+
+            if ($this->featureManager->isActive('analysis_fireworks')) {
+                $analysisDropdown->addChild('Silvester-Feuerwerk <sup>beta</sup>', ['route' => 'analysis_fireworks']);
+                $analysisDropdown->addChild('Corona-Feuerwerk <sup>beta</sup>', ['route' => 'analysis_fireworks_corona']);
+            }
+        }
 
         $aboutDropdown = $menu->addChild('Über', [
             'attributes' => [
@@ -71,11 +80,11 @@ class MainMenuBuilder extends AbstractBuilder
         return $menu;
     }
 
-    protected function buildPollutantMenuItems(ItemInterface $pollutantDropdown): ItemInterface
+    protected function addMeasurementDropdown(ItemInterface $measurementDropdown): ItemInterface
     {
-        $pollutants = $this->pollutantList->getPollutants();
+        $measurements = $this->measurementList->getMeasurements();
 
-        usort($pollutants, function(PollutantInterface $a, PollutantInterface $b): int {
+        usort($measurements, function(MeasurementInterface $a, MeasurementInterface $b): int {
             if ($a->getName() === $b->getName()) {
                 return 0;
             }
@@ -83,17 +92,17 @@ class MainMenuBuilder extends AbstractBuilder
             return ($a->getName() < $b->getName()) ? -1 : 1;
         });
 
-        /** @var PollutantInterface $pollutant */
-        foreach ($pollutants as $pollutant) {
-            $routeName = sprintf('pollutant_%s', strtolower($pollutant->getIdentifier()));
+        /** @var MeasurementInterface $measurement */
+        foreach ($measurements as $measurement) {
+            $routeName = sprintf('pollutant_%s', strtolower($measurement->getIdentifier()));
 
             if ($this->router->getRouteCollection()->get($routeName)) {
-                $label = sprintf('%s (%s)', $pollutant->getName(), $pollutant->getShortNameHtml());
+                $label = sprintf('%s (%s)', $measurement->getName(), $measurement->getShortNameHtml());
 
-                $pollutantDropdown->addChild($label, ['route' => $routeName, 'attributes' => ['title' => sprintf('Erfahre mehr über %s', $label)]]);
+                $measurementDropdown->addChild($label, ['route' => $routeName, 'attributes' => ['title' => sprintf('Erfahre mehr über %s', $label)]]);
             }
         }
 
-        return $pollutantDropdown;
+        return $measurementDropdown;
     }
 }

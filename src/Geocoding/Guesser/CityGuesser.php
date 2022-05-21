@@ -3,7 +3,9 @@
 namespace App\Geocoding\Guesser;
 
 use Caldera\GeoBasic\Coord\Coord;
+use Geocoder\Model\AddressCollection;
 use Geocoder\Query\ReverseQuery;
+use Http\Client\Exception\NetworkException;
 
 class CityGuesser extends AbstractGuesser implements CityGuesserInterface
 {
@@ -16,12 +18,19 @@ class CityGuesser extends AbstractGuesser implements CityGuesserInterface
 
     public function guess(Coord $coord): ?string
     {
-        $result = $this->geocoder->reverseQuery(ReverseQuery::fromCoordinates($coord->getLatitude(), $coord->getLongitude()));
+        $query = ReverseQuery::fromCoordinates($coord->getLatitude(), $coord->getLongitude());
 
-        if (!$result || !$result->first() || (!$result->first()->getLocality() && !$result->first()->getSubLocality())) {
+        try {
+            /** @var AddressCollection $addressCollection */
+            $addressCollection = $this->provider->reverseQuery($query);
+        } catch (NetworkException $networkException) {
             return null;
         }
 
-        return $result->first()->getLocality() ?? $result->first()->getSubLocality();
+        if (!$addressCollection || !$addressCollection->first() || (!$addressCollection->first()->getLocality() && !$addressCollection->first()->getSubLocality())) {
+            return null;
+        }
+
+        return $addressCollection->first()->getLocality() ?? $addressCollection->first()->getSubLocality();
     }
 }

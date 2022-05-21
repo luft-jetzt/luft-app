@@ -2,13 +2,13 @@
 
 namespace App\Pollution\DataList;
 
+use App\Air\Measurement\MeasurementInterface;
 use App\Entity\Data;
-use App\Pollution\Pollutant\PollutantInterface;
+use App\Pollution\UniqueStrategy\Hasher;
 
 class DataList implements DataListInterface
 {
-    /** @var array $list */
-    protected $list = [];
+    protected array $list = [];
 
     public function __construct()
     {
@@ -17,7 +17,7 @@ class DataList implements DataListInterface
 
     public function addData(Data $data): DataListInterface
     {
-        $this->list[$data->getPollutant()][$data->getId()] = $data;
+        $this->list[$data->getPollutant()][Hasher::hashData($data)] = $data;
 
         return $this;
     }
@@ -42,12 +42,16 @@ class DataList implements DataListInterface
     public function reset(): DataListInterface
     {
         $this->list = [
-            PollutantInterface::POLLUTANT_PM10 => [],
-            PollutantInterface::POLLUTANT_PM25 => [],
-            PollutantInterface::POLLUTANT_O3 => [],
-            PollutantInterface::POLLUTANT_NO2 => [],
-            PollutantInterface::POLLUTANT_SO2 => [],
-            PollutantInterface::POLLUTANT_CO => [],
+            MeasurementInterface::MEASUREMENT_PM25 => [],
+            MeasurementInterface::MEASUREMENT_PM10 => [],
+            MeasurementInterface::MEASUREMENT_O3 => [],
+            MeasurementInterface::MEASUREMENT_NO2 => [],
+            MeasurementInterface::MEASUREMENT_SO2 => [],
+            MeasurementInterface::MEASUREMENT_CO => [],
+            MeasurementInterface::MEASUREMENT_CO2 => [],
+            MeasurementInterface::MEASUREMENT_UVINDEX => [],
+            MeasurementInterface::MEASUREMENT_TEMPERATURE => [],
+            MeasurementInterface::MEASUREMENT_CORONAINCIDENCE => [],
         ];
 
         return $this;

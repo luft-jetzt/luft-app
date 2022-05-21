@@ -2,8 +2,7 @@
 
 namespace App\Provider;
 
-use App\Entity\Station;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 abstract class AbstractStationLoader implements StationLoaderInterface
 {
@@ -13,10 +12,9 @@ abstract class AbstractStationLoader implements StationLoaderInterface
     /** @var array $newStationList */
     protected $newStationList = [];
 
-    /** @var RegistryInterface $registry */
-    protected $registry;
+    protected ManagerRegistry $registry;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;
     }

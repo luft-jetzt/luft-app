@@ -2,10 +2,9 @@
 
 namespace App\Entity;
 
+use Caldera\GeoBasic\Coordinate\Coordinate;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Caldera\GeoBasic\Coord\Coord;
-use App\DBAL\Types\StationType;
 use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -17,7 +16,7 @@ use JMS\Serializer\Annotation as JMS;
  * @UniqueEntity("stationCode")
  * @JMS\ExclusionPolicy("ALL")
  */
-class Station extends Coord
+class Station extends Coordinate
 {
     /**
      * @ORM\Id
@@ -33,6 +32,12 @@ class Station extends Coord
     protected $stationCode;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @JMS\Expose()
+     */
+    protected $ubaStationId;
+
+    /**
      * @ORM\Column(type="string", nullable=true)
      * @JMS\Expose()
      */
@@ -42,13 +47,13 @@ class Station extends Coord
      * @ORM\Column(type="float", nullable=false)
      * @JMS\Expose()
      */
-    protected $latitude;
+    protected ?float $latitude = null;
 
     /**
      * @ORM\Column(type="float", nullable=false)
      * @JMS\Expose()
      */
-    protected $longitude;
+    protected ?float $longitude = null;
 
     /**
      * @ORM\OneToMany(targetEntity="TwitterSchedule", mappedBy="station")
@@ -112,12 +117,19 @@ class Station extends Coord
         parent::__construct($latitude, $longitude);
     }
 
-    public function getId(): int
+    public function setId(int $id): Station
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getStationCode(): string
+    public function getStationCode(): ?string
     {
         return $this->stationCode;
     }
@@ -125,6 +137,18 @@ class Station extends Coord
     public function setStationCode(string $stationCode): Station
     {
         $this->stationCode = $stationCode;
+
+        return $this;
+    }
+
+    public function getUbaStationId()
+    {
+        return $this->ubaStationId;
+    }
+
+    public function setUbaStationId($ubaStationId)
+    {
+        $this->ubaStationId = $ubaStationId;
 
         return $this;
     }

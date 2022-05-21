@@ -2,11 +2,10 @@
 
 namespace App\EventSubscriber;
 
+use App\Air\MeasurementList\MeasurementListInterface;
 use App\Entity\City;
 use App\Entity\Station;
-use App\Pollution\Pollutant\PollutantInterface;
-use App\Pollution\PollutantList\PollutantListInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
@@ -16,24 +15,17 @@ use Symfony\Component\Routing\RouterInterface;
 
 class SitemapEventSubscriber implements EventSubscriberInterface
 {
-    /** @var UrlGeneratorInterface $urlGenerator */
-    protected $urlGenerator;
+    protected UrlGeneratorInterface $urlGenerator;
+    protected RouterInterface $router;
+    protected ManagerRegistry $registry;
+    protected MeasurementListInterface $measurementList;
 
-    /** @var RouterInterface $router */
-    protected $router;
-
-    /** @var RegistryInterface $registry */
-    protected $registry;
-
-    /** @var PollutantListInterface $pollutantList */
-    protected $pollutantList;
-
-    public function __construct(UrlGeneratorInterface $urlGenerator, RouterInterface $router, RegistryInterface $registry, PollutantListInterface $pollutantList)
+    public function __construct(UrlGeneratorInterface $urlGenerator, RouterInterface $router, ManagerRegistry $registry, MeasurementListInterface $measurementList)
     {
         $this->urlGenerator = $urlGenerator;
         $this->router = $router;
         $this->registry = $registry;
-        $this->pollutantList = $pollutantList;
+        $this->measurementList = $measurementList;
     }
 
     public static function getSubscribedEvents(): array
@@ -76,9 +68,9 @@ class SitemapEventSubscriber implements EventSubscriberInterface
 
     public function registerPollutantUrls(UrlContainerInterface $urlContainer): void
     {
-        /** @var PollutantInterface $pollutant */
-        foreach ($this->pollutantList->getPollutants() as $pollutant) {
-            $routeName = sprintf('pollutant_%s', $pollutant->getIdentifier());
+        /** @var MeasurementListInterface $measurement */
+        foreach ($this->measurementList->getMeasurements() as $measurement) {
+            $routeName = sprintf('pollutant_%s', $measurement->getIdentifier());
 
             if ($this->router->getRouteCollection()->get($routeName)) {
                 $url = $this->urlGenerator->generate($routeName, [], UrlGeneratorInterface::ABSOLUTE_URL);

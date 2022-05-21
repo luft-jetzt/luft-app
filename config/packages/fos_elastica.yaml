@@ -1,50 +1,57 @@
 fos_elastica:
     clients:
-        default: { host: localhost, port: 9200 }
+        default:
+            host: 127.0.0.1
+            port: 9200
     indexes:
         air_station:
             client: default
             finder: ~
-            types:
-                station:
-                    properties:
-                        pin:
-                            type: geo_point
-                        fromDate:
-                            type: date
-                            format: "yyyy-MM-dd HH:mm:ss"
-                            property_path: fromDateFormatted
-                        untilDate:
-                            type: date
-                            format: "yyyy-MM-dd HH:mm:ss"
-                            property_path: untilDateFormatted
-                    persistence:
-                        driver: orm
-                        model: App\Entity\Station
-                        provider: ~
-                        listener: ~
-                        finder: ~
+            properties:
+                pin:
+                    type: geo_point
+                fromDate:
+                    type: date
+                    format: "yyyy-MM-dd HH:mm:ss"
+                    property_path: fromDateFormatted
+                untilDate:
+                    type: date
+                    format: "yyyy-MM-dd HH:mm:ss"
+                    property_path: untilDateFormatted
+                stationCode: ~
+                provider: ~
+            persistence:
+                driver: orm
+                model: App\Entity\Station
+                provider: ~
+                listener: ~
+                finder: ~
         air_data:
             client: default
             finder: ~
-            types:
-                data:
-                    properties:
-                        value:
-                            type: float
-                        pollutant:
-                            type: integer
-                        station:
-                            property_path: stationId
-                            type: integer
-                        dateTime:
-                            type: date
-                            format: "yyyy-MM-dd HH:mm:ss"
-                            property_path: dateTimeFormatted
-                    indexable_callback: 'isIndexable'
-                    persistence:
-                        driver: orm
-                        model: App\Entity\Data
-                        provider: ~
-                        listener: ~
-                        finder: ~
+            properties:
+                provider:
+                    type: keyword
+                    property_path: provider
+                stationCode:
+                    type: keyword
+                    property_path: stationCode
+                pin:
+                    type: geo_point
+                value:
+                    type: float
+                pollutant:
+                    type: integer
+                tag:
+                    type: text
+                dateTime:
+                    type: date
+                    format: "yyyy-MM-dd HH:mm:ss"
+                    property_path: dateTimeFormatted
+            indexable_callback: 'isIndexable'
+            persistence:
+                driver: orm
+                model: App\Entity\Data
+                provider: ~
+                listener: ~
+                finder: ~

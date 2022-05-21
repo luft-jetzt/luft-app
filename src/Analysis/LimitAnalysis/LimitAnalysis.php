@@ -2,26 +2,17 @@
 
 namespace App\Analysis\LimitAnalysis;
 
+use App\Air\Measurement\MeasurementInterface;
 use App\Entity\Station;
-use App\Pollution\Pollutant\PollutantInterface;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 
 class LimitAnalysis implements LimitAnalysisInterface
 {
-    /** @var Station $station */
-    protected $station;
-
-    /** @var PollutantInterface $pollutant */
-    protected $pollutant;
-
-    /** @var PaginatedFinderInterface $finder */
-    protected $finder;
-
-    /** @var \DateTimeInterface $fromDateTime */
-    protected $fromDateTime;
-
-    /** @var \DateTimeInterface $untilDateTime */
-    protected $untilDateTime;
+    protected ?Station $station = null;
+    protected ?MeasurementInterface $measurement = null;
+    protected ?PaginatedFinderInterface $finder = null;
+    protected ?\DateTimeInterface $fromDateTime = null;
+    protected ?\DateTimeInterface $untilDateTime = null;
 
     public function __construct(PaginatedFinderInterface $finder)
     {
@@ -35,9 +26,9 @@ class LimitAnalysis implements LimitAnalysisInterface
         return $this;
     }
 
-    public function setPollutant(PollutantInterface $pollutant): LimitAnalysisInterface
+    public function setMeasurement(MeasurementInterface $measurement): LimitAnalysisInterface
     {
-        $this->pollutant = $pollutant;
+        $this->measurement = $measurement;
 
         return $this;
     }

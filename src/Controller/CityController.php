@@ -7,46 +7,49 @@ use App\Entity\User;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
 use Codebird\Codebird;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class CityController extends AbstractController
 {
-    public function showAction(SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory, string $citySlug): Response
+    /**
+     * @Entity("city", expr="repository.findOneBySlug(citySlug)")
+     */
+    public function showAction(SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory, City $city, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
     {
-        /** @var City $city */
-        $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
-
-        if (!$city) {
-            throw $this->createNotFoundException();
-        }
-
         $seoPage
             ->setTitle(sprintf('Luftmesswerte aus %s: Stickstoffdioxid, Feinstaub und Ozon', $city->getName()))
-            ->setDescription(sprintf('Aktuelle Schadstoffwerte aus Luftmessstationen in %s: Stickstoffdioxid, Feinstaub und Ozon', $city->getName()))
-        ;
+            ->setDescription(sprintf('Aktuelle Schadstoffwerte aus Luftmessstationen in %s: Stickstoffdioxid, Feinstaub und Ozon', $city->getName()));
+
+        $breadcrumbs
+            ->addItem('Luft', $router->generate('display'))
+            ->addItem($city->getName(), $router->generate('show_city', ['citySlug' => $city->getSlug()]));
 
         $stationList = $this->getStationListForCity($city);
-        $stationsBoxList = $this->createBoxListForStationList($pollutionDataFactory, $stationList);
+        $stationViewModelList = $this->createViewModelListForStationList($pollutionDataFactory, $stationList);
 
         return $this->render('City/show.html.twig', [
             'city' => $city,
             'stationList' => $stationList,
-            'stationBoxList' => $stationsBoxList,
+            'stationBoxList' => $stationViewModelList,
         ]);
     }
 
-    public function twitterAction(Session $session, string $citySlug): Response
+    /**
+     * @Entity("city", expr="repository.findOneBySlug(citySlug)")
+     */
+    public function twitterAction(Session $session, City $city): Response
     {
-        /** @var City $city */
-        $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
-
-        if (!$city || $city->getUser()) {
-            throw $this->createNotFoundException();
+        if (!$city->getUser()) {
+            throw $this->createAccessDeniedException();
         }
 
         $session->set('twitterCity', $city);
@@ -56,15 +59,11 @@ class CityController extends AbstractController
         ]);
     }
 
-    public function twitterAuthAction(Session $session, string $citySlug): Response
+    /**
+     * @Entity("city", expr="repository.findOneBySlug(citySlug)")
+     */
+    public function twitterAuthAction(Session $session, City $city): Response
     {
-        /** @var City $city */
-        $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
-
-        if (!$city) {
-            throw $this->createNotFoundException();
-        }
-
         $cb = $this->getCodeBird();
 
         $callbackUrl = $this->generateUrl('twitter_token', ['citySlug' => $city->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL);
@@ -81,15 +80,11 @@ class CityController extends AbstractController
         return new RedirectResponse($cb->oauth_authorize());
     }
 
-    public function twitterTokenAction(Session $session, Request $request, UserInterface $user, string $citySlug): Response
+    /**
+     * @Entity("city", expr="repository.findOneBySlug(citySlug)")
+     */
+    public function twitterTokenAction(Session $session, Request $request, UserInterface $user, City $city): Response
     {
-        /** @var City $city */
-        $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
-
-        if (!$city) {
-            throw $this->createNotFoundException();
-        }
-
         $cb = $this->getCodeBird();
         $cb->setToken($session->get('oauth_token'), $session->get('oauth_token_secret'));
 

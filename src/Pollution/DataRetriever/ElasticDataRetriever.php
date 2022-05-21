@@ -2,50 +2,100 @@
 
 namespace App\Pollution\DataRetriever;
 
-use App\Entity\Data;
 use App\Entity\Station;
-use FOS\ElasticaBundle\Finder\FinderInterface;
+use App\Pollution\DataFinder\ElasticFinder;
+use App\Pollution\StationCache\StationCacheInterface;
+use Caldera\GeoBasic\Coord\CoordInterface;
 
 class ElasticDataRetriever implements DataRetrieverInterface
 {
-    /** @var FinderInterface $dataFinder */
-    protected $dataFinder;
+    protected StationCacheInterface $stationCache;
 
-    public function __construct(FinderInterface $dataFinder)
+    protected ElasticFinder $finder;
+
+    public function __construct(ElasticFinder $finder, StationCacheInterface $stationCache)
     {
-        $this->dataFinder = $dataFinder;
+        $this->finder = $finder;
+        $this->stationCache = $stationCache;
     }
 
-    public function retrieveStationData(Station $station, int $pollutant, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, string $order = 'DESC'): ?Data
+    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId = null, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 750): array
     {
-        $stationQuery = new \Elastica\Query\Term(['station' => $station->getId()]);
-        $pollutantQuery = new \Elastica\Query\Term(['pollutant' => $pollutant]);
+        $fromDateTime = new \DateTime();
+        $fromDateTime->sub(new \DateInterval('PT8H'));
 
-        $boolQuery = new \Elastica\Query\BoolQuery();
-        $boolQuery
-            ->addMust($pollutantQuery)
-            ->addMust($stationQuery);
+        $query = new \Elastica\Query(new \Elastica\Query\MatchAll());
+        $query->setSize(0);
 
         if ($fromDateTime && $dateInterval) {
-            $untilDateTime = clone $fromDateTime;
-            $untilDateTime->add($dateInterval);
+            $untilDateTime = (clone $fromDateTime)->add($dateInterval);
+            $untilDateTime = new \DateTime();
 
-            $dateTimeQuery = new \Elastica\Query\Range('dateTime', ['gt' => $fromDateTime->format('Y-m-d H:i:s'), 'lte' => $untilDateTime->format('Y-m-d H:i:s'), 'format' => 'yyyy-MM-dd HH:mm:ss']);
+            $dateTimeAggregation = new \Elastica\Aggregation\Range('datetime_agg');
+            $dateTimeAggregation->setField('dateTime');
+            $dateTimeAggregation->addRange(
+                $fromDateTime->format('Y-m-d H:i:s'),
+                $untilDateTime->format('Y-m-d H:i:s')
+            );
 
-            $boolQuery->addMust($dateTimeQuery);
+            $query->addAggregation($dateTimeAggregation);
         }
 
-        $query = new \Elastica\Query($boolQuery);
-        $query
-            ->setSort(['dateTime' => ['order' => strtolower($order)]])
-            ->setSize(1);
+        $pollutantAggregation = new \Elastica\Aggregation\Terms('pollutant_agg');
+        $pollutantAggregation->setField('pollutant');
 
-        $results = $this->dataFinder->find($query);
-
-        if (count($results) === 1) {
-            return array_pop($results);
+        if ($fromDateTime && $dateInterval) {
+            $dateTimeAggregation->addAggregation($pollutantAggregation);
+        } else {
+            $query->addAggregation($pollutantAggregation);
         }
 
-        return null;
+        if ($coord instanceof Station) {
+            $stationAggregation = new \Elastica\Aggregation\Terms('station_agg');
+            $stationAggregation->setField('stationCode');
+            $stationAggregation->setInclude($coord->getStationCode());
+
+            $pollutantAggregation->addAggregation($stationAggregation);
+        } else {
+            $providerAggregation = new \Elastica\Aggregation\Terms('provider_agg');
+            $providerAggregation->setField('provider');
+            $pollutantAggregation->addAggregation($providerAggregation);
+
+            $geodistanceAggregation = new \Elastica\Aggregation\GeoDistance(
+                'geodistance_agg',
+                'pin',
+                $coord->toLatLonArray()
+            );
+            $geodistanceAggregation->addRange(null, $maxDistance);
+            $geodistanceAggregation->setUnit('km');
+
+            $providerAggregation->addAggregation($geodistanceAggregation);
+        }
+
+        $topHitsAggregation = new \Elastica\Aggregation\TopHits('top_hits_agg');
+        $topHitsAggregation->setSize(1);
+        $topHitsAggregation->setSort([[
+            '_geo_distance' => [
+                'pin' => [
+                    'lat' => $coord->getLatitude(),
+                    'lon' => $coord->getLongitude(),
+                ],
+                'order' => 'ASC',
+                'unit' => 'km',
+            ],
+            'dateTime' => 'DESC',
+        ],
+        ]);
+
+        if ($coord instanceof Station) {
+            $stationAggregation->addAggregation($topHitsAggregation);
+        } else {
+            $geodistanceAggregation->addAggregation($topHitsAggregation);
+        }
+
+        //dd(json_encode($query->toArray()));
+        $result = $this->finder->find($query);
+
+        return $result;
     }
 }
