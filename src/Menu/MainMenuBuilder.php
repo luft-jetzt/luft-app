@@ -12,14 +12,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class MainMenuBuilder extends AbstractBuilder
 {
-    /** @var MeasurementListInterface $measurementList */
-    protected $measurementList;
-
-    /** @var RouterInterface $router */
-    protected $router;
-
-    /** @var FeatureManagerInterface $featureManager */
-    protected $featureManager;
+    protected MeasurementListInterface $measurementList;
+    protected RouterInterface $router;
+    protected FeatureManagerInterface $featureManager;
 
     public function __construct(FeatureManagerInterface $featureManager, FactoryInterface $factory, TokenStorageInterface $tokenStorage, MeasurementListInterface $measurementList, RouterInterface $router)
     {
@@ -60,6 +55,7 @@ class MainMenuBuilder extends AbstractBuilder
 
             if ($this->featureManager->isActive('analysis_fireworks')) {
                 $analysisDropdown->addChild('Silvester-Feuerwerk <sup>beta</sup>', ['route' => 'analysis_fireworks']);
+                $analysisDropdown->addChild('Corona-Feuerwerk <sup>beta</sup>', ['route' => 'analysis_fireworks_corona']);
             }
         }
 

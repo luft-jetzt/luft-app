@@ -10,8 +10,8 @@ use App\Pollution\DataRetriever\Co2CachedDataRetriever;
 use App\Provider\NoaaProvider\NoaaProvider;
 use App\Repository\StationRepository;
 use Caldera\GeoBasic\Coord\Coord;
+use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\TestCase;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class Co2CachedDataRetrieverTest extends TestCase
 {
@@ -35,7 +35,7 @@ class Co2CachedDataRetrieverTest extends TestCase
             ->with($this->equalTo('findOneByStationCode'), $this->equalTo(['USHIMALO']))
             ->will($this->returnValue($station));
 
-        $registry = $this->createMock(RegistryInterface::class);
+        $registry = $this->createMock(ManagerRegistry::class);
         $registry
             ->expects($this->once())
             ->method('getRepository')
@@ -59,7 +59,7 @@ class Co2CachedDataRetrieverTest extends TestCase
             ->expects($this->never())
             ->method('getData');
 
-        $registry = $this->createMock(RegistryInterface::class);
+        $registry = $this->createMock(ManagerRegistry::class);
         $registry
             ->expects($this->never())
             ->method('getRepository');
@@ -81,7 +81,7 @@ class Co2CachedDataRetrieverTest extends TestCase
             ->expects($this->never())
             ->method('getData');
 
-        $registry = $this->createMock(RegistryInterface::class);
+        $registry = $this->createMock(ManagerRegistry::class);
         $registry
             ->expects($this->never())
             ->method('getRepository');

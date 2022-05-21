@@ -2,7 +2,10 @@
 
 namespace App\Geocoding\Geocoder;
 
+use Geocoder\Model\AddressCollection;
+
 interface GeocoderInterface
 {
     public function query(string $queryString): array;
+    public function queryZip(string $zipCode): AddressCollection;
 }

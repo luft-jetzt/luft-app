@@ -6,25 +6,28 @@ use App\Air\Measurement\MeasurementInterface;
 use App\Entity\Data;
 use App\Entity\Station;
 use App\Pollution\ValueDataConverter\ValueDataConverter;
-use App\Provider\OpenWeatherMapProvider\SourceFetcher\Parser\JsonParserInterface;
-use App\Provider\OpenWeatherMapProvider\SourceFetcher\SourceFetcher;
+use App\Provider\OpenWeatherMapProvider\SourceFetcher\Parser\JsonParserInterface as OwmJsonParserInterface;
+use App\Provider\OpenWeatherMapProvider\SourceFetcher\SourceFetcher as OwmSourceFetcher;
+use App\Provider\CoronaProvider\SourceFetcher\Parser\JsonParserInterface as CoronaParserInterface;
+use App\Provider\CoronaProvider\SourceFetcher\SourceFetcher as CoronaSourceFetcher;
 use Caldera\GeoBasic\Coord\CoordInterface;
 
 class AdhocDataRetriever implements DataRetrieverInterface
 {
-    /** @var SourceFetcher $sourceFetcher */
-    protected $sourceFetcher;
+    protected OwmSourceFetcher $owmSourceFetcher;
+    protected OwmJsonParserInterface $owmJsonParser;
+    protected CoronaSourceFetcher $coronaSourceFetcher;
+    protected CoronaParserInterface $coronaJsonParser;
 
-    /** @var JsonParserInterface $jsonParser */
-    protected $jsonParser;
-
-    public function __construct(SourceFetcher $sourceFetcher, JsonParserInterface $jsonParser)
+    public function __construct(OwmSourceFetcher $owmSourceFetcher, OwmJsonParserInterface $owmJsonParser, CoronaParserInterface $coronaParserInterface, CoronaSourceFetcher $coronaSourceFetcher)
     {
-        $this->sourceFetcher = $sourceFetcher;
-        $this->jsonParser = $jsonParser;
+        $this->owmSourceFetcher = $owmSourceFetcher;
+        $this->owmJsonParser = $owmJsonParser;
+        $this->coronaSourceFetcher = $coronaSourceFetcher;
+        $this->coronaJsonParser = $coronaParserInterface;
     }
 
-    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 250): array
+    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId = null, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 250): array
     {
         if ($coord instanceof Station) {
             return [];
@@ -46,7 +49,17 @@ class AdhocDataRetriever implements DataRetrieverInterface
             if (!$data) {
                 return [];
             }
-            
+
+            return [$data];
+        }
+
+        if (MeasurementInterface::MEASUREMENT_CORONAINCIDENCE === $pollutantId) {
+            $data = $this->retrieveCoronaIncidenceForCoord($coord);
+
+            if (!$data) {
+                return [];
+            }
+
             return [$data];
         }
 
@@ -55,9 +68,9 @@ class AdhocDataRetriever implements DataRetrieverInterface
 
     protected function retrieveUVIndexForCoord(CoordInterface $coord): ?Data
     {
-        $jsonData = $this->sourceFetcher->queryUVIndex($coord);
+        $jsonData = $this->owmSourceFetcher->queryUVIndex($coord);
 
-        $value = $this->jsonParser->parseUVIndex($jsonData);
+        $value = $this->owmJsonParser->parseUVIndex($jsonData);
 
         $station = new Station($coord->getLatitude(), $coord->getLongitude());
         return ValueDataConverter::convert($value, $station);
@@ -65,9 +78,19 @@ class AdhocDataRetriever implements DataRetrieverInterface
 
     protected function retrieveTemperatureForCoord(CoordInterface $coord): ?Data
     {
-        $jsonData = $this->sourceFetcher->queryTemperature($coord);
+        $jsonData = $this->owmSourceFetcher->queryTemperature($coord);
 
-        $value = $this->jsonParser->parseTemperature($jsonData);
+        $value = $this->owmJsonParser->parseTemperature($jsonData);
+
+        $station = new Station($coord->getLatitude(), $coord->getLongitude());
+        return ValueDataConverter::convert($value, $station);
+    }
+
+    protected function retrieveCoronaIncidenceForCoord(CoordInterface $coord): ?Data
+    {
+        $jsonData = $this->coronaSourceFetcher->queryCoronaIncidence($coord);
+
+        $value = $this->coronaJsonParser->parseCoronaIncidence($jsonData);
 
         $station = new Station($coord->getLatitude(), $coord->getLongitude());
         return ValueDataConverter::convert($value, $station);

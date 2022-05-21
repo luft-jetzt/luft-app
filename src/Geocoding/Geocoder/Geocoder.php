@@ -30,10 +30,7 @@ class Geocoder extends AbstractGeocoder
             $latitude = $nominatimAddress->getCoordinates()->getLatitude();
             $longitude = $nominatimAddress->getCoordinates()->getLongitude();
 
-            $url = $this->router->generate('display', ['latitude' => $latitude, 'longitude' => $longitude]);
-
             $value = [
-                'url' => $url,
                 'latitude' => $latitude,
                 'longitude' => $longitude,
             ];
@@ -70,5 +67,12 @@ class Geocoder extends AbstractGeocoder
         }
 
         return $result;
+    }
+    public function queryZip(string $zipCode): AddressCollection
+    {
+        $query = GeocodeQuery::create(sprintf('%s, Germany', $zipCode));
+
+        /** @var AddressCollection $addressCollection */
+        return $this->provider->geocodeQuery($query);
     }
 }

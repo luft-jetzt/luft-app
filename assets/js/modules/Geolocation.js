@@ -9,10 +9,13 @@ export default class Geolocation {
 
     init(element) {
         const that = this;
+        this.element = element;
 
-        element.addEventListener('click', function () {
+        element.addEventListener('click', (event) => {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(that.success, that.error, {
+                that.disableButton(event.target);
+
+                navigator.geolocation.getCurrentPosition(that.success.bind(that), that.error.bind(that), {
                     enableHighAccuracy: true,
                     timeout: 5000,
                     maximumAge: 0
@@ -23,22 +26,48 @@ export default class Geolocation {
         });
     }
 
+    disableButton(target) {
+        const button = target.closest('button');
+        button.querySelector('i').remove();
+        button.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+        button.disabled = true;
+    }
+
+    enableButton(target) {
+        const button = target.closest('button');
+        button.querySelector('i').remove();
+        button.innerHTML = '<i class="fa fa-location-arrow"></i>';
+        button.disabled = false;
+    }
+
     success(pos) {
         const coords = pos.coords;
 
-        window.location = Routing.generate(
-            'display',
-            {
-                latitude: coords.latitude,
-                longitude: coords.longitude
-            }
-        );
+        const closestForm = this.element.closest('form');
+        let action;
+
+        if (closestForm) {
+            action = closestForm.getAttribute('action');
+        } else {
+            action = '/display';
+        }
+
+        // @todo use this: https://gomakethings.com/how-to-build-a-query-string-from-an-object-with-vanilla-js/
+
+        const coordAction = action + '?latitude=' + coords.latitude + '&longitude=' + coords.longitude;
+
+        window.location = coordAction;
     }
 
     error(err) {
+        const that = this;
         const errorMessageContainer = document.querySelector('#geolocation-failed');
 
         errorMessageContainer.classList.remove('d-none');
+
+        document.querySelectorAll('button.locate-button').forEach((button) => {
+            that.enableButton(button);
+        });
     }
 }
 
