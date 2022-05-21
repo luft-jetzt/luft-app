@@ -9,12 +9,12 @@
                 </h2>
 
                 <p class="lead">
-                    Aufgrund der Corona-Pandemie wurde zur Eindämmung der Infektionsdynamik der Verkauf von Feuerwerkskörpern in Deutschland untersagt. Hier kannst du die Feinstaubbelastung um den Jahreswechsel herum an deinem Standort vergleichen.
+                    Wie im letzten Jahr wird auch zum Jahreswechsel 2021/2022 der Verkauf von Feuerwerkskörpern und Knallchargenbedarf eingeschränkt. Hier kannst du die Feinstaub-Messwerte um den Jahreswechsel herum mit den beiden vorherigen Jahren vergleichen.
                 </p>
             </div>
         </div>
 
-        {% if data_list is not defined or data_list|length == 0 %}
+        {% if data_list is not defined %}
         <div class="row">
             <div class="col-12 col-md-6 offset-md-3 text-center">
                 <form method="get" action="{{ path('analysis_fireworks_corona') }}">
@@ -35,6 +35,14 @@
                 </form>
             </div>
         </div>
+        {% elseif data_list|length == 0 %}
+            <div class="row mb-3">
+                <div class="col-12 text-center">
+                    <div class="alert alert-warning">
+                        Für deinen Standort liegen momentan keine Daten vor. Bitte versuche es ab 12 Uhr am 31. Dezember erneut.
+                    </div>
+                </div>
+            </div>
         {% else %}
             <div class="row mb-3">
                 <div class="col-12 text-center">
@@ -53,7 +61,7 @@
                     </thead>
                     <tbody>
                     {% for timestamp, view_model_set in data_list %}
-                        {% if corona_fireworks_datetime(timestamp)|date('m d H i') == '01 01 00 00' %}
+                        {% if corona_fireworks_datetime(timestamp + 30)|date('m d H i', 'Europe/Berlin') == '01 01 00 00' %}
                             <tr>
                                 <th colspan="3" class="text-center">
                                     Jahreswechsel
@@ -62,7 +70,7 @@
                         {% else %}
                             <tr>
                                 <th colspan="3" class="text-center">
-                                    {{ corona_fireworks_datetime(timestamp)|date('d.m. H:i', 'Europe/Berlin') }}&nbsp;Uhr
+                                    {{ corona_fireworks_datetime(timestamp + 30)|date('d.m. H:i', 'Europe/Berlin') }}&nbsp;Uhr
                                 </th>
                             </tr>
                         {% endif %}

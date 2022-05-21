@@ -15,6 +15,7 @@ use App\Air\Measurement\SO2;
 use App\Air\Measurement\Temperature;
 use App\Air\Measurement\UVIndex;
 use Caldera\GeoBasic\Coord\CoordInterface;
+use Caldera\GeoBasic\Coordinate\CoordinateInterface;
 
 abstract class AbstractMeasurementViewModelFactory implements MeasurementViewModelFactoryInterface
 {
@@ -57,7 +58,7 @@ abstract class AbstractMeasurementViewModelFactory implements MeasurementViewMod
         }
     }
 
-    public function setCoord(CoordInterface $coord): MeasurementViewModelFactoryInterface
+    public function setCoord(CoordinateInterface $coord): MeasurementViewModelFactoryInterface
     {
         $this->coord = $coord;
 

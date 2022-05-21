@@ -99,14 +99,6 @@ class StationController extends AbstractController
             $seoPage->setTitle(sprintf('Frühere Luftmesswerte für die Station %s', $station->getStationCode()));
         }
 
-        $seoPage->setOpenGraphPreviewPhoto($router->generate('station_history_plot', [
-            'stationCode' => $station->getStationCode(),
-            'from' => $fromDateTime->format('Y-m-d'),
-            'until' => $untilDateTime->format('Y-m-d'),
-            'width' => 1200,
-            'height' => 630,
-        ]));
-
         $dataLists = $historyDataFactory
             ->setStation($station)
             ->createDecoratedPollutantListForInterval($fromDateTime, $untilDateTime);
@@ -131,54 +123,5 @@ class StationController extends AbstractController
         }
 
         return array_unique($pollutantIdList);
-    }
-
-    /**
-     * @Feature("station_history")
-     * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
-     */
-    public function plotHistoryAction(Request $request, Station $station, StationPlotterInterface $stationPlotter, string $graphCacheDirectory): BinaryFileResponse
-    {
-        if ($untilDateTimeParam = $request->query->get('until')) {
-            try {
-                $untilDateTime = DateTimeUtil::getDayEndDateTime(new \DateTime($untilDateTimeParam));
-            } catch (\Exception $exception) {
-                $untilDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
-            }
-        } else {
-            $untilDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
-        }
-
-        if ($fromDateTimeParam = $request->query->get('from')) {
-            try {
-                $fromDateTime = DateTimeUtil::getDayStartDateTime(new \DateTime($fromDateTimeParam));
-            } catch (\Exception $exception) {
-                $fromDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
-                $fromDateTime->sub(new \DateInterval('P3D'));
-            }
-        } else {
-            $fromDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
-            $fromDateTime->sub(new \DateInterval('P3D'));
-        }
-
-        $width = (int) $request->get('width', 800);
-        $height = (int) $request->get('height', 400);
-
-        $filename = sprintf('%s/%s-%d-%d-%dx%d.png', $graphCacheDirectory, $station->getStationCode(), $fromDateTime->format('U'), $untilDateTime->format('U'), $width, $height);
-
-        if (!file_exists($filename)) {
-            $stationPlotter
-                ->setWidth($width)
-                ->setHeight($height)
-                ->setTitle(sprintf('Messwerte der Station %s', $station->getStationCode()))
-                ->setStation($station)
-                ->setFromDateTime($fromDateTime)
-                ->setUntilDateTime($untilDateTime)
-                ->plot($filename);
-        }
-
-        $response = new BinaryFileResponse($filename);
-
-        return $response;
     }
 }

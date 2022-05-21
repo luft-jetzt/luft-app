@@ -13,40 +13,34 @@ use JMS\Serializer\Annotation as JMS;
 class MeasurementViewModel
 {
     /**
-     * @var Station $station
      * @JMS\Expose()
      */
-    protected $station;
+    protected ? Station $station = null;
 
     /**
-     * @var Data $data
      * @JMS\Expose()
      */
-    protected $data;
+    protected ?Data $data = null;
 
     /**
-     * @var MeasurementInterface $measurement
      * @JMS\Expose()
      */
-    protected $measurement;
+    protected ?MeasurementInterface $measurement = null;
 
     /**
-     * @var int $pollutionLevel
      * @JMS\Expose()
      */
-    protected $pollutionLevel;
+    protected ?int $pollutionLevel = null;
 
     /**
-     * @var string $caption
      * @JMS\Expose()
      */
-    protected $caption;
+    protected ?string $caption = null;
 
     /**
-     * @var float $distance
      * @JMS\Expose()
      */
-    protected $distance;
+    protected ?float $distance = null;
 
     public function __construct(Data $data)
     {

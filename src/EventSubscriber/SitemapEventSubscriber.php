@@ -5,7 +5,7 @@ namespace App\EventSubscriber;
 use App\Air\MeasurementList\MeasurementListInterface;
 use App\Entity\City;
 use App\Entity\Station;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
@@ -15,19 +15,12 @@ use Symfony\Component\Routing\RouterInterface;
 
 class SitemapEventSubscriber implements EventSubscriberInterface
 {
-    /** @var UrlGeneratorInterface $urlGenerator */
-    protected $urlGenerator;
+    protected UrlGeneratorInterface $urlGenerator;
+    protected RouterInterface $router;
+    protected ManagerRegistry $registry;
+    protected MeasurementListInterface $measurementList;
 
-    /** @var RouterInterface $router */
-    protected $router;
-
-    /** @var RegistryInterface $registry */
-    protected $registry;
-
-    /** @var MeasurementListInterface $measurementList */
-    protected $measurementList;
-
-    public function __construct(UrlGeneratorInterface $urlGenerator, RouterInterface $router, RegistryInterface $registry, MeasurementListInterface $measurementList)
+    public function __construct(UrlGeneratorInterface $urlGenerator, RouterInterface $router, ManagerRegistry $registry, MeasurementListInterface $measurementList)
     {
         $this->urlGenerator = $urlGenerator;
         $this->router = $router;

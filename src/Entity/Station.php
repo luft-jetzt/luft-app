@@ -2,10 +2,9 @@
 
 namespace App\Entity;
 
+use Caldera\GeoBasic\Coordinate\Coordinate;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Caldera\GeoBasic\Coord\Coord;
-use App\DBAL\Types\StationType;
 use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -17,7 +16,7 @@ use JMS\Serializer\Annotation as JMS;
  * @UniqueEntity("stationCode")
  * @JMS\ExclusionPolicy("ALL")
  */
-class Station extends Coord
+class Station extends Coordinate
 {
     /**
      * @ORM\Id
@@ -48,13 +47,13 @@ class Station extends Coord
      * @ORM\Column(type="float", nullable=false)
      * @JMS\Expose()
      */
-    protected $latitude;
+    protected ?float $latitude = null;
 
     /**
      * @ORM\Column(type="float", nullable=false)
      * @JMS\Expose()
      */
-    protected $longitude;
+    protected ?float $longitude = null;
 
     /**
      * @ORM\OneToMany(targetEntity="TwitterSchedule", mappedBy="station")

@@ -5,22 +5,26 @@ namespace App\Geocoding\RequestConverter;
 use App\Entity\Zip;
 use App\Geocoding\Geocoder\GeocoderInterface;
 use Caldera\GeoBasic\Coord\Coord;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Caldera\GeoBasic\Coordinate\Coordinate;
+use Caldera\GeoBasic\Coordinate\CoordinateInterface;
+use Doctrine\Persistence\ManagerRegistry;
+use Geocoder\Provider\Nominatim\Model\NominatimAddress;
+use Geocoder\Provider\Nominatim\Nominatim;
 use Symfony\Component\HttpFoundation\Request;
 
 class RequestConverter implements RequestConverterInterface
 {
     protected GeocoderInterface $geocoder;
 
-    protected RegistryInterface $registry;
+    protected ManagerRegistry $registry;
 
-    public function __construct(GeocoderInterface $geocoder, RegistryInterface $registry)
+    public function __construct(GeocoderInterface $geocoder, ManagerRegistry $registry)
     {
         $this->geocoder = $geocoder;
         $this->registry = $registry;
     }
 
-    public function getCoordByRequest(Request $request): ?Coord
+    public function getCoordByRequest(Request $request): ?CoordinateInterface
     {
         $latitude = (float) $request->query->get('latitude');
         $longitude = (float) $request->query->get('longitude');
@@ -28,13 +32,18 @@ class RequestConverter implements RequestConverterInterface
         $zipCode = $request->query->get('zip');
 
         if (($query && preg_match('/^([0-9]{5,5})$/', $query)) || $zipCode) {
-            $zip = $this->registry->getRepository(Zip::class)->findOneByZip($zipCode ?? $query);
+            $cityList = $this->geocoder->queryZip($query ?? $zipCode);
 
-            return $zip;
+            if (count($cityList) > 0) {
+                /** @var NominatimAddress $firstResult */
+                $firstResult = $cityList->first();
+
+                return new Coordinate($firstResult->getCoordinates()->getLatitude(), $firstResult->getCoordinates()->getLongitude());
+            }
         }
 
         if ($latitude && $longitude) {
-            $coord = new Coord(
+            $coord = new Coordinate(
                 $latitude,
                 $longitude
             );
@@ -48,7 +57,7 @@ class RequestConverter implements RequestConverterInterface
             $firstResult = array_pop($result);
 
             if ($firstResult) {
-                $coord = new Coord($firstResult['value']['latitude'], $firstResult['value']['longitude']);
+                $coord = new Coordinate($firstResult['value']['latitude'], $firstResult['value']['longitude']);
 
                 return $coord;
             }

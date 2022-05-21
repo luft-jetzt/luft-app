@@ -1,12 +1,12 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
 # Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     locale: 'de'
     twitter.client_id: ThisTokenIsNotSoSecretChangeIt
     twitter.client_secret: ThisTokenIsNotSoSecretChangeIt
-    yourls.api_url: '%env(YOURLS_HOSTNAME)%'
-    yourls.api_username: '%env(YOURLS_USERNAME)%'
-    yourls.api_password: '%env(YOURLS_PASSWORD)%'
     router.request_context.host: 'luft.jetzt'
     router.request_context.scheme: 'https'
 
@@ -20,10 +20,8 @@ services:
                             # The best practice is to be explicit about your dependencies anyway.
         bind:
             $twitterClientId: '%env(TWITTER_CLIENT_ID)%'
+            $twitterApiKey: '%env(TWITTER_API_KEY)%'
             $twitterClientSecret: '%env(TWITTER_CLIENT_SECRET)%'
-            $apiUrl: '%env(YOURLS_API_URL)%'
-            $apiUsername: '%env(YOURLS_API_USERNAME)%'
-            $apiPassword: '%env(YOURLS_API_PASSWORD)%'
             $graphCacheDirectory: '%env(GRAPH_CACHE_DIRECTORY)%'
             $openWeatherMapAppId: '%env(OPENWEATHERMAP_APPID)%'
             $redisHost: 'redis://%env(REDIS_HOST)%'
@@ -31,14 +29,11 @@ services:
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
-        resource: '../src/*'
-        exclude: '../src/{Admin,Entity,Migrations,Tests,Kernel.php}'
-
-    # controllers are imported separately to make sure services can be injected
-    # as action arguments even if you don't extend any base controller class
-    App\Controller\:
-        resource: '../src/Controller'
-        tags: ['controller.service_arguments']
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
@@ -49,28 +44,13 @@ services:
     App\Pollution\DataRetriever\DataRetrieverInterface:
         #alias: App\Pollution\DataRetriever\CachedElasticDataRetriever
         alias: App\Pollution\DataRetriever\ChainedDataRetriever
+        #alias: App\Pollution\DataRetriever\ElasticDataRetriever
 
     App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface:
         alias: App\Pollution\PollutantFactoryStrategy\LuftdatenPollutantFactoryStrategy
 
     App\Pollution\PollutionDataFactory\PollutionDataFactoryInterface:
         alias: App\Pollution\PollutionDataFactory\PollutionDataFactory
-
-    App\Analysis\CoronaFireworksAnalysis\CoronaFireworksAnalysis:
-        arguments:
-            $finder: '@fos_elastica.finder.air_data.data'
-
-    App\Pollution\DataRetriever\ElasticDataRetriever:
-        arguments:
-            $dataFinder: '@fos_elastica.finder.air_data.data'
-
-    App\Pollution\DataRetriever\CachedElasticDataRetriever:
-        arguments:
-            $dataFinder: '@fos_elastica.finder.air_station.station'
-
-    App\Pollution\StationFinder\ElasticStationFinder:
-        arguments:
-            $stationFinder: '@fos_elastica.finder.air_station.station'
 
     App\SeoPage\SeoPage:
         arguments:
@@ -80,27 +60,8 @@ services:
         alias: App\Pollution\UniqueStrategy\CacheUniqueStrategy
 
     App\Pollution\DataPersister\PersisterInterface:
-        #alias: App\Pollution\DataPersister\CachePersister
-        alias: App\Pollution\DataPersister\OrmPersister
-        #alias: App\Pollution\DataPersister\CacheOrmPersister
-
-    App\Producer\Value\RabbitValueProducer:
-        arguments:
-            $producer: '@old_sound_rabbit_mq.luft_value_producer'
-
-    App\Producer\Value\CacheRabbitValueProducer:
-        arguments:
-            $producer: '@old_sound_rabbit_mq.luft_value_producer'
-
-    App\Producer\Value\ValueProducerInterface:
-        #alias: App\Producer\Value\CacheValueProducer
-        #alias: App\Producer\Value\CacheValueProducer
-        #alias: App\Producer\Value\CacheOrmValueProducer
-        alias: App\Producer\Value\CacheRabbitValueProducer
-
-    App\Pollution\PollutionDataFactory\HistoryDataFactory:
-        arguments:
-            $dataRetriever: '@App\Pollution\DataRetriever\ElasticDataRetriever'
+        #alias: App\Pollution\DataPersister\ElasticPersister
+        alias: App\Pollution\DataPersister\CachePersister
 
     App\Geocoding\Guesser\CityGuesser:
         $provider: '@bazinga_geocoder.provider.nominatim'
@@ -109,8 +70,40 @@ services:
         $provider: '@bazinga_geocoder.provider.nominatim'
 
     app.geocoding_cache:
-        class: Symfony\Component\Cache\Simple\Psr6Cache
+        class: Symfony\Component\Cache\Psr16Cache
         arguments: ['@app.cache.geocoding']
 
     App\DataPurger\DataPurgerInterface:
         alias: App\DataPurger\FastDataPurger
+
+    App\Pollution\DataFinder\ElasticFinder:
+        arguments:
+            $searchable: '@fos_elastica.index.air_data'
+
+    App\Pollution\DataPersister\ElasticPersister:
+        arguments:
+            $index: '@fos_elastica.index.air_data'
+
+    App\Pollution\DataFinder\FinderInterface:
+        alias: App\Pollution\DataFinder\ElasticFinder
+
+    App\DataPurger\FastDataPurger:
+        arguments:
+            $client: '@fos_elastica.client.default'
+
+    App\Command\UpdateDataCommand:
+        arguments:
+            $client: '@fos_elastica.client.default'
+
+    App\Pollution\DataRetriever\CachedElasticDataRetriever:
+        arguments:
+            $dataFinder: '@fos_elastica.finder.air_station'
+
+    app.menu_builder:
+        class: App\Menu\MainMenuBuilder
+        arguments:
+            $factory: '@knp_menu.factory'
+        tags:
+            - { name: knp_menu.menu_builder, method: mainMenu, alias: main } # The alias is what is used to retrieve the menu
+
+    # ...

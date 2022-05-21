@@ -4,26 +4,13 @@ namespace App\Air\Measurement;
 
 abstract class AbstractMeasurement implements MeasurementInterface
 {
-    /** @var string $unitHtml */
-    protected $unitHtml;
-
-    /** @var string $unitHtml */
-    protected $unitPlain;
-
-    /** @var string $name */
-    protected $name;
-
-    /** @var string $shortNameHtml */
-    protected $shortNameHtml;
-
-    /** @var bool $showOnMap */
-    protected $showOnMap;
-
-    /** @var bool $includeInTweets */
-    protected $includeInTweets;
-
-    /** @var int $decimals */
-    protected $decimals;
+    protected string $unitHtml;
+    protected string $unitPlain;
+    protected string $name;
+    protected string $shortNameHtml;
+    protected bool $showOnMap;
+    protected bool $includeInTweets;
+    protected int $decimals;
 
     public function getUnitHtml(): string
     {
