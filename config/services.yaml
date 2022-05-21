@@ -7,9 +7,6 @@ parameters:
     locale: 'de'
     twitter.client_id: ThisTokenIsNotSoSecretChangeIt
     twitter.client_secret: ThisTokenIsNotSoSecretChangeIt
-    yourls.api_url: '%env(YOURLS_HOSTNAME)%'
-    yourls.api_username: '%env(YOURLS_USERNAME)%'
-    yourls.api_password: '%env(YOURLS_PASSWORD)%'
     router.request_context.host: 'luft.jetzt'
     router.request_context.scheme: 'https'
 
@@ -25,9 +22,6 @@ services:
             $twitterClientId: '%env(TWITTER_CLIENT_ID)%'
             $twitterApiKey: '%env(TWITTER_API_KEY)%'
             $twitterClientSecret: '%env(TWITTER_CLIENT_SECRET)%'
-            $apiUrl: '%env(YOURLS_API_URL)%'
-            $apiUsername: '%env(YOURLS_API_USERNAME)%'
-            $apiPassword: '%env(YOURLS_API_PASSWORD)%'
             $graphCacheDirectory: '%env(GRAPH_CACHE_DIRECTORY)%'
             $openWeatherMapAppId: '%env(OPENWEATHERMAP_APPID)%'
             $redisHost: 'redis://%env(REDIS_HOST)%'
