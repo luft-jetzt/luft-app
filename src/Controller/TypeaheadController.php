@@ -8,10 +8,12 @@ use App\Geocoding\Geocoder\GeocoderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 
 class TypeaheadController extends AbstractController
 {
+    #[Route('/search/prefetch-cities', name: 'prefetch_cities', options: ['expose' => true])]
     public function prefetchCitiesAction(RouterInterface $router): Response
     {
         $cityList = $this->getDoctrine()->getRepository(City::class)->findAll();
@@ -31,6 +33,7 @@ class TypeaheadController extends AbstractController
         return new JsonResponse($data);
     }
 
+    #[Route('/search/prefetch-stations', name: 'prefetch_stations', options: ['expose' => true])]
     public function prefetchStationsAction(RouterInterface $router): Response
     {
         $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStations();
@@ -57,6 +60,7 @@ class TypeaheadController extends AbstractController
         return new JsonResponse($data);
     }
 
+    #[Route('/search/query', name: 'search', options: ['expose' => true])]
     public function searchAction(Request $request, GeocoderInterface $geocoder): Response
     {
         $result = $geocoder->query($request->query->get('query'));
