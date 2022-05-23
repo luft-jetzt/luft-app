@@ -9,11 +9,13 @@ use App\Pollution\PollutionDataFactory\PollutionDataFactoryInterface;
 use App\SeoPage\SeoPage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class DisplayController extends AbstractController
 {
+    #[Route('/display', name: 'display', options: ['expose' => true])]
     public function indexAction(Request $request, SeoPage $seoPage, RequestConverterInterface $requestConverter, PollutionDataFactoryInterface $pollutionDataFactory, CityGuesserInterface $cityGuesser, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
     {
         $coord = $requestConverter->getCoordByRequest($request);

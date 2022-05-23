@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
@@ -22,6 +23,7 @@ class StationController extends AbstractController
     /**
      * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
      */
+    #[Route('/{stationCode}', name: 'station', requirements: ['stationCode' => '^([A-Z]{2,6})([A-Z0-9]{0,8})$'], options: ['expose' => true])]
     public function stationAction(SeoPageInterface $seoPage, Station $station, PollutionDataFactory $pollutionDataFactory, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
     {
         $viewModelList = $pollutionDataFactory
@@ -48,6 +50,7 @@ class StationController extends AbstractController
     /**
      * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
      */
+    #[Route('/{stationCode}/limits', name: 'station_limits', requirements: ['stationCode' => '^([A-Z]{4,6})([0-9]{1,5})$'], options: ['expose' => true])]
     public function limitsAction(LimitAnalysisInterface $limitAnalysis, Station $station): Response
     {
         /** @var Station $station */
@@ -74,6 +77,7 @@ class StationController extends AbstractController
      * @Feature("station_history")
      * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
      */
+    #[Route('/{stationCode}/history', name: 'station_history', requirements: ['stationCode' => '^([A-Z]{2,6})([A-Z0-9]{0,8})$'], options: ['expose' => true])]
     public function historyAction(Request $request, Station $station, SeoPageInterface $seoPage, HistoryDataFactoryInterface $historyDataFactory, RouterInterface $router): Response
     {
         if ($untilDateTimeParam = $request->query->get('until')) {
