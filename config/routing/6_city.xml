@@ -7,10 +7,4 @@
     <route id="twitter_city" path="/twitter-success">
         <default key="_controller">App\Controller\CityController::twitterSuccessAction</default>
     </route>
-
-    <route id="show_city" path="/{citySlug}">
-        <default key="_controller">App\Controller\CityController::showAction</default>
-        <option key="expose">true</option>
-        <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
-    </route>
 </routes>
