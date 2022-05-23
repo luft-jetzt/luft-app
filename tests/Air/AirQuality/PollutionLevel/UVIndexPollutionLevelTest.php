@@ -18,7 +18,7 @@ class UVIndexPollutionLevelTest extends TestCase
             2,
             5,
             7,
-            10,
+            11,
         ];
 
         $this->assertEquals($levels, (new UVIndexLevel())->getLevels());
