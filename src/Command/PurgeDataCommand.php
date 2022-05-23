@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\DataPurger\DataPurgerInterface;
 use App\Provider\ProviderListInterface;
-use App\Util\DateTimeUtil;
+use Carbon\CarbonImmutable;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -51,7 +51,18 @@ class PurgeDataCommand extends Command
         }
 
         $interval = new \DateInterval(sprintf('P%dD', $input->getArgument('days')));
-        $untilDateTime = DateTimeUtil::getDayEndDateTime((new \DateTime())->sub($interval));
+        $untilDateTime = CarbonImmutable::now()->sub($interval);
+
+        $provider = $this->providerList->getProvider($input->getArgument('provider'));
+
+        $dataList = $this->registry->getRepository(Data::class)->findInInterval(null, $untilDateTime, $provider);
+
+        $helper = $this->getHelper('question');
+        $question = new ConfirmationQuestion(sprintf('Purge <info>%d</info> values from <comment>%s</comment> before <info>%s</info>? [no] ', count($dataList), get_class($provider), $untilDateTime->format('Y-m-d H:i:s')), false);
+
+        if (!$helper->ask($input, $output, $question)) {
+            return 1;
+        }
 
         $counter = $this->dataPurger->purgeData($untilDateTime, $provider, $input->getOption('with-tags'));
 

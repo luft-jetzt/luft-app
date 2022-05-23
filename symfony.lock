@@ -246,6 +246,9 @@
     "nesbot/carbon": {
         "version": "2.43.0"
     },
+    "nesbot/carbon": {
+        "version": "2.7.0"
+    },
     "nikic/php-parser": {
         "version": "v4.0.4"
     },

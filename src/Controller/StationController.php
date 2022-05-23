@@ -8,7 +8,7 @@ use App\Plotter\StationPlotter\StationPlotterInterface;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPageInterface;
-use App\Util\DateTimeUtil;
+use Carbon\Carbon;
 use Flagception\Bundle\FlagceptionBundle\Annotations\Feature;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -50,12 +50,17 @@ class StationController extends AbstractController
      */
     public function limitsAction(LimitAnalysisInterface $limitAnalysis, Station $station): Response
     {
-        $now = new \DateTime('2018-11-30');
+        /** @var Station $station */
+        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
+
+        if (!$station) {
+            throw $this->createNotFoundException();
+        }
 
         $limitAnalysis
             ->setStation($station)
-            ->setFromDateTime(DateTimeUtil::getMonthStartDateTime($now))
-            ->setUntilDateTime(DateTimeUtil::getMonthEndDateTime($now));
+            ->setFromDateTime(Carbon::now()->startOfMonth())
+            ->setUntilDateTime(Carbon::now()->endOfMonth());
 
         $exceedance = $limitAnalysis->analyze();
 
@@ -73,23 +78,23 @@ class StationController extends AbstractController
     {
         if ($untilDateTimeParam = $request->query->get('until')) {
             try {
-                $untilDateTime = DateTimeUtil::getDayEndDateTime(new \DateTime($untilDateTimeParam));
+                $untilDateTime = Carbon::parse($untilDateTimeParam)->endOfDay();
             } catch (\Exception $exception) {
-                $untilDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
+                $untilDateTime = Carbon::now()->endOfHour();
             }
         } else {
-            $untilDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
+            $untilDateTime = Carbon::now()->endOfHour();
         }
 
         if ($fromDateTimeParam = $request->query->get('from')) {
             try {
-                $fromDateTime = DateTimeUtil::getDayStartDateTime(new \DateTime($fromDateTimeParam));
+                $fromDateTime = Carbon::parse($fromDateTimeParam)->startOfDay();
             } catch (\Exception $exception) {
-                $fromDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
+                $fromDateTime = Carbon::now()->startOfHour();
                 $fromDateTime->sub(new \DateInterval('P3D'));
             }
         } else {
-            $fromDateTime = DateTimeUtil::getHourStartDateTime(new \DateTime());
+            $fromDateTime = Carbon::now()->startOfHour();
             $fromDateTime->sub(new \DateInterval('P3D'));
         }
 
