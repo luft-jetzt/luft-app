@@ -112,8 +112,8 @@ class CityApiController extends AbstractApiController
      *   description="Returns the updated station",
      *   @Model(type=App\Entity\City::class)
      * )
-     * @Entity("city", expr="repository.findOneBySlug(citySlug)")
      */
+    #[Entity('city', expr: 'repository.findOneBySlug(citySlug)')]
     public function postCityAction(Request $request, SerializerInterface $serializer, City $city, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
     {
         $requestBody = $request->getContent();

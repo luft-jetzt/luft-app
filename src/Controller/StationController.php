@@ -19,9 +19,7 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class StationController extends AbstractController
 {
-    /**
-     * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
-     */
+    #[Entity('station', expr: 'repository.findOneByStationCode(stationCode)')]
     public function stationAction(SeoPageInterface $seoPage, Station $station, PollutionDataFactory $pollutionDataFactory, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
     {
         $viewModelList = $pollutionDataFactory
@@ -45,9 +43,7 @@ class StationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
-     */
+    #[Entity('station', expr: 'repository.findOneByStationCode(stationCode)')]
     public function limitsAction(LimitAnalysisInterface $limitAnalysis, Station $station): Response
     {
         $stationCode = null;
@@ -73,8 +69,8 @@ class StationController extends AbstractController
 
     /**
      * @Feature("station_history")
-     * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
      */
+    #[Entity('station', expr: 'repository.findOneByStationCode(stationCode)')]
     public function historyAction(Request $request, Station $station, SeoPageInterface $seoPage, HistoryDataFactoryInterface $historyDataFactory, RouterInterface $router): Response
     {
         if ($untilDateTimeParam = $request->query->get('until')) {
