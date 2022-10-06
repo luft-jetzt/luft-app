@@ -9,20 +9,17 @@ use Twig\TwigFunction;
 
 class MeasurementTwigExtension extends AbstractExtension
 {
-    protected MeasurementListInterface $measurementList;
-
-    public function __construct(MeasurementListInterface $measurementList)
+    public function __construct(protected MeasurementListInterface $measurementList)
     {
-        $this->measurementList = $measurementList;
     }
 
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('pollutant_list', [$this, 'measurementList'], ['is_safe' => ['raw']]),
-            new TwigFunction('measurement_list', [$this, 'measurementList'], ['is_safe' => ['raw']]),
-            new TwigFunction('pollutant_by_id', [$this, 'measurementById'], ['is_safe' => ['raw']]),
-            new TwigFunction('measurement_by_id', [$this, 'measurementById'], ['is_safe' => ['raw']]),
+            new TwigFunction('pollutant_list', $this->measurementList(...), ['is_safe' => ['raw']]),
+            new TwigFunction('measurement_list', $this->measurementList(...), ['is_safe' => ['raw']]),
+            new TwigFunction('pollutant_by_id', $this->measurementById(...), ['is_safe' => ['raw']]),
+            new TwigFunction('measurement_by_id', $this->measurementById(...), ['is_safe' => ['raw']]),
         ];
     }
 

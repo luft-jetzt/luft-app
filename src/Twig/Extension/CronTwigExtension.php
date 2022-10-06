@@ -15,7 +15,7 @@ class CronTwigExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('cron', [$this, 'cron'], ['is_safe' => ['raw']]),
+            new TwigFunction('cron', $this->cron(...), ['is_safe' => ['raw']]),
         ];
     }
 

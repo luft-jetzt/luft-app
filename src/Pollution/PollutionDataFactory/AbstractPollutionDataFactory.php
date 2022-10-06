@@ -13,20 +13,11 @@ abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInter
 {
     protected CoordinateInterface $coord;
 
-    protected MeasurementViewModelFactoryInterface $measurementViewModelFactory;
-
     protected DataList $dataList;
 
-    protected DataRetrieverInterface $dataRetriever;
-
-    protected PollutantFactoryStrategyInterface $strategy;
-
-    public function __construct(MeasurementViewModelFactoryInterface $viewModelFactory, DataRetrieverInterface $dataRetriever, PollutantFactoryStrategyInterface $strategy)
+    public function __construct(protected MeasurementViewModelFactoryInterface $measurementViewModelFactory, protected DataRetrieverInterface $dataRetriever, protected PollutantFactoryStrategyInterface $strategy)
     {
         $this->dataList = new DataList();
-        $this->measurementViewModelFactory = $viewModelFactory;
-        $this->dataRetriever = $dataRetriever;
-        $this->strategy = $strategy;
     }
 
     public function setCoord(CoordinateInterface $coord): PollutionDataFactoryInterface

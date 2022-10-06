@@ -15,17 +15,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 class SitemapEventSubscriber implements EventSubscriberInterface
 {
-    protected UrlGeneratorInterface $urlGenerator;
-    protected RouterInterface $router;
-    protected ManagerRegistry $registry;
-    protected MeasurementListInterface $measurementList;
-
-    public function __construct(UrlGeneratorInterface $urlGenerator, RouterInterface $router, ManagerRegistry $registry, MeasurementListInterface $measurementList)
+    public function __construct(protected UrlGeneratorInterface $urlGenerator, protected RouterInterface $router, protected ManagerRegistry $registry, protected MeasurementListInterface $measurementList)
     {
-        $this->urlGenerator = $urlGenerator;
-        $this->router = $router;
-        $this->registry = $registry;
-        $this->measurementList = $measurementList;
     }
 
     public static function getSubscribedEvents(): array

@@ -9,13 +9,8 @@ use App\Air\ViewModel\MeasurementViewModel;
 
 class LevelColorHandler implements LevelColorHandlerInterface
 {
-    protected AirQualityCalculatorInterface $airQualityCalculator;
-    protected LevelColorCollectionInterface $levelColorCollection;
-
-    public function __construct(AirQualityCalculatorInterface $airQualityCalculator, LevelColorCollectionInterface $levelColorCollection)
+    public function __construct(protected AirQualityCalculatorInterface $airQualityCalculator, protected LevelColorCollectionInterface $levelColorCollection)
     {
-        $this->airQualityCalculator = $airQualityCalculator;
-        $this->levelColorCollection = $levelColorCollection;
     }
 
     public function maxPollutionLevel(array $pollutionList): int

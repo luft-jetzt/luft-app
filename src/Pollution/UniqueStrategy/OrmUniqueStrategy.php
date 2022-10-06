@@ -8,12 +8,10 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class OrmUniqueStrategy implements UniqueStrategyInterface
 {
-    protected ManagerRegistry $registry;
     protected array $existentDataList = [];
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(protected ManagerRegistry $registry)
     {
-        $this->registry = $registry;
     }
 
     public function init(array $values): UniqueStrategyInterface

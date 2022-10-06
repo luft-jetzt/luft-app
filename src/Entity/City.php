@@ -12,7 +12,7 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\Table(name="city")
  * @JMS\ExclusionPolicy("ALL")
  */
-class City
+class City implements \Stringable
 {
     /**
      * @ORM\Id
@@ -212,6 +212,6 @@ class City
 
     public function __toString(): string
     {
-        return $this->name ? $this->name : '';
+        return $this->name ?: '';
     }
 }

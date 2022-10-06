@@ -20,11 +20,6 @@ class MeasurementViewModel
     /**
      * @JMS\Expose()
      */
-    protected ?Data $data = null;
-
-    /**
-     * @JMS\Expose()
-     */
     protected ?MeasurementInterface $measurement = null;
 
     /**
@@ -42,9 +37,13 @@ class MeasurementViewModel
      */
     protected ?float $distance = null;
 
-    public function __construct(Data $data)
+    public function __construct(
+        /**
+         * @JMS\Expose()
+         */
+        protected ?\App\Entity\Data $data
+    )
     {
-        $this->data = $data;
     }
 
     public function getStation(): Station

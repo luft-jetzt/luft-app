@@ -16,14 +16,8 @@ class UpdateDataCommand extends Command
 {
     protected static $defaultName = 'luft:update-data-station';
 
-    protected Client $client;
-    protected ManagerRegistry $managerRegistry;
-
-    public function __construct(ManagerRegistry $managerRegistry, Client $client)
+    public function __construct(protected ManagerRegistry $managerRegistry, protected Client $client)
     {
-        $this->managerRegistry = $managerRegistry;
-        $this->client = $client;
-
         parent::__construct();
     }
 
@@ -53,7 +47,7 @@ class UpdateDataCommand extends Command
             'lon' => $station->getLongitude(),
         ];
 
-        $io->progressStart(count($hits));
+        $io->progressStart(is_countable($hits) ? count($hits) : 0);
 
         foreach ($hits as $key => $hit) {
             $id = $hit['_id'];

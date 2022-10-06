@@ -13,7 +13,7 @@ class CoronaFireworksTwigExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('corona_fireworks_datetime', [$this, 'coronaFireworksDateTime']),
+            new TwigFunction('corona_fireworks_datetime', $this->coronaFireworksDateTime(...)),
         ];
     }
 

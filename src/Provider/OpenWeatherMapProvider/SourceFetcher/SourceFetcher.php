@@ -10,11 +10,8 @@ use GuzzleHttp\Client;
 
 class SourceFetcher implements SourceFetcherInterface
 {
-    protected string $openWeatherMapAppId;
-
-    public function __construct(string $openWeatherMapAppId)
+    public function __construct(protected string $openWeatherMapAppId)
     {
-        $this->openWeatherMapAppId = $openWeatherMapAppId;
     }
 
     public function fetch(FetchProcess $fetchProcess): FetchResult

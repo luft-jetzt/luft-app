@@ -11,10 +11,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User implements UserInterface
+class User implements UserInterface, \Stringable
 {
-    const ROLE_USER = 'ROLE_USER';
-    const ROLE_ADMIN = 'ROLE_ADMIN';
+    final const ROLE_USER = 'ROLE_USER';
+    final const ROLE_ADMIN = 'ROLE_ADMIN';
 
     /**
      * @ORM\Column(type="integer")
@@ -165,24 +165,12 @@ class User implements UserInterface
 
     public function serialize(): string
     {
-        return serialize(array(
-            $this->id,
-            $this->email,
-            $this->password,
-            $this->twitterId,
-            $this->twitterAccessToken
-        ));
+        return serialize([$this->id, $this->email, $this->password, $this->twitterId, $this->twitterAccessToken]);
     }
 
     public function unserialize($serialized): void
     {
-        list(
-            $this->id,
-            $this->email,
-            $this->password,
-            $this->twitterId,
-            $this->twitterAccessToken
-            ) = unserialize($serialized);
+        [$this->id, $this->email, $this->password, $this->twitterId, $this->twitterAccessToken] = unserialize($serialized);
     }
 
     public function eraseCredentials(): User

@@ -10,11 +10,8 @@ use Elastica\Aggregation\DateHistogram;
 
 class ValueFetcher implements ValueFetcherInterface
 {
-    protected ElasticFinder $finder;
-
-    public function __construct(ElasticFinder $finder)
+    public function __construct(protected ElasticFinder $finder)
     {
-        $this->finder = $finder;
     }
 
     public function fetchValues(CoordInterface $coord, array $yearList = [], int $startHour = 12, int $rangeInMinutes = 1440, float $maxDistance = 15): array

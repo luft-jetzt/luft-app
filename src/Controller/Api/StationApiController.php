@@ -128,7 +128,7 @@ class StationApiController extends AbstractApiController
             }
 
             return new JsonResponse($serializer->serialize($result, 'json'), Response::HTTP_OK, [], true);
-        } catch (UniqueConstraintViolationException $exception) {
+        } catch (UniqueConstraintViolationException) {
             return new JsonResponse($serializer->serialize([
                 'status' => 'error',
                 'message' => 'This record already exists',

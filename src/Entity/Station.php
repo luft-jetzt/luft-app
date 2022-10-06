@@ -16,7 +16,7 @@ use JMS\Serializer\Annotation as JMS;
  * @UniqueEntity("stationCode")
  * @JMS\ExclusionPolicy("ALL")
  */
-class Station extends Coordinate
+class Station extends Coordinate implements \Stringable
 {
     /**
      * @ORM\Id
@@ -194,7 +194,7 @@ class Station extends Coordinate
         return sprintf('%f,%f', $this->latitude, $this->longitude);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s: %s', $this->stationCode, $this->title);
     }

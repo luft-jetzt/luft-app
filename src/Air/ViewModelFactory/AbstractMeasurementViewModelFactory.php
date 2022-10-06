@@ -21,13 +21,10 @@ abstract class AbstractMeasurementViewModelFactory implements MeasurementViewMod
 {
     protected array $pollutantList = [];
 
-    protected AirQualityCalculatorInterface $airQualityCalculator;
-
     protected CoordInterface $coord;
 
-    public function __construct(AirQualityCalculatorInterface $airQualityCalculator)
+    public function __construct(protected AirQualityCalculatorInterface $airQualityCalculator)
     {
-        $this->airQualityCalculator = $airQualityCalculator;
     }
 
     public function setPollutantList(array $pollutantList): MeasurementViewModelFactoryInterface
