@@ -9,26 +9,21 @@ use Elastica\Request;
 
 class FastDataPurger implements DataPurgerInterface
 {
-    protected ManagerRegistry $managerRegistry;
-    protected Client $client;
-
-    public function __construct(ManagerRegistry $managerRegistry, Client $client)
+    public function __construct(protected ManagerRegistry $managerRegistry, protected Client $client)
     {
-        $this->managerRegistry = $managerRegistry;
-        $this->client = $client;
     }
 
-    public function purge(\DateTime $untilDateTime, ProviderInterface $provider = null, bool $withTags): int
+    public function purge(\DateTime $untilDateTime, bool $withTags, ProviderInterface $provider = null): int
     {
-        $counter = $this->countData($untilDateTime, $provider, $withTags);
-        $this->purgeData($untilDateTime, $provider, $withTags);
+        $counter = $this->countData($untilDateTime, $withTags, $provider);
+        $this->purgeData($untilDateTime, $withTags, $provider);
 
         return $counter;
     }
 
-    public function countData(\DateTime $untilDateTime, ProviderInterface $provider = null, bool $withTags): int
+    public function countData(\DateTime $untilDateTime, bool $withTags, ProviderInterface $provider = null): int
     {
-        $query = $this->buildQuery($untilDateTime, $provider, $withTags);
+        $query = $this->buildQuery($untilDateTime, $withTags, $provider);
 
         $result = $this->client->request('air_data/_count', Request::GET, $query);
 
@@ -39,14 +34,14 @@ class FastDataPurger implements DataPurgerInterface
         return $count;
     }
 
-    public function purgeData(\DateTime $untilDateTime, ProviderInterface $provider = null, bool $withTags): void
+    public function purgeData(\DateTime $untilDateTime, bool $withTags, ProviderInterface $provider = null): void
     {
-        $query = $this->buildQuery($untilDateTime, $provider, $withTags);
+        $query = $this->buildQuery($untilDateTime, $withTags, $provider);
 
         $this->client->request('air_data/_delete_by_query', Request::POST, $query);
     }
 
-    protected function buildQuery(\DateTime $untilDateTime, ProviderInterface $provider = null, bool $withTags): array
+    protected function buildQuery(\DateTime $untilDateTime, bool $withTags, ProviderInterface $provider = null): array
     {
         $query = [
             'query' => [

@@ -51,18 +51,14 @@ class TwitterScheduleType extends AbstractType
 
                     return $cron->getPreviousRunDate()->format('i');
                 },
-                function (string $value) {
-                    return sprintf('%d * * * *', (int) $value);
-                }
+                fn(string $value) => sprintf('%d * * * *', (int) $value)
             ))
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(array(
-            'city' => null,
-        ));
+        $resolver->setDefaults(['city' => null]);
     }
 
     public function getName(): string

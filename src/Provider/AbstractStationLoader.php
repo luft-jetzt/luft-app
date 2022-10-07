@@ -12,11 +12,8 @@ abstract class AbstractStationLoader implements StationLoaderInterface
     /** @var array $newStationList */
     protected $newStationList = [];
 
-    protected ManagerRegistry $registry;
-
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(protected ManagerRegistry $registry)
     {
-        $this->registry = $registry;
     }
 
     public function getNewStationList(): array

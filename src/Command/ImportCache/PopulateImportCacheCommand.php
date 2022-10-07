@@ -14,7 +14,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class PopulateImportCacheCommand extends Command
 {
     protected UniqueStrategyInterface $cacheUniqueStrategy;
-    protected ManagerRegistry $registry;
 
     protected static $defaultName = 'luft:import-cache:populate';
 
@@ -26,10 +25,9 @@ class PopulateImportCacheCommand extends Command
         ;
     }
 
-    public function __construct(UniqueStrategyInterface $cacheUniqueStrategy, ManagerRegistry $registry)
+    public function __construct(UniqueStrategyInterface $cacheUniqueStrategy, protected ManagerRegistry $registry)
     {
         $this->cacheUniqueStrategy = $cacheUniqueStrategy->init([]);
-        $this->registry = $registry;
 
         parent::__construct();
     }
@@ -48,7 +46,7 @@ class PopulateImportCacheCommand extends Command
         $this->cacheUniqueStrategy->addDataList($dataList)->save();
 
         $io = new SymfonyStyle($input, $output);
-        $io->success(sprintf('Stored %d data elements from %s to %s', count($dataList), $fromDateTime->format('Y-m-d H:i:s'), $untilDateTime->format('Y-m-d H:i:s')));
+        $io->success(sprintf('Stored %d data elements from %s to %s', is_countable($dataList) ? count($dataList) : 0, $fromDateTime->format('Y-m-d H:i:s'), $untilDateTime->format('Y-m-d H:i:s')));
 
         //return Command::SUCCESS;
         return 0;

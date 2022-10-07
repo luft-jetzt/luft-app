@@ -9,18 +9,13 @@ use Caldera\GeoBasic\Coord\CoordInterface;
 
 class ElasticDataRetriever implements DataRetrieverInterface
 {
-    protected StationCacheInterface $stationCache;
-
-    protected ElasticFinder $finder;
-
-    public function __construct(ElasticFinder $finder, StationCacheInterface $stationCache)
+    public function __construct(protected ElasticFinder $finder, protected StationCacheInterface $stationCache)
     {
-        $this->finder = $finder;
-        $this->stationCache = $stationCache;
     }
 
     public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId = null, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 750): array
     {
+        $dateTimeAggregation = null;
         $fromDateTime = new \DateTime();
         $fromDateTime->sub(new \DateInterval('PT8H'));
 

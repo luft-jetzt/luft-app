@@ -4,7 +4,7 @@ namespace App\Air\AirQuality\PollutionLevel;
 
 abstract class AbstractPollutionLevel implements PollutionLevelInterface
 {
-    protected $levels = [];
+    protected array $levels = [];
 
     public function getLevels(): array
     {

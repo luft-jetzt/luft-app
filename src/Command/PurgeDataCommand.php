@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\DataPurger\DataPurgerInterface;
 use App\Provider\ProviderListInterface;
-use App\Util\DateTimeUtil;
+use Carbon\CarbonImmutable;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,16 +14,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PurgeDataCommand extends Command
 {
-    protected ProviderListInterface $providerList;
-    protected DataPurgerInterface $dataPurger;
-
     protected static $defaultName = 'luft:purge-data';
 
-    public function __construct(ProviderListInterface $providerList, DataPurgerInterface $dataPurger)
+    public function __construct(protected ProviderListInterface $providerList, protected DataPurgerInterface $dataPurger)
     {
-        $this->providerList = $providerList;
-        $this->dataPurger = $dataPurger;
-
         parent::__construct();
     }
 
@@ -51,12 +45,23 @@ class PurgeDataCommand extends Command
         }
 
         $interval = new \DateInterval(sprintf('P%dD', $input->getArgument('days')));
-        $untilDateTime = DateTimeUtil::getDayEndDateTime((new \DateTime())->sub($interval));
+        $untilDateTime = CarbonImmutable::now()->sub($interval);
+
+        $provider = $this->providerList->getProvider($input->getArgument('provider'));
+
+        $dataList = $this->registry->getRepository(Data::class)->findInInterval(null, $untilDateTime, $provider);
+
+        $helper = $this->getHelper('question');
+        $question = new ConfirmationQuestion(sprintf('Purge <info>%d</info> values from <comment>%s</comment> before <info>%s</info>? [no] ', is_countable($dataList) ? count($dataList) : 0, $provider::class, $untilDateTime->format('Y-m-d H:i:s')), false);
+
+        if (!$helper->ask($input, $output, $question)) {
+            return 1;
+        }
 
         $counter = $this->dataPurger->purgeData($untilDateTime, $provider, $input->getOption('with-tags'));
 
         if ($provider) {
-            $io->success(sprintf('Purged %d values from %s.', $counter, get_class($provider)));
+            $io->success(sprintf('Purged %d values from %s.', $counter, $provider::class));
         } else {
             $io->success(sprintf('Purged %d values.', $counter));
         }

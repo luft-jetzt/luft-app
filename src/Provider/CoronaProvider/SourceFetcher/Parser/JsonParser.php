@@ -8,7 +8,7 @@ class JsonParser implements JsonParserInterface
 {
     public function parseCoronaIncidence(string $jsonData): Value
     {
-        $coronaValue = json_decode($jsonData);
+        $coronaValue = json_decode($jsonData, null, 512, JSON_THROW_ON_ERROR);
 
         $value = new Value();
         $value

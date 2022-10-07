@@ -68,7 +68,7 @@ class Twitter extends AbstractTwitter
                 if (!$this->dryRun) {
                     $reply = $cb->statuses_update($params);
 
-                    $this->logger->notice(json_encode($reply));
+                    $this->logger->notice(json_encode($reply, JSON_THROW_ON_ERROR));
                 }
 
                 $this->validScheduleList[] = $twitterSchedule;

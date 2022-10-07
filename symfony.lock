@@ -244,7 +244,7 @@
         ]
     },
     "nesbot/carbon": {
-        "version": "2.43.0"
+        "version": "2.7.0"
     },
     "nikic/php-parser": {
         "version": "v4.0.4"
@@ -336,6 +336,9 @@
     "phpstan/phpdoc-parser": {
         "version": "1.2.0"
     },
+    "phpstan/phpstan": {
+        "version": "1.8.6"
+    },
     "phpunit/php-code-coverage": {
         "version": "6.1.4"
     },
@@ -406,6 +409,9 @@
     },
     "react/promise": {
         "version": "v2.5.1"
+    },
+    "rector/rector": {
+        "version": "0.14.5"
     },
     "ruflin/elastica": {
         "version": "6.0.1"
