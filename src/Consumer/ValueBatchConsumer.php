@@ -10,13 +10,8 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class ValueBatchConsumer implements BatchConsumerInterface
 {
-    protected PersisterInterface $persister;
-    protected SerializerInterface $serializer;
-
-    public function __construct(PersisterInterface $persister, SerializerInterface $serializer)
+    public function __construct(protected PersisterInterface $persister, protected SerializerInterface $serializer)
     {
-        $this->persister = $persister;
-        $this->serializer = $serializer;
     }
 
     public function batchExecute(array $messages): array

@@ -12,11 +12,8 @@ use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;
 
 class LuftUserProvider implements OAuthAwareUserProviderInterface
 {
-    protected ManagerRegistry $doctrine;
-
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(protected ManagerRegistry $doctrine)
     {
-        $this->doctrine = $doctrine;
     }
 
     public function connect(User $user, UserResponseInterface $response): void
@@ -71,7 +68,7 @@ class LuftUserProvider implements OAuthAwareUserProviderInterface
     {
         $username = $response->getNickname();
 
-        if (strpos($username, 'luft_') !== 0) {
+        if (!str_starts_with($username, 'luft_')) {
             $message = sprintf('Twitter handle "%s" does not begin with "luft_"', $username);
 
             throw new LuftUsernameException($message);
@@ -86,8 +83,8 @@ class LuftUserProvider implements OAuthAwareUserProviderInterface
 
     protected function setUserData(User $user, UserResponseInterface $response): User
     {
-        $username = $response->getNickname() ? $response->getNickname() : $response->getUsername();
-        $email = $response->getEmail() ? $response->getEmail() : $response->getUsername();
+        $username = $response->getNickname() ?: $response->getUsername();
+        $email = $response->getEmail() ?: $response->getUsername();
 
         $user
             ->setUsername($username)

@@ -5,51 +5,37 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\DataRepository")
- * @ORM\Table(name="data")
- * @JMS\ExclusionPolicy("ALL")
- */
+#[ORM\Table(name: 'data')]
+#[ORM\Entity(repositoryClass: 'App\Repository\DataRepository')]
+#[JMS\ExclusionPolicy('ALL')]
 class Data
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Station", inversedBy="datas")
-     * @ORM\JoinColumn(name="station_id", referencedColumnName="id")
-     * @JMS\Expose()
-     * @JMS\Type("App\Entity\Station")
-     */
+    #[ORM\ManyToOne(targetEntity: 'Station', inversedBy: 'datas')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id')]
+    #[JMS\Expose]
+    #[JMS\Type('App\Entity\Station')]
     protected ?Station $station = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=false)
-     * @JMS\Expose()
-     * @JMS\Type("DateTime<'U'>")
-     */
+    #[ORM\Column(type: 'datetime', nullable: false)]
+    #[JMS\Expose]
+    #[JMS\Type("DateTime<'U'>")]
     protected ?\DateTime $dateTime = null;
 
-    /**
-     * @ORM\Column(type="float", nullable=false)
-     * @JMS\Expose()
-     */
+    #[ORM\Column(type: 'float', nullable: false)]
+    #[JMS\Expose]
     protected ?float $value = null;
 
-    /**
-     * @ORM\Column(type="smallint", nullable=false)
-     * @JMS\Expose()
-     */
+    #[ORM\Column(type: 'smallint', nullable: false)]
+    #[JMS\Expose]
     protected ?int $pollutant = null;
 
-    /**
-     * @ORM\Column(type="string", length=32, nullable=true)
-     * @JMS\Expose()
-     */
+    #[ORM\Column(type: 'string', length: 32, nullable: true)]
+    #[JMS\Expose]
     private $tag;
 
     public function setId(int $id): Data

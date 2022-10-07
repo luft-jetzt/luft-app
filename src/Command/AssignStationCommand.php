@@ -14,16 +14,10 @@ use Symfony\Component\Console\Question\Question;
 
 class AssignStationCommand extends Command
 {
-    protected ManagerRegistry $registry;
-    protected CityGuesserInterface $cityGuesser;
-
     protected static $defaultName = 'luft:assign-station';
 
-    public function __construct(ManagerRegistry $registry, CityGuesserInterface $cityGuesser)
+    public function __construct(protected ManagerRegistry $registry, protected CityGuesserInterface $cityGuesser)
     {
-        $this->registry = $registry;
-        $this->cityGuesser = $cityGuesser;
-
         parent::__construct();
     }
 

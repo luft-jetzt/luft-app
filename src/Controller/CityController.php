@@ -20,9 +20,7 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class CityController extends AbstractController
 {
-    /**
-     * @Entity("city", expr="repository.findOneBySlug(citySlug)")
-     */
+    #[Entity('city', expr: 'repository.findOneBySlug(citySlug)')]
     public function showAction(SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory, City $city, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
     {
         $seoPage
@@ -43,9 +41,7 @@ class CityController extends AbstractController
         ]);
     }
 
-    /**
-     * @Entity("city", expr="repository.findOneBySlug(citySlug)")
-     */
+    #[Entity('city', expr: 'repository.findOneBySlug(citySlug)')]
     public function twitterAction(Session $session, City $city): Response
     {
         if (!$city->getUser()) {
@@ -59,9 +55,7 @@ class CityController extends AbstractController
         ]);
     }
 
-    /**
-     * @Entity("city", expr="repository.findOneBySlug(citySlug)")
-     */
+    #[Entity('city', expr: 'repository.findOneBySlug(citySlug)')]
     public function twitterAuthAction(Session $session, City $city): Response
     {
         $cb = $this->getCodeBird();
@@ -80,9 +74,7 @@ class CityController extends AbstractController
         return new RedirectResponse($cb->oauth_authorize());
     }
 
-    /**
-     * @Entity("city", expr="repository.findOneBySlug(citySlug)")
-     */
+    #[Entity('city', expr: 'repository.findOneBySlug(citySlug)')]
     public function twitterTokenAction(Session $session, Request $request, UserInterface $user, City $city): Response
     {
         $cb = $this->getCodeBird();

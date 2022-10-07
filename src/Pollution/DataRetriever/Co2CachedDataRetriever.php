@@ -11,13 +11,8 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class Co2CachedDataRetriever implements DataRetrieverInterface
 {
-    protected DataCacheInterface $dataCache;
-    protected ManagerRegistry $registry;
-
-    public function __construct(DataCacheInterface $dataCache, ManagerRegistry $registry)
+    public function __construct(protected DataCacheInterface $dataCache, protected ManagerRegistry $registry)
     {
-        $this->dataCache = $dataCache;
-        $this->registry = $registry;
     }
 
     public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId = null, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 750): array

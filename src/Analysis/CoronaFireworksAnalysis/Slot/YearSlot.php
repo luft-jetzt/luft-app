@@ -9,13 +9,11 @@ use Carbon\CarbonTimeZone;
 
 class YearSlot
 {
-    protected int $startYear;
     protected array $modelList = [];
     protected \DateTimeZone $dateTimeZone;
 
-    public function __construct(int $startYear)
+    public function __construct(protected int $startYear)
     {
-        $this->startYear = $startYear;
         $this->dateTimeZone = new CarbonTimeZone('Europe/Berlin');
     }
 

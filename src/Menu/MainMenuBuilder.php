@@ -12,16 +12,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class MainMenuBuilder extends AbstractBuilder
 {
-    protected MeasurementListInterface $measurementList;
-    protected RouterInterface $router;
-    protected FeatureManagerInterface $featureManager;
-
-    public function __construct(FeatureManagerInterface $featureManager, FactoryInterface $factory, TokenStorageInterface $tokenStorage, MeasurementListInterface $measurementList, RouterInterface $router)
+    public function __construct(protected FeatureManagerInterface $featureManager, FactoryInterface $factory, TokenStorageInterface $tokenStorage, protected MeasurementListInterface $measurementList, protected RouterInterface $router)
     {
-        $this->measurementList = $measurementList;
-        $this->router = $router;
-        $this->featureManager = $featureManager;
-
         parent::__construct($factory, $tokenStorage);
     }
 
@@ -84,13 +76,7 @@ class MainMenuBuilder extends AbstractBuilder
     {
         $measurements = $this->measurementList->getMeasurements();
 
-        usort($measurements, function(MeasurementInterface $a, MeasurementInterface $b): int {
-            if ($a->getName() === $b->getName()) {
-                return 0;
-            }
-
-            return ($a->getName() < $b->getName()) ? -1 : 1;
-        });
+        usort($measurements, fn(MeasurementInterface $a, MeasurementInterface $b): int => $a->getName() <=> $b->getName());
 
         /** @var MeasurementInterface $measurement */
         foreach ($measurements as $measurement) {

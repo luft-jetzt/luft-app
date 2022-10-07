@@ -7,11 +7,8 @@ use App\Pollution\StationCache\StationCacheInterface;
 
 abstract class AbstractPersister implements PersisterInterface
 {
-    protected StationCacheInterface $stationCache;
-
-    public function __construct(StationCacheInterface $stationCache)
+    public function __construct(protected StationCacheInterface $stationCache)
     {
-        $this->stationCache = $stationCache;
     }
 
     protected function stationExists(string $stationCode): bool

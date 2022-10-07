@@ -14,15 +14,8 @@ use Carbon\Carbon;
 
 class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
 {
-    protected ValueFetcherInterface $valueFetcher;
-    protected MeasurementViewModelFactoryInterface $measurementViewModelFactory;
-    protected AirQualityCalculatorInterface $airQualityCalculator;
-
-    public function __construct(ValueFetcherInterface $valueFetcher, MeasurementViewModelFactoryInterface $measurementViewModelFactory, AirQualityCalculatorInterface $airQualityCalculator)
+    public function __construct(protected ValueFetcherInterface $valueFetcher, protected MeasurementViewModelFactoryInterface $measurementViewModelFactory, protected AirQualityCalculatorInterface $airQualityCalculator)
     {
-        $this->valueFetcher = $valueFetcher;
-        $this->measurementViewModelFactory = $measurementViewModelFactory;
-        $this->airQualityCalculator = $airQualityCalculator;
     }
 
     public function analyze(CoordInterface $coord): array

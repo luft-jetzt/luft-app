@@ -10,13 +10,7 @@ abstract class AbstractFireworksAnalysis implements FireworksAnalysisInterface
 
     protected float $maxSlope = 5000.0;
 
-    protected FinderInterface $finder;
-
-    protected FireworksModelFactoryInterface $fireworksModelFactory;
-
-    public function __construct(FinderInterface $finder, FireworksModelFactoryInterface $fireworksModelFactory)
+    public function __construct(protected FinderInterface $finder, protected FireworksModelFactoryInterface $fireworksModelFactory)
     {
-        $this->finder = $finder;
-        $this->fireworksModelFactory = $fireworksModelFactory;
     }
 }

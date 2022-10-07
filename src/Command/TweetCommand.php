@@ -12,14 +12,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class TweetCommand extends Command
 {
-    protected TwitterInterface $twitter;
-
     protected static $defaultName = 'luft:tweet';
 
-    public function __construct(TwitterInterface $twitter)
+    public function __construct(protected TwitterInterface $twitter)
     {
-        $this->twitter = $twitter;
-
         parent::__construct();
     }
 

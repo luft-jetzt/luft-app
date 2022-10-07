@@ -11,14 +11,8 @@ use FOS\ElasticaBundle\Finder\FinderInterface;
 
 class CachedElasticDataRetriever implements DataRetrieverInterface
 {
-    protected FinderInterface $dataFinder;
-
-    protected DataCacheInterface $dataCache;
-
-    public function __construct(DataCacheInterface $dataCache, FinderInterface $dataFinder)
+    public function __construct(protected DataCacheInterface $dataCache, protected FinderInterface $dataFinder)
     {
-        $this->dataFinder = $dataFinder;
-        $this->dataCache = $dataCache;
     }
 
     public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId = null, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 750): array
