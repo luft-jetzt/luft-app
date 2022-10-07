@@ -10,7 +10,7 @@ security:
                 class: AppBundle:User
                 property: username
 
-    encoders:
+    password_hashers:
         AppBundle\Entity\User:
             algorithm: bcrypt
 
@@ -29,7 +29,6 @@ security:
             logout: ~
 
         main:
-            anonymous: true
             provider: database_provider
             oauth:
                 resource_owners:
