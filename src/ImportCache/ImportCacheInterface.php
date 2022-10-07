@@ -4,8 +4,8 @@ namespace App\ImportCache;
 
 interface ImportCacheInterface
 {
-    const CACHE_NAMESPACE = 'luft';
-    const TTL = 172800;
+    public const CACHE_NAMESPACE = 'luft';
+    public const TTL = 172800;
 
     public function get(string $key): ?int;
     public function has(string $key): bool;

@@ -8,11 +8,8 @@ use Elastica\Result;
 
 class DataConverter implements DataConverterInterface
 {
-    protected StationCacheInterface $stationCache;
-
-    public function __construct(StationCacheInterface $stationCache)
+    public function __construct(protected StationCacheInterface $stationCache)
     {
-        $this->stationCache = $stationCache;
     }
 
     public function convert(Result $elasticResult): ?Data

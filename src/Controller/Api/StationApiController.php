@@ -128,7 +128,7 @@ class StationApiController extends AbstractApiController
             }
 
             return new JsonResponse($serializer->serialize($result, 'json'), Response::HTTP_OK, [], true);
-        } catch (UniqueConstraintViolationException $exception) {
+        } catch (UniqueConstraintViolationException) {
             return new JsonResponse($serializer->serialize([
                 'status' => 'error',
                 'message' => 'This record already exists',
@@ -167,8 +167,8 @@ class StationApiController extends AbstractApiController
      *   description="Returns the updated station",
      *   @Model(type=App\Entity\Station::class)
      * )
-     * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
      */
+    #[Entity('station', expr: 'repository.findOneByStationCode(stationCode)')]
     public function postStationAction(Request $request, SerializerInterface $serializer, Station $station, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
     {
         $requestBody = $request->getContent();

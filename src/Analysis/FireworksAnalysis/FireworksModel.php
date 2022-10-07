@@ -7,17 +7,8 @@ use App\Entity\Station;
 
 class FireworksModel
 {
-    protected Station $station;
-
-    protected Data $data;
-
-    protected float $slope;
-
-    public function __construct(Station $station, Data $data, float $slope)
+    public function __construct(protected Station $station, protected Data $data, protected float $slope)
     {
-        $this->data = $data;
-        $this->station = $station;
-        $this->slope = $slope;
     }
 
     public function getStation(): Station

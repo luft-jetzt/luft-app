@@ -15,38 +15,15 @@ use Symfony\Component\Routing\RouterInterface;
 
 abstract class AbstractTwitter implements TwitterInterface
 {
-    protected ManagerRegistry $doctrine;
-    protected RouterInterface $router;
-
-    protected PollutionDataFactory $pollutionDataFactory;
-
-    protected MessageFactoryInterface $messageFactory;
-
-    protected LoggerInterface $logger;
-
-    protected string $twitterApiKey;
-
-    protected string $twitterClientSecret;
-
     protected array $validScheduleList = [];
 
     protected \DateTime $dateTime;
 
     protected bool $dryRun = false;
 
-    public function __construct(ManagerRegistry $doctrine, RouterInterface $router, PollutionDataFactory $pollutionDataFactory, MessageFactoryInterface $messageFactory, LoggerInterface $logger, string $twitterApiKey, string $twitterClientSecret)
+    public function __construct(protected ManagerRegistry $doctrine, protected RouterInterface $router, protected PollutionDataFactory $pollutionDataFactory, protected MessageFactoryInterface $messageFactory, protected LoggerInterface $logger, protected string $twitterApiKey, protected string $twitterClientSecret)
     {
-        $this->doctrine = $doctrine;
-        $this->messageFactory = $messageFactory;
-        $this->logger = $logger;
         $this->dateTime = new \DateTime();
-        $this->router = $router;
-
-        $this->twitterApiKey = $twitterApiKey;
-        $this->twitterClientSecret = $twitterClientSecret;
-
-        // @todo do this via services please!
-        $this->pollutionDataFactory = $pollutionDataFactory;
         $this->pollutionDataFactory->setStrategy(new SimplePollutantFactoryStrategy());
     }
 

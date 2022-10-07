@@ -5,58 +5,40 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\TwitterScheduleRepository")
- * @ORM\Table(name="twitter_schedule")
- * @JMS\ExclusionPolicy("ALL")
- */
+#[ORM\Table(name: 'twitter_schedule')]
+#[ORM\Entity(repositoryClass: 'App\Repository\TwitterScheduleRepository')]
+#[JMS\ExclusionPolicy('ALL')]
 class TwitterSchedule
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=false)
-     * @JMS\Expose()
-     * @JMS\Type("DateTime<'U'>")
-     */
+    #[ORM\Column(type: 'datetime', nullable: false)]
+    #[JMS\Expose]
+    #[JMS\Type("DateTime<'U'>")]
     protected $createdAt;
 
-    /**
-     * @ORM\Column(type="string", nullable=false)
-     * @JMS\Expose()
-     */
+    #[ORM\Column(type: 'string', nullable: false)]
+    #[JMS\Expose]
     protected $title;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
+    #[ORM\Column(type: 'string', nullable: true)]
     protected $cron = '0 * * * *';
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
     protected $latitude = 0.0;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    #[ORM\Column(type: 'float', nullable: true)]
     protected $longitude = 0.0;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Station", inversedBy="twitterSchedules")
-     * @ORM\JoinColumn(name="station_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity: 'Station', inversedBy: 'twitterSchedules')]
+    #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id')]
     protected $station;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="City", inversedBy="twitterSchedules")
-     * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity: 'City', inversedBy: 'twitterSchedules')]
+    #[ORM\JoinColumn(name: 'city_id', referencedColumnName: 'id')]
     protected $city;
 
     public function __construct()

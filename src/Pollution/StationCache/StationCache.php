@@ -9,15 +9,13 @@ use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class StationCache implements StationCacheInterface
 {
-    const TTL = 3;
-    const CACHE_KEY = 'luft_stations';
+    final const TTL = 3;
+    final const CACHE_KEY = 'luft_stations';
     protected array $list = [];
-    protected ManagerRegistry $registry;
     protected AbstractAdapter $cache;
 
-    public function __construct(ManagerRegistry $registry, string $redisHost)
+    public function __construct(protected ManagerRegistry $registry, string $redisHost)
     {
-        $this->registry = $registry;
         $this->cache = $this->createConnection($redisHost);
 
         if (!$this->list = $this->loadFromCache()) {

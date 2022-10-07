@@ -7,65 +7,45 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CityRepository")
- * @ORM\Table(name="city")
- * @JMS\ExclusionPolicy("ALL")
- */
-class City
+#[ORM\Table(name: 'city')]
+#[ORM\Entity(repositoryClass: 'App\Repository\CityRepository')]
+#[JMS\ExclusionPolicy('ALL')]
+class City implements \Stringable
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=false)
-     * @JMS\Expose()
-     * @JMS\Type("DateTime<'U'>")
-     */
+    #[ORM\Column(type: 'datetime', nullable: false)]
+    #[JMS\Expose]
+    #[JMS\Type("DateTime<'U'>")]
     protected $createdAt;
 
-    /**
-     * @ORM\Column(type="string", nullable=false)
-     * @JMS\Expose()
-     */
+    #[ORM\Column(type: 'string', nullable: false)]
+    #[JMS\Expose]
     protected $name;
 
-    /**
-     * @ORM\Column(type="string", nullable=false)
-     * @JMS\Expose()
-     */
+    #[ORM\Column(type: 'string', nullable: false)]
+    #[JMS\Expose]
     protected $slug;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @JMS\Expose()
-     */
+    #[ORM\Column(type: 'string', nullable: true)]
+    #[JMS\Expose]
     protected $description;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @JMS\Expose()
-     */
+    #[ORM\Column(type: 'string', nullable: true)]
+    #[JMS\Expose]
     protected $fahrverboteSlug;
 
-    /**
-     * @ORM\OneToMany(targetEntity="TwitterSchedule", mappedBy="city")
-     */
+    #[ORM\OneToMany(targetEntity: 'TwitterSchedule', mappedBy: 'city')]
     protected $twitterSchedules;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Station", mappedBy="city")
-     */
+    #[ORM\OneToMany(targetEntity: 'Station', mappedBy: 'city')]
     protected $stations;
 
-    /**
-     * @ORM\OneToOne(targetEntity="User", mappedBy="city")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     */
+    #[ORM\OneToOne(targetEntity: 'User', mappedBy: 'city')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     protected $user;
 
     public function __construct()
@@ -212,6 +192,6 @@ class City
 
     public function __toString(): string
     {
-        return $this->name ? $this->name : '';
+        return $this->name ?: '';
     }
 }

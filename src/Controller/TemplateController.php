@@ -12,11 +12,8 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class TemplateController extends AbstractController
 {
-    protected EntrypointLookupCollectionInterface $entrypointLookupCollection;
-
-    public function __construct(EntrypointLookupCollectionInterface $entrypointLookupCollection)
+    public function __construct(protected EntrypointLookupCollectionInterface $entrypointLookupCollection)
     {
-        $this->entrypointLookupCollection = $entrypointLookupCollection;
     }
 
     public function cityListAction(): Response

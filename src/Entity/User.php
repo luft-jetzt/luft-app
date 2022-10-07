@@ -7,67 +7,45 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Table(name="user")
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- */
-class User implements UserInterface
+#[ORM\Table(name: 'user')]
+#[ORM\Entity(repositoryClass: 'App\Repository\UserRepository')]
+class User implements UserInterface, \Stringable
 {
-    const ROLE_USER = 'ROLE_USER';
-    const ROLE_ADMIN = 'ROLE_ADMIN';
+    final const ROLE_USER = 'ROLE_USER';
+    final const ROLE_ADMIN = 'ROLE_ADMIN';
 
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=60, unique=true)
-     */
+    #[ORM\Column(type: 'string', length: 60, unique: true)]
     protected ?string $email = null;
 
-    /**
-     * @ORM\Column(type="string", length=60, unique=true)
-     */
+    #[ORM\Column(type: 'string', length: 60, unique: true)]
     protected ?string $username = null;
 
-    /**
-     * @ORM\Column(type="string", length=64)
-     */
+    #[ORM\Column(type: 'string', length: 64)]
     protected ?string $password = null;
 
-    /**
-     * @ORM\Column(type="array")
-     */
+    #[ORM\Column(type: 'array')]
     protected array $roles = [];
 
     protected ?string $plainPassword = null;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     protected ?\DateTime $createdAt = null;
 
-    /**
-     * @ORM\OneToOne(targetEntity="City", mappedBy="user")
-     */
+    #[ORM\OneToOne(targetEntity: 'City', mappedBy: 'user')]
     protected ?City $city = null;
 
-    /**
-     * @ORM\Column(name="twitter_id", type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(name: 'twitter_id', type: 'string', length: 255, nullable: true)]
     protected ?string $twitterId = null;
 
-    /**
-     * @ORM\Column(name="twitter_access_token", type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(name: 'twitter_access_token', type: 'string', length: 255, nullable: true)]
     protected ?string $twitterAccessToken = null;
 
-    /**
-     * @ORM\Column(name="twitter_secret", type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(name: 'twitter_secret', type: 'string', length: 255, nullable: true)]
     protected ?string $twitterSecret = null;
 
     public function __construct()
@@ -165,24 +143,12 @@ class User implements UserInterface
 
     public function serialize(): string
     {
-        return serialize(array(
-            $this->id,
-            $this->email,
-            $this->password,
-            $this->twitterId,
-            $this->twitterAccessToken
-        ));
+        return serialize([$this->id, $this->email, $this->password, $this->twitterId, $this->twitterAccessToken]);
     }
 
     public function unserialize($serialized): void
     {
-        list(
-            $this->id,
-            $this->email,
-            $this->password,
-            $this->twitterId,
-            $this->twitterAccessToken
-            ) = unserialize($serialized);
+        [$this->id, $this->email, $this->password, $this->twitterId, $this->twitterAccessToken] = unserialize($serialized);
     }
 
     public function eraseCredentials(): User

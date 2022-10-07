@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityRepository;
 
 class DataRepository extends EntityRepository
 {
-    public function findLatestDataForStationAndPollutant(Station $station, int $pollutant, \DateTime $fromDateTime = null, \DateInterval $dateInterval, string $order = 'DESC'): ?Data
+    public function findLatestDataForStationAndPollutant(Station $station, int $pollutant, \DateInterval $dateInterval, \DateTime $fromDateTime = null, string $order = 'DESC'): ?Data
     {
         $qb = $this->createQueryBuilder('d');
 
@@ -159,7 +159,7 @@ class DataRepository extends EntityRepository
             ->andWhere($qb->expr()->eq('d.pollutant', ':pollutant'))
             ->setParameter('pollutant', $pollutant)
             ->leftJoin(
-                'App\Entity\Data',
+                \App\Entity\Data::class,
                 'd2',
                 'WITH',
                 'd2.pollutant = d.pollutant AND d2.station = d.station AND d2.value > d.value'
@@ -181,9 +181,7 @@ class DataRepository extends EntityRepository
                 WHERE s.provider = :provider'
             )->setParameter('provider', $provider->getIdentifier())->execute();
 
-            $providerStationIdList = array_map(function (array $stationRsult) {
-                return $stationRsult['id'];
-            }, $providerStationIdResult);
+            $providerStationIdList = array_map(fn(array $stationRsult) => $stationRsult['id'], $providerStationIdResult);
 
             if ($tagged) {
                 $query = $this->getEntityManager()->createQuery(

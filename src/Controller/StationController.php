@@ -19,9 +19,7 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class StationController extends AbstractController
 {
-    /**
-     * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
-     */
+    #[Entity('station', expr: 'repository.findOneByStationCode(stationCode)')]
     public function stationAction(SeoPageInterface $seoPage, Station $station, PollutionDataFactory $pollutionDataFactory, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
     {
         $viewModelList = $pollutionDataFactory
@@ -45,11 +43,10 @@ class StationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
-     */
+    #[Entity('station', expr: 'repository.findOneByStationCode(stationCode)')]
     public function limitsAction(LimitAnalysisInterface $limitAnalysis, Station $station): Response
     {
+        $stationCode = null;
         /** @var Station $station */
         $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
 
@@ -66,20 +63,20 @@ class StationController extends AbstractController
 
         var_dump($exceedance);
         return $this->render('Station/limits.html.twig', [
-            'exceedanceJson' => json_encode($exceedance),
+            'exceedanceJson' => json_encode($exceedance, JSON_THROW_ON_ERROR),
         ]);
     }
 
     /**
      * @Feature("station_history")
-     * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
      */
+    #[Entity('station', expr: 'repository.findOneByStationCode(stationCode)')]
     public function historyAction(Request $request, Station $station, SeoPageInterface $seoPage, HistoryDataFactoryInterface $historyDataFactory, RouterInterface $router): Response
     {
         if ($untilDateTimeParam = $request->query->get('until')) {
             try {
                 $untilDateTime = Carbon::parse($untilDateTimeParam)->endOfDay();
-            } catch (\Exception $exception) {
+            } catch (\Exception) {
                 $untilDateTime = Carbon::now()->endOfHour();
             }
         } else {
@@ -89,7 +86,7 @@ class StationController extends AbstractController
         if ($fromDateTimeParam = $request->query->get('from')) {
             try {
                 $fromDateTime = Carbon::parse($fromDateTimeParam)->startOfDay();
-            } catch (\Exception $exception) {
+            } catch (\Exception) {
                 $fromDateTime = Carbon::now()->startOfHour();
                 $fromDateTime->sub(new \DateInterval('P3D'));
             }
@@ -124,7 +121,7 @@ class StationController extends AbstractController
         $pollutantIdList = [];
 
         foreach ($dataLists as $dataList) {
-            $pollutantIdList = array_merge($pollutantIdList, array_keys($dataList));
+            $pollutantIdList = [...$pollutantIdList, ...array_keys($dataList)];
         }
 
         return array_unique($pollutantIdList);
