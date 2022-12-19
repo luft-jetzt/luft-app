@@ -31,14 +31,6 @@ security:
         main:
             anonymous: true
             provider: database_provider
-            oauth:
-                resource_owners:
-                    twitter:  '/login/check-twitter'
-                login_path: /login
-                failure_path: /login
-                oauth_user_provider:
-                    service: App\UserProvider\LuftUserProvider
-                default_target_path: /twitter-success
             logout: ~
 
     access_control:
