@@ -98,4 +98,3 @@ services:
         tags:
             - { name: knp_menu.menu_builder, method: mainMenu, alias: main } # The alias is what is used to retrieve the menu
 
-    # ...

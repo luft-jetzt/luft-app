@@ -32,7 +32,7 @@
                         {% if (city.user and not city.fahrverbote) or (not city.user and city.fahrverbote) %}
                         {% set col_width = 'col-12' %}
                         {% endif %}
-                        
+
                         {% if city.fahrverbote %}
                             <div class="{{ col_width }}">
                                 <p>

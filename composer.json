@@ -49,7 +49,6 @@
         "symfony/property-info": "^5.0",
         "symfony/proxy-manager-bridge": "^5.0",
         "symfony/runtime": "^5.0",
-        "symfony/security-bundle": "^5.0",
         "symfony/serializer": "^5.0",
         "symfony/twig-bridge": "^5.0",
         "symfony/twig-bundle": "^5.0",
