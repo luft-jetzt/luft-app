@@ -112,9 +112,9 @@ class City implements \Stringable
         return $this->stations;
     }
 
-    public function setStations(Collection $twitterSchedules): City
+    public function setStations(Collection $stations): City
     {
-        $this->stations = $twitterSchedules;
+        $this->stations = $stations;
 
         return $this;
     }

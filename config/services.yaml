@@ -5,8 +5,6 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     locale: 'de'
-    twitter.client_id: ThisTokenIsNotSoSecretChangeIt
-    twitter.client_secret: ThisTokenIsNotSoSecretChangeIt
     router.request_context.host: 'luft.jetzt'
     router.request_context.scheme: 'https'
 
@@ -34,9 +32,6 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-
-    App\Twitter\MessageFactory\MessageFactoryInterface:
-        alias: App\Twitter\MessageFactory\ExtendedEmojiMessageFactory
 
     App\Pollution\DataRetriever\DataRetrieverInterface:
         #alias: App\Pollution\DataRetriever\CachedElasticDataRetriever
