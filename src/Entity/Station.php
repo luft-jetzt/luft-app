@@ -41,7 +41,7 @@ class Station extends Coordinate implements \Stringable
     #[JMS\Expose]
     protected ?float $longitude = null;
 
-    #[ORM\ManyToOne(targetEntity: 'City', inversedBy: 'twitterSchedules')]
+    #[ORM\ManyToOne(targetEntity: 'City', inversedBy: 'cities')]
     #[ORM\JoinColumn(name: 'city_id', referencedColumnName: 'id')]
     protected $city;
 
