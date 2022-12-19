@@ -19,9 +19,6 @@ services:
                             # fetching services directly from the container via $container->get() won't work.
                             # The best practice is to be explicit about your dependencies anyway.
         bind:
-            $twitterClientId: '%env(TWITTER_CLIENT_ID)%'
-            $twitterApiKey: '%env(TWITTER_API_KEY)%'
-            $twitterClientSecret: '%env(TWITTER_CLIENT_SECRET)%'
             $graphCacheDirectory: '%env(GRAPH_CACHE_DIRECTORY)%'
             $openWeatherMapAppId: '%env(OPENWEATHERMAP_APPID)%'
             $redisHost: 'redis://%env(REDIS_HOST)%'
