@@ -57,15 +57,11 @@ class Station extends Coordinate implements \Stringable
     #[JMS\Expose]
     protected $altitude;
 
-    /**
-     * @DoctrineAssert\EnumType(entity="App\DBAL\Types\StationType")
-     */
+    #[DoctrineAssert\EnumType(entity: 'App\DBAL\Types\StationType')]
     #[ORM\Column(type: 'StationType', nullable: true)]
     protected $stationType;
 
-    /**
-     * @DoctrineAssert\EnumType(entity="App\DBAL\Types\AreaType")
-     */
+    #[DoctrineAssert\EnumType(entity: 'App\DBAL\Types\AreaType')]
     #[ORM\Column(type: 'AreaType', nullable: true)]
     protected $areaType;
 
