@@ -34,10 +34,6 @@ class City implements \Stringable
     #[JMS\Expose]
     protected $description;
 
-    #[ORM\Column(type: 'string', nullable: true)]
-    #[JMS\Expose]
-    protected $fahrverboteSlug;
-
     #[ORM\OneToMany(targetEntity: 'Station', mappedBy: 'city')]
     protected $stations;
 
@@ -124,23 +120,6 @@ class City implements \Stringable
         $this->stations->removeElement($station);
 
         return $this;
-    }
-
-    public function setFahrverboteSlug(string $fahrverboteSlug): City
-    {
-        $this->fahrverboteSlug = $fahrverboteSlug;
-
-        return $this;
-    }
-
-    public function getFahrverboteSlug(): ?string
-    {
-        return $this->fahrverboteSlug;
-    }
-
-    public function hasFahrverbote(): bool
-    {
-        return $this->fahrverboteSlug !== null;
     }
 
     public function __toString(): string
