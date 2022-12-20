@@ -17,9 +17,6 @@
     "clue/stream-filter": {
         "version": "v1.4.0"
     },
-    "composer/installers": {
-        "version": "v1.5.0"
-    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.4"
     },
@@ -99,9 +96,6 @@
     "doctrine/sql-formatter": {
         "version": "1.1.2"
     },
-    "dragonmantank/cron-expression": {
-        "version": "v2.1.0"
-    },
     "elasticsearch/elasticsearch": {
         "version": "v6.0.1"
     },
@@ -180,9 +174,6 @@
     "guzzlehttp/psr7": {
         "version": "1.4.2"
     },
-    "hwi/oauth-bundle": {
-        "version": "0.6.1"
-    },
     "jms/metadata": {
         "version": "1.6.0"
     },
@@ -202,9 +193,6 @@
             "config/packages/jms_serializer.yaml",
             "config/packages/prod/jms_serializer.yaml"
         ]
-    },
-    "jublonet/codebird-php": {
-        "version": "3.1.0"
     },
     "knplabs/knp-menu": {
         "version": "2.3.0"
@@ -633,9 +621,6 @@
     "symfony/options-resolver": {
         "version": "v4.0.6"
     },
-    "symfony/password-hasher": {
-        "version": "v5.4.8"
-    },
     "symfony/phpunit-bridge": {
         "version": "4.4",
         "recipe": {
@@ -706,30 +691,6 @@
     "symfony/runtime": {
         "version": "v5.4.8"
     },
-    "symfony/security-bundle": {
-        "version": "5.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "5.3",
-            "ref": "98f1f2b0d635908c2b40f3675da2d23b1a069d30"
-        },
-        "files": [
-            "config/packages/security.yaml"
-        ]
-    },
-    "symfony/security-core": {
-        "version": "v4.2.3"
-    },
-    "symfony/security-csrf": {
-        "version": "v4.2.3"
-    },
-    "symfony/security-guard": {
-        "version": "v4.2.3"
-    },
-    "symfony/security-http": {
-        "version": "v4.2.3"
-    },
     "symfony/serializer": {
         "version": "v4.0.6"
     },
@@ -741,9 +702,6 @@
     },
     "symfony/string": {
         "version": "v5.0.8"
-    },
-    "symfony/templating": {
-        "version": "v4.0.6"
     },
     "symfony/translation": {
         "version": "6.0",

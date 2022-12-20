@@ -8,13 +8,11 @@ use Flagception\Manager\FeatureManagerInterface;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class MainMenuBuilder extends AbstractBuilder
+class MainMenuBuilder
 {
-    public function __construct(protected FeatureManagerInterface $featureManager, FactoryInterface $factory, TokenStorageInterface $tokenStorage, protected MeasurementListInterface $measurementList, protected RouterInterface $router)
+    public function __construct(protected FeatureManagerInterface $featureManager, protected FactoryInterface $factory, protected MeasurementListInterface $measurementList, protected RouterInterface $router)
     {
-        parent::__construct($factory, $tokenStorage);
     }
 
     public function mainMenu(array $options = []): ItemInterface
@@ -32,7 +30,6 @@ class MainMenuBuilder extends AbstractBuilder
         $this->addMeasurementDropdown($pollutantDropdown);
 
         $pollutantDropdown->addChild('Grenzwerte', ['route' => 'limits', 'attributes' => ['divider_prepend' => true]]);
-        $pollutantDropdown->addChild('Fahrverbote', ['uri' => 'https://sqi.be/i7vfr']);
 
         if ($this->featureManager->isActive('analysis')) {
             $analysisDropdown = $menu->addChild('Analyse', [
