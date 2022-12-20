@@ -718,18 +718,6 @@
     "symfony/runtime": {
         "version": "v5.4.8"
     },
-    "symfony/security-bundle": {
-        "version": "6.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "6.0",
-            "ref": "8a5b112826f7d3d5b07027f93786ae11a1c7de48"
-        },
-        "files": [
-            "config/packages/security.yaml"
-        ]
-    },
     "symfony/serializer": {
         "version": "v4.0.6"
     },
