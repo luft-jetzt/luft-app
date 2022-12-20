@@ -16,7 +16,7 @@ abstract class AbstractController extends FrameworkAbstractController
     }
 
     /**
-     * @deprecated 
+     * @deprecated
      */
     public function getDoctrine(): ManagerRegistry
     {
