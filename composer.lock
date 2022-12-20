@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "759409dcb2ba5c4f60504282a96a379b",
+    "content-hash": "da55be993c137b746975be91292c648b",
     "packages": [
         {
             "name": "cache/adapter-common",
@@ -3432,16 +3432,16 @@
         },
         {
             "name": "maltehuebner/impress-bundle",
-            "version": "0.1",
+            "version": "0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/maltehuebner/impress-bundle.git",
-                "reference": "f678ea6320364a21ce1251b8090831430fc52c67"
+                "reference": "d1cff782605d6dd556ede8df43053af4153ce60a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/maltehuebner/impress-bundle/zipball/f678ea6320364a21ce1251b8090831430fc52c67",
-                "reference": "f678ea6320364a21ce1251b8090831430fc52c67",
+                "url": "https://api.github.com/repos/maltehuebner/impress-bundle/zipball/d1cff782605d6dd556ede8df43053af4153ce60a",
+                "reference": "d1cff782605d6dd556ede8df43053af4153ce60a",
                 "shasum": ""
             },
             "require": {
@@ -3475,9 +3475,9 @@
             "description": "Keep your impress up to date",
             "support": {
                 "issues": "https://github.com/maltehuebner/impress-bundle/issues",
-                "source": "https://github.com/maltehuebner/impress-bundle/tree/0.1"
+                "source": "https://github.com/maltehuebner/impress-bundle/tree/0.2"
             },
-            "time": "2022-01-22T21:47:57+00:00"
+            "time": "2022-12-20T01:58:22+00:00"
         },
         {
             "name": "mhujer/breadcrumbs-bundle",
