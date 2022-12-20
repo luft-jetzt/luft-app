@@ -41,10 +41,7 @@ class Station extends Coordinate implements \Stringable
     #[JMS\Expose]
     protected ?float $longitude = null;
 
-    #[ORM\OneToMany(targetEntity: 'TwitterSchedule', mappedBy: 'station')]
-    protected $twitterSchedules;
-
-    #[ORM\ManyToOne(targetEntity: 'City', inversedBy: 'twitterSchedules')]
+    #[ORM\ManyToOne(targetEntity: 'City', inversedBy: 'cities')]
     #[ORM\JoinColumn(name: 'city_id', referencedColumnName: 'id')]
     protected $city;
 
@@ -81,13 +78,6 @@ class Station extends Coordinate implements \Stringable
     #[ORM\ManyToOne(targetEntity: 'Network', inversedBy: 'stations')]
     #[ORM\JoinColumn(name: 'network_id', referencedColumnName: 'id')]
     protected $network;
-
-    public function __construct(float $latitude, float $longitude)
-    {
-        $this->twitterSchedules = new ArrayCollection();
-
-        parent::__construct($latitude, $longitude);
-    }
 
     public function setId(int $id): Station
     {
@@ -169,32 +159,6 @@ class Station extends Coordinate implements \Stringable
     public function __toString(): string
     {
         return sprintf('%s: %s', $this->stationCode, $this->title);
-    }
-
-    public function addTwitterSchedule(TwitterSchedule $twitterSchedule): Station
-    {
-        $this->twitterSchedules->add($twitterSchedule);
-
-        return $this;
-    }
-
-    public function getTwitterSchedules(): Collection
-    {
-        return $this->twitterSchedules;
-    }
-
-    public function setTwitterSchedules(Collection $twitterSchedules): Station
-    {
-        $this->twitterSchedules = $twitterSchedules;
-
-        return $this;
-    }
-
-    public function removeTwitterSchedule(TwitterSchedule $twitterSchedule): Station
-    {
-        $this->twitterSchedules->removeElement($twitterSchedule);
-
-        return $this;
     }
 
     public function setCity(City $city = null): Station
