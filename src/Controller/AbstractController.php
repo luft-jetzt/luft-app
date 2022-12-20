@@ -5,11 +5,24 @@ namespace App\Controller;
 use App\Entity\City;
 use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
-use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as FrameworkAbstractController;
 
 abstract class AbstractController extends FrameworkAbstractController
 {
+    public function __construct(protected ManagerRegistry $managerRegistry)
+    {
+
+    }
+
+    /**
+     * @deprecated
+     */
+    public function getDoctrine(): ManagerRegistry
+    {
+        return $this->managerRegistry;
+    }
+
     protected function getStationListForCity(City $city): array
     {
         return $this->getDoctrine()->getRepository(Station::class)->findActiveStationsForCity($city);

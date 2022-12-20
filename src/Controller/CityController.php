@@ -5,15 +5,14 @@ namespace App\Controller;
 use App\Entity\City;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPage;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class CityController extends AbstractController
 {
-    #[Entity('city', expr: 'repository.findOneBySlug(citySlug)')]
-    public function showAction(SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory, City $city, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
+    public function showAction(#[MapEntity(expr: 'repository.findOneBySlug(citySlug)')] City $city, SeoPage $seoPage, PollutionDataFactory $pollutionDataFactory, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
     {
         $seoPage
             ->setTitle(sprintf('Luftmesswerte aus %s: Stickstoffdioxid, Feinstaub und Ozon', $city->getName()))

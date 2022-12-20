@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\City;
 use App\SeoPage\SeoPage;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -12,8 +13,12 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class TemplateController extends AbstractController
 {
-    public function __construct(protected EntrypointLookupCollectionInterface $entrypointLookupCollection)
+    public function __construct(
+        protected EntrypointLookupCollectionInterface $entrypointLookupCollection,
+        protected ManagerRegistry $managerRegistry
+    )
     {
+        parent::__construct($managerRegistry);
     }
 
     public function cityListAction(): Response

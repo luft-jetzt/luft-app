@@ -23,7 +23,7 @@ class KernelEventSubscriber implements EventSubscriberInterface
 
     public function onController(ControllerEvent $filterControllerEvent): void
     {
-        if (!$filterControllerEvent->isMasterRequest()) {
+        if (!$filterControllerEvent->isMainRequest()) {
             return;
         }
 
