@@ -34,22 +34,13 @@ class City implements \Stringable
     #[JMS\Expose]
     protected $description;
 
-    #[ORM\OneToMany(targetEntity: 'TwitterSchedule', mappedBy: 'city')]
-    protected $twitterSchedules;
-
     #[ORM\OneToMany(targetEntity: 'Station', mappedBy: 'city')]
     protected $stations;
-
-    #[ORM\OneToOne(targetEntity: 'User', mappedBy: 'city')]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
-    protected $user;
 
     public function __construct()
     {
         $this->createdAt = new \DateTime();
-        $this->twitterSchedules = new ArrayCollection();
         $this->stations = new ArrayCollection();
-        $this->users = new ArrayCollection();
     }
 
     public function getId(): int
@@ -105,32 +96,6 @@ class City implements \Stringable
         return $this;
     }
 
-    public function addTwitterSchedule(TwitterSchedule $twitterSchedule): City
-    {
-        $this->twitterSchedules->add($twitterSchedule);
-
-        return $this;
-    }
-
-    public function getTwitterSchedules(): Collection
-    {
-        return $this->twitterSchedules;
-    }
-
-    public function setTwitterSchedules(Collection $twitterSchedules): City
-    {
-        $this->twitterSchedules = $twitterSchedules;
-
-        return $this;
-    }
-
-    public function removeTwitterSchedule(TwitterSchedule $twitterSchedule): City
-    {
-        $this->twitterSchedules->removeElement($twitterSchedule);
-
-        return $this;
-    }
-
     public function addStation(Station $station): City
     {
         $this->stations->add($station);
@@ -143,9 +108,9 @@ class City implements \Stringable
         return $this->stations;
     }
 
-    public function setStations(Collection $twitterSchedules): City
+    public function setStations(Collection $stations): City
     {
-        $this->stations = $twitterSchedules;
+        $this->stations = $stations;
 
         return $this;
     }
@@ -155,18 +120,6 @@ class City implements \Stringable
         $this->stations->removeElement($station);
 
         return $this;
-    }
-
-    public function setUser(User $user = null): City
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
     }
 
     public function __toString(): string

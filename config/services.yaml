@@ -5,8 +5,6 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     locale: 'de'
-    twitter.client_id: ThisTokenIsNotSoSecretChangeIt
-    twitter.client_secret: ThisTokenIsNotSoSecretChangeIt
     router.request_context.host: 'luft.jetzt'
     router.request_context.scheme: 'https'
 
@@ -19,9 +17,6 @@ services:
                             # fetching services directly from the container via $container->get() won't work.
                             # The best practice is to be explicit about your dependencies anyway.
         bind:
-            $twitterClientId: '%env(TWITTER_CLIENT_ID)%'
-            $twitterApiKey: '%env(TWITTER_API_KEY)%'
-            $twitterClientSecret: '%env(TWITTER_CLIENT_SECRET)%'
             $graphCacheDirectory: '%env(GRAPH_CACHE_DIRECTORY)%'
             $openWeatherMapAppId: '%env(OPENWEATHERMAP_APPID)%'
             $redisHost: 'redis://%env(REDIS_HOST)%'
@@ -37,9 +32,6 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-
-    App\Twitter\MessageFactory\MessageFactoryInterface:
-        alias: App\Twitter\MessageFactory\ExtendedEmojiMessageFactory
 
     App\Pollution\DataRetriever\DataRetrieverInterface:
         #alias: App\Pollution\DataRetriever\CachedElasticDataRetriever
@@ -106,4 +98,3 @@ services:
         tags:
             - { name: knp_menu.menu_builder, method: mainMenu, alias: main } # The alias is what is used to retrieve the menu
 
-    # ...

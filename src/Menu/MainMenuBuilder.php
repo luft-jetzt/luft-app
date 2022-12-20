@@ -8,13 +8,11 @@ use Flagception\Manager\FeatureManagerInterface;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class MainMenuBuilder extends AbstractBuilder
+class MainMenuBuilder
 {
-    public function __construct(protected FeatureManagerInterface $featureManager, FactoryInterface $factory, TokenStorageInterface $tokenStorage, protected MeasurementListInterface $measurementList, protected RouterInterface $router)
+    public function __construct(protected FeatureManagerInterface $featureManager, protected FactoryInterface $factory, protected MeasurementListInterface $measurementList, protected RouterInterface $router)
     {
-        parent::__construct($factory, $tokenStorage);
     }
 
     public function mainMenu(array $options = []): ItemInterface
