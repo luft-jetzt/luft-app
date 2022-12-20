@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use Caldera\GeoBasic\Coordinate\Coordinate;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -60,13 +58,13 @@ class Station extends Coordinate implements \Stringable
     protected $altitude;
 
     /**
-     * @DoctrineAssert\Enum(entity="App\DBAL\Types\StationType")
+     * @DoctrineAssert\EnumType(entity="App\DBAL\Types\StationType")
      */
     #[ORM\Column(type: 'StationType', nullable: true)]
     protected $stationType;
 
     /**
-     * @DoctrineAssert\Enum(entity="App\DBAL\Types\AreaType")
+     * @DoctrineAssert\EnumType(entity="App\DBAL\Types\AreaType")
      */
     #[ORM\Column(type: 'AreaType', nullable: true)]
     protected $areaType;
