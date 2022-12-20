@@ -6,7 +6,6 @@
         <service id="App\Menu\MainMenuBuilder">
             <argument type="service" id="Flagception\Manager\FeatureManagerInterface" />
             <argument type="service" id="knp_menu.factory" />
-            <argument type="service" id="security.token_storage" />
             <argument type="service" id="App\Air\MeasurementList\MeasurementListInterface" />
             <argument type="service" id="Symfony\Component\Routing\RouterInterface" />
             <tag name="knp_menu.menu_builder" method="mainMenu" alias="main_menu" />

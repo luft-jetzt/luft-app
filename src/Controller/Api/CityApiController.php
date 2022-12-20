@@ -18,12 +18,12 @@ use Swagger\Annotations as SWG;
 class CityApiController extends AbstractApiController
 {
     /**
-     * Retrieve pollution data for a provided city slug.
+     * Retrieve details about a city identified by the provided slug.
      *
      * @SWG\Tag(name="City")
      * @SWG\Response(
      *   response=200,
-     *   description="Retrieve pollution data for cities",
+     *   description="Retrieve details about a city identified by the provided slug",
      *   @SWG\Schema(
      *     type="array",
      *     @SWG\Items(ref=@Model(type=App\Air\ViewModel\MeasurementViewModel::class))
@@ -41,10 +41,7 @@ class CityApiController extends AbstractApiController
             throw $this->createNotFoundException();
         }
 
-        $stationList = $this->getStationListForCity($city);
-        $stationViewModelList = $this->createViewModelListForStationList($pollutionDataFactory, $stationList);
-
-        return new JsonResponse($serializer->serialize($stationViewModelList, 'json'), 200, [], true);
+        return new JsonResponse($serializer->serialize($city, 'json'), 200, [], true);
     }
 
     /**
