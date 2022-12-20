@@ -32,7 +32,6 @@ class MainMenuBuilder extends AbstractBuilder
         $this->addMeasurementDropdown($pollutantDropdown);
 
         $pollutantDropdown->addChild('Grenzwerte', ['route' => 'limits', 'attributes' => ['divider_prepend' => true]]);
-        $pollutantDropdown->addChild('Fahrverbote', ['uri' => 'https://sqi.be/i7vfr']);
 
         if ($this->featureManager->isActive('analysis')) {
             $analysisDropdown = $menu->addChild('Analyse', [
