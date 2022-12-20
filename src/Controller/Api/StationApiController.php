@@ -25,8 +25,8 @@ class StationApiController extends AbstractApiController
      * @OA\Parameter(
      *     name="stationCode",
      *     in="path",
-     *     type="string",
-     *     description="station code"
+     *     description="station code",
+     *     @OA\Schema(type="string")
      * )
      * @OA\Response(
      *   response=200,
@@ -71,8 +71,8 @@ class StationApiController extends AbstractApiController
      * @OA\Parameter(
      *     name="provider",
      *     in="query",
-     *     type="string",
-     *     description="Provider identifier"
+     *     description="Provider identifier",
+     *     @OA\Schema(type="string")
      * )
      * @OA\Response(
      *   response=200,
@@ -100,7 +100,6 @@ class StationApiController extends AbstractApiController
      * @OA\Parameter(
      *     name="body",
      *     in="body",
-     *     type="string",
      *     description="Json of station data",
      *     @OA\Schema(type="string")
      * )
@@ -156,7 +155,6 @@ class StationApiController extends AbstractApiController
      * @OA\Parameter(
      *     name="body",
      *     in="body",
-     *     type="string",
      *     description="Json of station data",
      *     @OA\Schema(type="string")
      * )

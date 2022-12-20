@@ -20,7 +20,6 @@ class ValueApiController extends AbstractApiController
      * @OA\Parameter(
      *     name="body",
      *     in="body",
-     *     type="string",
      *     description="data value",
      *     @OA\Schema(type="string")
      * )

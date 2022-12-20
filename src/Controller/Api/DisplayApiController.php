@@ -23,20 +23,20 @@ class DisplayApiController extends AbstractApiController
      * @OA\Parameter(
      *     name="latitude",
      *     in="query",
-     *     type="number",
-     *     description="Latitude"
+     *     description="Latitude",
+     *     @OA\Schema(type="float")
      * )
      * @OA\Parameter(
      *     name="longitude",
      *     in="query",
-     *     type="number",
-     *     description="Longitude"
+     *     description="Longitude",
+     *     @OA\Schema(type="float")
      * )
      * @OA\Parameter(
      *     name="zip",
      *     in="query",
-     *     type="number",
-     *     description="Zip code"
+     *     description="Zip code",
+     *     @OA\Schema(type="number")
      * )
      * @OA\Response(
      *   response=200,
@@ -80,8 +80,8 @@ class DisplayApiController extends AbstractApiController
      * @OA\Parameter(
      *     name="stationCode",
      *     in="path",
-     *     type="string",
-     *     description="station code"
+     *     description="station code",
+     *     @OA\Schema(type="string")
      * )
      */
     public function displayStationAction(

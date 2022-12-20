@@ -69,7 +69,6 @@ class CityApiController extends AbstractApiController
      * @OA\Parameter(
      *     name="body",
      *     in="body",
-     *     type="string",
      *     description="Json of city data",
      *     @OA\Schema(type="string")
      * )
@@ -99,7 +98,6 @@ class CityApiController extends AbstractApiController
      * @OA\Parameter(
      *     name="body",
      *     in="body",
-     *     type="string",
      *     description="Json of city data",
      *     @OA\Schema(type="string")
      * )
