@@ -1,6 +1,6 @@
 import 'corejs-typeahead';
 import Bloodhound from 'bloodhound-js';
-import Handlebars from 'handlebars';
+import Handlebars from 'handlebars/dist/handlebars.runtime.amd.min';
 
 export default class Search {
     constructor(element, options) {
