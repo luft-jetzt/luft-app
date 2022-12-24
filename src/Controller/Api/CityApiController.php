@@ -3,7 +3,6 @@
 namespace App\Controller\Api;
 
 use App\Entity\City;
-use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\Util\EntityMerger\EntityMergerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -13,20 +12,20 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Swagger\Annotations as SWG;
+use OpenApi\Annotations as OA;
 
 class CityApiController extends AbstractApiController
 {
     /**
-     * Retrieve pollution data for a provided city slug.
+     * Retrieve details about a city identified by the provided slug.
      *
-     * @SWG\Tag(name="City")
-     * @SWG\Response(
+     * @OA\Tag(name="City")
+     * @OA\Response(
      *   response=200,
-     *   description="Retrieve pollution data for cities",
-     *   @SWG\Schema(
+     *   description="Retrieve details about a city identified by the provided slug",
+     *   @OA\Schema(
      *     type="array",
-     *     @SWG\Items(ref=@Model(type=App\Air\ViewModel\MeasurementViewModel::class))
+     *     @OA\Items(ref=@Model(type=App\Air\ViewModel\MeasurementViewModel::class))
      *   )
      * )
      */
@@ -41,10 +40,7 @@ class CityApiController extends AbstractApiController
             throw $this->createNotFoundException();
         }
 
-        $stationList = $this->getStationListForCity($city);
-        $stationViewModelList = $this->createViewModelListForStationList($pollutionDataFactory, $stationList);
-
-        return new JsonResponse($serializer->serialize($stationViewModelList, 'json'), 200, [], true);
+        return new JsonResponse($serializer->serialize($city, 'json'), 200, [], true);
     }
 
     /**
@@ -52,8 +48,8 @@ class CityApiController extends AbstractApiController
      *
      * Note this endpoint will not return any pollution data.
      *
-     * @SWG\Tag(name="City")
-     * @SWG\Response(
+     * @OA\Tag(name="City")
+     * @OA\Response(
      *   response=200,
      *   description="Returns a list of all cities",
      *   @Model(type=App\Entity\City::class)
@@ -69,15 +65,14 @@ class CityApiController extends AbstractApiController
     /**
      * Adds a new city.
      *
-     * @SWG\Tag(name="City")
-     * @SWG\Parameter(
+     * @OA\Tag(name="City")
+     * @OA\Parameter(
      *     name="body",
      *     in="body",
-     *     type="string",
      *     description="Json of city data",
-     *     @SWG\Schema(type="string")
+     *     @OA\Schema(type="string")
      * )
-     * @SWG\Response(
+     * @OA\Response(
      *   response=200,
      *   description="Returns the new created city",
      *   @Model(type=App\Entity\City::class)
@@ -99,21 +94,20 @@ class CityApiController extends AbstractApiController
     /**
      * Updates city data.
      *
-     * @SWG\Tag(name="City")
-     * @SWG\Parameter(
+     * @OA\Tag(name="City")
+     * @OA\Parameter(
      *     name="body",
      *     in="body",
-     *     type="string",
      *     description="Json of city data",
-     *     @SWG\Schema(type="string")
+     *     @OA\Schema(type="string")
      * )
-     * @SWG\Response(
+     * @OA\Response(
      *   response=200,
      *   description="Returns the updated station",
      *   @Model(type=App\Entity\City::class)
      * )
-     * @Entity("city", expr="repository.findOneBySlug(citySlug)")
      */
+    #[Entity('city', expr: 'repository.findOneBySlug(citySlug)')]
     public function postCityAction(Request $request, SerializerInterface $serializer, City $city, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
     {
         $requestBody = $request->getContent();

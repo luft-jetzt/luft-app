@@ -10,11 +10,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class KernelEventSubscriber implements EventSubscriberInterface
 {
-    protected SeoPageInterface $seoPage;
-
-    public function __construct(SeoPageInterface $seoPage)
+    public function __construct(protected SeoPageInterface $seoPage)
     {
-        $this->seoPage = $seoPage;
     }
 
     public static function getSubscribedEvents(): array
@@ -26,7 +23,7 @@ class KernelEventSubscriber implements EventSubscriberInterface
 
     public function onController(ControllerEvent $filterControllerEvent): void
     {
-        if (!$filterControllerEvent->isMasterRequest()) {
+        if (!$filterControllerEvent->isMainRequest()) {
             return;
         }
 

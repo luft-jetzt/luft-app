@@ -4,14 +4,13 @@ namespace App\Controller;
 
 use App\Analysis\LimitAnalysis\LimitAnalysisInterface;
 use App\Entity\Station;
-use App\Plotter\StationPlotter\StationPlotterInterface;
 use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\SeoPage\SeoPageInterface;
 use Carbon\Carbon;
 use Flagception\Bundle\FlagceptionBundle\Annotations\Feature;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,11 +19,8 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class StationController extends AbstractController
 {
-    /**
-     * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
-     */
     #[Route('/{stationCode}', name: 'station', requirements: ['stationCode' => '^([A-Z]{2,6})([A-Z0-9]{0,8})$'], options: ['expose' => true])]
-    public function stationAction(SeoPageInterface $seoPage, Station $station, PollutionDataFactory $pollutionDataFactory, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
+    public function stationAction(#[MapEntity(expr: 'repository.findOneByStationCode(stationCode)')] Station $station, SeoPageInterface $seoPage, PollutionDataFactory $pollutionDataFactory, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
     {
         $viewModelList = $pollutionDataFactory
             ->setStation($station)
@@ -47,15 +43,9 @@ class StationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
-     */
     #[Route('/{stationCode}/limits', name: 'station_limits', requirements: ['stationCode' => '^([A-Z]{4,6})([0-9]{1,5})$'], options: ['expose' => true])]
-    public function limitsAction(LimitAnalysisInterface $limitAnalysis, Station $station): Response
+    public function limitsAction(#[MapEntity(expr: 'repository.findOneByStationCode(stationCode)')] Station $station, LimitAnalysisInterface $limitAnalysis): Response
     {
-        /** @var Station $station */
-        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
-
         if (!$station) {
             throw $this->createNotFoundException();
         }
@@ -69,21 +59,20 @@ class StationController extends AbstractController
 
         var_dump($exceedance);
         return $this->render('Station/limits.html.twig', [
-            'exceedanceJson' => json_encode($exceedance),
+            'exceedanceJson' => json_encode($exceedance, JSON_THROW_ON_ERROR),
         ]);
     }
 
     /**
      * @Feature("station_history")
-     * @Entity("station", expr="repository.findOneByStationCode(stationCode)")
      */
     #[Route('/{stationCode}/history', name: 'station_history', requirements: ['stationCode' => '^([A-Z]{2,6})([A-Z0-9]{0,8})$'], options: ['expose' => true])]
-    public function historyAction(Request $request, Station $station, SeoPageInterface $seoPage, HistoryDataFactoryInterface $historyDataFactory, RouterInterface $router): Response
+    public function historyAction(#[MapEntity(expr: 'repository.findOneByStationCode(stationCode)')] Station $station, Request $request, SeoPageInterface $seoPage, HistoryDataFactoryInterface $historyDataFactory): Response
     {
         if ($untilDateTimeParam = $request->query->get('until')) {
             try {
                 $untilDateTime = Carbon::parse($untilDateTimeParam)->endOfDay();
-            } catch (\Exception $exception) {
+            } catch (\Exception) {
                 $untilDateTime = Carbon::now()->endOfHour();
             }
         } else {
@@ -93,7 +82,7 @@ class StationController extends AbstractController
         if ($fromDateTimeParam = $request->query->get('from')) {
             try {
                 $fromDateTime = Carbon::parse($fromDateTimeParam)->startOfDay();
-            } catch (\Exception $exception) {
+            } catch (\Exception) {
                 $fromDateTime = Carbon::now()->startOfHour();
                 $fromDateTime->sub(new \DateInterval('P3D'));
             }
@@ -128,7 +117,7 @@ class StationController extends AbstractController
         $pollutantIdList = [];
 
         foreach ($dataLists as $dataList) {
-            $pollutantIdList = array_merge($pollutantIdList, array_keys($dataList));
+            $pollutantIdList = [...$pollutantIdList, ...array_keys($dataList)];
         }
 
         return array_unique($pollutantIdList);

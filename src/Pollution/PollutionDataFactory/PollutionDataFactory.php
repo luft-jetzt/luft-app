@@ -20,7 +20,7 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
 
         $dateTime->sub($dateInterval);
 
-        $dataList = $this->getDataListFromStationList($dateTime, $dateInterval, $workingSetSize);
+        $dataList = $this->getDataListFromStationList($workingSetSize, $dateTime, $dateInterval);
 
         $measurementViewModelList = $this->getMeasurementViewModelListFromDataList($dataList);
 
@@ -29,7 +29,7 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
         return $measurementViewModelList;
     }
 
-    protected function getDataListFromStationList(\DateTime $fromDateTime = null, \DateInterval $interval = null, int $workingSetSize): array
+    protected function getDataListFromStationList(int $workingSetSize, \DateTime $fromDateTime = null, \DateInterval $interval = null): array
     {
         $this->dataList->reset();
 

@@ -8,16 +8,8 @@ when@dev:
             main:
                 type: stream
                 path: "%kernel.logs_dir%/%kernel.environment%.log"
-                level: debug
+                level: error
                 channels: ["!event"]
-            # uncomment to get logging in your browser
-            # you may have to allow bigger header sizes in your Web server configuration
-            #firephp:
-            #    type: firephp
-            #    level: info
-            #chromephp:
-            #    type: chromephp
-            #    level: info
             console:
                 type: console
                 process_psr_3_messages: false
@@ -59,3 +51,8 @@ when@prod:
                 type: stream
                 channels: [deprecation]
                 path: php://stderr
+            loggly:
+                type: loggly
+                token: '%env(LOGGLY_TOKEN)%'
+                level: error
+                tag: luft-jetzt

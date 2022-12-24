@@ -3,9 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Controller\AbstractController;
-use App\Entity\Station;
 use JMS\Serializer\SerializerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractApiController extends AbstractController

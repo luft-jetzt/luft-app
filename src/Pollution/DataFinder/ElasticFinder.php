@@ -10,13 +10,8 @@ use Elastica\SearchableInterface;
 
 class ElasticFinder implements FinderInterface
 {
-    protected SearchableInterface $searchable;
-    protected DataConverterInterface $dataConverter;
-
-    public function __construct(SearchableInterface $searchable, DataConverterInterface $dataConverter)
+    public function __construct(protected SearchableInterface $searchable, protected DataConverterInterface $dataConverter)
     {
-        $this->searchable = $searchable;
-        $this->dataConverter = $dataConverter;
     }
 
     public function find(Query $query, int $limit = null, array $options = []): array
@@ -67,7 +62,7 @@ class ElasticFinder implements FinderInterface
         } elseif (array_key_exists('hits', $aggregation)) {
             $hitsList = $aggregation['hits']['hits'];
 
-            if (1 === count($hitsList)) {
+            if (1 === (is_countable($hitsList) ? count($hitsList) : 0)) {
                 $firstHit = array_pop($hitsList);
 
                 $resultList[] = $firstHit['_source'];

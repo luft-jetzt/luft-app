@@ -13,18 +13,12 @@ abstract class AbstractKomfortofenAnalysis implements KomfortofenAnalysisInterfa
 
     protected MeasurementInterface $pollutant;
 
-    protected FinderInterface $finder;
-
     protected \DateTimeInterface $fromDateTime;
 
     protected \DateTimeInterface $untilDateTime;
 
-    protected KomfortofenModelFactoryInterface $komfortofenModelFactory;
-
-    public function __construct(FinderInterface $finder, KomfortofenModelFactoryInterface $komfortofenModelFactory)
+    public function __construct(protected FinderInterface $finder, protected KomfortofenModelFactoryInterface $komfortofenModelFactory)
     {
-        $this->finder = $finder;
-        $this->komfortofenModelFactory = $komfortofenModelFactory;
     }
 
     public function setMinSlope(float $minSlope): KomfortofenAnalysisInterface

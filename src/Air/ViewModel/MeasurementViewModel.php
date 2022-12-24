@@ -7,44 +7,28 @@ use App\Entity\Data;
 use App\Entity\Station;
 use JMS\Serializer\Annotation as JMS;
 
-/**
- * @JMS\ExclusionPolicy("ALL")
- */
+#[JMS\ExclusionPolicy('ALL')]
 class MeasurementViewModel
 {
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ? Station $station = null;
 
-    /**
-     * @JMS\Expose()
-     */
-    protected ?Data $data = null;
-
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?MeasurementInterface $measurement = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?int $pollutionLevel = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?string $caption = null;
 
-    /**
-     * @JMS\Expose()
-     */
+    #[JMS\Expose]
     protected ?float $distance = null;
 
-    public function __construct(Data $data)
+    public function __construct(
+        #[JMS\Expose] protected ?\App\Entity\Data $data
+    )
     {
-        $this->data = $data;
     }
 
     public function getStation(): Station

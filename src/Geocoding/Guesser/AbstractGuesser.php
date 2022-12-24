@@ -6,10 +6,7 @@ use Geocoder\Provider\Provider;
 
 abstract class AbstractGuesser
 {
-    protected Provider $provider;
-
-    public function __construct(Provider $provider)
+    public function __construct(protected Provider $provider)
     {
-        $this->provider = $provider;
     }
 }
