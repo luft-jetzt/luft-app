@@ -8,26 +8,11 @@ use Flagception\Manager\FeatureManagerInterface;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class MainMenuBuilder extends AbstractBuilder
+class MainMenuBuilder
 {
-    /** @var MeasurementListInterface $measurementList */
-    protected $measurementList;
-
-    /** @var RouterInterface $router */
-    protected $router;
-
-    /** @var FeatureManagerInterface $featureManager */
-    protected $featureManager;
-
-    public function __construct(FeatureManagerInterface $featureManager, FactoryInterface $factory, TokenStorageInterface $tokenStorage, MeasurementListInterface $measurementList, RouterInterface $router)
+    public function __construct(protected FeatureManagerInterface $featureManager, protected FactoryInterface $factory, protected MeasurementListInterface $measurementList, protected RouterInterface $router)
     {
-        $this->measurementList = $measurementList;
-        $this->router = $router;
-        $this->featureManager = $featureManager;
-
-        parent::__construct($factory, $tokenStorage);
     }
 
     public function mainMenu(array $options = []): ItemInterface
@@ -45,7 +30,6 @@ class MainMenuBuilder extends AbstractBuilder
         $this->addMeasurementDropdown($pollutantDropdown);
 
         $pollutantDropdown->addChild('Grenzwerte', ['route' => 'limits', 'attributes' => ['divider_prepend' => true]]);
-        $pollutantDropdown->addChild('Fahrverbote', ['uri' => 'https://sqi.be/i7vfr']);
 
         if ($this->featureManager->isActive('analysis')) {
             $analysisDropdown = $menu->addChild('Analyse', [
@@ -89,13 +73,7 @@ class MainMenuBuilder extends AbstractBuilder
     {
         $measurements = $this->measurementList->getMeasurements();
 
-        usort($measurements, function(MeasurementInterface $a, MeasurementInterface $b): int {
-            if ($a->getName() === $b->getName()) {
-                return 0;
-            }
-
-            return ($a->getName() < $b->getName()) ? -1 : 1;
-        });
+        usort($measurements, fn(MeasurementInterface $a, MeasurementInterface $b): int => $a->getName() <=> $b->getName());
 
         /** @var MeasurementInterface $measurement */
         foreach ($measurements as $measurement) {

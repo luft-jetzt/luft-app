@@ -24,13 +24,6 @@
             <tag name="sonata.admin" manager-type="orm" group="Luft" label="Station"/>
         </service>
 
-        <service id="App\Admin\TwitterScheduleAdmin">
-            <argument/>
-            <argument type="string">App\Entity\TwitterSchedule</argument>
-            <argument/>
-            <tag name="sonata.admin" manager-type="orm" group="Community" label="TwitterSchedule"/>
-        </service>
-
         <service id="App\Admin\UserAdmin">
             <argument/>
             <argument type="string">App\Entity\User</argument>

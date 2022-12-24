@@ -8,8 +8,7 @@ use App\Pollution\UniqueStrategy\Hasher;
 
 class DataList implements DataListInterface
 {
-    /** @var array $list */
-    protected $list = [];
+    protected array $list = [];
 
     public function __construct()
     {
@@ -27,12 +26,12 @@ class DataList implements DataListInterface
     {
         $pollutant = $data->getPollutant();
 
-        return 0 !== count($this->list[$pollutant]);
+        return 0 !== (is_countable($this->list[$pollutant]) ? count($this->list[$pollutant]) : 0);
     }
 
     public function countPollutant(int $pollutant): int
     {
-        return count($this->list[$pollutant]);
+        return is_countable($this->list[$pollutant]) ? count($this->list[$pollutant]) : 0;
     }
 
     public function getList(): array

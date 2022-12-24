@@ -4,38 +4,36 @@ namespace App\Controller\Api;
 
 use App\Pollution\DataPersister\PersisterInterface;
 use App\Pollution\Value\Value;
-use App\Producer\Value\ValueProducerInterface;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Swagger\Annotations as SWG;
+use OpenApi\Annotations as OA;
 
 class ValueApiController extends AbstractApiController
 {
     /**
      * Add values of stations.
      *
-     * @SWG\Tag(name="Value")
-     * @SWG\Parameter(
+     * @OA\Tag(name="Value")
+     * @OA\Parameter(
      *     name="body",
      *     in="body",
-     *     type="string",
      *     description="data value",
-     *     @SWG\Schema(type="string")
+     *     @OA\Schema(type="string")
      * )
-     * @SWG\Response(
+     * @OA\Response(
      *   response=200,
      *   description="Returns details for specified station",
      *   @Model(type=App\Entity\Data::class)
      * )
      */
-    public function putValueAction(Request $request, SerializerInterface $serializer, ValueProducerInterface $producer): Response
+    public function putValueAction(Request $request, SerializerInterface $serializer, PersisterInterface $persister): Response
     {
         $valueList = $this->deserializeRequestBodyToArray($request, $serializer, Value::class);
 
-        $producer->publishValues($valueList);
+        $persister->persistValues($valueList);
 
         if (1 === count($valueList)) {
             $result = array_pop($valueList);

@@ -26,7 +26,7 @@ export default class TimeAgoInWords {
         const untilDateTime = new Date();
 
         const periodsSingular = ['vor einer Sekunde', 'vor einer Minute', 'vor einer Stunde', 'vor einem Tag', 'vor einer Woche', 'vor einem Monat', 'vor einem Jahr'];
-        const periodsPlural = ['Sekunden', 'Minuten', 'Stunden', 'Tage', 'Wochen', 'Monate', 'Jahre'];
+        const periodsPlural = ['Sekunden', 'Minuten', 'Stunden', 'Tagen', 'Wochen', 'Monaten', 'Jahren'];
         const periodLengths = [60, 60, 24, 7, 4.35, 12];
 
         let difference = Math.abs(untilDateTime - fromDateTime) / 1000;

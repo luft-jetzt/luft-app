@@ -12,13 +12,10 @@ use App\SourceFetcher\FetchResult;
 
 class CoronaProvider extends AbstractProvider
 {
-    const IDENTIFIER = 'corona';
+    final const IDENTIFIER = 'corona';
 
-    protected SourceFetcher $sourceFetcher;
-
-    public function __construct(SourceFetcher $sourceFetcher)
+    public function __construct(protected SourceFetcher $sourceFetcher)
     {
-        $this->sourceFetcher = $sourceFetcher;
     }
 
     public function getIdentifier(): string

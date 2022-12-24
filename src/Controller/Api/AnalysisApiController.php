@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\Data;
 use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use JMS\Serializer\SerializerInterface;

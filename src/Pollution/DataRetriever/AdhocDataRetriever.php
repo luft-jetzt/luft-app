@@ -14,20 +14,11 @@ use Caldera\GeoBasic\Coord\CoordInterface;
 
 class AdhocDataRetriever implements DataRetrieverInterface
 {
-    protected OwmSourceFetcher $owmSourceFetcher;
-    protected OwmJsonParserInterface $owmJsonParser;
-    protected CoronaSourceFetcher $coronaSourceFetcher;
-    protected CoronaParserInterface $coronaJsonParser;
-
-    public function __construct(OwmSourceFetcher $owmSourceFetcher, OwmJsonParserInterface $owmJsonParser, CoronaParserInterface $coronaParserInterface, CoronaSourceFetcher $coronaSourceFetcher)
+    public function __construct(protected OwmSourceFetcher $owmSourceFetcher, protected OwmJsonParserInterface $owmJsonParser, protected CoronaParserInterface $coronaJsonParser, protected CoronaSourceFetcher $coronaSourceFetcher)
     {
-        $this->owmSourceFetcher = $owmSourceFetcher;
-        $this->owmJsonParser = $owmJsonParser;
-        $this->coronaSourceFetcher = $coronaSourceFetcher;
-        $this->coronaJsonParser = $coronaParserInterface;
     }
 
-    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 250): array
+    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId = null, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 250): array
     {
         if ($coord instanceof Station) {
             return [];

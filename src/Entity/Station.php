@@ -2,121 +2,76 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Caldera\GeoBasic\Coord\Coord;
-use App\DBAL\Types\StationType;
+use Caldera\GeoBasic\Coordinate\Coordinate;
 use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as JMS;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\StationRepository")
- * @ORM\Table(name="station")
- * @UniqueEntity("stationCode")
- * @JMS\ExclusionPolicy("ALL")
- */
-class Station extends Coord
+#[ORM\Table(name: 'station')]
+#[ORM\Entity(repositoryClass: 'App\Repository\StationRepository')]
+#[UniqueEntity('stationCode')]
+#[JMS\ExclusionPolicy('ALL')]
+class Station extends Coordinate implements \Stringable
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=12, nullable=false, unique=true)
-     * @JMS\Expose()
-     */
+    #[ORM\Column(type: 'string', length: 12, nullable: false, unique: true)]
+    #[JMS\Expose]
     protected $stationCode;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @JMS\Expose()
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[JMS\Expose]
     protected $ubaStationId;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @JMS\Expose()
-     */
+    #[ORM\Column(type: 'string', nullable: true)]
+    #[JMS\Expose]
     protected $title;
 
-    /**
-     * @ORM\Column(type="float", nullable=false)
-     * @JMS\Expose()
-     */
-    protected $latitude;
+    #[ORM\Column(type: 'float', nullable: false)]
+    #[JMS\Expose]
+    protected ?float $latitude = null;
 
-    /**
-     * @ORM\Column(type="float", nullable=false)
-     * @JMS\Expose()
-     */
-    protected $longitude;
+    #[ORM\Column(type: 'float', nullable: false)]
+    #[JMS\Expose]
+    protected ?float $longitude = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity="TwitterSchedule", mappedBy="station")
-     */
-    protected $twitterSchedules;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="City", inversedBy="twitterSchedules")
-     * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity: 'City', inversedBy: 'cities')]
+    #[ORM\JoinColumn(name: 'city_id', referencedColumnName: 'id')]
     protected $city;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     * @JMS\Expose()
-     * @JMS\Type("DateTime<'U'>")
-     */
+    #[ORM\Column(type: 'date', nullable: true)]
+    #[JMS\Expose]
+    #[JMS\Type("DateTime<'U'>")]
     protected $fromDate;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     * @JMS\Expose()
-     * @JMS\Type("DateTime<'U'>")
-     */
+    #[ORM\Column(type: 'date', nullable: true)]
+    #[JMS\Expose]
+    #[JMS\Type("DateTime<'U'>")]
     protected $untilDate;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @JMS\Expose()
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[JMS\Expose]
     protected $altitude;
 
-    /**
-     * @ORM\Column(type="StationType", nullable=true)
-     * @DoctrineAssert\Enum(entity="App\DBAL\Types\StationType")
-     */
+    #[DoctrineAssert\EnumType(entity: 'App\DBAL\Types\StationType')]
+    #[ORM\Column(type: 'StationType', nullable: true)]
     protected $stationType;
 
-    /**
-     * @ORM\Column(type="AreaType", nullable=true)
-     * @DoctrineAssert\Enum(entity="App\DBAL\Types\AreaType")
-     */
+    #[DoctrineAssert\EnumType(entity: 'App\DBAL\Types\AreaType')]
+    #[ORM\Column(type: 'AreaType', nullable: true)]
     protected $areaType;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @JMS\Expose()
-     */
+    #[ORM\Column(type: 'string', nullable: true)]
+    #[JMS\Expose]
     protected $provider;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Network", inversedBy="stations")
-     * @ORM\JoinColumn(name="network_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity: 'Network', inversedBy: 'stations')]
+    #[ORM\JoinColumn(name: 'network_id', referencedColumnName: 'id')]
     protected $network;
-
-    public function __construct(float $latitude, float $longitude)
-    {
-        $this->twitterSchedules = new ArrayCollection();
-
-        parent::__construct($latitude, $longitude);
-    }
 
     public function setId(int $id): Station
     {
@@ -195,35 +150,9 @@ class Station extends Coord
         return sprintf('%f,%f', $this->latitude, $this->longitude);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s: %s', $this->stationCode, $this->title);
-    }
-
-    public function addTwitterSchedule(TwitterSchedule $twitterSchedule): Station
-    {
-        $this->twitterSchedules->add($twitterSchedule);
-
-        return $this;
-    }
-
-    public function getTwitterSchedules(): Collection
-    {
-        return $this->twitterSchedules;
-    }
-
-    public function setTwitterSchedules(Collection $twitterSchedules): Station
-    {
-        $this->twitterSchedules = $twitterSchedules;
-
-        return $this;
-    }
-
-    public function removeTwitterSchedule(TwitterSchedule $twitterSchedule): Station
-    {
-        $this->twitterSchedules->removeElement($twitterSchedule);
-
-        return $this;
     }
 
     public function setCity(City $city = null): Station

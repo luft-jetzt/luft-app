@@ -8,7 +8,7 @@ class JsonParser implements JsonParserInterface
 {
     public function parseUVIndex(string $jsonData): Value
     {
-        $uvValue = json_decode($jsonData);
+        $uvValue = json_decode($jsonData, null, 512, JSON_THROW_ON_ERROR);
 
         $value = new Value();
         $value->setValue((float) $uvValue->value)
@@ -20,7 +20,7 @@ class JsonParser implements JsonParserInterface
 
     public function parseTemperature(string $jsonData): Value
     {
-        $temperatureValue = json_decode($jsonData);
+        $temperatureValue = json_decode($jsonData, null, 512, JSON_THROW_ON_ERROR);
 
         $value = new Value();
         $value->setValue((float) $temperatureValue->main->temp)

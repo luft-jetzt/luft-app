@@ -3,16 +3,13 @@
 namespace App\Analysis\FireworksAnalysis;
 
 use App\Entity\Data;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class FireworksModelFactory implements FireworksModelFactoryInterface
 {
-    /** @var RegistryInterface $registry */
-    protected $registry;
-
-    public function __construct(RegistryInterface $registry)
+    public function __construct(protected ManagerRegistry $registry)
     {
-        $this->registry = $registry;
     }
 
     public function convert(array $dataResult): array

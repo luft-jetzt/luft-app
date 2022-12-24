@@ -3,28 +3,19 @@
 namespace App\Pollution\StationCache;
 
 use App\Entity\Station;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class StationCache implements StationCacheInterface
 {
-    const TTL = 3600;
+    final const TTL = 3;
+    final const CACHE_KEY = 'luft_stations';
+    protected array $list = [];
+    protected AbstractAdapter $cache;
 
-    const CACHE_KEY = 'luft_stations';
-
-    /** @var array $list */
-    protected $list;
-
-    /** @var RegistryInterface $registry */
-    protected $registry;
-
-    /** @var AbstractAdapter $cache */
-    protected $cache;
-
-    public function __construct(RegistryInterface $registry, string $redisHost)
+    public function __construct(protected ManagerRegistry $registry, string $redisHost)
     {
-        $this->registry = $registry;
         $this->cache = $this->createConnection($redisHost);
 
         if (!$this->list = $this->loadFromCache()) {
@@ -45,7 +36,7 @@ class StationCache implements StationCacheInterface
             return null;
         }
 
-        $reference = $this->registry->getEntityManager()->getReference(Station::class, $this->getStationByCode($stationCode)->getId());
+        $reference = $this->registry->getManager()->getReference(Station::class, $this->getStationByCode($stationCode)->getId());
 
         return $reference;
     }
@@ -78,12 +69,12 @@ class StationCache implements StationCacheInterface
         return $this->registry->getRepository(Station::class)->findAllIndexed();
     }
 
-    protected function loadFromCache(): ?array
+    protected function loadFromCache(): array
     {
         $cacheItem = $this->cache->getItem(self::CACHE_KEY);
 
         if (!$cacheItem->isHit()) {
-            return null;
+            return [];
         }
 
         return $cacheItem->get();
@@ -94,7 +85,7 @@ class StationCache implements StationCacheInterface
         $cacheItem = $this->cache->getItem(self::CACHE_KEY);
 
         foreach ($this->list as $station) {
-            $this->registry->getEntityManager()->detach($station);
+            $this->registry->getManager()->detach($station);
         }
 
         $cacheItem

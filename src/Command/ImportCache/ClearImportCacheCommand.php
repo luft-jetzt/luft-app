@@ -2,41 +2,37 @@
 
 namespace App\Command\ImportCache;
 
-use App\Entity\Data;
-use App\Pollution\UniqueStrategy\CacheUniqueStrategy;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use App\Pollution\UniqueStrategy\UniqueStrategyInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'luft:import-cache:clear',
+    description: 'Clear import cache'
+)]
 class ClearImportCacheCommand extends Command
 {
-    /** @var CacheUniqueStrategy $cacheUniqueStrategy */
-    protected $cacheUniqueStrategy;
+    protected UniqueStrategyInterface $cacheUniqueStrategy;
 
-    protected static $defaultName = 'luft:import-cache:clear';
-
-    protected function configure(): void
-    {
-        $this->setDescription('Add a short description for your command');
-    }
-
-    public function __construct(?string $name = null, CacheUniqueStrategy $cacheUniqueStrategy, RegistryInterface $registry)
+    public function __construct(UniqueStrategyInterface $cacheUniqueStrategy)
     {
         $this->cacheUniqueStrategy = $cacheUniqueStrategy->init([]);
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
         $this->cacheUniqueStrategy->clear();
 
         $io->success('Import cache cleared.');
+
+        //return Command::SUCCESS;
+        return 0;
     }
 }

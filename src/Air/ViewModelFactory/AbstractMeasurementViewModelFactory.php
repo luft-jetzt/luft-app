@@ -15,18 +15,16 @@ use App\Air\Measurement\SO2;
 use App\Air\Measurement\Temperature;
 use App\Air\Measurement\UVIndex;
 use Caldera\GeoBasic\Coord\CoordInterface;
+use Caldera\GeoBasic\Coordinate\CoordinateInterface;
 
 abstract class AbstractMeasurementViewModelFactory implements MeasurementViewModelFactoryInterface
 {
     protected array $pollutantList = [];
 
-    protected AirQualityCalculatorInterface $airQualityCalculator;
-
     protected CoordInterface $coord;
 
-    public function __construct(AirQualityCalculatorInterface $airQualityCalculator)
+    public function __construct(protected AirQualityCalculatorInterface $airQualityCalculator)
     {
-        $this->airQualityCalculator = $airQualityCalculator;
     }
 
     public function setPollutantList(array $pollutantList): MeasurementViewModelFactoryInterface
@@ -57,7 +55,7 @@ abstract class AbstractMeasurementViewModelFactory implements MeasurementViewMod
         }
     }
 
-    public function setCoord(CoordInterface $coord): MeasurementViewModelFactoryInterface
+    public function setCoord(CoordinateInterface $coord): MeasurementViewModelFactoryInterface
     {
         $this->coord = $coord;
 

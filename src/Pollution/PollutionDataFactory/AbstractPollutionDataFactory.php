@@ -7,33 +7,20 @@ use App\Entity\Station;
 use App\Pollution\DataList\DataList;
 use App\Pollution\DataRetriever\DataRetrieverInterface;
 use App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
-use App\Pollution\StationFinder\StationFinderInterface;
-use Caldera\GeoBasic\Coord\CoordInterface;
+use Caldera\GeoBasic\Coordinate\CoordinateInterface;
 
 abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInterface
 {
-    protected CoordInterface $coord;
-
-    protected StationFinderInterface $stationFinder;
-
-    protected MeasurementViewModelFactoryInterface $measurementViewModelFactory;
+    protected CoordinateInterface $coord;
 
     protected DataList $dataList;
 
-    protected DataRetrieverInterface $dataRetriever;
-
-    protected PollutantFactoryStrategyInterface $strategy;
-
-    public function __construct(StationFinderInterface $stationFinder, MeasurementViewModelFactoryInterface $viewModelFactory, DataRetrieverInterface $dataRetriever, PollutantFactoryStrategyInterface $strategy)
+    public function __construct(protected MeasurementViewModelFactoryInterface $measurementViewModelFactory, protected DataRetrieverInterface $dataRetriever, protected PollutantFactoryStrategyInterface $strategy)
     {
-        $this->stationFinder = $stationFinder;
         $this->dataList = new DataList();
-        $this->measurementViewModelFactory = $viewModelFactory;
-        $this->dataRetriever = $dataRetriever;
-        $this->strategy = $strategy;
     }
 
-    public function setCoord(CoordInterface $coord): PollutionDataFactoryInterface
+    public function setCoord(CoordinateInterface $coord): PollutionDataFactoryInterface
     {
         $this->coord = $coord;
 

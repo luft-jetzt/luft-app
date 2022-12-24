@@ -26,7 +26,7 @@ services:
         com.symfony.server.service-prefix: 'DATABASE'
 
     elasticsearch:
-      image: elasticsearch:6.8.6
+      image: elasticsearch:7.17.2
       container_name: luft-elasticsearch
       environment:
         - discovery.type=single-node
@@ -42,16 +42,6 @@ services:
       labels:
         com.symfony.server.service-prefix: 'ELASTICSEARCH'
 
-    rabbitmq:
-      image: rabbitmq:management
-      container_name: luft-rabbitmq
-      labels:
-        com.symfony.server.service-prefix: 'RABBITMQ'
-      volumes:
-        - ./docker/rabbitmq:/var/lib/rabbitmq/mnesia/
-      ports:
-        - "5672:5672"
-        - "15672:15672"
     postgis:
       image: kartoza/postgis:14-3.1
       volumes:

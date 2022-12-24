@@ -14,20 +14,6 @@
                     <a href="http://sqi.be/ed94a">GitHub</a>
                     &bull;
                     <a href="{{ path('app.swagger_ui') }}">Api</a>
-                    &bull;
-                    {% if app.user and app.user.city %}
-                        <a href="{{ path('twitter_schedule_list', { citySlug: app.user.city.slug }) }}">
-                            twitter-Einstellungen
-                        </a>
-                        &bull;
-                        <a href="{{ path('logout') }}">
-                            Logout
-                        </a>
-                    {% else %}
-                        <a href="{{ path('hwi_oauth_connect') }}">
-                            Login über twitter
-                        </a>
-                    {% endif %}
                 </p>
             </div>
         </div>

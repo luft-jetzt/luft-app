@@ -6,18 +6,12 @@ use App\SourceFetcher\FetchProcess;
 use App\SourceFetcher\FetchResult;
 use App\SourceFetcher\SourceFetcherInterface;
 use Caldera\GeoBasic\Coord\CoordInterface;
-use Curl\Curl;
+use GuzzleHttp\Client;
 
 class SourceFetcher implements SourceFetcherInterface
 {
-    protected Curl $curl;
-
-    protected string $openWeatherMapAppId;
-
-    public function __construct(string $openWeatherMapAppId)
+    public function __construct(protected string $openWeatherMapAppId)
     {
-        $this->curl = new Curl();
-        $this->openWeatherMapAppId = $openWeatherMapAppId;
     }
 
     public function fetch(FetchProcess $fetchProcess): FetchResult
@@ -42,16 +36,16 @@ class SourceFetcher implements SourceFetcherInterface
     public function queryUVIndex(CoordInterface $coord): string
     {
         $url = sprintf('https://api.openweathermap.org/data/2.5/uvi?units=metric&lat=%f&lon=%f&appid=%s', $coord->getLatitude(), $coord->getLongitude(), $this->openWeatherMapAppId);
-        $this->curl->get($url);
+        $response = (new Client())->get($url);
 
-        return $this->curl->rawResponse;
+        return $response->getBody()->getContents();
     }
 
     public function queryTemperature(CoordInterface $coord): string
     {
         $url = sprintf('https://api.openweathermap.org/data/2.5/weather?units=metric&lat=%f&lon=%f&appid=%s', $coord->getLatitude(), $coord->getLongitude(), $this->openWeatherMapAppId);
-        $this->curl->get($url);
+        $response = (new Client())->get($url);
 
-        return $this->curl->rawResponse;
+        return $response->getBody()->getContents();
     }
 }
