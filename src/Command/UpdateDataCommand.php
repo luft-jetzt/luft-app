@@ -6,16 +6,19 @@ use App\Entity\Station;
 use Doctrine\Persistence\ManagerRegistry;
 use Elastica\Client;
 use Elastica\Request;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'luft:update-data-station',
+    description: 'Update stored values with new station pin'
+)]
 class UpdateDataCommand extends Command
 {
-    protected static $defaultName = 'luft:update-data-station';
-
     public function __construct(protected ManagerRegistry $managerRegistry, protected Client $client)
     {
         parent::__construct();
@@ -23,10 +26,7 @@ class UpdateDataCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->setDescription('Update stored values with new station pin')
-            ->addArgument('station-code', InputArgument::REQUIRED, 'Station Code to update')
-        ;
+        $this->addArgument('station-code', InputArgument::REQUIRED, 'Station Code to update');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
