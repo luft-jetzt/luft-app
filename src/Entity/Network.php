@@ -12,19 +12,19 @@ class Network
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
-    protected $id;
+    protected ?int $id = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    protected $name;
+    protected ?string $name = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    protected $description;
+    protected ?string $description = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    protected $link;
+    protected ?string $link = null;
 
-    #[ORM\OneToMany(targetEntity: 'Station', mappedBy: 'network')]
-    protected $stations;
+    #[ORM\OneToMany(mappedBy: 'network', targetEntity: 'Station')]
+    protected Collection $stations;
 
     public function getId(): ?int
     {
