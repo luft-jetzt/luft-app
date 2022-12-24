@@ -116,8 +116,8 @@
                 </li>
             </ul>
 
-            <form class="d-flex input-group" role="search">
-                <input class="form-control" type="search" aria-label="Search" placeholder="Suchbegriff, Postleitzahl, Stadtname…">
+            <form class="d-flex input-group w-25" role="search" action="{{ path('display') }}">
+                <input class="form-control typeahead" id="nav-query" name="query" type="search" aria-label="Search" placeholder="Suchbegriff, Postleitzahl, Stadtname…">
                 <button class="btn btn-outline-success" type="submit" title="Nach deiner Eingabe suchen">
                     <i class="fa fa-search"></i>
                 </button>
