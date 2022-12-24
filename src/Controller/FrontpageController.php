@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class FrontpageController extends AbstractController
 {
-    #[Route('/', name: 'frontpage', options: ['expose' => true])]
+    #[Route('/', name: 'frontpage', options: ['expose' => true], priority: 403)]
     public function indexAction(SeoPage $seoPage): Response
     {
         $seoPage

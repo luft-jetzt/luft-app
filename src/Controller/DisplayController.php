@@ -15,7 +15,7 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 
 class DisplayController extends AbstractController
 {
-    #[Route('/display', name: 'display', options: ['expose' => true])]
+    #[Route('/display', name: 'display', options: ['expose' => true], priority: 405)]
     public function indexAction(Request $request, SeoPage $seoPage, RequestConverterInterface $requestConverter, PollutionDataFactoryInterface $pollutionDataFactory, CityGuesserInterface $cityGuesser, Breadcrumbs $breadcrumbs, RouterInterface $router): Response
     {
         $coord = $requestConverter->getCoordByRequest($request);
