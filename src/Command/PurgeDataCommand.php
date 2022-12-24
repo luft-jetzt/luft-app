@@ -5,6 +5,7 @@ namespace App\Command;
 use App\DataPurger\DataPurgerInterface;
 use App\Provider\ProviderListInterface;
 use Carbon\CarbonImmutable;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,10 +13,12 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'luft:purge-data',
+    description: 'Purge data from elasticsearch'
+)]
 class PurgeDataCommand extends Command
 {
-    protected static $defaultName = 'luft:purge-data';
-
     public function __construct(protected ProviderListInterface $providerList, protected DataPurgerInterface $dataPurger)
     {
         parent::__construct();
