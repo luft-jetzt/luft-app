@@ -14,14 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RequestConverter implements RequestConverterInterface
 {
-    protected GeocoderInterface $geocoder;
-
-    protected ManagerRegistry $registry;
-
-    public function __construct(GeocoderInterface $geocoder, ManagerRegistry $registry)
+    public function __construct(protected GeocoderInterface $geocoder, protected ManagerRegistry $registry)
     {
-        $this->geocoder = $geocoder;
-        $this->registry = $registry;
     }
 
     public function getCoordByRequest(Request $request): ?CoordinateInterface

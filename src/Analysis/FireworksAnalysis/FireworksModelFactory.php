@@ -8,11 +8,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class FireworksModelFactory implements FireworksModelFactoryInterface
 {
-    protected ManagerRegistry $registry;
-
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(protected ManagerRegistry $registry)
     {
-        $this->registry = $registry;
     }
 
     public function convert(array $dataResult): array

@@ -7,78 +7,44 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CityRepository")
- * @ORM\Table(name="city")
- * @JMS\ExclusionPolicy("ALL")
- */
-class City
+#[ORM\Table(name: 'city')]
+#[ORM\Entity(repositoryClass: 'App\Repository\CityRepository')]
+#[JMS\ExclusionPolicy('ALL')]
+class City implements \Stringable
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=false)
-     * @JMS\Expose()
-     * @JMS\Type("DateTime<'U'>")
-     */
+    #[ORM\Column(type: 'datetime', nullable: false)]
+    #[JMS\Expose]
+    #[JMS\Type("DateTime<'U'>")]
     protected $createdAt;
 
-    /**
-     * @ORM\Column(type="string", nullable=false)
-     * @JMS\Expose()
-     */
+    #[ORM\Column(type: 'string', nullable: false)]
+    #[JMS\Expose]
     protected $name;
 
-    /**
-     * @ORM\Column(type="string", nullable=false)
-     * @JMS\Expose()
-     */
+    #[ORM\Column(type: 'string', nullable: false)]
+    #[JMS\Expose]
     protected $slug;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @JMS\Expose()
-     */
+    #[ORM\Column(type: 'string', nullable: true)]
+    #[JMS\Expose]
     protected $description;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @JMS\Expose()
-     */
-    protected $fahrverboteSlug;
-
-    /**
-     * @ORM\OneToMany(targetEntity="TwitterSchedule", mappedBy="city")
-     */
-    protected $twitterSchedules;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Station", mappedBy="city")
-     */
+    #[ORM\OneToMany(targetEntity: 'Station', mappedBy: 'city')]
     protected $stations;
 
-    /**
-     * @ORM\OneToOne(targetEntity="User", mappedBy="city")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     */
-    protected $user;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $openWeatherMapCityId;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[JMS\Expose]
+    protected ?int $openWeatherMapCityId = null;
 
     public function __construct()
     {
         $this->createdAt = new \DateTime();
-        $this->twitterSchedules = new ArrayCollection();
         $this->stations = new ArrayCollection();
-        $this->users = new ArrayCollection();
     }
 
     public function getId(): int
@@ -134,32 +100,6 @@ class City
         return $this;
     }
 
-    public function addTwitterSchedule(TwitterSchedule $twitterSchedule): City
-    {
-        $this->twitterSchedules->add($twitterSchedule);
-
-        return $this;
-    }
-
-    public function getTwitterSchedules(): Collection
-    {
-        return $this->twitterSchedules;
-    }
-
-    public function setTwitterSchedules(Collection $twitterSchedules): City
-    {
-        $this->twitterSchedules = $twitterSchedules;
-
-        return $this;
-    }
-
-    public function removeTwitterSchedule(TwitterSchedule $twitterSchedule): City
-    {
-        $this->twitterSchedules->removeElement($twitterSchedule);
-
-        return $this;
-    }
-
     public function addStation(Station $station): City
     {
         $this->stations->add($station);
@@ -172,9 +112,9 @@ class City
         return $this->stations;
     }
 
-    public function setStations(Collection $twitterSchedules): City
+    public function setStations(Collection $stations): City
     {
-        $this->stations = $twitterSchedules;
+        $this->stations = $stations;
 
         return $this;
     }
@@ -186,38 +126,9 @@ class City
         return $this;
     }
 
-    public function setUser(User $user = null): City
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setFahrverboteSlug(string $fahrverboteSlug): City
-    {
-        $this->fahrverboteSlug = $fahrverboteSlug;
-
-        return $this;
-    }
-
-    public function getFahrverboteSlug(): ?string
-    {
-        return $this->fahrverboteSlug;
-    }
-
-    public function hasFahrverbote(): bool
-    {
-        return $this->fahrverboteSlug !== null;
-    }
-
     public function __toString(): string
     {
-        return $this->name ? $this->name : '';
+        return $this->name ?: '';
     }
 
     public function getOpenWeatherMapCityId(): ?int

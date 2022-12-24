@@ -10,13 +10,11 @@ class LimitAnalysis implements LimitAnalysisInterface
 {
     protected ?Station $station = null;
     protected ?MeasurementInterface $measurement = null;
-    protected ?PaginatedFinderInterface $finder = null;
     protected ?\DateTimeInterface $fromDateTime = null;
     protected ?\DateTimeInterface $untilDateTime = null;
 
-    public function __construct(PaginatedFinderInterface $finder)
+    public function __construct(protected ?\FOS\ElasticaBundle\Finder\PaginatedFinderInterface $finder)
     {
-        $this->finder = $finder;
     }
 
     public function setStation(Station $station): LimitAnalysisInterface

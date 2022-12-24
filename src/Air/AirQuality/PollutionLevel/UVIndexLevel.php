@@ -4,10 +4,10 @@ namespace App\Air\AirQuality\PollutionLevel;
 
 class UVIndexLevel extends AbstractPollutionLevel
 {
-    protected $levels = [
+    protected array $levels = [
         0 => 2,
         1 => 5,
         2 => 7,
-        3 => 10,
+        3 => 11,
     ];
 }

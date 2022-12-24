@@ -6,8 +6,6 @@ use JMS\Serializer\Handler\SubscribingHandlerInterface;
 
 class DateTimeImmutableHandler implements SubscribingHandlerInterface
 {
-    private string $format;
-
     public static function getSubscribingMethods()
     {
         return [
@@ -20,9 +18,8 @@ class DateTimeImmutableHandler implements SubscribingHandlerInterface
         ];
     }
 
-    public function __construct(string $format = DATE_ISO8601)
+    public function __construct(private readonly string $format = DATE_ISO8601)
     {
-        $this->format = $format;
     }
 
     public function serializeDateTimeImmutableToJson(
@@ -31,6 +28,6 @@ class DateTimeImmutableHandler implements SubscribingHandlerInterface
         array $type,
         \JMS\Serializer\Context $context
     ) {
-        return $visitor->visitString($date->format($this->format), $type, $context);
+        return $visitor->visitString($date->format($this->format), $type);
     }
 }

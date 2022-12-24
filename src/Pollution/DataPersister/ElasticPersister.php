@@ -10,13 +10,8 @@ use Elastica\Index;
 
 class ElasticPersister implements PersisterInterface
 {
-    protected Index $index;
-    protected StationCacheInterface $stationCache;
-
-    public function __construct(Index $index, StationCacheInterface $stationCache)
+    public function __construct(protected Index $index, protected StationCacheInterface $stationCache)
     {
-        $this->index = $index;
-        $this->stationCache = $stationCache;
     }
 
     public function persistValues(array $values): PersisterInterface
