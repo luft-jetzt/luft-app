@@ -1,6 +1,13 @@
 doctrine:
     dbal:
-        url: '%env(resolve:DATABASE_URL)%'
+        #url: '%env(resolve:DATABASE_URL)%'
+        server_version: 15.3.3
+        host: 127.0.0.1
+        port: 25432
+        user: docker
+        password: docker
+        dbname: gis
+        driver: pdo_pgsql
 
         types:
             StationType: App\DBAL\Types\StationType
@@ -8,6 +15,12 @@ doctrine:
             datetime: App\DBAL\Types\UTCDateTimeType
             date: App\DBAL\Types\UTCDateType
             time: App\DBAL\Types\UTCTimeType
+            geography:
+                class: 'Jsor\Doctrine\PostGIS\Types\GeographyType'
+                commented: false
+            geometry:
+                class: 'Jsor\Doctrine\PostGIS\Types\GeometryType'
+                commented: false
 
     orm:
         auto_generate_proxy_classes: true
@@ -19,6 +32,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
+        dql:
+            string_functions:
+                ST_Within: Jsor\Doctrine\PostGIS\Functions\ST_Within
+                # ...other string functions
+            numeric_functions:
+                ST_Distance: Jsor\Doctrine\PostGIS\Functions\ST_Distance
 
 when@test:
     doctrine:

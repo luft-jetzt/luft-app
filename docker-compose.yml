@@ -9,41 +9,8 @@ services:
       ports:
         - "6379:6379"
 
-    mysql:
-      image: mariadb
-      container_name: luft-jetzt-mysql
-      working_dir: /application
-      volumes:
-        - ./docker/mysql:/var/lib/mysql
-      environment:
-        - MYSQL_ROOT_PASSWORD=root
-        - MYSQL_DATABASE=luft-jetzt
-        - MYSQL_USER=luft-jetzt
-        - MYSQL_PASSWORD=luft-jetzt
-      ports:
-        - "8002:3306"
-      labels:
-        com.symfony.server.service-prefix: 'DATABASE'
-
-    elasticsearch:
-      image: elasticsearch:7.17.2
-      container_name: luft-elasticsearch
-      environment:
-        - discovery.type=single-node
-        - cluster.routing.allocation.disk.threshold_enabled=true
-        - cluster.routing.allocation.disk.watermark.flood_stage=100mb
-        - cluster.routing.allocation.disk.watermark.low=500mb
-        - cluster.routing.allocation.disk.watermark.high=250mb
-      volumes:
-        - ./docker/elasticsearch:/usr/share/elasticsearch/data
-      ports:
-        - "9200:9200"
-        - "9300:9300"
-      labels:
-        com.symfony.server.service-prefix: 'ELASTICSEARCH'
-
     postgis:
-      image: kartoza/postgis:15
+      image: kartoza/postgis:15-3.3
       volumes:
         - ./docker/postgis:/var/lib/postgresql
       environment:
@@ -59,3 +26,5 @@ services:
       restart: on-failure
       healthcheck:
         test: "exit 0"
+      labels:
+        com.symfony.server.service-prefix: 'DATABASE'
