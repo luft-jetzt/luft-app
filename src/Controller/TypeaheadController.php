@@ -13,7 +13,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 class TypeaheadController extends AbstractController
 {
-    #[Route('/search/prefetch-cities', name: 'prefetch_cities', options: ['expose' => true])]
+    #[Route('/search/prefetch-cities', name: 'prefetch_cities', options: ['expose' => true], priority: 301)]
     public function prefetchCitiesAction(RouterInterface $router): Response
     {
         $cityList = $this->getDoctrine()->getRepository(City::class)->findAll();
@@ -33,7 +33,7 @@ class TypeaheadController extends AbstractController
         return new JsonResponse($data);
     }
 
-    #[Route('/search/prefetch-stations', name: 'prefetch_stations', options: ['expose' => true])]
+    #[Route('/search/prefetch-stations', name: 'prefetch_stations', options: ['expose' => true], priority: 302)]
     public function prefetchStationsAction(RouterInterface $router): Response
     {
         $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStations();
@@ -60,7 +60,7 @@ class TypeaheadController extends AbstractController
         return new JsonResponse($data);
     }
 
-    #[Route('/search/query', name: 'search', options: ['expose' => true])]
+    #[Route('/search/query', name: 'search', options: ['expose' => true], priority: 303)]
     public function searchAction(Request $request, GeocoderInterface $geocoder): Response
     {
         $result = $geocoder->query($request->query->get('query'));
