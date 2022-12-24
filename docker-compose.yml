@@ -43,7 +43,7 @@ services:
         com.symfony.server.service-prefix: 'ELASTICSEARCH'
 
     postgis:
-      image: kartoza/postgis:14-3.1
+      image: kartoza/postgis:15
       volumes:
         - ./docker/postgis:/var/lib/postgresql
       environment:

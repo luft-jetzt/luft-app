@@ -191,6 +191,18 @@
             "config/packages/prod/jms_serializer.yaml"
         ]
     },
+    "jsor/doctrine-postgis": {
+        "version": "2.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.7",
+            "ref": "211979f7917bf6edb8fc5006a17b2e84e8e84d50"
+        },
+        "files": [
+            "config/packages/jsor_doctrine_postgis.yaml"
+        ]
+    },
     "knplabs/knp-menu": {
         "version": "2.3.0"
     },

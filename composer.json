@@ -18,6 +18,7 @@
         "friendsofsymfony/jsrouting-bundle": "^3.0",
         "geocoder-php/nominatim-provider": "^5.2",
         "jms/serializer-bundle": "^4.0",
+        "jsor/doctrine-postgis": "^2.1",
         "knplabs/knp-menu-bundle": "^3.1",
         "league/geotools": "^1.0",
         "maltehuebner/impress-bundle": "^0.2",
