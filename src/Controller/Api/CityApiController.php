@@ -8,11 +8,13 @@ use App\Util\EntityMerger\EntityMergerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Routing\Annotation\Route;
 
 class CityApiController extends AbstractApiController
 {
@@ -29,6 +31,7 @@ class CityApiController extends AbstractApiController
      *   )
      * )
      */
+    #[Route(path: '/api/{citySlug}', name: 'api_city', requirements: ['citySlug' => '^([A-Za-z-]+)$'], methods: ['GET'], priority: 208)]
     public function displayCityAction(
         SerializerInterface $serializer,
         PollutionDataFactory $pollutionDataFactory,
@@ -55,6 +58,7 @@ class CityApiController extends AbstractApiController
      *   @Model(type=App\Entity\City::class)
      * )
      */
+    #[Route(path: '/api/city', name: 'api_city_all', methods: ['GET'], priority: 206)]
     public function cityAction(SerializerInterface $serializer): Response
     {
         $cityList = $this->getDoctrine()->getRepository(City::class)->findAll();
@@ -78,6 +82,7 @@ class CityApiController extends AbstractApiController
      *   @Model(type=App\Entity\City::class)
      * )
      */
+    #[Route(path: '/api/city', name: 'api_city_put', methods: ['PUT'], priority: 207)]
     public function putCityAction(Request $request, SerializerInterface $serializer, ManagerRegistry $managerRegistry): Response
     {
         $requestBody = $request->getContent();
@@ -107,8 +112,8 @@ class CityApiController extends AbstractApiController
      *   @Model(type=App\Entity\City::class)
      * )
      */
-    #[Entity('city', expr: 'repository.findOneBySlug(citySlug)')]
-    public function postCityAction(Request $request, SerializerInterface $serializer, City $city, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
+    #[Route(path: '/api/{citySlug}', name: 'api_city_post', requirements: ['citySlug' => '^([A-Za-z-]+)$'], methods: ['POST'], priority: 209)]
+    public function postCityAction(Request $request, SerializerInterface $serializer, #[MapEntity(expr: 'repository.findOneBySlug(citySlug)')] City $city, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
     {
         $requestBody = $request->getContent();
 

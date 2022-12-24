@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ValueApiController extends AbstractApiController
 {
@@ -29,6 +30,7 @@ class ValueApiController extends AbstractApiController
      *   @Model(type=App\Entity\Data::class)
      * )
      */
+    #[Route(path: '/api/value', name: 'api_value_put', methods: ['PUT'], priority: 213)]
     public function putValueAction(Request $request, SerializerInterface $serializer, PersisterInterface $persister): Response
     {
         $valueList = $this->deserializeRequestBodyToArray($request, $serializer, Value::class);
