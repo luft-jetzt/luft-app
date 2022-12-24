@@ -1,10 +1,9 @@
 nelmio_api_doc:
     documentation:
-        schemes: [https]
         info:
-            title: Luft.jetzt api
-            description: Get access to luft data
-            version: 0.1
+            title: 'Luft.jetzt api'
+            description: 'Get access to luft data'
+            version: '0.1'
         security:
             - Bearer: []
     areas:
