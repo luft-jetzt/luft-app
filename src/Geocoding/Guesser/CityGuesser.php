@@ -3,8 +3,10 @@
 namespace App\Geocoding\Guesser;
 
 use Caldera\GeoBasic\Coord\Coord;
+use Geocoder\Exception\InvalidServerResponse;
 use Geocoder\Model\AddressCollection;
 use Geocoder\Query\ReverseQuery;
+use Http\Client\Exception\NetworkException;
 
 class CityGuesser extends AbstractGuesser implements CityGuesserInterface
 {
@@ -19,8 +21,12 @@ class CityGuesser extends AbstractGuesser implements CityGuesserInterface
     {
         $query = ReverseQuery::fromCoordinates($coord->getLatitude(), $coord->getLongitude());
 
-        /** @var AddressCollection $addressCollection */
-        $addressCollection = $this->provider->reverseQuery($query);
+        try {
+            /** @var AddressCollection $addressCollection */
+            $addressCollection = $this->provider->reverseQuery($query);
+        } catch (NetworkException|InvalidServerResponse) {
+            return null;
+        }
 
         if (!$addressCollection || !$addressCollection->first() || (!$addressCollection->first()->getLocality() && !$addressCollection->first()->getSubLocality())) {
             return null;

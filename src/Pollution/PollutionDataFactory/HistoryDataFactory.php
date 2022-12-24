@@ -2,16 +2,25 @@
 
 namespace App\Pollution\PollutionDataFactory;
 
+use App\Air\ViewModelFactory\MeasurementViewModelFactoryInterface;
 use App\Entity\Data;
+use App\Pollution\DataList\DataList;
+use App\Pollution\DataRetriever\HistoryElasticDataRetriever;
+use App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
 use App\Util\DateTimeUtil;
 
 class HistoryDataFactory extends PollutionDataFactory implements HistoryDataFactoryInterface
 {
+    public function __construct(MeasurementViewModelFactoryInterface $viewModelFactory, HistoryElasticDataRetriever $dataRetriever, PollutantFactoryStrategyInterface $strategy)
+    {
+        parent::__construct($viewModelFactory, $dataRetriever, $strategy);
+    }
+
     public function createDecoratedPollutantListForInterval(\DateTime $fromDateTime, \DateTime $untilDateTime): array
     {
-        $dataLists = $this->getDataListsForInterval($fromDateTime, $untilDateTime);
+        $this->getDataListsForInterval($fromDateTime, $untilDateTime);
 
-        $dataLists = $this->convert($dataLists);
+        $dataLists = $this->convert();
 
         $measurementModelLists = [];
 
@@ -25,29 +34,28 @@ class HistoryDataFactory extends PollutionDataFactory implements HistoryDataFact
         return $measurementModelLists;
     }
 
-    public function getDataListsForInterval(\DateTime $fromDateTime, \DateTime $untilDateTime): array
+    public function getDataListsForInterval(\DateTime $fromDateTime, \DateTime $untilDateTime): void
     {
-        $dataListList = [];
+        $this->dataList->reset();
 
         $diffInterval = $fromDateTime->diff($untilDateTime);
 
-        $this->dataList->reset();
+        $resultList = $this->dataRetriever->retrieveDataForCoord($this->coord, null, $fromDateTime, $diffInterval);
 
-        $missingPollutants = $this->strategy->getMissingPollutants($this->dataList);
-
-        foreach ($missingPollutants as $pollutantId) {
-            $dataListList[$pollutantId] = $this->dataRetriever->retrieveDataForCoord($this->coord, $pollutantId, $fromDateTime, $diffInterval);
+        /** @var Data $data */
+        foreach ($resultList as $data) {
+            $this->dataList->addData($data);
         }
-
-        return $dataListList;
     }
 
-    protected function convert(array $dataListLists): array
+    protected function convert(): array
     {
         $newDataListLists = [];
 
-        foreach ($dataListLists as $pollutantId => $dataList) {
-            /** @var Data $data */
+        foreach ($this->dataList->getList() as $pollutantId => $dataList) {
+            /**
+             * @var Data $data
+             */
             foreach ($dataList as $data) {
                 $timestamp = DateTimeUtil::getHourStartDateTime($data->getDateTime())->format('U');
 

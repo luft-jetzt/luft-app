@@ -2,48 +2,26 @@
 
 namespace App;
 
+use App\Air\AirQuality\LevelColors\LevelColorsInterface;
 use App\Air\AirQuality\PollutionLevel\PollutionLevelInterface;
 use App\Air\Measurement\MeasurementInterface;
+use App\DependencyInjection\Compiler\LevelColorCompilerPass;
+use App\DependencyInjection\Compiler\PollutantCompilerPass;
 use App\DependencyInjection\Compiler\PollutionLevelCompilerPass;
 use App\DependencyInjection\Compiler\ProviderCompilerPass;
 use App\Provider\ProviderInterface;
-use App\DependencyInjection\Compiler\PollutantCompilerPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
-use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
-use Symfony\Component\Routing\RouteCollectionBuilder;
+use Symfony\Component\Config\Loader\LoaderInterface;
 
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
-
-    const CONFIG_EXTS = '.{php,xml,yaml,yml}';
-
-    public function getCacheDir()
-    {
-        return $this->getProjectDir().'/var/cache/'.$this->environment;
-    }
-
-    public function getLogDir()
-    {
-        return $this->getProjectDir().'/var/log';
-    }
-
-    public function registerBundles()
-    {
-        $contents = require $this->getProjectDir().'/config/bundles.php';
-        foreach ($contents as $class => $envs) {
-            if (isset($envs['all']) || isset($envs[$this->environment])) {
-                yield new $class();
-            }
-        }
-    }
+    final const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
     {
-        // Feel free to remove the "container.autowiring.strict_mode" parameter
-        // if you are using symfony/dependency-injection 4.0+ as it's the default behavior
         $container->setParameter('container.autowiring.strict_mode', true);
         $container->setParameter('container.dumper.inline_class_loader', true);
         $confDir = $this->getProjectDir().'/config';
@@ -62,14 +40,8 @@ class Kernel extends BaseKernel
 
         $container->addCompilerPass(new PollutantCompilerPass());
         $container->registerForAutoconfiguration(MeasurementInterface::class)->addTag('measurement');
-    }
 
-    protected function configureRoutes(RouteCollectionBuilder $routes)
-    {
-        $confDir = $this->getProjectDir().'/config';
-
-        $routes->import($confDir.'/{routes}/*'.self::CONFIG_EXTS, '/', 'glob');
-        $routes->import($confDir.'/{routes}/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
-        $routes->import($confDir.'/{routes}'.self::CONFIG_EXTS, '/', 'glob');
+        $container->addCompilerPass(new LevelColorCompilerPass());
+        $container->registerForAutoconfiguration(LevelColorsInterface::class)->addTag('level_colors');
     }
 }

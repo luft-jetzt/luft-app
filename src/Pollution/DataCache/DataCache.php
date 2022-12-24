@@ -9,23 +9,16 @@ use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class DataCache implements DataCacheInterface
 {
-    const TTL = 60 * 60 * 8;
-    const NAMESPACE = 'luft-data';
+    final const TTL = 60 * 60 * 8 * 5;
+    final const NAMESPACE = 'luft-data';
 
-    /** @var AdapterInterface $cache */
-    protected $cache;
+    protected AdapterInterface $cache;
 
-    /** @var SerializerInterface $serializer */
-    protected $serializer;
-
-    public function __construct(SerializerInterface $serializer, string $redisHost)
+    public function __construct(protected SerializerInterface $serializer, string $redisHost)
     {
-        $this->serializer = $serializer;
-
         $client = RedisAdapter::createConnection($redisHost);
 
-        $this->cache = new RedisAdapter($client,self::NAMESPACE, 5 * self::TTL);
-        
+        $this->cache = new RedisAdapter($client,self::NAMESPACE, self::TTL);
     }
 
     public function addData(Data $data): DataCacheInterface

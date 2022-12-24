@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityRepository;
 
 class DataRepository extends EntityRepository
 {
-    public function findLatestDataForStationAndPollutant(Station $station, int $pollutant, \DateTime $fromDateTime = null, \DateInterval $dateInterval, string $order = 'DESC'): ?Data
+    public function findLatestDataForStationAndPollutant(Station $station, int $pollutant, \DateInterval $dateInterval, \DateTime $fromDateTime = null, string $order = 'DESC'): ?Data
     {
         $qb = $this->createQueryBuilder('d');
 
@@ -63,6 +63,72 @@ class DataRepository extends EntityRepository
         return $query->getResult();
     }
 
+    public function findTaggedInInterval(\DateTimeInterface $fromDateTime = null, \DateTimeInterface $untilDateTime = null, ProviderInterface $provider = null, string $tag = null): array
+    {
+        $qb = $this->createQueryBuilder('d');
+
+        if ($fromDateTime) {
+            $qb
+                ->andWhere($qb->expr()->gte('d.dateTime', ':fromDateTime'))
+                ->setParameter('fromDateTime', $fromDateTime);
+        }
+
+        if ($untilDateTime) {
+            $qb
+                ->andWhere($qb->expr()->lte('d.dateTime', ':untilDateTime'))
+                ->setParameter('untilDateTime', $untilDateTime);
+        }
+
+        if ($provider) {
+            $qb
+                ->join('d.station', 's')
+                ->andWhere($qb->expr()->eq('s.provider', ':providerIdentifier'))
+                ->setParameter('providerIdentifier', $provider->getIdentifier());
+        }
+
+        $qb->andWhere($qb->expr()->isNotNull('d.tag'));
+
+        if ($tag) {
+            $qb
+                ->andWhere($qb->expr()->eq('d.tag', ':tag'))
+                ->setParameter('tag', $tag);
+        }
+
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function findUntaggedInInterval(\DateTimeInterface $fromDateTime = null, \DateTimeInterface $untilDateTime = null, ProviderInterface $provider = null, string $tag = null): array
+    {
+        $qb = $this->createQueryBuilder('d');
+
+        if ($fromDateTime) {
+            $qb
+                ->andWhere($qb->expr()->gte('d.dateTime', ':fromDateTime'))
+                ->setParameter('fromDateTime', $fromDateTime);
+        }
+
+        if ($untilDateTime) {
+            $qb
+                ->andWhere($qb->expr()->lte('d.dateTime', ':untilDateTime'))
+                ->setParameter('untilDateTime', $untilDateTime);
+        }
+
+        if ($provider) {
+            $qb
+                ->join('d.station', 's')
+                ->andWhere($qb->expr()->eq('s.provider', ':providerIdentifier'))
+                ->setParameter('providerIdentifier', $provider->getIdentifier());
+        }
+
+        $qb->andWhere($qb->expr()->isNull('d.tag'));
+
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
+
     public function findHashsInterval(\DateTimeInterface $fromDateTime, \DateTimeInterface $untilDateTime, array $stationList = []): array
     {
         $sql = 'SELECT CONCAT(d.station_id, UNIX_TIMESTAMP(d.date_time), d.pollutant, d.value) AS hash FROM data AS d';
@@ -93,7 +159,7 @@ class DataRepository extends EntityRepository
             ->andWhere($qb->expr()->eq('d.pollutant', ':pollutant'))
             ->setParameter('pollutant', $pollutant)
             ->leftJoin(
-                'App\Entity\Data',
+                \App\Entity\Data::class,
                 'd2',
                 'WITH',
                 'd2.pollutant = d.pollutant AND d2.station = d.station AND d2.value > d.value'
@@ -107,7 +173,7 @@ class DataRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function deleteData(\DateTimeInterface $untilDateTime, ProviderInterface $provider = null): int
+    public function deleteData(\DateTimeInterface $untilDateTime, ProviderInterface $provider = null, bool $tagged = false): int
     {
         if ($provider) {
             $providerStationIdResult = $this->getEntityManager()->createQuery(
@@ -115,21 +181,36 @@ class DataRepository extends EntityRepository
                 WHERE s.provider = :provider'
             )->setParameter('provider', $provider->getIdentifier())->execute();
 
-            $providerStationIdList = array_map(function (array $stationRsult) {
-                return $stationRsult['id'];
-            }, $providerStationIdResult);
+            $providerStationIdList = array_map(fn(array $stationRsult) => $stationRsult['id'], $providerStationIdResult);
 
+            if ($tagged) {
+                $query = $this->getEntityManager()->createQuery(
+                    'DELETE App:Data d 
+                    WHERE d.dateTime < :untilDateTime AND d.station IN (:stationIdList)')
+                    ->setParameter('untilDateTime', $untilDateTime)
+                    ->setParameter('stationIdList', $providerStationIdList)
+                ;
+            } else {
+                $query = $this->getEntityManager()->createQuery(
+                    'DELETE App:Data d 
+                    WHERE d.dateTime < :untilDateTime AND d.station IN (:stationIdList) AND d.tag IS NOT NULL')
+                    ->setParameter('untilDateTime', $untilDateTime)
+                    ->setParameter('stationIdList', $providerStationIdList)
+                ;
+            }
+
+            $result = $query->execute();
+        } elseif ($tagged) {
             $query = $this->getEntityManager()->createQuery(
                 'DELETE App:Data d 
-                WHERE d.dateTime < :untilDateTime AND d.station IN (:stationIdList)')
-                ->setParameter('untilDateTime', $untilDateTime)
-                ->setParameter('stationIdList', $providerStationIdList);
+                WHERE d.dateTime < :untilDateTime AND d.tag IS NOT NULL')
+                ->setParameter('untilDateTime', $untilDateTime);
 
             $result = $query->execute();
         } else {
             $query = $this->getEntityManager()->createQuery(
                 'DELETE App:Data d 
-                WHERE d.dateTime < :untilDateTime')
+                WHERE d.dateTime < :untilDateTime AND d.tag IS NULL')
                 ->setParameter('untilDateTime', $untilDateTime);
 
             $result = $query->execute();

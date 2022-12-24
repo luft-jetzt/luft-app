@@ -3,16 +3,12 @@
 namespace App\Analysis\KomfortofenAnalysis;
 
 use App\Entity\Data;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use App\Pollution\DataFinder\DataConverterInterface;
 
 class KomfortofenModelFactory implements KomfortofenModelFactoryInterface
 {
-    /** @var RegistryInterface $registry */
-    protected $registry;
-
-    public function __construct(RegistryInterface $registry)
+    public function __construct(protected DataConverterInterface $dataConverter)
     {
-        $this->registry = $registry;
     }
 
     public function convert(array $buckets): array
@@ -24,7 +20,7 @@ class KomfortofenModelFactory implements KomfortofenModelFactoryInterface
 
             foreach ($bucket['top_hits_agg']['hits']['hits'] as $hit) {
                 /** @var Data $data */
-                $data = $this->registry->getRepository(Data::class)->find(intval($hit['_id']));
+                $data = $this->dataConverter->convertArray($hit['_source']);
 
                 $resultList[] = new KomfortofenModel($data->getStation(), $data, $slope);
             }
@@ -38,13 +34,7 @@ class KomfortofenModelFactory implements KomfortofenModelFactoryInterface
      */
     protected function sortResultList(array $resultList = []): array
     {
-        usort($resultList, function(KomfortofenModel $a, KomfortofenModel $b): int
-        {
-            if ($a->getSlope() === $b->getSlope()) {
-                return 0;
-            }
-            return ($a->getSlope() > $b->getSlope()) ? -1 : 1;
-        });
+        usort($resultList, fn(KomfortofenModel $a, KomfortofenModel $b): int => $b->getSlope() <=> $a->getSlope());
 
         return $resultList;
     }

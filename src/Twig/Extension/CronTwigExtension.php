@@ -3,8 +3,10 @@
 namespace App\Twig\Extension;
 
 use Cron\CronExpression;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class CronTwigExtension extends \Twig_Extension
+class CronTwigExtension extends AbstractExtension
 {
     public function __construct()
     {
@@ -13,7 +15,7 @@ class CronTwigExtension extends \Twig_Extension
     public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('cron', [$this, 'cron'], ['is_safe' => ['raw']]),
+            new TwigFunction('cron', $this->cron(...), ['is_safe' => ['raw']]),
         ];
     }
 

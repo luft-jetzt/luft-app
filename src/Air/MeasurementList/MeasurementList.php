@@ -6,8 +6,7 @@ use App\Air\Measurement\MeasurementInterface;
 
 class MeasurementList implements MeasurementListInterface
 {
-    /** @var array $list */
-    protected $list = [];
+    protected array $list = [];
 
     public function addMeasurement(MeasurementInterface $measurement): MeasurementListInterface
     {

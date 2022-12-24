@@ -2,7 +2,6 @@
 
 namespace App\DataPurger;
 
-use App\Entity\Data;
 use App\Provider\ProviderInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Elastica\Client;
@@ -10,30 +9,39 @@ use Elastica\Request;
 
 class FastDataPurger implements DataPurgerInterface
 {
-    protected ManagerRegistry $managerRegistry;
-    protected Client $client;
-
-    public function __construct(ManagerRegistry $managerRegistry, Client $client)
+    public function __construct(protected ManagerRegistry $managerRegistry, protected Client $client)
     {
-        $this->managerRegistry = $managerRegistry;
-        $this->client = $client;
     }
 
-    public function purgeData(\DateTimeInterface $untilDateTime, ProviderInterface $provider = null): int
+    public function purge(\DateTime $untilDateTime, bool $withTags, ProviderInterface $provider = null): int
     {
-        $counter = $this->purgeDatabase($untilDateTime, $provider);
-
-        $this->purgeElasticsearch($untilDateTime, $provider);
+        $counter = $this->countData($untilDateTime, $withTags, $provider);
+        $this->purgeData($untilDateTime, $withTags, $provider);
 
         return $counter;
     }
 
-    public function purgeDatabase(\DateTimeInterface $untilDateTime, ProviderInterface $provider = null): int
+    public function countData(\DateTime $untilDateTime, bool $withTags, ProviderInterface $provider = null): int
     {
-        return $this->managerRegistry->getRepository(Data::class)->deleteData($untilDateTime, $provider);
+        $query = $this->buildQuery($untilDateTime, $withTags, $provider);
+
+        $result = $this->client->request('air_data/_count', Request::GET, $query);
+
+        $response = $result->getData();
+
+        $count = $response['count'];
+
+        return $count;
     }
 
-    public function purgeElasticsearch(\DateTimeInterface $untilDateTime, ProviderInterface $provider = null): int
+    public function purgeData(\DateTime $untilDateTime, bool $withTags, ProviderInterface $provider = null): void
+    {
+        $query = $this->buildQuery($untilDateTime, $withTags, $provider);
+
+        $this->client->request('air_data/_delete_by_query', Request::POST, $query);
+    }
+
+    protected function buildQuery(\DateTime $untilDateTime, bool $withTags, ProviderInterface $provider = null): array
     {
         $query = [
             'query' => [
@@ -58,8 +66,10 @@ class FastDataPurger implements DataPurgerInterface
             ];
         }
 
-        $this->client->request('air_data/_delete_by_query', Request::POST, $query);
+        if (!$withTags) {
+            $query['query']['bool']['must_not'][]['exists'] = ['field' => 'tag'];
+        }
 
-        return 0;
+        return $query;
     }
 }

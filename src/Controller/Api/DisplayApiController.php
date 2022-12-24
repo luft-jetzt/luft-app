@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Swagger\Annotations as SWG;
+use OpenApi\Annotations as OA;
 
 class DisplayApiController extends AbstractApiController
 {
@@ -19,31 +19,31 @@ class DisplayApiController extends AbstractApiController
      *
      * You must either provide a coord with <code>latitude</code> and <code>longitude</code> or a five digit zip code.
      *
-     * @SWG\Tag(name="Display")
-     * @SWG\Parameter(
+     * @OA\Tag(name="Display")
+     * @OA\Parameter(
      *     name="latitude",
      *     in="query",
-     *     type="number",
-     *     description="Latitude"
+     *     description="Latitude",
+     *     @OA\Schema(type="float")
      * )
-     * @SWG\Parameter(
+     * @OA\Parameter(
      *     name="longitude",
      *     in="query",
-     *     type="number",
-     *     description="Longitude"
+     *     description="Longitude",
+     *     @OA\Schema(type="float")
      * )
-     * @SWG\Parameter(
+     * @OA\Parameter(
      *     name="zip",
      *     in="query",
-     *     type="number",
-     *     description="Zip code"
+     *     description="Zip code",
+     *     @OA\Schema(type="number")
      * )
-     * @SWG\Response(
+     * @OA\Response(
      *   response=200,
      *   description="Returns pollution data of specified station",
-     *   @SWG\Schema(
+     *   @OA\Schema(
      *     type="array",
-     *     @SWG\Items(ref=@Model(type=App\Air\ViewModel\MeasurementViewModel::class))
+     *     @OA\Items(ref=@Model(type=App\Air\ViewModel\MeasurementViewModel::class))
      *   )
      * )
      */
@@ -68,20 +68,20 @@ class DisplayApiController extends AbstractApiController
     /**
      * Get pollution data for a provided station code.
      *
-     * @SWG\Tag(name="Display")
-     * @SWG\Response(
+     * @OA\Tag(name="Display")
+     * @OA\Response(
      *   response=200,
      *   description="Retrieve pollution data for station",
-     *   @SWG\Schema(
+     *   @OA\Schema(
      *     type="array",
-     *     @SWG\Items(ref=@Model(type=App\Air\ViewModel\MeasurementViewModel::class))
+     *     @OA\Items(ref=@Model(type=App\Air\ViewModel\MeasurementViewModel::class))
      *   )
      * )
-     * @SWG\Parameter(
+     * @OA\Parameter(
      *     name="stationCode",
      *     in="path",
-     *     type="string",
-     *     description="station code"
+     *     description="station code",
+     *     @OA\Schema(type="string")
      * )
      */
     public function displayStationAction(

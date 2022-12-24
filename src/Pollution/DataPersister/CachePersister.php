@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace App\Pollution\DataPersister;
 
@@ -9,12 +10,8 @@ use App\Pollution\ValueDataConverter\ValueDataConverter;
 
 class CachePersister extends AbstractPersister
 {
-    protected DataCacheInterface $dataCache;
-
-    public function __construct(DataCacheInterface $dataCache, StationCacheInterface $stationCache)
+    public function __construct(protected DataCacheInterface $dataCache, StationCacheInterface $stationCache)
     {
-        $this->dataCache = $dataCache;
-
         parent::__construct($stationCache);
     }
 
@@ -30,13 +27,17 @@ class CachePersister extends AbstractPersister
                 $station = $this->getStationByCode($value->getStation());
 
                 $data = ValueDataConverter::convert($value, $station);
+
+                if (!$data) {
+                    continue;
+                }
             } else {
                 continue;
             }
 
             $this->dataCache->addData($data);
         }
-        
+
         return $this;
     }
 
