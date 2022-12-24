@@ -1,8 +1,7 @@
-<div class="row no-gutters row-eq-height">
-    {% for view_model in pollutant %}
-        {% set col_width = 12 / pollutant|length %}
-        <div class="col-{{ col_width }}">
+<div class="row">
+        <div class="card-group">
+            {% for view_model in pollutant %}
             {% include 'Default/_box.html.twig' with { 'view_model': view_model, 'showStationTitle': showStationTitle, 'combined': combined } %}
+            {% endfor %}
         </div>
-    {% endfor %}
 </div>
