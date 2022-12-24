@@ -53,7 +53,8 @@ services:
 
     App\Pollution\DataPersister\PersisterInterface:
         #alias: App\Pollution\DataPersister\ElasticPersister
-        alias: App\Pollution\DataPersister\CachePersister
+        #alias: App\Pollution\DataPersister\CachePersister
+        alias: App\Pollution\DataPersister\PostgisPersister
 
     App\Geocoding\Guesser\CityGuesser:
         $provider: '@bazinga_geocoder.provider.nominatim'
