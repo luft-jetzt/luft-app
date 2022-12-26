@@ -5,24 +5,24 @@ namespace App\Command\ImportCache;
 use App\Entity\Data;
 use App\Pollution\UniqueStrategy\UniqueStrategyInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'luft:import-cache:populate',
+    description: 'Populate import cache'
+)]
 class PopulateImportCacheCommand extends Command
 {
     protected UniqueStrategyInterface $cacheUniqueStrategy;
 
-    protected static $defaultName = 'luft:import-cache:populate';
-
     protected function configure(): void
     {
-        $this
-            ->setDescription('Add a short description for your command')
-            ->addOption('interval', 'i', InputOption::VALUE_REQUIRED, 'Provide an interval starting from today backwards', 'P3D')
-        ;
+        $this->addOption('interval', 'i', InputOption::VALUE_REQUIRED, 'Provide an interval starting from today backwards', 'P3D');
     }
 
     public function __construct(UniqueStrategyInterface $cacheUniqueStrategy, protected ManagerRegistry $registry)

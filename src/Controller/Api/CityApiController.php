@@ -70,9 +70,7 @@ class CityApiController extends AbstractApiController
      * Adds a new city.
      *
      * @OA\Tag(name="City")
-     * @OA\Parameter(
-     *     name="body",
-     *     in="body",
+     * @OA\RequestBody(
      *     description="Json of city data",
      *     @OA\Schema(type="string")
      * )
@@ -100,9 +98,7 @@ class CityApiController extends AbstractApiController
      * Updates city data.
      *
      * @OA\Tag(name="City")
-     * @OA\Parameter(
-     *     name="body",
-     *     in="body",
+     * @OA\RequestBody(
      *     description="Json of city data",
      *     @OA\Schema(type="string")
      * )

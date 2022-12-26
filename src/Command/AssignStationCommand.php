@@ -6,24 +6,22 @@ use App\Entity\City;
 use App\Entity\Station;
 use App\Geocoding\Guesser\CityGuesserInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
+#[AsCommand(
+    name: 'luft:assign-station',
+    description: 'Assign station to city'
+)]
 class AssignStationCommand extends Command
 {
-    protected static $defaultName = 'luft:assign-station';
-
     public function __construct(protected ManagerRegistry $registry, protected CityGuesserInterface $cityGuesser)
     {
         parent::__construct();
-    }
-
-    protected function configure(): void
-    {
-        $this->setDescription('Assign station to city');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

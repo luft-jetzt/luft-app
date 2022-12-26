@@ -18,9 +18,7 @@ class ValueApiController extends AbstractApiController
      * Add values of stations.
      *
      * @OA\Tag(name="Value")
-     * @OA\Parameter(
-     *     name="body",
-     *     in="body",
+     * @OA\RequestBody(
      *     description="data value",
      *     @OA\Schema(type="string")
      * )

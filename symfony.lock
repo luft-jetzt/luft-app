@@ -191,12 +191,6 @@
             "config/packages/prod/jms_serializer.yaml"
         ]
     },
-    "knplabs/knp-menu": {
-        "version": "2.3.0"
-    },
-    "knplabs/knp-menu-bundle": {
-        "version": "v2.2.1"
-    },
     "laminas/laminas-code": {
         "version": "3.4.1"
     },
