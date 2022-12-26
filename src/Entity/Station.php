@@ -33,9 +33,11 @@ class Station extends Coordinate
     #[JMS\Expose]
     protected $title;
 
+    #[ORM\Column(type: 'float', nullable: false)]
     #[JMS\Expose]
     protected ?float $latitude = null;
 
+    #[ORM\Column(type: 'float', nullable: false)]
     #[JMS\Expose]
     protected ?float $longitude = null;
 
@@ -266,11 +268,21 @@ class Station extends Coordinate
         return $this;
     }
 
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    public function getLongitude(): ?float
+    {
+        return $this->longitude;
+    }
+
     #[ORM\PrePersist]
     public function prePersist(): Station
     {
         if ($this->latitude && $this->longitude) {
-            $this->coord = sprintf('POINT(%f %f)', $this->latitude, $this->longitude);
+            $this->coord = sprintf('POINT(%f %f)', $this->longitude, $this->latitude);
         }
 
         return $this;
