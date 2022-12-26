@@ -28,9 +28,15 @@ class DataRepository extends EntityRepository
             ->addFieldResult('s', 'title', 'title')
             ->addFieldResult('s', 'latitude', 'latitude')
             ->addFieldResult('s', 'longitude', 'longitude')
+            ->addFieldResult('s', 'station_code', 'stationCode')
+            ->addFieldResult('s', 'title', 'title')
+            ->addFieldResult('s', 'station_type', 'stationType')
+            ->addFieldResult('s', 'provider', 'provider')
         ;
 
-        $sql = 'SELECT DISTINCT ON (d.pollutant) d.id, d.value, d.pollutant, d.date_time, s.id AS station_id, s.title, s.latitude, s.longitude, s.coord <-> ST_MakePoint(?, ?) AS dist
+        $sql = 'SELECT DISTINCT ON (d.pollutant) d.id, d.value, d.pollutant, d.date_time, 
+s.id AS station_id, s.title, s.latitude, s.longitude, s.station_code, s.title, s.station_type, s.provider,
+s.coord <-> ST_MakePoint(?, ?) AS dist
 FROM data AS d
 INNER JOIN station AS s ON s.id = d.station_id 
 ORDER BY d.pollutant ASC, dist ASC, d.date_time DESC
@@ -42,6 +48,7 @@ LIMIT 10';
             ->setParameter(2, $coord->getLatitude())
         ;
 
+        //dd($query->getResult());
         return $query->getResult();
     }
 }
