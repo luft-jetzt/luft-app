@@ -97,9 +97,7 @@ class StationApiController extends AbstractApiController
      * Add a new station.
      *
      * @OA\Tag(name="Station")
-     * @OA\Parameter(
-     *     name="body",
-     *     in="body",
+     * @OA\RequestBody(
      *     description="Json of station data",
      *     @OA\Schema(type="string")
      * )
@@ -152,9 +150,7 @@ class StationApiController extends AbstractApiController
      * Updates station data.
      *
      * @OA\Tag(name="Station")
-     * @OA\Parameter(
-     *     name="body",
-     *     in="body",
+     * @OA\RequestBody(
      *     description="Json of station data",
      *     @OA\Schema(type="string")
      * )
