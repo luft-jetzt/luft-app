@@ -8,6 +8,7 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\Persistence\ManagerRegistry;
 use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -98,6 +99,7 @@ class StationApiController extends AbstractApiController
      *
      * @OA\Tag(name="Station")
      * @OA\RequestBody(
+     *     @Model(type=App\Entity\Station::class),
      *     description="Json of station data",
      *     @OA\Schema(type="string")
      * )
@@ -109,8 +111,6 @@ class StationApiController extends AbstractApiController
      */
     public function putStationAction(Request $request, SerializerInterface $serializer, ManagerRegistry $managerRegistry): Response
     {
-        $body = $request->getContent();
-
         $stationList = $this->deserializeRequestBodyToArray($request, $serializer, Station::class);
 
         try {
@@ -138,7 +138,9 @@ class StationApiController extends AbstractApiController
 
         /** @var Station $station */
         foreach ($stationList as $station) {
-            $em->persist($station);
+            if ($station->getLatitude() && $station->getLongitude()) {
+                $em->persist($station);
+            }
         }
 
         $em->flush();
@@ -160,8 +162,7 @@ class StationApiController extends AbstractApiController
      *   @Model(type=App\Entity\Station::class)
      * )
      */
-    #[Entity('station', expr: 'repository.findOneByStationCode(stationCode)')]
-    public function postStationAction(Request $request, SerializerInterface $serializer, Station $station, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
+    public function postStationAction(Request $request, SerializerInterface $serializer, #[MapEntity(expr: 'repository.findOneByStationCode(stationCode)')] Station $station, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
     {
         $requestBody = $request->getContent();
 
