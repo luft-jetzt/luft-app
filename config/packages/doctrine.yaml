@@ -1,12 +1,12 @@
 doctrine:
     dbal:
         #url: '%env(resolve:DATABASE_URL)%'
-        server_version: 15.3.3
-        host: 127.0.0.1
-        port: 25432
-        user: docker
-        password: docker
-        dbname: gis
+        server_version: '%env(resolve:DATABASE_VERSION)%'
+        host: '%env(resolve:DATABASE_HOST)%'
+        port: '%env(resolve:DATABASE_PORT)%'
+        user: '%env(resolve:DATABASE_USER)%'
+        password: '%env(resolve:DATABASE_PASSWORD)%'
+        dbname: '%env(resolve:DATABASE_DBNAME)%'
         driver: pdo_pgsql
 
         types:
