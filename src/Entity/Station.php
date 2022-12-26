@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Caldera\GeoBasic\Coordinate\Coordinate;
+use Doctrine\Common\Collections\ArrayCollection;
 use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Jsor\Doctrine\PostGIS\Types\PostGISType;
@@ -21,7 +22,7 @@ class Station extends Coordinate
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    #[ORM\Column(type: 'string', length: 12, nullable: false, unique: true)]
+    #[ORM\Column(type: 'string', length: 12, unique: true, nullable: false)]
     #[JMS\Expose]
     protected $stationCode;
 
@@ -47,7 +48,7 @@ class Station extends Coordinate
     )]
     public ?string $coord = null;
 
-    #[ORM\ManyToOne(targetEntity: 'City', inversedBy: 'cities')]
+    #[ORM\ManyToOne(targetEntity: 'City', inversedBy: 'stations')]
     #[ORM\JoinColumn(name: 'city_id', referencedColumnName: 'id')]
     protected $city;
 
@@ -81,8 +82,13 @@ class Station extends Coordinate
     #[ORM\JoinColumn(name: 'network_id', referencedColumnName: 'id')]
     protected $network;
 
+    #[ORM\OneToMany(targetEntity: 'Data', mappedBy: 'station')]
+    protected $datas;
+
     public function __construct(float $latitude, float $longitude)
     {
+        $this->datas = new ArrayCollection();
+
         $this->coord = sprintf('POINT(%f %f)', $latitude, $longitude);
 
         parent::__construct($latitude, $longitude);
