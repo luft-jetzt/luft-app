@@ -7,7 +7,7 @@ use App\Util\EntityMerger\EntityMergerInterface;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\Persistence\ManagerRegistry;
 use JMS\Serializer\SerializerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -162,8 +162,7 @@ class StationApiController extends AbstractApiController
      *   @Model(type=App\Entity\Station::class)
      * )
      */
-    #[Entity('station', expr: 'repository.findOneByStationCode(stationCode)')]
-    public function postStationAction(Request $request, SerializerInterface $serializer, Station $station, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
+    public function postStationAction(Request $request, SerializerInterface $serializer, #[MapEntity(expr: 'repository.findOneByStationCode(stationCode)')] Station $station, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
     {
         $requestBody = $request->getContent();
 
