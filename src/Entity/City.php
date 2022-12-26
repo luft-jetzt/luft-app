@@ -15,27 +15,27 @@ class City implements \Stringable
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
-    protected $id;
+    protected ?int $id = null;
 
     #[ORM\Column(type: 'datetime', nullable: false)]
     #[JMS\Expose]
     #[JMS\Type("DateTime<'U'>")]
-    protected $createdAt;
+    protected ?\DateTime $createdAt = null;
 
     #[ORM\Column(type: 'string', nullable: false)]
     #[JMS\Expose]
-    protected $name;
+    protected ?string $name = null;
 
     #[ORM\Column(type: 'string', nullable: false)]
     #[JMS\Expose]
-    protected $slug;
+    protected ?string $slug = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     #[JMS\Expose]
-    protected $description;
+    protected ?string $description = null;
 
     #[ORM\OneToMany(targetEntity: 'Station', mappedBy: 'city')]
-    protected $stations;
+    protected Collection $stations;
 
     public function __construct()
     {
