@@ -24,13 +24,13 @@ class DataRepository extends EntityRepository
             ->addFieldResult('d', 'pollutant', 'pollutant')
             ->addFieldResult('d', 'date_time', 'dateTime')
             ->addJoinedEntityResult(Station::class, 's', 'd', 'station')
-        //    ->addFieldResult('s', 'id', 'id')
-        //->addFieldResult('s', 'title', 'title')
+            ->addFieldResult('s', 'station_id', 'id')
+            ->addFieldResult('s', 'title', 'title')
         ;
 
-        $sql = 'SELECT DISTINCT ON (d.pollutant) d.id, d.value, d.pollutant, d.date_time, s.id, s.title, s.coord <-> ST_MakePoint(?, ?) AS dist
+        $sql = 'SELECT DISTINCT ON (d.pollutant) d.id, d.value, d.pollutant, d.date_time, s.id AS station_id, s.title, s.coord <-> ST_MakePoint(?, ?) AS dist
 FROM data AS d
-JOIN station AS s ON d.station_id = s.id 
+INNER JOIN station AS s ON s.id = d.station_id 
 ORDER BY d.pollutant ASC, dist ASC, d.date_time DESC
 LIMIT 10';
 

@@ -19,6 +19,6 @@ class PostgisDataRetriever implements DataRetrieverInterface
 
         $result = $repository->findCurrentDataForCoord($coord);
 
-        dd($result);
+        return $result;
     }
 }
