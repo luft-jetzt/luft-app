@@ -27,11 +27,9 @@ class PostgisPersister extends AbstractPersister
 
                 $em->persist($data);
             }
-
-            $em->flush();
-
-
         }
+
+        $em->flush();
 
         return $this;
     }
