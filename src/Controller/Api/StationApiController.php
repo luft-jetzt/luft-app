@@ -138,7 +138,9 @@ class StationApiController extends AbstractApiController
 
         /** @var Station $station */
         foreach ($stationList as $station) {
-            $em->persist($station);
+            if ($station->getLatitude() && $station->getLongitude()) {
+                $em->persist($station);
+            }
         }
 
         $em->flush();
