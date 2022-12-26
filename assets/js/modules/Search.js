@@ -1,6 +1,6 @@
 import 'corejs-typeahead';
 import Bloodhound from 'bloodhound-js';
-import Handlebars from 'handlebars';
+import Handlebars from 'handlebars/lib/handlebars';
 
 export default class Search {
     constructor(element, options) {
@@ -10,7 +10,6 @@ export default class Search {
 
         this.init(element);
     }
-
     init(element) {
         const form = element.closest('form');
         const actionUri = form.action;

@@ -20,19 +20,19 @@ class Station extends Coordinate
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
-    protected $id;
+    protected ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 12, unique: true, nullable: false)]
     #[JMS\Expose]
-    protected $stationCode;
+    protected ?string $stationCode = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     #[JMS\Expose]
-    protected $ubaStationId;
+    protected ?int $ubaStationId = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     #[JMS\Expose]
-    protected $title;
+    protected ?string $title = null;
 
     #[ORM\Column(type: 'float', nullable: false)]
     #[JMS\Expose]
@@ -50,37 +50,37 @@ class Station extends Coordinate
 
     #[ORM\ManyToOne(targetEntity: 'City', inversedBy: 'stations')]
     #[ORM\JoinColumn(name: 'city_id', referencedColumnName: 'id')]
-    protected $city;
+    protected ?City $city = null;
 
     #[ORM\Column(type: 'date', nullable: true)]
     #[JMS\Expose]
     #[JMS\Type("DateTime<'U'>")]
-    protected $fromDate;
+    protected ?\DateTime $fromDate = null;
 
     #[ORM\Column(type: 'date', nullable: true)]
     #[JMS\Expose]
     #[JMS\Type("DateTime<'U'>")]
-    protected $untilDate;
+    protected ?\DateTime $untilDate = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     #[JMS\Expose]
-    protected $altitude;
+    protected ?int $altitude = null;
 
     #[DoctrineAssert\EnumType(entity: 'App\DBAL\Types\StationType')]
     #[ORM\Column(type: 'StationType', nullable: true)]
-    protected $stationType;
+    protected ?string $stationType = null;
 
     #[DoctrineAssert\EnumType(entity: 'App\DBAL\Types\AreaType')]
     #[ORM\Column(type: 'AreaType', nullable: true)]
-    protected $areaType;
+    protected ?string $areaType = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     #[JMS\Expose]
-    protected $provider;
+    protected ?string $provider = null;
 
     #[ORM\ManyToOne(targetEntity: 'Network', inversedBy: 'stations')]
     #[ORM\JoinColumn(name: 'network_id', referencedColumnName: 'id')]
-    protected $network;
+    protected ?Network $network = null;
 
     #[ORM\OneToMany(targetEntity: 'Data', mappedBy: 'station')]
     protected $datas;

@@ -94,13 +94,6 @@ services:
         arguments:
             $dataFinder: '@fos_elastica.finder.air_station'
 
-    app.menu_builder:
-        class: App\Menu\MainMenuBuilder
-        arguments:
-            $factory: '@knp_menu.factory'
-        tags:
-            - { name: knp_menu.menu_builder, method: mainMenu, alias: main } # The alias is what is used to retrieve the menu
-
     Jsor\Doctrine\PostGIS\Event\ORMSchemaEventSubscriber:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
