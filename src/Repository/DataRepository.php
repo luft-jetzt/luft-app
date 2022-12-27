@@ -61,11 +61,22 @@ LIMIT 10';
             ->addFieldResult('d', 'value', 'value')
             ->addFieldResult('d', 'pollutant', 'pollutant')
             ->addFieldResult('d', 'date_time', 'dateTime')
+            ->addJoinedEntityResult(Station::class, 's', 'd', 'station')
+            ->addFieldResult('s', 'station_id', 'id')
+            ->addFieldResult('s', 'title', 'title')
+            ->addFieldResult('s', 'latitude', 'latitude')
+            ->addFieldResult('s', 'longitude', 'longitude')
+            ->addFieldResult('s', 'station_code', 'stationCode')
+            ->addFieldResult('s', 'title', 'title')
+            ->addFieldResult('s', 'station_type', 'stationType')
+            ->addFieldResult('s', 'provider', 'provider')
         ;
 
-        $sql = 'SELECT DISTINCT ON (d.pollutant) d.id, d.value, d.pollutant, d.date_time
+        $sql = 'SELECT DISTINCT ON (d.pollutant) d.id, d.value, d.pollutant, d.date_time,
+s.id AS station_id, s.title, s.latitude, s.longitude, s.station_code, s.title, s.station_type, s.provider
 FROM data AS d
-WHERE d.station_id = ?
+INNER JOIN station AS s ON s.id = d.station_id 
+WHERE s.id = ?
 ORDER BY d.pollutant ASC, d.date_time DESC
 LIMIT 10';
 
