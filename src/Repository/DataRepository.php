@@ -51,4 +51,32 @@ LIMIT 10';
         //dd($query->getResult());
         return $query->getResult();
     }
+
+    public function findCurrentDataForStation(Station $station): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm
+            ->addEntityResult(Data::class, 'd')
+            ->addFieldResult('d', 'id', 'id')
+            ->addFieldResult('d', 'value', 'value')
+            ->addFieldResult('d', 'pollutant', 'pollutant')
+            ->addFieldResult('d', 'date_time', 'dateTime')
+        ;
+
+        $sql = 'SELECT DISTINCT ON (d.pollutant) d.id, d.value, d.pollutant, d.date_time
+FROM data AS d
+WHERE d.station_id = ?
+ORDER BY d.pollutant ASC, d.date_time DESC
+LIMIT 10';
+
+        $query = $this->_em->createNativeQuery($sql, $rsm);
+        $query
+            ->setParameter(1, $station->getId())
+        ;
+
+        //dd($query->getResult());
+        return $query->getResult();
+    }
 }
+
+

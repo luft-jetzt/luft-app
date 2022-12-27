@@ -5,6 +5,7 @@ namespace App\Pollution\PollutionDataFactory;
 use App\Air\ViewModel\MeasurementViewModel;
 use App\Air\ViewModelFactory\MeasurementViewModelFactoryInterface;
 use App\Entity\Data;
+use App\Entity\Station;
 use App\Pollution\DataRetriever\DataRetrieverInterface;
 use App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
 use App\Pollution\UniqueStrategy\Hasher;
@@ -29,7 +30,11 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
 
         $dateTime->sub($dateInterval);
 
-        $dataList = $this->managerRegistry->getRepository(Data::class)->findCurrentDataForCoord($this->coord);
+        if ($this->coord instanceof Station) {
+            $dataList = $this->managerRegistry->getRepository(Data::class)->findCurrentDataForStation($this->coord);
+        } else {
+            $dataList = $this->managerRegistry->getRepository(Data::class)->findCurrentDataForCoord($this->coord);
+        }
 
         $measurementViewModelList = $this->getMeasurementViewModelListFromDataList($dataList);
 
