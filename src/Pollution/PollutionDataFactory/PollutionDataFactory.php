@@ -3,11 +3,20 @@
 namespace App\Pollution\PollutionDataFactory;
 
 use App\Air\ViewModel\MeasurementViewModel;
+use App\Air\ViewModelFactory\MeasurementViewModelFactoryInterface;
 use App\Entity\Data;
+use App\Pollution\DataRetriever\DataRetrieverInterface;
+use App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
 use App\Pollution\UniqueStrategy\Hasher;
+use Doctrine\Persistence\ManagerRegistry;
 
 class PollutionDataFactory extends AbstractPollutionDataFactory
 {
+    public function __construct(protected ManagerRegistry $managerRegistry, MeasurementViewModelFactoryInterface $measurementViewModelFactory, DataRetrieverInterface $dataRetriever, PollutantFactoryStrategyInterface $strategy)
+    {
+        parent::__construct($measurementViewModelFactory, $dataRetriever, $strategy);
+    }
+
     public function createDecoratedPollutantList(\DateTime $dateTime = null, \DateInterval $dateInterval = null, int $workingSetSize = 20): array
     {
         if (!$dateTime) {
@@ -20,7 +29,9 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
 
         $dateTime->sub($dateInterval);
 
-        $dataList = $this->getDataListFromStationList($workingSetSize, $dateTime, $dateInterval);
+        //$dataList = $this->getDataListFromStationList($workingSetSize, $dateTime, $dateInterval);
+
+        $dataList = $this->managerRegistry->getRepository(Data::class)->findCurrentDataForCoord($this->coord);
 
         $measurementViewModelList = $this->getMeasurementViewModelListFromDataList($dataList);
 
@@ -58,14 +69,9 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
     {
         $measurementViewModelList = [];
 
-        /** @var array $data */
+        /** @var Data $data */
         foreach ($dataList as $data) {
-            /** @var Data $dataElement */
-            foreach ($data as $dataElement) {
-                if ($dataElement) {
-                    $measurementViewModelList[$dataElement->getPollutant()][Hasher::hashData($dataElement)] = new MeasurementViewModel($dataElement);
-                }
-            }
+            $measurementViewModelList[$data->getPollutant()][Hasher::hashData($data)] = new MeasurementViewModel($data);
         }
 
         return $measurementViewModelList;
