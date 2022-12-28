@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use Caldera\GeoBasic\Coordinate\Coordinate;
+use Doctrine\Common\Collections\ArrayCollection;
 use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
 use Doctrine\ORM\Mapping as ORM;
+use Jsor\Doctrine\PostGIS\Types\PostGISType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as JMS;
 
@@ -12,7 +14,8 @@ use JMS\Serializer\Annotation as JMS;
 #[ORM\Entity(repositoryClass: 'App\Repository\StationRepository')]
 #[UniqueEntity('stationCode')]
 #[JMS\ExclusionPolicy('ALL')]
-class Station extends Coordinate implements \Stringable
+#[ORM\HasLifecycleCallbacks]
+class Station extends Coordinate
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
@@ -39,7 +42,13 @@ class Station extends Coordinate implements \Stringable
     #[JMS\Expose]
     protected ?float $longitude = null;
 
-    #[ORM\ManyToOne(targetEntity: 'City', inversedBy: 'cities')]
+    #[ORM\Column(
+        type: PostGISType::GEOMETRY,
+        options: ['geometry_type' => 'POINT'],
+    )]
+    public ?string $coord = null;
+
+    #[ORM\ManyToOne(targetEntity: 'City', inversedBy: 'stations')]
     #[ORM\JoinColumn(name: 'city_id', referencedColumnName: 'id')]
     protected ?City $city = null;
 
@@ -72,6 +81,18 @@ class Station extends Coordinate implements \Stringable
     #[ORM\ManyToOne(targetEntity: 'Network', inversedBy: 'stations')]
     #[ORM\JoinColumn(name: 'network_id', referencedColumnName: 'id')]
     protected ?Network $network = null;
+
+    #[ORM\OneToMany(targetEntity: 'Data', mappedBy: 'station')]
+    protected $datas;
+
+    public function __construct(float $latitude, float $longitude)
+    {
+        $this->datas = new ArrayCollection();
+
+        $this->coord = sprintf('POINT(%f %f)', $latitude, $longitude);
+
+        parent::__construct($latitude, $longitude);
+    }
 
     public function setId(int $id): Station
     {
@@ -109,28 +130,16 @@ class Station extends Coordinate implements \Stringable
         return $this;
     }
 
-    public function getLatitude(): float
+    public function setCoord(string $coord): Station
     {
-        return $this->latitude;
-    }
-
-    public function setLatitude(float $latitude): Station
-    {
-        $this->latitude = $latitude;
+        $this->coord = $coord;
 
         return $this;
     }
 
-    public function getLongitude(): float
+    public function getCoord(): ?string
     {
-        return $this->longitude;
-    }
-
-    public function setLongitude(float $longitude): Station
-    {
-        $this->longitude = $longitude;
-
-        return $this;
+        return $this->coord;
     }
 
     public function getTitle(): ?string
@@ -143,16 +152,6 @@ class Station extends Coordinate implements \Stringable
         $this->title = $title;
 
         return $this;
-    }
-
-    public function getPin(): string
-    {
-        return sprintf('%f,%f', $this->latitude, $this->longitude);
-    }
-
-    public function __toString(): string
-    {
-        return sprintf('%s: %s', $this->stationCode, $this->title);
     }
 
     public function setCity(City $city = null): Station
@@ -257,6 +256,40 @@ class Station extends Coordinate implements \Stringable
     public function setNetwork(Network $network): Station
     {
         $this->network = $network;
+
+        return $this;
+    }
+
+    public function setLatitude(?float $latitude): Station
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function setLongitude(?float $longitude): Station
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    public function getLongitude(): ?float
+    {
+        return $this->longitude;
+    }
+
+    #[ORM\PrePersist]
+    public function prePersist(): Station
+    {
+        if ($this->latitude && $this->longitude) {
+            $this->coord = sprintf('POINT(%f %f)', $this->longitude, $this->latitude);
+        }
 
         return $this;
     }
