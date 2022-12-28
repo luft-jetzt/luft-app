@@ -2,71 +2,64 @@
 
 namespace App\Pollution\PollutionDataFactory;
 
+use App\Air\ViewModel\MeasurementViewModel;
+use App\Air\ViewModelFactory\MeasurementViewModelFactoryInterface;
 use App\Entity\Data;
 use App\Entity\Station;
-use App\Pollution\Box\Box;
+use App\Pollution\DataRetriever\DataRetrieverInterface;
+use App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
+use App\Pollution\UniqueStrategy\Hasher;
+use Doctrine\Persistence\ManagerRegistry;
 
 class PollutionDataFactory extends AbstractPollutionDataFactory
 {
-    public function createDecoratedPollutantList(): array
+    public function __construct(protected ManagerRegistry $managerRegistry, MeasurementViewModelFactoryInterface $measurementViewModelFactory, DataRetrieverInterface $dataRetriever, PollutantFactoryStrategyInterface $strategy)
     {
-        $dataList = $this->getDataListFromStationList($this->stationList);
-
-        $boxList = $this->getBoxListFromDataList($dataList);
-
-        $boxList = $this->decoratePollutantList($boxList);
-
-        return $boxList;
+        parent::__construct($measurementViewModelFactory, $dataRetriever, $strategy);
     }
 
-    protected function getDataListFromStationList(array $stationList): array
+    public function createDecoratedPollutantList(\DateTime $dateTime = null, \DateInterval $dateInterval = null, int $workingSetSize = 20): array
     {
-        $this->dataList->reset();
-
-        $missingPollutants = $this->strategy->getMissingPollutants($this->dataList);
-
-        /** @var Station $station */
-        foreach ($stationList as $station) {
-            foreach ($missingPollutants as $pollutant) {
-                $data = $this->dataRetriever->retrieveStationData($station, $pollutant);
-
-                if ($this->strategy->accepts($this->dataList, $data)) {
-                    $this->strategy->addDataToList($this->dataList, $data);
-                }
-            }
-
-            $missingPollutants = $this->strategy->getMissingPollutants($this->dataList);
-
-            if (0 === count($missingPollutants)) {
-                break;
-            }
+        if (!$dateTime) {
+            $dateTime = new \DateTime();
         }
 
-        return $this->dataList->getList();
+        if (!$dateInterval) {
+            $dateInterval = new \DateInterval('PT12H');
+        }
+
+        $dateTime->sub($dateInterval);
+
+        if ($this->coord instanceof Station) {
+            $dataList = $this->managerRegistry->getRepository(Data::class)->findCurrentDataForStation($this->coord);
+        } else {
+            $dataList = $this->managerRegistry->getRepository(Data::class)->findCurrentDataForCoord($this->coord);
+        }
+
+        $measurementViewModelList = $this->getMeasurementViewModelListFromDataList($dataList);
+
+        $measurementViewModelList = $this->decoratePollutantList($measurementViewModelList);
+
+        return $measurementViewModelList;
     }
 
-    protected function getBoxListFromDataList(array $dataList): array
+    protected function getMeasurementViewModelListFromDataList(array $dataList): array
     {
-        $pollutantList = [];
+        $measurementViewModelList = [];
 
-        /** @var array $data */
+        /** @var Data $data */
         foreach ($dataList as $data) {
-            /** @var Data $dataElement */
-            foreach ($data as $dataElement) {
-                if ($dataElement) {
-                    $pollutantList[$dataElement->getPollutant()][$dataElement->getId()] = new Box($dataElement);
-                }
-            }
+            $measurementViewModelList[$data->getPollutant()][Hasher::hashData($data)] = new MeasurementViewModel($data);
         }
 
-        return $pollutantList;
+        return $measurementViewModelList;
     }
 
     protected function decoratePollutantList(array $pollutantList): array
     {
         return $this
             ->reset()
-            ->boxDecorator
+            ->measurementViewModelFactory
             ->setCoord($this->coord)
             ->setPollutantList($pollutantList)
             ->decorate()

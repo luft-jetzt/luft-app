@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\City;
 use App\Entity\Station;
-use App\Geocoding\Query\GeoQueryInterface;
+use App\Geocoding\Geocoder\GeocoderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +25,6 @@ class TypeaheadController extends AbstractController
             $data[] = ['value' => [
                 'url' => $url,
                 'name' => $city->getName(),
-                'icon' => 'university',
             ]];
         }
 
@@ -44,8 +43,8 @@ class TypeaheadController extends AbstractController
 
             $value = [
                 'url' => $url,
-                'name' => $station->getStationCode(),
-                'icon' => 'thermometer-half',
+                'stationCode' => $station->getStationCode(),
+                'title' => $station->getTitle(),
             ];
 
             if ($station->getCity()) {
@@ -58,9 +57,9 @@ class TypeaheadController extends AbstractController
         return new JsonResponse($data);
     }
 
-    public function searchAction(Request $request, GeoQueryInterface $geoQuery): Response
+    public function searchAction(Request $request, GeocoderInterface $geocoder): Response
     {
-        $result = $geoQuery->query($request->query->get('query'));
+        $result = $geocoder->query($request->query->get('query'));
 
         return new JsonResponse($result);
     }

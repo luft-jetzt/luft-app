@@ -1,0 +1,81 @@
+{% extends 'layout.html.twig' %}
+{% import _self as self %}
+
+{% if fromDateTime|date('Y-m-d') == untilDateTime|date('Y-m-d') %}
+{% set same_day = true %}
+{% else %}
+{% set same_day = false %}
+{% endif %}
+
+{% macro pollution_data(dataList, pollutantId) %}
+    {% if dataList[pollutantId] is defined %}
+    {% set data = dataList[pollutantId]|first %}
+    <td class="pollution-value pollutant-{{ data.measurement.identifier }}" data-value="{{ data.data.value }}" style="background-color: {{ pollution_color(data.pollutionLevel) }}">
+        {{ data.data.value|number_format(2, ',', '.') }} {{ data.measurement.unitHtml|raw }}
+    </td>
+    {% else %}
+        {% set pollutant = pollutant_by_id(pollutantId) %}
+    <td class="pollution-value pollutant-{{ pollutant.identifier }}" data-value="null"></td>
+    {% endif %}
+{% endmacro %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="h3">
+                    Frühere Messwerte der Station {{ station.stationCode }}
+                </h2>
+
+                <p class="lead">
+                    An der Station <a href="{{ path('station', { stationCode: station.stationCode } ) }}" title="Mehr Informationen über die Luftmessstation {{ station.stationCode }}{% if station.city %} in {{ station.city.name }}{% endif %}">{{ station.stationCode }}</a>{% if station.city %} in <a href="{{ path('show_city', { citySlug: station.city.slug }) }}" title="Zeige weitere Schadstoff-Messwerte aus {{ station.city.name }} an">{{ station.city.name }}</a>{% endif %} wurden {% if same_day %}am{% else %}von {{ fromDateTime|format_date('full') }}, bis{% endif %} {{ untilDateTime|format_date('full') }}, die folgenden Werte gemessen:
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <canvas id="pollutionChart" style="width: 100%; height: 80vh;"></canvas>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>
+                                Zeitpunkt
+                            </th>
+
+                            {% for pollutantId, pollutant in pollutant_list() %}
+                                {% if pollutantId in pollutantIdList %}
+                                <th class="pollutant" data-pollutant-identifier="{{ pollutant.identifier }}">
+                                    {{ pollutant.shortNameHtml|raw }}
+                                </th>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for timestamp, dataList in dataLists %}
+                        {% if dataList|length > 0 %}
+                        <tr class="datetime" data-timestamp="{{ timestamp|date('d.m.Y H:i', 'Europe/Berlin') }}">
+                            <td>
+                                {{ timestamp|date('d.m.Y H:i', 'Europe/Berlin') }} Uhr
+                            </td>
+
+                            {% for pollutantId, pollutant in pollutant_list() %}
+                                {% if pollutantId in pollutantIdList %}
+                                {{ self.pollution_data(dataList, pollutantId) }}
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

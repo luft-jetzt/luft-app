@@ -1,0 +1,130 @@
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{ path('frontpage') }}">
+            Luft<sup class="text-primary">jetzt</sup>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Schadstoffe
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="{{ path('pollutant_pm10') }}">
+                                Feinstaub
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ path('pollutant_no2') }}">
+                                Stickoxid NO<sub>2</sub>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ path('pollutant_so2') }}">
+                                Schwefeldioxid SO<sub>2</sub>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ path('pollutant_co') }}">
+                                Kohlenmonoxid CO
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ path('pollutant_o3') }}">
+                                Ozon O<sub>3</sub>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ path('limits') }}">
+                                Grenzwerte
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                {% if feature('feature_123') %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Analyse
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% if feature('analysis_komfortofen') %}
+                                <li>
+                                    <a class="dropdown-item" href="{{ path('analysis_komfortofen') }}">
+                                        Komfortofen-Finder <sup>beta</sup>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if feature('analysis_fireworks') %}
+                                <li>
+                                    <a class="dropdown-item" href="{{ path('analysis_fireworks') }}">
+                                        Silvester-Feuerwerk <sup>beta</sup>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ path('analysis_fireworks_corona') }}">
+                                        Corona-Feuerwerk <sup>beta</sup>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                {% endif %}
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Über
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="{{ path('impress') }}">
+                                Impressum
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ path('privacy') }}">
+                                Datenschutz
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Api
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="{{ path('app.swagger_ui') }}">
+                                Api-Dokumentation
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="https://sqi.be/ed94a">
+                                Github-Repository
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <form class="d-flex input-group w-25" role="search" action="{{ path('display') }}">
+                <input class="form-control typeahead" id="nav-query" name="query" type="search" aria-label="Search" placeholder="Suchbegriff, Postleitzahl, Stadtname…">
+                <button class="btn btn-outline-success" type="submit" title="Nach deiner Eingabe suchen">
+                    <i class="fa fa-search"></i>
+                </button>
+                <button class="btn btn-primary locate-button d-none d-md-block" type="button" title="Deinen Aufenthaltsort automatisch bestimmen">
+                    <i class="fa fa-location-arrow"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</nav>

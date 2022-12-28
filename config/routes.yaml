@@ -1,0 +1,7 @@
+app_directory:
+  resource: './routing/'
+  type:     directory
+
+controllers:
+  resource: ../src/Controller/
+  type: attribute

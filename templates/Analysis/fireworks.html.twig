@@ -1,0 +1,125 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2>
+                    Silvester-Feuerwerke
+                </h2>
+
+                <p class="lead">
+                    Direkt am Neujahrsmorgen werden in Deutschland rund 17 Prozent der jährlich ausgestoßenen Feinstaubmenge in Form von Silvesterfeuerwerken emittiert. Die folgende Liste zeigt Messstationen an, in denen die Werte für Feinstaub <a href="{{ path('pollutant_pm10') }}" title="Erfahre mehr über Feinstaub">PM<sub>10</sub></a> und PM<sub>25</sub> am Jahresende und Neujahrstag plötzlich angestiegen sind.
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-sm datatable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Station
+                            </th>
+
+                            <th>
+                                PM<sub>10</sub>
+                            </th>
+
+                            {#<th>
+                                PM<sub>25</sub>
+                            </th>#}
+
+                            <th>
+                                Zeitpunkt
+                            </th>
+                        </tr>
+                    </thead>
+                    {% for firework in fireworksList %}
+                        <tr>
+                            <td data-order="{{ firework.station.stationCode }}">
+                                <a href="{{ path('station', { stationCode: firework.station.stationCode }) }}">
+                                    {{ firework.station.stationCode }}
+                                </a>
+                                {% if false and firework.station.city %}
+                                    <a href="{{ path('show_city', { citySlug: firework.station.city.slug }) }}" title="Zeige weitere Luftmessstationen aus {{ firework.station.city.name }}">
+                                        <small class="text-muted">
+                                            {{ firework.station.city.name }}
+                                        </small>
+                                    </a>
+                                {% endif %}
+
+                                {% if firework.station.stationType and firework.station.areaType %}
+                                <br />
+                                <small class="text-muted">
+                                    {{ firework.station.stationType|readable_enum|trans({}, 'messages', 'de') }}, {{ firework.station.areaType|readable_enum|trans({}, 'messages', 'de') }}
+                                </small>
+                                {% endif %}
+                            </td>
+
+                            <td data-order="{{ firework.data.value }}">
+                                <span class="text-danger">
+                                    {{ firework.data.value }}
+                                </span>
+                            </td>
+
+                            {#<td>
+
+                            </td>#}
+
+                            <td data-order="{{ firework.data.dateTime|date('U') }}">
+                                <a href="{{ path('station_history', { stationCode: firework.station.stationCode, from: firework.data.dateTime|date_modify('-1 day')|date('Y-m-d'), until: firework.data.dateTime|date_modify('+6 hour')|date('Y-m-d') }) }}">
+                                    <time class="d-none d-md-inline-block">
+                                        {{ firework.data.dateTime|format_date('eeee, dd. MMMM YYYY') }}
+                                        <br />
+                                        {{ firework.data.dateTime|date('H:i') }} Uhr
+                                    </time>
+
+                                    <time class="d-md-none">
+                                        {{ firework.data.dateTime|date('d.m.Y') }}
+                                        <br />
+                                        {{ firework.data.dateTime|date('H:i') }} Uhr
+                                    </time>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    {% if fireworksList|length == 0 %}
+                        <tr>
+                            <td colspan="3">
+                                <div class="alert alert-info">
+                                    Für diese Auswertung liegen momentan leider keine Daten vor.
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 text-center">
+                <a href="https://sqi.be/zb2to" class="btn btn-primary" title="Erfahre mehr über die Gesundheitsgefahren aus Holzöfen">
+                    mehr über diese Thematik erfahren
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('.datatable').DataTable({
+                'paging':   false,
+                'info':     false,
+                'language': {
+                    'search': 'Suche:'
+                }
+            });
+        } );
+    </script>
+{% endblock %}

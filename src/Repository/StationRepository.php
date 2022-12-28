@@ -16,12 +16,23 @@ class StationRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findIndexedByProvider(string $providerIdentifier): array
+    public function findByProvider(string $providerIdentifier): array
     {
         $qb = $this->createQueryBuilder('s');
 
         $qb
-            ->indexBy('s', 's.stationCode')
+            ->where($qb->expr()->eq('s.provider', ':provider'))
+            ->setParameter('provider', $providerIdentifier);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findIndexedByProvider(string $providerIdentifier, string $indexedField = 'stationCode'): array
+    {
+        $qb = $this->createQueryBuilder('s');
+
+        $qb
+            ->indexBy('s', sprintf('s.%s', $indexedField))
             ->where($qb->expr()->eq('s.provider', ':provider'))
             ->setParameter('provider', $providerIdentifier);
 
@@ -43,6 +54,31 @@ class StationRepository extends EntityRepository
 
         $qb
             ->where($qb->expr()->isNull('s.untilDate'))
+            ->orderBy('s.stationCode');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findActiveStationsByProvider(string $providerIdentifier): array
+    {
+        $qb = $this->createQueryBuilder('s');
+
+        $qb
+            ->where($qb->expr()->isNull('s.untilDate'))
+            ->andWhere($qb->expr()->eq('s.provider', ':provider'))
+            ->setParameter('provider', $providerIdentifier)
+            ->orderBy('s.stationCode');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findStationsByProvider(string $providerIdentifier): array
+    {
+        $qb = $this->createQueryBuilder('s');
+
+        $qb
+            ->where($qb->expr()->eq('s.provider', ':provider'))
+            ->setParameter('provider', $providerIdentifier)
             ->orderBy('s.stationCode');
 
         return $qb->getQuery()->getResult();

@@ -5,38 +5,26 @@ namespace App\Entity;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="network")
- */
+#[ORM\Table(name: 'network')]
+#[ORM\Entity]
 class Network
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $name;
+    #[ORM\Column(type: 'string', nullable: true)]
+    protected ?string $name = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    protected $description;
+    #[ORM\Column(type: 'text', nullable: true)]
+    protected ?string $description = null;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $link;
+    #[ORM\Column(type: 'string', nullable: true)]
+    protected ?string $link = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Station", mappedBy="network")
-     */
-    protected $stations;
+    #[ORM\OneToMany(mappedBy: 'network', targetEntity: 'Station')]
+    protected Collection $stations;
 
     public function getId(): ?int
     {

@@ -1,0 +1,47 @@
+###############################################################################
+#                          Generated on phpdocker.io                          #
+###############################################################################
+version: "3.1"
+services:
+    redis:
+      image: redis:alpine
+      container_name: luft-jetzt-redis
+      ports:
+        - "6379:6379"
+
+    postgis:
+      image: kartoza/postgis:15-3.3
+      volumes:
+        - ./docker/postgis:/var/lib/postgresql
+      environment:
+        # If you need to create multiple database you can add coma separated databases eg gis,data
+        - POSTGRES_DB=gis
+        - POSTGRES_USER=docker
+        - POSTGRES_PASS=docker
+        - ALLOW_IP_RANGE=0.0.0.0/0
+        # Add extensions you need to be enabled by default in the DB. Default are the five specified below
+        - POSTGRES_MULTIPLE_EXTENSIONS=postgis,hstore,postgis_topology,postgis_raster,pgrouting
+      ports:
+        - 25432:5432
+      restart: on-failure
+      healthcheck:
+        test: "exit 0"
+      labels:
+        com.symfony.server.service-prefix: 'DATABASE'
+
+    elasticsearch:
+      image: elasticsearch:7.17.2
+      container_name: luft-elasticsearch
+      environment:
+        - discovery.type=single-node
+        - cluster.routing.allocation.disk.threshold_enabled=true
+        - cluster.routing.allocation.disk.watermark.flood_stage=100mb
+        - cluster.routing.allocation.disk.watermark.low=500mb
+        - cluster.routing.allocation.disk.watermark.high=250mb
+      volumes:
+        - ./docker/elasticsearch:/usr/share/elasticsearch/data
+      ports:
+        - "9200:9200"
+        - "9300:9300"
+      labels:
+        com.symfony.server.service-prefix: 'ELASTICSEARCH'

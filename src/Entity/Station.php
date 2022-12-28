@@ -2,122 +2,111 @@
 
 namespace App\Entity;
 
+use Caldera\GeoBasic\Coordinate\Coordinate;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Caldera\GeoBasic\Coord\Coord;
-use App\DBAL\Types\StationType;
 use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
 use Doctrine\ORM\Mapping as ORM;
+use Jsor\Doctrine\PostGIS\Types\PostGISType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as JMS;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\StationRepository")
- * @ORM\Table(name="station")
- * @UniqueEntity("stationCode")
- * @JMS\ExclusionPolicy("ALL")
- */
-class Station extends Coord
+#[ORM\Table(name: 'station')]
+#[ORM\Entity(repositoryClass: 'App\Repository\StationRepository')]
+#[UniqueEntity('stationCode')]
+#[JMS\ExclusionPolicy('ALL')]
+#[ORM\HasLifecycleCallbacks]
+class Station extends Coordinate
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    protected ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=12, nullable=false, unique=true)
-     * @JMS\Expose()
-     */
-    protected $stationCode;
+    #[ORM\Column(type: 'string', length: 12, unique: true, nullable: false)]
+    #[JMS\Expose]
+    protected ?string $stationCode = null;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @JMS\Expose()
-     */
-    protected $title;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[JMS\Expose]
+    protected ?int $ubaStationId = null;
 
-    /**
-     * @ORM\Column(type="float", nullable=false)
-     * @JMS\Expose()
-     */
-    protected $latitude;
+    #[ORM\Column(type: 'string', nullable: true)]
+    #[JMS\Expose]
+    protected ?string $title = null;
 
-    /**
-     * @ORM\Column(type="float", nullable=false)
-     * @JMS\Expose()
-     */
-    protected $longitude;
+    #[ORM\Column(type: 'float', nullable: false)]
+    #[JMS\Expose]
+    protected ?float $latitude = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity="TwitterSchedule", mappedBy="station")
-     */
-    protected $twitterSchedules;
+    #[ORM\Column(type: 'float', nullable: false)]
+    #[JMS\Expose]
+    protected ?float $longitude = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="City", inversedBy="twitterSchedules")
-     * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
-     */
-    protected $city;
+    #[ORM\Column(
+        type: PostGISType::GEOMETRY,
+        options: ['geometry_type' => 'POINT'],
+    )]
+    public ?string $coord = null;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     * @JMS\Expose()
-     * @JMS\Type("DateTime<'U'>")
-     */
-    protected $fromDate;
+    #[ORM\ManyToOne(targetEntity: 'City', inversedBy: 'stations')]
+    #[ORM\JoinColumn(name: 'city_id', referencedColumnName: 'id')]
+    protected ?City $city = null;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     * @JMS\Expose()
-     * @JMS\Type("DateTime<'U'>")
-     */
-    protected $untilDate;
+    #[ORM\Column(type: 'date', nullable: true)]
+    #[JMS\Expose]
+    #[JMS\Type("DateTime<'U'>")]
+    protected ?\DateTime $fromDate = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @JMS\Expose()
-     */
-    protected $altitude;
+    #[ORM\Column(type: 'date', nullable: true)]
+    #[JMS\Expose]
+    #[JMS\Type("DateTime<'U'>")]
+    protected ?\DateTime $untilDate = null;
 
-    /**
-     * @ORM\Column(type="StationType", nullable=true)
-     * @DoctrineAssert\Enum(entity="App\DBAL\Types\StationType")
-     */
-    protected $stationType;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[JMS\Expose]
+    protected ?int $altitude = null;
 
-    /**
-     * @ORM\Column(type="AreaType", nullable=true)
-     * @DoctrineAssert\Enum(entity="App\DBAL\Types\AreaType")
-     */
-    protected $areaType;
+    #[DoctrineAssert\EnumType(entity: 'App\DBAL\Types\StationType')]
+    #[ORM\Column(type: 'StationType', nullable: true)]
+    protected ?string $stationType = null;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @JMS\Expose()
-     */
-    protected $provider;
+    #[DoctrineAssert\EnumType(entity: 'App\DBAL\Types\AreaType')]
+    #[ORM\Column(type: 'AreaType', nullable: true)]
+    protected ?string $areaType = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Network", inversedBy="stations")
-     * @ORM\JoinColumn(name="network_id", referencedColumnName="id")
-     */
-    protected $network;
+    #[ORM\Column(type: 'string', nullable: true)]
+    #[JMS\Expose]
+    protected ?string $provider = null;
+
+    #[ORM\ManyToOne(targetEntity: 'Network', inversedBy: 'stations')]
+    #[ORM\JoinColumn(name: 'network_id', referencedColumnName: 'id')]
+    protected ?Network $network = null;
+
+    #[ORM\OneToMany(targetEntity: 'Data', mappedBy: 'station')]
+    protected $datas;
 
     public function __construct(float $latitude, float $longitude)
     {
-        $this->twitterSchedules = new ArrayCollection();
+        $this->datas = new ArrayCollection();
+
+        $this->coord = sprintf('POINT(%f %f)', $latitude, $longitude);
 
         parent::__construct($latitude, $longitude);
     }
 
-    public function getId(): int
+    public function setId(int $id): Station
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getStationCode(): string
+    public function getStationCode(): ?string
     {
         return $this->stationCode;
     }
@@ -129,28 +118,28 @@ class Station extends Coord
         return $this;
     }
 
-    public function getLatitude(): float
+    public function getUbaStationId()
     {
-        return $this->latitude;
+        return $this->ubaStationId;
     }
 
-    public function setLatitude(float $latitude): Station
+    public function setUbaStationId($ubaStationId)
     {
-        $this->latitude = $latitude;
+        $this->ubaStationId = $ubaStationId;
 
         return $this;
     }
 
-    public function getLongitude(): float
+    public function setCoord(string $coord): Station
     {
-        return $this->longitude;
-    }
-
-    public function setLongitude(float $longitude): Station
-    {
-        $this->longitude = $longitude;
+        $this->coord = $coord;
 
         return $this;
+    }
+
+    public function getCoord(): ?string
+    {
+        return $this->coord;
     }
 
     public function getTitle(): ?string
@@ -161,42 +150,6 @@ class Station extends Coord
     public function setTitle(string $title = null): Station
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getPin(): string
-    {
-        return sprintf('%f,%f', $this->latitude, $this->longitude);
-    }
-
-    public function __toString()
-    {
-        return sprintf('%s: %s', $this->stationCode, $this->title);
-    }
-
-    public function addTwitterSchedule(TwitterSchedule $twitterSchedule): Station
-    {
-        $this->twitterSchedules->add($twitterSchedule);
-
-        return $this;
-    }
-
-    public function getTwitterSchedules(): Collection
-    {
-        return $this->twitterSchedules;
-    }
-
-    public function setTwitterSchedules(Collection $twitterSchedules): Station
-    {
-        $this->twitterSchedules = $twitterSchedules;
-
-        return $this;
-    }
-
-    public function removeTwitterSchedule(TwitterSchedule $twitterSchedule): Station
-    {
-        $this->twitterSchedules->removeElement($twitterSchedule);
 
         return $this;
     }
@@ -303,6 +256,40 @@ class Station extends Coord
     public function setNetwork(Network $network): Station
     {
         $this->network = $network;
+
+        return $this;
+    }
+
+    public function setLatitude(?float $latitude): Station
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function setLongitude(?float $longitude): Station
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    public function getLongitude(): ?float
+    {
+        return $this->longitude;
+    }
+
+    #[ORM\PrePersist]
+    public function prePersist(): Station
+    {
+        if ($this->latitude && $this->longitude) {
+            $this->coord = sprintf('POINT(%f %f)', $this->longitude, $this->latitude);
+        }
 
         return $this;
     }

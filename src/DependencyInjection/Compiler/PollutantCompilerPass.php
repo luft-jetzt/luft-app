@@ -2,7 +2,7 @@
 
 namespace App\DependencyInjection\Compiler;
 
-use App\Pollution\PollutantList\PollutantListInterface;
+use App\Air\MeasurementList\MeasurementListInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
@@ -11,16 +11,16 @@ class PollutantCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has(PollutantListInterface::class)) {
+        if (!$container->has(MeasurementListInterface::class)) {
             return;
         }
 
-        $pollutantList = $container->findDefinition(PollutantListInterface::class);
+        $measurementList = $container->findDefinition(MeasurementListInterface::class);
 
-        $taggedServices = $container->findTaggedServiceIds('pollutant');
+        $taggedServices = $container->findTaggedServiceIds('measurement');
 
         foreach ($taggedServices as $id => $tags) {
-            $pollutantList->addMethodCall('addPollutant', [new Reference($id)]);
+            $measurementList->addMethodCall('addMeasurement', [new Reference($id)]);
         }
     }
 }

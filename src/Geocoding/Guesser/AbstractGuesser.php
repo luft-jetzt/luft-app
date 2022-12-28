@@ -2,25 +2,11 @@
 
 namespace App\Geocoding\Guesser;
 
-use Geocoder\Geocoder;
-use Geocoder\Provider\Nominatim\Nominatim;
-use Geocoder\StatefulGeocoder;
-use Http\Adapter\Guzzle6\Client;
+use Geocoder\Provider\Provider;
 
 abstract class AbstractGuesser
 {
-    const LOCALE = 'de';
-    const NOMINATIM_URL = 'https://nominatim.openstreetmap.org';
-    const USER_AGENT = 'Luft.jetzt geocoder';
-    const REFERER = 'https://luft.jetzt/';
-
-    /** @var Geocoder $geocoder */
-    protected $geocoder;
-
-    public function __construct()
+    public function __construct(protected Provider $provider)
     {
-        $httpClient = new Client();
-        $provider = new Nominatim($httpClient, self::NOMINATIM_URL, self::USER_AGENT, self::REFERER);
-        $this->geocoder = new StatefulGeocoder($provider, self::LOCALE);
     }
 }
