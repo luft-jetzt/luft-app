@@ -78,7 +78,7 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
         $year = StartDateTimeCalculator::calculateStartDateTime();
         $yearList = [];
 
-        for ($yearSub = 0; $yearSub <= 2; ++$yearSub) {
+        for ($yearSub = 0; $yearSub <= 3; ++$yearSub) {
             $yearList[$year->year] = new YearSlot($year->year);
             $year->subYear();
         }

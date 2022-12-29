@@ -2,22 +2,18 @@
 
 namespace App\Analysis\CoronaFireworksAnalysis;
 
-use App\Pollution\DataFinder\ElasticFinder;
+use App\Entity\Data;
 use Caldera\GeoBasic\Coord\CoordInterface;
-use Carbon\Carbon;
-use Carbon\CarbonTimeZone;
-use Elastica\Aggregation\DateHistogram;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ValueFetcher implements ValueFetcherInterface
 {
-    public function __construct()
+    public function __construct(protected ManagerRegistry $managerRegistry)
     {
     }
 
     public function fetchValues(CoordInterface $coord, array $yearList = [], int $startHour = 12, int $rangeInMinutes = 1440, float $maxDistance = 15): array
     {
-        return [];
-
-        return $result;
+        return $this->managerRegistry->getRepository(Data::class)->findDataForCoronaFireworksAnalysis($coord);
     }
 }

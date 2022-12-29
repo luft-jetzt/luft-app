@@ -88,6 +88,40 @@ LIMIT 10';
         //dd($query->getResult());
         return $query->getResult();
     }
+
+    public function findDataForCoronaFireworksAnalysis(CoordInterface $coord): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm
+            ->addEntityResult(Data::class, 'd')
+            ->addFieldResult('d', 'id', 'id')
+            ->addFieldResult('d', 'value', 'value')
+            ->addFieldResult('d', 'pollutant', 'pollutant')
+            ->addFieldResult('d', 'date_time', 'dateTime')
+            ->addJoinedEntityResult(Station::class, 's', 'd', 'station')
+            ->addFieldResult('s', 'station_id', 'id')
+            ->addFieldResult('s', 'title', 'title')
+            ->addFieldResult('s', 'latitude', 'latitude')
+            ->addFieldResult('s', 'longitude', 'longitude')
+            ->addFieldResult('s', 'station_code', 'stationCode')
+            ->addFieldResult('s', 'title', 'title')
+            ->addFieldResult('s', 'station_type', 'stationType')
+            ->addFieldResult('s', 'provider', 'provider')
+        ;
+
+        $sql = 'SELECT DISTINCT ON (date_trunc(\'hour\', d.date_time), d.pollutant, s.provider)
+    d.id, d.value, d.pollutant, d.date_time, s.id AS station_id, s.title, s.latitude, s.longitude, s.station_code, s.station_type, s.provider
+FROM data AS d
+JOIN station AS s ON d.station_id = s.id
+ORDER BY date_trunc(\'hour\', d.date_time), d.pollutant ASC, s.provider ASC, s.coord <-> ST_MakePoint(?, ?) ASC;';
+
+        $query = $this->_em->createNativeQuery($sql, $rsm);
+        $query
+            ->setParameter(1, $coord->getLongitude())
+            ->setParameter(2, $coord->getLatitude())
+        ;
+
+        //dd($query->getResult());
+        return $query->getResult();
+    }
 }
-
-
