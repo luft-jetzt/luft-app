@@ -114,7 +114,7 @@ LIMIT 10';
         WHERE station_id IN (SELECT id FROM station WHERE coord <-> ST_MakePoint(?, ?) < 2 ORDER BY coord <-> ST_MakePoint(?, ?) ASC)
         AND pollutant = 1
         AND ((DATE_PART(\'day\', date_time) = 31 AND DATE_PART(\'hour\', date_time) > 17) OR (DATE_PART(\'day\', date_time) = 1 AND DATE_PART(\'hour\', date_time) < 7))
-        ORDER BY date_trunc(\'hour\', date_time), coord <-> ST_MakePoint(?, ?) ASC';
+        ORDER BY date_trunc(\'hour\', date_time), coord <-> ST_MakePoint(?, ?) ASC, value ASC';
 
         $query = $this->_em->createNativeQuery($sql, $rsm);
         $query
