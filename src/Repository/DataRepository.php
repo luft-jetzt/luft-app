@@ -133,7 +133,7 @@ LIMIT 10';
     {
         $sql = 'REFRESH MATERIALIZED VIEW data_view;';
 
-        $query = $this->_em->createNativeQuery($sql);
+        $query = $this->_em->createNativeQuery($sql, new ResultSetMapping());
         $query->getResult();
     }
 }
