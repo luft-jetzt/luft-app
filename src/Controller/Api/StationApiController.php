@@ -7,7 +7,7 @@ use App\Util\EntityMerger\EntityMergerInterface;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\Persistence\ManagerRegistry;
 use JMS\Serializer\SerializerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -143,7 +143,9 @@ class StationApiController extends AbstractApiController
 
         /** @var Station $station */
         foreach ($stationList as $station) {
-            $em->persist($station);
+            if ($station->getLatitude() && $station->getLongitude()) {
+                $em->persist($station);
+            }
         }
 
         $em->flush();

@@ -35,8 +35,9 @@ services:
 
     App\Pollution\DataRetriever\DataRetrieverInterface:
         #alias: App\Pollution\DataRetriever\CachedElasticDataRetriever
-        alias: App\Pollution\DataRetriever\ChainedDataRetriever
+        #alias: App\Pollution\DataRetriever\ChainedDataRetriever
         #alias: App\Pollution\DataRetriever\ElasticDataRetriever
+        alias: App\Pollution\DataRetriever\PostgisDataRetriever
 
     App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface:
         alias: App\Pollution\PollutantFactoryStrategy\LuftdatenPollutantFactoryStrategy
@@ -53,7 +54,9 @@ services:
 
     App\Pollution\DataPersister\PersisterInterface:
         #alias: App\Pollution\DataPersister\ElasticPersister
-        alias: App\Pollution\DataPersister\CachePersister
+        #alias: App\Pollution\DataPersister\CachePersister
+        #alias: App\Pollution\DataPersister\PostgisPersister
+        alias: App\Pollution\DataPersister\ChainedPersister
 
     App\Geocoding\Guesser\CityGuesser:
         $provider: '@bazinga_geocoder.provider.nominatim'
@@ -90,3 +93,7 @@ services:
     App\Pollution\DataRetriever\CachedElasticDataRetriever:
         arguments:
             $dataFinder: '@fos_elastica.finder.air_station'
+
+    Jsor\Doctrine\PostGIS\Event\ORMSchemaEventSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }

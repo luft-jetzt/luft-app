@@ -96,15 +96,6 @@
     "doctrine/sql-formatter": {
         "version": "1.1.2"
     },
-    "elasticsearch/elasticsearch": {
-        "version": "v6.0.1"
-    },
-    "ezimuel/guzzlestreams": {
-        "version": "3.0.1"
-    },
-    "ezimuel/ringphp": {
-        "version": "1.2.0"
-    },
     "flagception/flagception": {
         "version": "1.4.0"
     },
@@ -130,7 +121,7 @@
         "version": "v1.0.7"
     },
     "friendsofsymfony/elastica-bundle": {
-        "version": "6.1",
+        "version": "6.2",
         "recipe": {
             "repo": "github.com/symfony/recipes-contrib",
             "branch": "main",
@@ -191,6 +182,24 @@
             "config/packages/prod/jms_serializer.yaml"
         ]
     },
+    "jsor/doctrine-postgis": {
+        "version": "2.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.7",
+            "ref": "211979f7917bf6edb8fc5006a17b2e84e8e84d50"
+        },
+        "files": [
+            "config/packages/jsor_doctrine_postgis.yaml"
+        ]
+    },
+    "knplabs/knp-menu": {
+        "version": "2.3.0"
+    },
+    "knplabs/knp-menu-bundle": {
+        "version": "v2.2.1"
+    },
     "laminas/laminas-code": {
         "version": "3.4.1"
     },
@@ -227,12 +236,6 @@
     },
     "nikic/php-parser": {
         "version": "v4.0.4"
-    },
-    "nyholm/dsn": {
-        "version": "2.0.1"
-    },
-    "pagerfanta/pagerfanta": {
-        "version": "v1.0.5"
     },
     "paragonie/constant_time_encoding": {
         "version": "v2.4.0"
@@ -388,9 +391,6 @@
     },
     "rector/rector": {
         "version": "0.14.5"
-    },
-    "ruflin/elastica": {
-        "version": "6.0.1"
     },
     "sebastian/cli-parser": {
         "version": "1.0.1"

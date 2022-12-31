@@ -3,11 +3,21 @@
 namespace App\Pollution\PollutionDataFactory;
 
 use App\Air\ViewModel\MeasurementViewModel;
+use App\Air\ViewModelFactory\MeasurementViewModelFactoryInterface;
 use App\Entity\Data;
+use App\Entity\Station;
+use App\Pollution\DataRetriever\DataRetrieverInterface;
+use App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
 use App\Pollution\UniqueStrategy\Hasher;
+use Doctrine\Persistence\ManagerRegistry;
 
 class PollutionDataFactory extends AbstractPollutionDataFactory
 {
+    public function __construct(protected ManagerRegistry $managerRegistry, MeasurementViewModelFactoryInterface $measurementViewModelFactory, DataRetrieverInterface $dataRetriever, PollutantFactoryStrategyInterface $strategy)
+    {
+        parent::__construct($measurementViewModelFactory, $dataRetriever, $strategy);
+    }
+
     public function createDecoratedPollutantList(\DateTime $dateTime = null, \DateInterval $dateInterval = null, int $workingSetSize = 20): array
     {
         if (!$dateTime) {
@@ -20,6 +30,13 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
 
         $dateTime->sub($dateInterval);
 
+        /**
+        if ($this->coord instanceof Station) {
+            $dataList = $this->managerRegistry->getRepository(Data::class)->findCurrentDataForStation($this->coord);
+        } else {
+            $dataList = $this->managerRegistry->getRepository(Data::class)->findCurrentDataForCoord($this->coord);
+        }*/
+
         $dataList = $this->getDataListFromStationList($workingSetSize, $dateTime, $dateInterval);
 
         $measurementViewModelList = $this->getMeasurementViewModelListFromDataList($dataList);
@@ -27,31 +44,6 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
         $measurementViewModelList = $this->decoratePollutantList($measurementViewModelList);
 
         return $measurementViewModelList;
-    }
-
-    protected function getDataListFromStationList(int $workingSetSize, \DateTime $fromDateTime = null, \DateInterval $interval = null): array
-    {
-        $this->dataList->reset();
-
-        $missingPollutants = $this->strategy->getMissingPollutants($this->dataList);
-
-        foreach ($missingPollutants as $pollutantId) {
-            $dataList = $this->dataRetriever->retrieveDataForCoord($this->coord, $pollutantId, $fromDateTime, $interval, 20.0, $workingSetSize);
-
-            if (0 === count($dataList)) {
-                continue;
-            }
-
-            while (!$this->strategy->isSatisfied($this->dataList, $pollutantId) && count($dataList)) {
-                $data = array_shift($dataList);
-
-                if ($this->strategy->accepts($this->dataList, $data)) {
-                    $this->strategy->addDataToList($this->dataList, $data);
-                }
-            }
-        }
-
-        return $this->dataList->getList();
     }
 
     protected function getMeasurementViewModelListFromDataList(array $dataList): array
@@ -81,5 +73,30 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
             ->decorate()
             ->getPollutantList()
         ;
+    }
+
+    protected function getDataListFromStationList(int $workingSetSize, \DateTime $fromDateTime = null, \DateInterval $interval = null): array
+    {
+        $this->dataList->reset();
+
+        $missingPollutants = $this->strategy->getMissingPollutants($this->dataList);
+
+        foreach ($missingPollutants as $pollutantId) {
+            $dataList = $this->dataRetriever->retrieveDataForCoord($this->coord, $pollutantId, $fromDateTime, $interval, 20.0, $workingSetSize);
+
+            if (0 === count($dataList)) {
+                continue;
+            }
+
+            while (!$this->strategy->isSatisfied($this->dataList, $pollutantId) && count($dataList)) {
+                $data = array_shift($dataList);
+
+                if ($this->strategy->accepts($this->dataList, $data)) {
+                    $this->strategy->addDataToList($this->dataList, $data);
+                }
+            }
+        }
+
+        return $this->dataList->getList();
     }
 }
