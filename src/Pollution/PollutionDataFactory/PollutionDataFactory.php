@@ -30,11 +30,14 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
 
         $dateTime->sub($dateInterval);
 
+        /**
         if ($this->coord instanceof Station) {
             $dataList = $this->managerRegistry->getRepository(Data::class)->findCurrentDataForStation($this->coord);
         } else {
             $dataList = $this->managerRegistry->getRepository(Data::class)->findCurrentDataForCoord($this->coord);
-        }
+        }*/
+
+        $dataList = $this->getDataListFromStationList($workingSetSize, $dateTime, $dateInterval);
 
         $measurementViewModelList = $this->getMeasurementViewModelListFromDataList($dataList);
 
@@ -47,9 +50,14 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
     {
         $measurementViewModelList = [];
 
-        /** @var Data $data */
+        /** @var array $data */
         foreach ($dataList as $data) {
-            $measurementViewModelList[$data->getPollutant()][Hasher::hashData($data)] = new MeasurementViewModel($data);
+            /** @var Data $dataElement */
+            foreach ($data as $dataElement) {
+                if ($dataElement) {
+                    $measurementViewModelList[$dataElement->getPollutant()][Hasher::hashData($dataElement)] = new MeasurementViewModel($dataElement);
+                }
+            }
         }
 
         return $measurementViewModelList;
@@ -65,5 +73,30 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
             ->decorate()
             ->getPollutantList()
         ;
+    }
+
+    protected function getDataListFromStationList(int $workingSetSize, \DateTime $fromDateTime = null, \DateInterval $interval = null): array
+    {
+        $this->dataList->reset();
+
+        $missingPollutants = $this->strategy->getMissingPollutants($this->dataList);
+
+        foreach ($missingPollutants as $pollutantId) {
+            $dataList = $this->dataRetriever->retrieveDataForCoord($this->coord, $pollutantId, $fromDateTime, $interval, 20.0, $workingSetSize);
+
+            if (0 === count($dataList)) {
+                continue;
+            }
+
+            while (!$this->strategy->isSatisfied($this->dataList, $pollutantId) && count($dataList)) {
+                $data = array_shift($dataList);
+
+                if ($this->strategy->accepts($this->dataList, $data)) {
+                    $this->strategy->addDataToList($this->dataList, $data);
+                }
+            }
+        }
+
+        return $this->dataList->getList();
     }
 }

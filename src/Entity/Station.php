@@ -293,4 +293,9 @@ class Station extends Coordinate
 
         return $this;
     }
+
+    public function getPin(): string
+    {
+        return sprintf('%f,%f', $this->latitude, $this->longitude);
+    }
 }
