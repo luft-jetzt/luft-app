@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DisplayApiController extends AbstractApiController
 {
@@ -47,6 +48,7 @@ class DisplayApiController extends AbstractApiController
      *   )
      * )
      */
+    #[Route(path: '/api', name: 'api_display', methods: ['GET'], priority: 212)]
     public function displayAction(
         Request $request,
         SerializerInterface $serializer,
@@ -84,6 +86,7 @@ class DisplayApiController extends AbstractApiController
      *     @OA\Schema(type="string")
      * )
      */
+    #[Route(path: '/api/{stationCode}', name: 'api_station', requirements: ['stationCode' => '^([A-Z]{2,6})([A-Z0-9]{0,8})$'], methods: ['GET'], priority: 210)]
     public function displayStationAction(
         SerializerInterface $serializer,
         string $stationCode,
