@@ -9,7 +9,7 @@
                 </h2>
 
                 <p class="lead">
-                    Wie im letzten Jahr wird auch zum Jahreswechsel 2021/2022 der Verkauf von Feuerwerkskörpern und Knallchargenbedarf eingeschränkt. Hier kannst du die Feinstaub-Messwerte um den Jahreswechsel herum mit den beiden vorherigen Jahren vergleichen.
+                    Nach zwei Jahren Corona-Pause ist für den Jahreswechsel 2022/2023 der Verkauf von Feuerwerkskörpern und Silvesterbedarf wieder gestattet. Auf dieser Seite kannst du die Feinstaub-Belastung mit den drei vorherigen Jahreswechseln vergleichen.
                 </p>
             </div>
         </div>
@@ -18,13 +18,11 @@
         <div class="row">
             <div class="col-12 col-md-6 offset-md-3 text-center">
                 <form method="get" action="{{ path('analysis_fireworks_corona') }}">
-                    <div class="input-group mb-3">
+                    <div class="input-group mb-3 input-group">
                         <input type="text" class="form-control form-control-lg typeahead" id="corona-query" name="query" placeholder="Suchbegriff, Postleitzahl, Stadtname…" />
-                        <div class="input-group-append">
-                            <button class="btn btn-primary btn-lg locate-button" type="button" title="Deinen Aufenthaltsort automatisch bestimmen">
-                                <i class="fa fa-location-arrow"></i>
-                            </button>
-                        </div>
+                        <button class="btn btn-primary btn-lg locate-button" type="button" title="Deinen Aufenthaltsort automatisch bestimmen">
+                            <i class="fa fa-location-arrow"></i>
+                        </button>
                     </div>
 
                     <div class="form-group">
@@ -39,7 +37,7 @@
             <div class="row mb-3">
                 <div class="col-12 text-center">
                     <div class="alert alert-warning">
-                        Für deinen Standort liegen momentan keine Daten vor. Bitte versuche es ab 12 Uhr am 31. Dezember erneut.
+                        Für deinen Standort liegen momentan keine Daten vor. Bitte versuche es ab 18 Uhr am 31. Dezember erneut.
                     </div>
                 </div>
             </div>
@@ -61,16 +59,16 @@
                     </thead>
                     <tbody>
                     {% for timestamp, view_model_set in data_list %}
-                        {% if corona_fireworks_datetime(timestamp + 30)|date('m d H i', 'Europe/Berlin') == '01 01 00 00' %}
+                        {% if corona_fireworks_datetime(timestamp)|date('m d H i', 'Europe/Berlin') == '01 01 00 00' %}
                             <tr>
-                                <th colspan="3" class="text-center">
+                                <th colspan="4" class="text-center">
                                     Jahreswechsel
                                 </th>
                             </tr>
                         {% else %}
                             <tr>
-                                <th colspan="3" class="text-center">
-                                    {{ corona_fireworks_datetime(timestamp + 30)|date('d.m. H:i', 'Europe/Berlin') }}&nbsp;Uhr
+                                <th colspan="4" class="text-center">
+                                    {{ corona_fireworks_datetime(timestamp)|date('d.m. H:i', 'Europe/Berlin') }}&nbsp;Uhr
                                 </th>
                             </tr>
                         {% endif %}

@@ -88,6 +88,52 @@ LIMIT 10';
         //dd($query->getResult());
         return $query->getResult();
     }
+
+    public function findDataForCoronaFireworksAnalysis(CoordInterface $coord): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm
+            ->addEntityResult(Data::class, 'd')
+            ->addFieldResult('d', 'data_id', 'id')
+            ->addFieldResult('d', 'value', 'value')
+            ->addFieldResult('d', 'pollutant', 'pollutant')
+            ->addFieldResult('d', 'date_time', 'dateTime')
+            ->addJoinedEntityResult(Station::class, 's', 'd', 'station')
+            ->addFieldResult('s', 'station_id', 'id')
+            ->addFieldResult('s', 'title', 'title')
+            ->addFieldResult('s', 'latitude', 'latitude')
+            ->addFieldResult('s', 'longitude', 'longitude')
+            ->addFieldResult('s', 'station_code', 'stationCode')
+            ->addFieldResult('s', 'title', 'title')
+            ->addFieldResult('s', 'station_type', 'stationType')
+            ->addFieldResult('s', 'provider', 'provider')
+        ;
+
+        $sql = 'SELECT DISTINCT ON (date_trunc(\'hour\', date_time)) data_id, value, pollutant, date_time, station_id, title, latitude, longitude, station_code, station_type, provider
+        FROM data_view
+        WHERE station_id IN (SELECT id FROM station WHERE coord <-> ST_MakePoint(?, ?) < 2 ORDER BY coord <-> ST_MakePoint(?, ?) ASC)
+        AND pollutant = 1
+        AND ((DATE_PART(\'day\', date_time) = 31 AND DATE_PART(\'hour\', date_time) >= 17) OR (DATE_PART(\'day\', date_time) = 1 AND DATE_PART(\'hour\', date_time) <= 7))
+        ORDER BY date_trunc(\'hour\', date_time), coord <-> ST_MakePoint(?, ?) ASC, value DESC';
+
+        $query = $this->_em->createNativeQuery($sql, $rsm);
+        $query
+            ->setParameter(1, $coord->getLongitude())
+            ->setParameter(2, $coord->getLatitude())
+            ->setParameter(3, $coord->getLongitude())
+            ->setParameter(4, $coord->getLatitude())
+            ->setParameter(5, $coord->getLongitude())
+            ->setParameter(6, $coord->getLatitude())
+        ;
+
+        return $query->getResult();
+    }
+
+    public function refreshMaterializedView(): void
+    {
+        $sql = 'REFRESH MATERIALIZED VIEW data_view;';
+
+        $query = $this->_em->createNativeQuery($sql, new ResultSetMapping());
+        $query->getResult();
+    }
 }
-
-

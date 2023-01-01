@@ -19,8 +19,8 @@ class YearSlot
 
     public function accepts(Data $data): bool
     {
-        $fromDateTimeSpec = sprintf('%d-12-31 12:00:00', $this->startYear);
-        $untilDateTimeSpec = sprintf('%d-01-01 12:00:00', ($this->startYear + 1));
+        $fromDateTimeSpec = sprintf('%d-12-31 18:00:00', $this->startYear);
+        $untilDateTimeSpec = sprintf('%d-01-01 06:00:00', ($this->startYear + 1));
         $fromDateTime = new Carbon($fromDateTimeSpec, $this->dateTimeZone);
         $untilDateTime = new Carbon($untilDateTimeSpec, $this->dateTimeZone);
 
@@ -34,7 +34,7 @@ class YearSlot
 
     public function addModel(MeasurementViewModel $model): void
     {
-        $fromDateTimeSpec = sprintf('%d-12-31 12:00:00', $this->startYear);
+        $fromDateTimeSpec = sprintf('%d-12-31 18:00:00', $this->startYear);
         $fromDateTime = new Carbon($fromDateTimeSpec, $this->dateTimeZone);
 
         $diff = $fromDateTime->diffInMinutes($model->getData()->getDateTime());
