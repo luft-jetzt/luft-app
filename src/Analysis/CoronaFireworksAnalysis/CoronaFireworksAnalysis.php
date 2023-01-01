@@ -21,7 +21,7 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
     public function analyze(CoordInterface $coord): array
     {
         $yearList = $this->initYearList();
-        $dataList = $this->valueFetcher->fetchValues($coord, array_keys($yearList), 11);
+        $dataList = $this->valueFetcher->fetchValues($coord, array_keys($yearList), 18);
 
         /**
          * @var Data $data
@@ -78,14 +78,14 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
         $year = StartDateTimeCalculator::calculateStartDateTime();
         $yearList = [];
 
-        for ($yearSub = 0; $yearSub <= 2; ++$yearSub) {
+        for ($yearSub = 0; $yearSub <= 3; ++$yearSub) {
             $yearList[$year->year] = new YearSlot($year->year);
             $year->subYear();
         }
 
         foreach ($yearList as $year => $hourList) {
             $startDateTime = StartDateTimeCalculator::calculateStartDateTime($year);
-            $endDateTime = $startDateTime->copy()->addHours(24)->subMinutes(30);
+            $endDateTime = $startDateTime->copy()->addHours(12);
 
             $dateTime = $endDateTime->copy();
 
@@ -94,7 +94,7 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
 
                 $yearList[$year]->addSlot($slot);
 
-                $dateTime->subMinutes(30);
+                $dateTime->subHour();
             } while ($dateTime >= $startDateTime);
         }
 

@@ -50,7 +50,7 @@
                     </ul>
                 </li>
 
-                {% if feature('feature_123') %}
+                {% if feature('analysis') %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Analyse
@@ -69,6 +69,9 @@
                                         Silvester-Feuerwerk <sup>beta</sup>
                                     </a>
                                 </li>
+                            {% endif %}
+
+                            {% if feature('analysis_fireworks_corona') %}
                                 <li>
                                     <a class="dropdown-item" href="{{ path('analysis_fireworks_corona') }}">
                                         Corona-Feuerwerk <sup>beta</sup>
