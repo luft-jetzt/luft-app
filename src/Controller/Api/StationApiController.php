@@ -62,7 +62,7 @@ class StationApiController extends AbstractApiController
      *
      * <ul>
      * <li><code>uba_de</code>: Umweltbundesamt</li>
-     * <li><code>ld</code>: Luftdaten.info</li>
+     * <li><code>ld</code>: Sensor.Community</li>
      * <li><code>hqc</code>: HQCasanova</li>
      * <li><code>owm</code>: OpenWeatherMap</li>
      * </ul>
