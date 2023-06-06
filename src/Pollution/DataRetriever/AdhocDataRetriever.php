@@ -8,13 +8,11 @@ use App\Entity\Station;
 use App\Pollution\ValueDataConverter\ValueDataConverter;
 use App\Provider\OpenWeatherMapProvider\SourceFetcher\Parser\JsonParserInterface as OwmJsonParserInterface;
 use App\Provider\OpenWeatherMapProvider\SourceFetcher\SourceFetcher as OwmSourceFetcher;
-use App\Provider\CoronaProvider\SourceFetcher\Parser\JsonParserInterface as CoronaParserInterface;
-use App\Provider\CoronaProvider\SourceFetcher\SourceFetcher as CoronaSourceFetcher;
 use Caldera\GeoBasic\Coord\CoordInterface;
 
 class AdhocDataRetriever implements DataRetrieverInterface
 {
-    public function __construct(protected OwmSourceFetcher $owmSourceFetcher, protected OwmJsonParserInterface $owmJsonParser, protected CoronaParserInterface $coronaJsonParser, protected CoronaSourceFetcher $coronaSourceFetcher)
+    public function __construct(protected OwmSourceFetcher $owmSourceFetcher, protected OwmJsonParserInterface $owmJsonParser)
     {
     }
 
@@ -44,16 +42,6 @@ class AdhocDataRetriever implements DataRetrieverInterface
             return [$data];
         }
 
-        if (MeasurementInterface::MEASUREMENT_CORONAINCIDENCE === $pollutantId) {
-            $data = $this->retrieveCoronaIncidenceForCoord($coord);
-
-            if (!$data) {
-                return [];
-            }
-
-            return [$data];
-        }
-
         return [];
     }
 
@@ -72,16 +60,6 @@ class AdhocDataRetriever implements DataRetrieverInterface
         $jsonData = $this->owmSourceFetcher->queryTemperature($coord);
 
         $value = $this->owmJsonParser->parseTemperature($jsonData);
-
-        $station = new Station($coord->getLatitude(), $coord->getLongitude());
-        return ValueDataConverter::convert($value, $station);
-    }
-
-    protected function retrieveCoronaIncidenceForCoord(CoordInterface $coord): ?Data
-    {
-        $jsonData = $this->coronaSourceFetcher->queryCoronaIncidence($coord);
-
-        $value = $this->coronaJsonParser->parseCoronaIncidence($jsonData);
 
         $station = new Station($coord->getLatitude(), $coord->getLongitude());
         return ValueDataConverter::convert($value, $station);
