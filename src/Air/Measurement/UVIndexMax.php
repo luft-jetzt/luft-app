@@ -12,7 +12,7 @@ class UVIndexMax extends AbstractMeasurement
         $this->shortNameHtml = 'UV-Index Max';
         $this->showOnMap = false;
         $this->includeInTweets = false;
-        $this->decimals = 0;
+        $this->decimals = 1;
     }
 
     public function getIdentifier(): string
