@@ -14,6 +14,7 @@ use App\Air\Measurement\PM25;
 use App\Air\Measurement\SO2;
 use App\Air\Measurement\Temperature;
 use App\Air\Measurement\UVIndex;
+use App\Air\Measurement\UVIndexMax;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Caldera\GeoBasic\Coordinate\CoordinateInterface;
 
@@ -52,6 +53,7 @@ abstract class AbstractMeasurementViewModelFactory implements MeasurementViewMod
             case 8: return new UVIndex();
             case 9: return new Temperature();
             case 10: return new CoronaIncidence();
+            case 11: return new UVIndexMax();
         }
     }
 

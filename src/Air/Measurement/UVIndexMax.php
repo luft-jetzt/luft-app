@@ -2,14 +2,14 @@
 
 namespace App\Air\Measurement;
 
-class UVIndex extends AbstractMeasurement
+class UVIndexMax extends AbstractMeasurement
 {
     public function __construct()
     {
         $this->unitHtml = '';
         $this->unitPlain = '';
-        $this->name = 'aktueller UV-Index';
-        $this->shortNameHtml = 'aktueller UV-Index';
+        $this->name = 'maximaler UV-Index';
+        $this->shortNameHtml = 'UV-Index Max';
         $this->showOnMap = false;
         $this->includeInTweets = false;
         $this->decimals = 0;
@@ -17,6 +17,6 @@ class UVIndex extends AbstractMeasurement
 
     public function getIdentifier(): string
     {
-        return 'uvindex';
+        return 'uvindex_max';
     }
 }
