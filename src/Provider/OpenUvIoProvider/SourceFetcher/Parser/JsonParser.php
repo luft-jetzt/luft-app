@@ -26,9 +26,9 @@ class JsonParser implements JsonParserInterface
 
         $value = new Value();
         $value
-            ->setValue((float) $jsonData->result->uv)
+            ->setValue((float) $jsonData->result->uv_max)
             ->setPollutant('uvindex_max')
-            ->setDateTime(new \DateTime($jsonData->result->uv_time))
+            ->setDateTime(new \DateTime($jsonData->result->uv_max_time))
         ;
 
         return $value;
