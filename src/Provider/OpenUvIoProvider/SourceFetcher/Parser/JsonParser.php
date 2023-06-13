@@ -8,13 +8,28 @@ class JsonParser implements JsonParserInterface
 {
     public function parseUVIndex(string $jsonData): Value
     {
-        $uvValue = json_decode($jsonData, null, 512, JSON_THROW_ON_ERROR);
+        $jsonData = json_decode($jsonData, null, 512, JSON_THROW_ON_ERROR);
 
         $value = new Value();
         $value
-            ->setValue((float) $uvValue->value)
+            ->setValue((float) $jsonData->result->uv)
             ->setPollutant('uvindex')
-            ->setDateTime(new \DateTime(sprintf('@%d', $uvValue->date), new \DateTimeZone('UTC')));
+            ->setDateTime(new \DateTime($jsonData->result->uv_time))
+        ;
+
+        return $value;
+    }
+
+    public function parseUVIndexMax(string $jsonData): Value
+    {
+        $jsonData = json_decode($jsonData, null, 512, JSON_THROW_ON_ERROR);
+
+        $value = new Value();
+        $value
+            ->setValue((float) $jsonData->result->uv)
+            ->setPollutant('uvindex_max')
+            ->setDateTime(new \DateTime($jsonData->result->uv_time))
+        ;
 
         return $value;
     }

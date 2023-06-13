@@ -10,8 +10,11 @@ use GuzzleHttp\Client;
 
 class SourceFetcher implements SourceFetcherInterface
 {
-    public function __construct(protected string $openWeatherMapAppId)
+    protected static $response;
+
+    public function __construct(protected string $openUvIoKey)
     {
+
     }
 
     public function fetch(FetchProcess $fetchProcess): FetchResult
@@ -24,10 +27,10 @@ class SourceFetcher implements SourceFetcherInterface
             $fetchResult->incCounter('uvindex');
         }
 
-        if (array_key_exists('temperature', $fetchProcess->getMeasurementList()) && $fetchProcess->getCoord()) {
-            $this->queryTemperature($fetchProcess->getCoord());
+        if (array_key_exists('uvindex_max', $fetchProcess->getMeasurementList()) && $fetchProcess->getCoord()) {
+            $this->queryUVMaxIndex($fetchProcess->getCoord());
 
-            $fetchResult->incCounter('temperature');
+            $fetchResult->incCounter('uvindex_max');
         }
 
         return $fetchResult;
@@ -35,15 +38,28 @@ class SourceFetcher implements SourceFetcherInterface
 
     public function queryUVIndex(CoordInterface $coord): string
     {
+        return $this->query($coord);
+    }
+
+    public function queryUVMaxIndex(CoordInterface $coord): string
+    {
+        return $this->query($coord);
+    }
+
+    protected function query(CoordInterface $coord): string
+    {
+        if (static::$response) {
+            return static::$response;
+        }
+
         $url = sprintf('https://api.openuv.io/api/v1/uv?lat=%f&lng=%f', $coord->getLatitude(), $coord->getLongitude());
 
         $response = (new Client())->get($url, [
             'headers' => [
-                'x-access-token' => 'openuv-4l5s5rliqjkb7v-io',
+                'x-access-token' => $this->openUvIoKey,
             ]
         ]);
 
-        dd($response);
         return $response->getBody()->getContents();
     }
 }

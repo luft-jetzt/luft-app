@@ -21,6 +21,7 @@ class AdhocDataRetriever implements DataRetrieverInterface
         protected OpenUvIoSourceFetcher $openUvIoSourceFetcher
     )
     {
+
     }
 
     public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId = null, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 250): array
@@ -31,6 +32,16 @@ class AdhocDataRetriever implements DataRetrieverInterface
 
         if (MeasurementInterface::MEASUREMENT_UVINDEX === $pollutantId) {
             $data = $this->retrieveUVIndexForCoord($coord);
+
+            if (!$data) {
+                return [];
+            }
+
+            return [$data];
+        }
+
+        if (MeasurementInterface::MEASUREMENT_UVINDEXMAX === $pollutantId) {
+            $data = $this->retrieveUVIndexMaxForCoord($coord);
 
             if (!$data) {
                 return [];
@@ -57,6 +68,16 @@ class AdhocDataRetriever implements DataRetrieverInterface
         $jsonData = $this->openUvIoSourceFetcher->queryUVIndex($coord);
 
         $value = $this->openUvIoJsonParser->parseUVIndex($jsonData);
+
+        $station = new Station($coord->getLatitude(), $coord->getLongitude());
+        return ValueDataConverter::convert($value, $station);
+    }
+
+    protected function retrieveUVIndexMaxForCoord(CoordInterface $coord): ?Data
+    {
+        $jsonData = $this->openUvIoSourceFetcher->queryUVMaxIndex($coord);
+
+        $value = $this->openUvIoJsonParser->parseUVIndexMax($jsonData);
 
         $station = new Station($coord->getLatitude(), $coord->getLongitude());
         return ValueDataConverter::convert($value, $station);

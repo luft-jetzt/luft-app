@@ -7,4 +7,5 @@ use App\Pollution\Value\Value;
 interface JsonParserInterface
 {
     public function parseUVIndex(string $jsonData): Value;
+    public function parseUVIndexMax(string $jsonData): Value;
 }
