@@ -22,14 +22,17 @@ export default class TimeAgoInWords {
     }
 
     timeAgoInWords(timestamp) {
-        const fromDateTime = new Date(timestamp * 1000);
-        const untilDateTime = new Date();
+        const targetDateTime = new Date(timestamp * 1000);
+        const now = new Date();
 
-        const periodsSingular = ['vor einer Sekunde', 'vor einer Minute', 'vor einer Stunde', 'vor einem Tag', 'vor einer Woche', 'vor einem Monat', 'vor einem Jahr'];
+        const periodsSingular = ['einer Sekunde', 'einer Minute', 'einer Stunde', 'einem Tag', 'einer Woche', 'einem Monat', 'einem Jahr'];
         const periodsPlural = ['Sekunden', 'Minuten', 'Stunden', 'Tagen', 'Wochen', 'Monaten', 'Jahren'];
         const periodLengths = [60, 60, 24, 7, 4.35, 12];
 
-        let difference = Math.abs(untilDateTime - fromDateTime) / 1000;
+        const direction = (targetDateTime > now) ? 'in' : 'vor';
+
+        let difference = Math.abs(targetDateTime - now) / 1000;
+
         let i;
 
         for (i = 0; difference >= periodLengths[i] && i < periodLengths.length; ++i) {
@@ -38,7 +41,7 @@ export default class TimeAgoInWords {
 
         difference = Math.round(difference);
 
-        return (difference === 1) ? periodsSingular[i] : 'vor ' + difference + ' ' + periodsPlural[i];
+        return (difference === 1) ? periodsSingular[i] : direction + ' ' + difference + ' ' + periodsPlural[i];
     }
 }
 
