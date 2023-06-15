@@ -41,7 +41,7 @@ export default class TimeAgoInWords {
 
         difference = Math.round(difference);
 
-        return (difference === 1) ? periodsSingular[i] : direction + ' ' + difference + ' ' + periodsPlural[i];
+        return (difference === 1) ? direction + ' ' + periodsSingular[i] : direction + ' ' + difference + ' ' + periodsPlural[i];
     }
 }
 
