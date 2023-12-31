@@ -4,10 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Data;
 use App\Entity\Station;
-use App\Provider\ProviderInterface;
 use Caldera\GeoBasic\Coord\CoordInterface;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Statement;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 
@@ -34,12 +31,11 @@ class DataRepository extends EntityRepository
             ->addFieldResult('s', 'provider', 'provider')
         ;
 
-        $sql = 'SELECT DISTINCT ON (d.pollutant, s.provider) d.id, d.value, d.pollutant, d.date_time, 
-s.id AS station_id, s.title, s.latitude, s.longitude, s.station_code, s.title, s.station_type, s.provider,
-s.coord <-> ST_MakePoint(?, ?) AS dist
-FROM data AS d
-INNER JOIN station AS s ON s.id = d.station_id 
-ORDER BY d.pollutant ASC, s.provider ASC, dist ASC, d.date_time DESC
+        $sql = 'SELECT DISTINCT ON (pollutant, provider) id, value, pollutant, date_time,
+                                             id AS station_id, title, latitude, longitude, station_code, station_type, provider,
+                                             coord <-> ST_MakePoint(?, ?) AS dist
+FROM current_data
+ORDER BY pollutant ASC, provider ASC, dist ASC, date_time DESC
 LIMIT 10';
 
         $query = $this->_em->createNativeQuery($sql, $rsm);
@@ -132,6 +128,7 @@ LIMIT 10';
     public function refreshMaterializedView(): void
     {
         $sql = 'REFRESH MATERIALIZED VIEW data_view;';
+        $sql = 'REFRESH MATERIALIZED VIEW current_data;';
 
         $query = $this->_em->createNativeQuery($sql, new ResultSetMapping());
         $query->getResult();
