@@ -33,7 +33,7 @@ class DataRepository extends EntityRepository
 
         $sql = 'SELECT DISTINCT ON (pollutant, provider) id, value, pollutant, date_time,
                                              id AS station_id, title, latitude, longitude, station_code, station_type, provider,
-                                             coord <-> ST_MakePoint(10.4099192, 53.2344631) AS dist
+                                             coord <-> ST_MakePoint(?, ?) AS dist
 FROM current_data
 ORDER BY pollutant ASC, provider ASC, dist ASC, date_time DESC
 LIMIT 10';
