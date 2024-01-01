@@ -9,8 +9,8 @@ use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class StationCache implements StationCacheInterface
 {
-    final const TTL = 3;
-    final const CACHE_KEY = 'luft_stations';
+    final public const TTL = 3;
+    final public const CACHE_KEY = 'luft_stations';
     protected array $list = [];
     protected AbstractAdapter $cache;
 

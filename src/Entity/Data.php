@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
 #[ORM\Table(name: 'data')]
-#[ORM\Entity(repositoryClass: 'App\Repository\DataRepository')]
+#[ORM\Entity(repositoryClass: \App\Repository\DataRepository::class)]
 #[JMS\ExclusionPolicy('ALL')]
 class Data
 {
@@ -18,7 +18,7 @@ class Data
     #[ORM\ManyToOne(targetEntity: 'Station', inversedBy: 'datas')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id')]
     #[JMS\Expose]
-    #[JMS\Type('App\Entity\Station')]
+    #[JMS\Type(\App\Entity\Station::class)]
     protected ?Station $station = null;
 
     #[ORM\Column(type: 'datetime', nullable: false)]
