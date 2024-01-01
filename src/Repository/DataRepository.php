@@ -10,7 +10,6 @@ use Doctrine\ORM\Query\ResultSetMapping;
 
 class DataRepository extends EntityRepository
 {
-
     public function findCurrentDataForCoord(CoordInterface $coord): array
     {
         $rsm = new ResultSetMapping();
@@ -106,7 +105,7 @@ LIMIT 10';
         ;
 
         $sql = 'SELECT DISTINCT ON (date_trunc(\'hour\', date_time)) data_id, value, pollutant, date_time, station_id, title, latitude, longitude, station_code, station_type, provider
-        FROM data_view
+        FROM silvester_data
         WHERE station_id IN (SELECT id FROM station WHERE coord <-> ST_MakePoint(?, ?) < 2 ORDER BY coord <-> ST_MakePoint(?, ?) ASC)
         AND pollutant = 1
         AND ((DATE_PART(\'day\', date_time) = 31 AND DATE_PART(\'hour\', date_time) >= 17) OR (DATE_PART(\'day\', date_time) = 1 AND DATE_PART(\'hour\', date_time) <= 7))
@@ -128,6 +127,7 @@ LIMIT 10';
     public function refreshMaterializedView(): void
     {
         $sql = 'REFRESH MATERIALIZED VIEW data_view;';
+        $sql = 'REFRESH MATERIALIZED VIEW silvester_data;';
         $sql = 'REFRESH MATERIALIZED VIEW current_data;';
 
         $query = $this->_em->createNativeQuery($sql, new ResultSetMapping());
