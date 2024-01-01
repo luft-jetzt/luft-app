@@ -8,9 +8,12 @@ use App\Pollution\StationCache\StationCacheInterface;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Elastica\Aggregation\DateHistogram;
 
+/**
+ * @todo Rebuild this for postigs
+ */
 class HistoryElasticDataRetriever implements DataRetrieverInterface
 {
-    public function __construct(protected ElasticFinder $finder, protected StationCacheInterface $stationCache)
+    public function __construct(protected StationCacheInterface $stationCache)
     {
     }
 
