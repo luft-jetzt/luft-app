@@ -8,12 +8,10 @@ use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Jsor\Doctrine\PostGIS\Types\PostGISType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use JMS\Serializer\Annotation as JMS;
 
 #[ORM\Table(name: 'station')]
 #[ORM\Entity(repositoryClass: 'App\Repository\StationRepository')]
 #[UniqueEntity('stationCode')]
-#[JMS\ExclusionPolicy('ALL')]
 #[ORM\HasLifecycleCallbacks]
 class Station extends Coordinate
 {
@@ -23,23 +21,18 @@ class Station extends Coordinate
     protected ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 12, unique: true, nullable: false)]
-    #[JMS\Expose]
     protected ?string $stationCode = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    #[JMS\Expose]
     protected ?int $ubaStationId = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    #[JMS\Expose]
     protected ?string $title = null;
 
     #[ORM\Column(type: 'float', nullable: false)]
-    #[JMS\Expose]
     protected ?float $latitude = null;
 
     #[ORM\Column(type: 'float', nullable: false)]
-    #[JMS\Expose]
     protected ?float $longitude = null;
 
     #[ORM\Column(
@@ -53,17 +46,12 @@ class Station extends Coordinate
     protected ?City $city = null;
 
     #[ORM\Column(type: 'date', nullable: true)]
-    #[JMS\Expose]
-    #[JMS\Type("DateTime<'U'>")]
     protected ?\DateTime $fromDate = null;
 
     #[ORM\Column(type: 'date', nullable: true)]
-    #[JMS\Expose]
-    #[JMS\Type("DateTime<'U'>")]
     protected ?\DateTime $untilDate = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    #[JMS\Expose]
     protected ?int $altitude = null;
 
     #[DoctrineAssert\EnumType(entity: 'App\DBAL\Types\StationType')]
@@ -75,7 +63,6 @@ class Station extends Coordinate
     protected ?string $areaType = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    #[JMS\Expose]
     protected ?string $provider = null;
 
     #[ORM\ManyToOne(targetEntity: 'Network', inversedBy: 'stations')]

@@ -5,11 +5,9 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
 
 #[ORM\Table(name: 'city')]
 #[ORM\Entity(repositoryClass: 'App\Repository\CityRepository')]
-#[JMS\ExclusionPolicy('ALL')]
 class City implements \Stringable
 {
     #[ORM\Id]
@@ -18,20 +16,15 @@ class City implements \Stringable
     protected ?int $id = null;
 
     #[ORM\Column(type: 'datetime', nullable: false)]
-    #[JMS\Expose]
-    #[JMS\Type("DateTime<'U'>")]
     protected ?\DateTime $createdAt = null;
 
     #[ORM\Column(type: 'string', nullable: false)]
-    #[JMS\Expose]
     protected ?string $name = null;
 
     #[ORM\Column(type: 'string', nullable: false)]
-    #[JMS\Expose]
     protected ?string $slug = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    #[JMS\Expose]
     protected ?string $description = null;
 
     #[ORM\OneToMany(targetEntity: 'Station', mappedBy: 'city')]
