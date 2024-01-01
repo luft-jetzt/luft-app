@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 use Rector\Doctrine\Set\DoctrineSetList;
-use Rector\Symfony\Set\SensiolabsSetList;
 use Rector\Symfony\Set\SymfonySetList;
 use Rector\Symfony\Set\JMSSetList;
 
@@ -14,9 +13,6 @@ return static function (RectorConfig $rectorConfig): void {
     ]);
 
     $rectorConfig->sets([
-        DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES,
-        SymfonySetList::ANNOTATIONS_TO_ATTRIBUTES,
-        SensiolabsSetList::FRAMEWORK_EXTRA_61,
-        JMSSetList::ANNOTATIONS_TO_ATTRIBUTES,
+        \Rector\Set\ValueObject\LevelSetList::UP_TO_PHP_82
     ]);
 };
