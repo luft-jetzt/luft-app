@@ -17,7 +17,7 @@
 
 @media (min--moz-device-pixel-ratio: 1.5),(-webkit-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5),(min-resolution: 1.5dppx) {
     .extra-marker {
-        background-image: url("../../node_modules/leaflet-extra-markers/dist/img/markers_shadow@2x.png");
+        background-image: url("../../node_modules/leaflet-extra-markers/dist/img/markers_default@2x.png");
         background-size: 540px 184px
     }
 

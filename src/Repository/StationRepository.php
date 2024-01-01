@@ -43,7 +43,11 @@ class StationRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('s');
 
-        $qb->where($qb->expr()->isNull('s.city'));
+        $qb
+            ->where($qb->expr()->isNull('s.city'))
+            ->andWhere($qb->expr()->eq('s.provider', ':provider'))
+            ->setParameter('provider', 'uba_de')
+        ;
 
         return $qb->getQuery()->getResult();
     }
