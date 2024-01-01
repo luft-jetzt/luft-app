@@ -14,7 +14,7 @@ class ChainedPersister extends AbstractPersister
     {
         $this->persisterList = [
             new CachePersister($dataCache, $stationCache),
-            new PostgisPersister($managerRegistry, $stationCache),
+            //new PostgisPersister($managerRegistry, $stationCache),
         ];
 
         parent::__construct($stationCache);
