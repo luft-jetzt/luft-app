@@ -4,16 +4,12 @@ namespace App\Repository;
 
 use App\Entity\Data;
 use App\Entity\Station;
-use App\Provider\ProviderInterface;
 use Caldera\GeoBasic\Coord\CoordInterface;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Statement;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 
 class DataRepository extends EntityRepository
 {
-
     public function findCurrentDataForCoord(CoordInterface $coord): array
     {
         $rsm = new ResultSetMapping();
@@ -34,12 +30,11 @@ class DataRepository extends EntityRepository
             ->addFieldResult('s', 'provider', 'provider')
         ;
 
-        $sql = 'SELECT DISTINCT ON (d.pollutant, s.provider) d.id, d.value, d.pollutant, d.date_time, 
-s.id AS station_id, s.title, s.latitude, s.longitude, s.station_code, s.title, s.station_type, s.provider,
-s.coord <-> ST_MakePoint(?, ?) AS dist
-FROM data AS d
-INNER JOIN station AS s ON s.id = d.station_id 
-ORDER BY d.pollutant ASC, s.provider ASC, dist ASC, d.date_time DESC
+        $sql = 'SELECT DISTINCT ON (pollutant, provider) id, value, pollutant, date_time,
+                                             id AS station_id, title, latitude, longitude, station_code, station_type, provider,
+                                             coord <-> ST_MakePoint(?, ?) AS dist
+FROM current_data
+ORDER BY pollutant ASC, provider ASC, dist ASC, date_time DESC
 LIMIT 10';
 
         $query = $this->_em->createNativeQuery($sql, $rsm);
@@ -110,7 +105,7 @@ LIMIT 10';
         ;
 
         $sql = 'SELECT DISTINCT ON (date_trunc(\'hour\', date_time)) data_id, value, pollutant, date_time, station_id, title, latitude, longitude, station_code, station_type, provider
-        FROM data_view
+        FROM silvester_data
         WHERE station_id IN (SELECT id FROM station WHERE coord <-> ST_MakePoint(?, ?) < 2 ORDER BY coord <-> ST_MakePoint(?, ?) ASC)
         AND pollutant = 1
         AND ((DATE_PART(\'day\', date_time) = 31 AND DATE_PART(\'hour\', date_time) >= 17) OR (DATE_PART(\'day\', date_time) = 1 AND DATE_PART(\'hour\', date_time) <= 7))
@@ -132,6 +127,8 @@ LIMIT 10';
     public function refreshMaterializedView(): void
     {
         $sql = 'REFRESH MATERIALIZED VIEW data_view;';
+        $sql = 'REFRESH MATERIALIZED VIEW silvester_data;';
+        $sql = 'REFRESH MATERIALIZED VIEW current_data;';
 
         $query = $this->_em->createNativeQuery($sql, new ResultSetMapping());
         $query->getResult();
