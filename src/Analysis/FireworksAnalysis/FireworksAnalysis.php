@@ -18,7 +18,7 @@ class FireworksAnalysis extends AbstractFireworksAnalysis
 
         $dateTimeQuery = $this->createDateTimeQuery();
 
-        $pollutionQuery = new \Elastica\Query\Range('value', ['gte' => 80]);
+        $pollutionQuery = new \Elastica\Query\Range('value', ['gte' => 100]);
 
         $providerQuery = new \Elastica\Query\Term(['provider' => 'uba_de']);
 
@@ -44,7 +44,8 @@ class FireworksAnalysis extends AbstractFireworksAnalysis
     protected function createDateTimeQuery(): BoolQuery
     {
         $currentYear = (new \DateTime())->format('Y');
-        $years = range($currentYear - 4, $currentYear + 1);
+        //$years = range($currentYear - 4, $currentYear + 1);
+        $years = [2018];
 
         $dateTimeQuery = new BoolQuery();
 

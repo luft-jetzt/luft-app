@@ -5,11 +5,11 @@
         <div class="row">
             <div class="col-12 text-center">
                 <h2>
-                    Silvester-Feuerwerke
+                    Feinstaub aus Silvesterfeuerwerken
                 </h2>
 
                 <p class="lead">
-                    Direkt am Neujahrsmorgen werden in Deutschland rund 17 Prozent der jährlich ausgestoßenen Feinstaubmenge in Form von Silvesterfeuerwerken emittiert. Die folgende Liste zeigt Messstationen an, in denen die Werte für Feinstaub <a href="{{ path('pollutant_pm10') }}" title="Erfahre mehr über Feinstaub">PM<sub>10</sub></a> und PM<sub>25</sub> am Jahresende und Neujahrstag plötzlich angestiegen sind.
+                    Direkt am Neujahrsmorgen werden in Deutschland etwa 5.000 Tonnen Feinstaub aus Silvesterfeuerwerken freigesetzt — das entspricht etwa 17 Prozent der jährlich im momentan sehr diskutierten Verkehrssektor freigesetzten Menge oder 2,5 Prozent der deutschlandweiten Gesamtmenge. Die folgende Liste zeigt Messstationen an, in denen die Werte für Feinstaub <a href="{{ path('pollutant_pm10') }}" title="Erfahre mehr über Feinstaub">PM<sub>10</sub></a> und PM<sub>25</sub> am Jahresende und Neujahrstag plötzlich angestiegen sind.
                 </p>
             </div>
         </div>
@@ -26,10 +26,6 @@
                             <th>
                                 PM<sub>10</sub>
                             </th>
-
-                            {#<th>
-                                PM<sub>25</sub>
-                            </th>#}
 
                             <th>
                                 Zeitpunkt
@@ -64,10 +60,6 @@
                                 </span>
                             </td>
 
-                            {#<td>
-
-                            </td>#}
-
                             <td data-order="{{ firework.data.dateTime|date('U') }}">
                                 <a href="{{ path('station_history', { stationCode: firework.station.stationCode, from: firework.data.dateTime|date_modify('-1 day')|date('Y-m-d'), until: firework.data.dateTime|date_modify('+6 hour')|date('Y-m-d') }) }}">
                                     <time class="d-none d-md-inline-block">
@@ -77,9 +69,9 @@
                                     </time>
 
                                     <time class="d-md-none">
-                                        {{ firework.data.dateTime|date('d.m.Y') }}
+                                        {{ firework.data.dateTime|date('d.m.Y', 'Europe/Berlin') }}
                                         <br />
-                                        {{ firework.data.dateTime|date('H:i') }} Uhr
+                                        {{ firework.data.dateTime|date('H:i', 'Europe/Berlin') }} Uhr
                                     </time>
                                 </a>
                             </td>
@@ -100,7 +92,7 @@
 
         <div class="row">
             <div class="col-12 text-center">
-                <a href="https://sqi.be/zb2to" class="btn btn-primary" title="Erfahre mehr über die Gesundheitsgefahren aus Holzöfen">
+                <a href="http://www.spiegel.de/wissenschaft/natur/wetter-zu-silvester-nebel-und-feinstaub-a-1245824.html" class="btn btn-primary" title="Erfahre mehr über Silvesterfeuerwerke">
                     mehr über diese Thematik erfahren
                 </a>
             </div>
@@ -116,6 +108,7 @@
             $('.datatable').DataTable({
                 'paging':   false,
                 'info':     false,
+                'order': [[ 2, 'desc' ]],
                 'language': {
                     'search': 'Suche:'
                 }
