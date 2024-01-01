@@ -3,8 +3,8 @@
 namespace App\Controller\Api;
 
 use App\Controller\AbstractController;
-use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\SerializerInterface;
 
 abstract class AbstractApiController extends AbstractController
 {
