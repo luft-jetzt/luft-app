@@ -14,9 +14,9 @@
         "doctrine/orm": "^2.10",
         "flagception/flagception-bundle": "^4.1",
         "fresh/doctrine-enum-bundle": "^9.0",
-        "friendsofsymfony/elastica-bundle": "^6.2",
         "friendsofsymfony/jsrouting-bundle": "^3.0",
         "geocoder-php/nominatim-provider": "^5.2",
+        "http-interop/http-factory-guzzle": "*",
         "jms/serializer-bundle": "^4.0",
         "jsor/doctrine-postgis": "^2.1",
         "league/geotools": "^1.0",
@@ -69,7 +69,8 @@
             "composer/package-versions-deprecated": true,
             "composer/installers": true,
             "symfony/flex": true,
-            "symfony/runtime": true
+            "symfony/runtime": true,
+            "php-http/discovery": true
         }
     },
     "autoload": {
