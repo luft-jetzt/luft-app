@@ -21,12 +21,6 @@ class SourceFetcher implements SourceFetcherInterface
     {
         $fetchResult = new FetchResult();
 
-        if (array_key_exists('uvindex', $fetchProcess->getMeasurementList()) && $fetchProcess->getCoord()) {
-            $this->queryUVIndex($fetchProcess->getCoord());
-
-            $fetchResult->incCounter('uvindex');
-        }
-
         if (array_key_exists('uvindex_max', $fetchProcess->getMeasurementList()) && $fetchProcess->getCoord()) {
             $this->queryUVMaxIndex($fetchProcess->getCoord());
 
@@ -34,11 +28,6 @@ class SourceFetcher implements SourceFetcherInterface
         }
 
         return $fetchResult;
-    }
-
-    public function queryUVIndex(CoordInterface $coord): string
-    {
-        return $this->query($coord);
     }
 
     public function queryUVMaxIndex(CoordInterface $coord): string

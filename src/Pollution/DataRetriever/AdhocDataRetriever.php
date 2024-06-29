@@ -30,16 +30,6 @@ class AdhocDataRetriever implements DataRetrieverInterface
             return [];
         }
 
-        if (MeasurementInterface::MEASUREMENT_UVINDEX === $pollutantId) {
-            $data = $this->retrieveUVIndexForCoord($coord);
-
-            if (!$data) {
-                return [];
-            }
-
-            return [$data];
-        }
-
         if (MeasurementInterface::MEASUREMENT_UVINDEXMAX === $pollutantId) {
             $data = $this->retrieveUVIndexMaxForCoord($coord);
 
@@ -61,16 +51,6 @@ class AdhocDataRetriever implements DataRetrieverInterface
         }
 
         return [];
-    }
-
-    protected function retrieveUVIndexForCoord(CoordInterface $coord): ?Data
-    {
-        $jsonData = $this->openUvIoSourceFetcher->queryUVIndex($coord);
-
-        $value = $this->openUvIoJsonParser->parseUVIndex($jsonData);
-
-        $station = new Station($coord->getLatitude(), $coord->getLongitude());
-        return ValueDataConverter::convert($value, $station);
     }
 
     protected function retrieveUVIndexMaxForCoord(CoordInterface $coord): ?Data
