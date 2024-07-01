@@ -5,14 +5,14 @@ namespace App\Controller\Api;
 use App\Entity\Data;
 use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
+use App\Serializer\LuftSerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class AnalysisApiController extends AbstractApiController
 {
     public function stationAnalysisAction(
-        SerializerInterface $serializer,
+        LuftSerializerInterface $serializer,
         string $stationCode,
         PollutionDataFactory $pollutionDataFactory
     ): Response {

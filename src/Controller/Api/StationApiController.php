@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\Station;
+use App\Serializer\LuftSerializerInterface;
 use App\Util\EntityMerger\EntityMergerInterface;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -12,7 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class StationApiController extends AbstractApiController
 {
@@ -34,7 +34,7 @@ class StationApiController extends AbstractApiController
      *   @Model(type=App\Entity\Station::class)
      * )
      */
-    public function stationAction(Request $request, SerializerInterface $serializer, string $stationCode = null): Response
+    public function stationAction(Request $request, LuftSerializerInterface $serializer, string $stationCode = null): Response
     {
         $providerIdentifier = $request->get('provider');
 
@@ -80,7 +80,7 @@ class StationApiController extends AbstractApiController
      *   @Model(type=App\Entity\Station::class)
      * )
      */
-    public function listStationAction(Request $request, SerializerInterface $serializer): Response
+    public function listStationAction(Request $request, LuftSerializerInterface $serializer): Response
     {
         $providerIdentifier = $request->get('provider');
 
@@ -108,7 +108,7 @@ class StationApiController extends AbstractApiController
      *   @Model(type=App\Entity\Station::class)
      * )
      */
-    public function putStationAction(Request $request, SerializerInterface $serializer, ManagerRegistry $managerRegistry): Response
+    public function putStationAction(Request $request, LuftSerializerInterface $serializer, ManagerRegistry $managerRegistry): Response
     {
         $body = $request->getContent();
 
@@ -163,7 +163,7 @@ class StationApiController extends AbstractApiController
      *   @Model(type=App\Entity\Station::class)
      * )
      */
-    public function postStationAction(Request $request, SerializerInterface $serializer, #[MapEntity(expr: 'repository.findOneByStationCode(stationCode)')] Station $station, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
+    public function postStationAction(Request $request, LuftSerializerInterface $serializer, #[MapEntity(expr: 'repository.findOneByStationCode(stationCode)')] Station $station, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
     {
         $requestBody = $request->getContent();
 

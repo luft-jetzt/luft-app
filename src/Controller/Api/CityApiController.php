@@ -4,15 +4,15 @@ namespace App\Controller\Api;
 
 use App\Entity\City;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
+use App\Serializer\LuftSerializerInterface;
 use App\Util\EntityMerger\EntityMergerInterface;
+use Doctrine\ORM\Mapping\Entity;
 use Doctrine\Persistence\ManagerRegistry;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class CityApiController extends AbstractApiController
 {
@@ -30,7 +30,7 @@ class CityApiController extends AbstractApiController
      * )
      */
     public function displayCityAction(
-        SerializerInterface $serializer,
+        LuftSerializerInterface $serializer,
         PollutionDataFactory $pollutionDataFactory,
         string $citySlug
     ): Response {
@@ -55,7 +55,7 @@ class CityApiController extends AbstractApiController
      *   @Model(type=App\Entity\City::class)
      * )
      */
-    public function cityAction(SerializerInterface $serializer): Response
+    public function cityAction(LuftSerializerInterface $serializer): Response
     {
         $cityList = $this->getDoctrine()->getRepository(City::class)->findAll();
 
@@ -76,7 +76,7 @@ class CityApiController extends AbstractApiController
      *   @Model(type=App\Entity\City::class)
      * )
      */
-    public function putCityAction(Request $request, SerializerInterface $serializer, ManagerRegistry $managerRegistry): Response
+    public function putCityAction(Request $request, LuftSerializerInterface $serializer, ManagerRegistry $managerRegistry): Response
     {
         $requestBody = $request->getContent();
 
@@ -104,8 +104,7 @@ class CityApiController extends AbstractApiController
      *   @Model(type=App\Entity\City::class)
      * )
      */
-    #[Entity('city', expr: 'repository.findOneBySlug(citySlug)')]
-    public function postCityAction(Request $request, SerializerInterface $serializer, City $city, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
+    public function postCityAction(Request $request, LuftSerializerInterface $serializer, City $city, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
     {
         $requestBody = $request->getContent();
 

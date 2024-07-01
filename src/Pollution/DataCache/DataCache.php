@@ -3,9 +3,9 @@
 namespace App\Pollution\DataCache;
 
 use App\Entity\Data;
+use App\Serializer\LuftSerializerInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class DataCache implements DataCacheInterface
 {
@@ -14,7 +14,7 @@ class DataCache implements DataCacheInterface
 
     protected AdapterInterface $cache;
 
-    public function __construct(protected SerializerInterface $serializer, string $redisHost)
+    public function __construct(protected LuftSerializerInterface $serializer, string $redisHost)
     {
         $client = RedisAdapter::createConnection($redisHost);
 

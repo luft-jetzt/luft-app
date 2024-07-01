@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Pollution\DataPersister\PersisterInterface;
 use App\Pollution\Value\Value;
+use App\Serializer\LuftSerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,9 +23,9 @@ class ValueApiController extends AbstractApiController
      *     description="data value",
      *     @OA\JsonContent(
      *      example={
-     *       "station_code": "DENI200",
-     *       "pollutant": "CO",
-     *       "date_time": 123456,
+     *       "station_code": "GAAHI658",
+     *       "pollutant": "uvindex",
+     *       "date_time": 1719852930,
      *       "value": 4.2
      *     }
      *   )
@@ -35,7 +36,7 @@ class ValueApiController extends AbstractApiController
      *   @Model(type=App\Entity\Data::class)
      * )
      */
-    public function putValueAction(Request $request, SerializerInterface $serializer, PersisterInterface $persister): Response
+    public function putValueAction(Request $request, LuftSerializerInterface $serializer, PersisterInterface $persister): Response
     {
         $valueList = $this->deserializeRequestBodyToArray($request, $serializer, Value::class);
 

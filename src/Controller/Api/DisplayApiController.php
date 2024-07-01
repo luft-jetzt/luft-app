@@ -5,12 +5,12 @@ namespace App\Controller\Api;
 use App\Entity\Station;
 use App\Geocoding\RequestConverter\RequestConverterInterface;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
+use App\Serializer\LuftSerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Annotations as OA;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class DisplayApiController extends AbstractApiController
 {
@@ -49,7 +49,7 @@ class DisplayApiController extends AbstractApiController
      */
     public function displayAction(
         Request $request,
-        SerializerInterface $serializer,
+        LuftSerializerInterface $serializer,
         PollutionDataFactory $pollutionDataFactory,
         RequestConverterInterface $requestConverter
     ): Response {
@@ -85,7 +85,7 @@ class DisplayApiController extends AbstractApiController
      * )
      */
     public function displayStationAction(
-        SerializerInterface $serializer,
+        LuftSerializerInterface $serializer,
         string $stationCode,
         PollutionDataFactory $pollutionDataFactory
     ): Response {
