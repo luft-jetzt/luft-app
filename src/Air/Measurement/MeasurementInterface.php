@@ -2,7 +2,7 @@
 
 namespace App\Air\Measurement;
 
-use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 interface MeasurementInterface
 {
@@ -17,22 +17,19 @@ interface MeasurementInterface
     public const MEASUREMENT_TEMPERATURE = 9;
     public const MEASUREMENT_CORONAINCIDENCE = 10;
 
-    #[JMS\Expose]
     public function getUnitHtml(): string;
 
-    #[JMS\Expose]
     public function getUnitPlain(): string;
 
-    #[JMS\Expose]
     public function getName(): string;
 
-    #[JMS\Expose]
     public function getIdentifier(): string;
 
-    #[JMS\Expose]
     public function getShortNameHtml(): string;
 
+    #[Ignore()]
     public function showOnMap(): bool;
 
+    #[Ignore()]
     public function includeInTweets(): bool;
 }

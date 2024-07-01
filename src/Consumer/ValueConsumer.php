@@ -4,9 +4,9 @@ namespace App\Consumer;
 
 use App\Pollution\DataPersister\PersisterInterface;
 use App\Pollution\Value\Value;
-use JMS\Serializer\SerializerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ValueConsumer implements ConsumerInterface
 {

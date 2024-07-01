@@ -3,9 +3,9 @@
 namespace App\Pollution\DataCache;
 
 use App\Entity\Data;
-use JMS\Serializer\SerializerInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class DataCache implements DataCacheInterface
 {

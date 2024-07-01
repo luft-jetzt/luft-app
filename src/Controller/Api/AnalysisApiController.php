@@ -5,9 +5,9 @@ namespace App\Controller\Api;
 use App\Entity\Data;
 use App\Entity\Station;
 use App\Pollution\PollutionDataFactory\PollutionDataFactory;
-use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class AnalysisApiController extends AbstractApiController
 {

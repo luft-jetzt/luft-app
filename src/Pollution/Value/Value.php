@@ -2,29 +2,18 @@
 
 namespace App\Pollution\Value;
 
-use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
-#[JMS\ExclusionPolicy('ALL')]
 class Value
 {
-    #[JMS\Expose]
-    #[JMS\Type('string')]
     protected ?string $stationCode = null;
 
-    #[JMS\Expose]
-    #[JMS\Type("DateTime<'U'>")]
     protected ?\DateTime $dateTime = null;
 
-    #[JMS\Expose]
-    #[JMS\Type('float')]
     protected ?float $value = null;
 
-    #[JMS\Expose]
-    #[JMS\Type('string')]
     protected ?string $pollutant = null;
 
-    #[JMS\Expose]
-    #[JMS\Type('string')]
     protected ?string $tag = null;
 
     public function __construct()
