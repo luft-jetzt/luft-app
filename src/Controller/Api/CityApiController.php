@@ -68,7 +68,7 @@ class CityApiController extends AbstractApiController
      * @OA\Tag(name="City")
      * @OA\RequestBody(
      *     description="Json of city data",
-     *     @OA\Schema(type="string")
+     *     @OA\JsonContent()
      * )
      * @OA\Response(
      *   response=200,
@@ -95,7 +95,8 @@ class CityApiController extends AbstractApiController
      * @OA\Tag(name="City")
      * @OA\RequestBody(
      *     description="Json of city data",
-     *     @OA\Schema(type="string")
+     *     required=true,
+     *     @OA\JsonContent()
      * )
      * @OA\Response(
      *   response=200,

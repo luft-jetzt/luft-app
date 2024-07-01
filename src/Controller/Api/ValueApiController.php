@@ -18,8 +18,16 @@ class ValueApiController extends AbstractApiController
      *
      * @OA\Tag(name="Value")
      * @OA\RequestBody(
+     *     required=true,
      *     description="data value",
-     *     @OA\Schema(type="string")
+     *     @OA\JsonContent(
+     *      example={
+     *       "station_code": "DENI200",
+     *       "pollutant": "CO",
+     *       "date_time": 123456,
+     *       "value": 4.2
+     *     }
+     *   )
      * )
      * @OA\Response(
      *   response=200,
