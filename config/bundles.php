@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 return [
     Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
@@ -11,7 +11,6 @@ return [
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
     Nelmio\ApiDocBundle\NelmioApiDocBundle::class => ['all' => true],
     Sonata\SeoBundle\SonataSeoBundle::class => ['all' => true],
-    JMS\SerializerBundle\JMSSerializerBundle::class => ['all' => true],
     FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],
     Http\HttplugBundle\HttplugBundle::class => ['all' => true],
     Fresh\DoctrineEnumBundle\FreshDoctrineEnumBundle::class => ['all' => true],
