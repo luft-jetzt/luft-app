@@ -99,7 +99,8 @@ class StationApiController extends AbstractApiController
      * @OA\Tag(name="Station")
      * @OA\RequestBody(
      *     description="Json of station data",
-     *     @OA\Schema(type="string")
+     *     required=true,
+     *     @OA\JsonContent()
      * )
      * @OA\Response(
      *   response=200,
