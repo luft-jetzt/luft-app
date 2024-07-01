@@ -34,7 +34,6 @@ services:
     # please note that last definitions always *replace* previous ones
 
     App\Pollution\DataRetriever\DataRetrieverInterface:
-        #alias: App\Pollution\DataRetriever\ChainedDataRetriever
         alias: App\Pollution\DataRetriever\PostgisDataRetriever
 
     App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface:
