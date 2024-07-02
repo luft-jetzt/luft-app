@@ -34,7 +34,6 @@ services:
     # please note that last definitions always *replace* previous ones
 
     App\Pollution\DataRetriever\DataRetrieverInterface:
-        #alias: App\Pollution\DataRetriever\ChainedDataRetriever
         alias: App\Pollution\DataRetriever\PostgisDataRetriever
 
     App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface:
@@ -51,9 +50,7 @@ services:
         alias: App\Pollution\UniqueStrategy\CacheUniqueStrategy
 
     App\Pollution\DataPersister\PersisterInterface:
-        #alias: App\Pollution\DataPersister\CachePersister
-        #alias: App\Pollution\DataPersister\PostgisPersister
-        alias: App\Pollution\DataPersister\ChainedPersister
+        alias: App\Pollution\DataPersister\PostgisPersister
 
     App\Geocoding\Guesser\CityGuesser:
         $provider: '@bazinga_geocoder.provider.nominatim'
