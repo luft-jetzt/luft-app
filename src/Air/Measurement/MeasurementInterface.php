@@ -15,7 +15,6 @@ interface MeasurementInterface
     public const MEASUREMENT_CO2 = 7;
     public const MEASUREMENT_UVINDEX = 8;
     public const MEASUREMENT_TEMPERATURE = 9;
-    public const MEASUREMENT_CORONAINCIDENCE = 10;
     public const MEASUREMENT_UVINDEXMAX = 11;
 
     #[JMS\Expose]
