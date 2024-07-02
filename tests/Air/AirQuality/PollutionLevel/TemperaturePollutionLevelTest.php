@@ -17,7 +17,8 @@ class TemperaturePollutionLevelTest extends TestCase
         $levels = [
             0 => 23,
             1 => 28,
-            2 => 38,
+            2 => 33,
+            3 => 38,
         ];
 
         $this->assertEquals($levels, (new TemperatureLevel())->getLevels());
