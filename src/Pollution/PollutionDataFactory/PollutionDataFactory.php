@@ -2,6 +2,7 @@
 
 namespace App\Pollution\PollutionDataFactory;
 
+use App\Air\Measurement\MeasurementInterface;
 use App\Air\ViewModel\MeasurementViewModel;
 use App\Air\ViewModelFactory\MeasurementViewModelFactoryInterface;
 use App\Entity\Data;
@@ -55,7 +56,13 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
             /** @var Data $dataElement */
             foreach ($data as $dataElement) {
                 if ($dataElement) {
-                    $measurementViewModelList[$dataElement->getPollutant()][Hasher::hashData($dataElement)] = new MeasurementViewModel($dataElement);
+                    $pollutant = $dataElement->getPollutant();
+
+                    if ($pollutant === MeasurementInterface::MEASUREMENT_UVINDEXMAX) {
+                        $pollutant = MeasurementInterface::MEASUREMENT_UVINDEX; // @todo this needs to be improved into a strategy
+                    }
+
+                    $measurementViewModelList[$pollutant][Hasher::hashData($dataElement)] = new MeasurementViewModel($dataElement);
                 }
             }
         }

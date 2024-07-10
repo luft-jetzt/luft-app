@@ -6,7 +6,7 @@ use App\Air\Measurement\MeasurementInterface;
 use App\Entity\Data;
 use App\Entity\Station;
 use App\Pollution\DataCache\DataCacheInterface;
-use App\Pollution\DataRetriever\Co2CachedDataRetriever;
+use App\Pollution\DataRetriever\Co2DataRetriever;
 use App\Provider\NoaaProvider\NoaaProvider;
 use App\Repository\StationRepository;
 use Caldera\GeoBasic\Coord\Coord;
@@ -42,7 +42,7 @@ class Co2CachedDataRetrieverTest extends TestCase
             ->with($this->equalTo(Station::class))
             ->will($this->returnValue($stationRepository));
 
-        $co2CacheDataRetriever = new Co2CachedDataRetriever($dataCache, $registry);
+        $co2CacheDataRetriever = new Co2DataRetriever($dataCache, $registry);
 
         $coord = new Coord(57.3, 10.5);
 
@@ -64,7 +64,7 @@ class Co2CachedDataRetrieverTest extends TestCase
             ->expects($this->never())
             ->method('getRepository');
 
-        $co2CacheDataRetriever = new Co2CachedDataRetriever($dataCache, $registry);
+        $co2CacheDataRetriever = new Co2DataRetriever($dataCache, $registry);
 
         $coord = new Coord(57.3, 10.5);
 
@@ -86,7 +86,7 @@ class Co2CachedDataRetrieverTest extends TestCase
             ->expects($this->never())
             ->method('getRepository');
 
-        $co2CacheDataRetriever = new Co2CachedDataRetriever($dataCache, $registry);
+        $co2CacheDataRetriever = new Co2DataRetriever($dataCache, $registry);
 
         $coord = new Station(57.3, 10.5);
 

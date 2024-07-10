@@ -8,11 +8,13 @@ class ChainedDataRetriever implements DataRetrieverInterface
 {
     protected array $chain = [];
 
-    public function __construct(PostgisDataRetriever $postgisDataRetriever, Co2CachedDataRetriever $co2CachedDataRetriever, AdhocDataRetriever $adhocDataRetriever)
+    public function __construct(
+        PostgisDataRetriever $postgisDataRetriever,
+        AdhocDataRetriever $adhocDataRetriever
+    )
     {
         $this->chain = [
             $postgisDataRetriever,
-            $co2CachedDataRetriever,
             $adhocDataRetriever,
         ];
     }

@@ -21,6 +21,6 @@ class DistanceCalculator
 
         $distance = $geotools->distance()->setFrom($coordA)->setTo($coordB);
 
-        return $distance->in('km')->haversine();
+        return round($distance->in('km')->haversine(), 2);
     }
 }
