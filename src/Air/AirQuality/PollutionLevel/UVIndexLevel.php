@@ -7,7 +7,7 @@ class UVIndexLevel extends AbstractPollutionLevel
     protected array $levels = [
         0 => 2,
         1 => 5,
-        2 => 7,
+        2 => 8,
         3 => 11,
     ];
 }

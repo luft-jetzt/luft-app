@@ -6,4 +6,5 @@ interface LevelColorsInterface
 {
     public function getBackgroundColors(): array;
     public function getBackgroundColorNames(): array;
+    public function getIdentifier(): string;
 }

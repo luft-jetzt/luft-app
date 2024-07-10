@@ -8,8 +8,8 @@ class UVIndexLevelColors extends AbstractLevelColors
         1 => '#28a745',
         2 => '#ffc107',
         3 => '#f87820',
-        4 => '#a80080',
-        5 => '#dc3545',
+        4 => '#dc3545',
+        5 => '#a80080',
     ];
 
     protected array $backgroundColorNames = [
@@ -19,4 +19,9 @@ class UVIndexLevelColors extends AbstractLevelColors
         4 => 'red',
         5 => 'purple',
     ];
+
+    public function getIdentifier(): string
+    {
+        return 'uvindex';
+    }
 }
