@@ -2,6 +2,9 @@
 
 namespace App\Util;
 
+/**
+ * @deprecated Use Symfony/String instead
+ */
 class ClassUtil
 {
     public static function getShortname($object): string
@@ -12,6 +15,11 @@ class ClassUtil
     }
 
     public static function getLowercaseShortname($object): string
+    {
+        return strtolower(self::getShortname($object));
+    }
+
+    public static function getUnderscoreShortname($object): string
     {
         return strtolower(self::getShortname($object));
     }
