@@ -8,12 +8,20 @@ use App\Entity\Station;
 use App\Pollution\ValueDataConverter\ValueDataConverter;
 use App\Provider\OpenWeatherMapProvider\SourceFetcher\Parser\JsonParserInterface as OwmJsonParserInterface;
 use App\Provider\OpenWeatherMapProvider\SourceFetcher\SourceFetcher as OwmSourceFetcher;
+use App\Provider\OpenUvIoProvider\SourceFetcher\Parser\JsonParserInterface as OpenUvIoJsonParserInterface;
+use App\Provider\OpenUvIoProvider\SourceFetcher\SourceFetcher as OpenUvIoSourceFetcher;
 use Caldera\GeoBasic\Coord\CoordInterface;
 
 class AdhocDataRetriever implements DataRetrieverInterface
 {
-    public function __construct(protected OwmSourceFetcher $owmSourceFetcher, protected OwmJsonParserInterface $owmJsonParser)
+    public function __construct(
+        protected OwmSourceFetcher $owmSourceFetcher,
+        protected OwmJsonParserInterface $owmJsonParser,
+        protected OpenUvIoJsonParserInterface $openUvIoJsonParser,
+        protected OpenUvIoSourceFetcher $openUvIoSourceFetcher
+    )
     {
+
     }
 
     public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId = null, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 250): array
@@ -22,8 +30,8 @@ class AdhocDataRetriever implements DataRetrieverInterface
             return [];
         }
 
-        if (MeasurementInterface::MEASUREMENT_UVINDEX === $pollutantId) {
-            $data = $this->retrieveUVIndexForCoord($coord);
+        if (MeasurementInterface::MEASUREMENT_UVINDEXMAX === $pollutantId) {
+            $data = $this->retrieveUVIndexMaxForCoord($coord);
 
             if (!$data) {
                 return [];
@@ -45,11 +53,11 @@ class AdhocDataRetriever implements DataRetrieverInterface
         return [];
     }
 
-    protected function retrieveUVIndexForCoord(CoordInterface $coord): ?Data
+    protected function retrieveUVIndexMaxForCoord(CoordInterface $coord): ?Data
     {
-        $jsonData = $this->owmSourceFetcher->queryUVIndex($coord);
+        $jsonData = $this->openUvIoSourceFetcher->queryUVMaxIndex($coord);
 
-        $value = $this->owmJsonParser->parseUVIndex($jsonData);
+        $value = $this->openUvIoJsonParser->parseUVIndexMax($jsonData);
 
         $station = new Station($coord->getLatitude(), $coord->getLongitude());
         return ValueDataConverter::convert($value, $station);
