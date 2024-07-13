@@ -14,6 +14,7 @@ class SourceFetcher implements SourceFetcherInterface
     {
     }
 
+    #[\Override]
     public function fetch(FetchProcess $fetchProcess): FetchResult
     {
         $fetchResult = new FetchResult();

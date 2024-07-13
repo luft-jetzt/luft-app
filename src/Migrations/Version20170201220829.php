@@ -10,6 +10,7 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20170201220829 extends AbstractMigration
 {
+    #[\Override]
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -18,6 +19,7 @@ class Version20170201220829 extends AbstractMigration
         $this->addSql('CREATE TABLE zip (id INT AUTO_INCREMENT NOT NULL, zip VARCHAR(5) NOT NULL, latitude DOUBLE PRECISION NOT NULL, longitude DOUBLE PRECISION NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

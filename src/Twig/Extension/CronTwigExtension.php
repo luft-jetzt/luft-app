@@ -12,6 +12,7 @@ class CronTwigExtension extends AbstractExtension
     {
     }
 
+    #[\Override]
     public function getFunctions(): array
     {
         return [

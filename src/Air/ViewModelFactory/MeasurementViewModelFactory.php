@@ -6,6 +6,7 @@ use App\Air\ViewModel\MeasurementViewModel;
 
 class MeasurementViewModelFactory extends AbstractMeasurementViewModelFactory
 {
+    #[\Override]
     public function decorate(): MeasurementViewModelFactoryInterface
     {
         /** @var array $boxArray */

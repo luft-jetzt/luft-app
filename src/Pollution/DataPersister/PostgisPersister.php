@@ -14,6 +14,7 @@ class PostgisPersister extends AbstractPersister
 
     }
 
+    #[\Override]
     public function persistValues(array $values): PersisterInterface
     {
         $em = $this->managerRegistry->getManager();
@@ -34,11 +35,13 @@ class PostgisPersister extends AbstractPersister
         return $this;
     }
 
+    #[\Override]
     public function getNewValueList(): array
     {
         return [];
     }
 
+    #[\Override]
     public function reset(): PersisterInterface
     {
         return $this;

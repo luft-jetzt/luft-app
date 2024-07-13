@@ -10,6 +10,7 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20171204045930 extends AbstractMigration
 {
+    #[\Override]
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -19,6 +20,7 @@ class Version20171204045930 extends AbstractMigration
         $this->addSql('ALTER TABLE twitter_schedule ADD CONSTRAINT FK_44F5926721BDB235 FOREIGN KEY (station_id) REFERENCES station (id)');
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

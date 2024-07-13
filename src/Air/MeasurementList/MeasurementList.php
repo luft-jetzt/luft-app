@@ -8,6 +8,7 @@ class MeasurementList implements MeasurementListInterface
 {
     protected array $list = [];
 
+    #[\Override]
     public function addMeasurement(MeasurementInterface $measurement): MeasurementListInterface
     {
         $this->list[$measurement->getIdentifier()] = $measurement;
@@ -15,11 +16,13 @@ class MeasurementList implements MeasurementListInterface
         return $this;
     }
 
+    #[\Override]
     public function getMeasurements(): array
     {
         return $this->list;
     }
 
+    #[\Override]
     public function getMeasurementWithIds(): array
     {
         $measurementListWithIds = [];

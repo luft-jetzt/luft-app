@@ -6,11 +6,13 @@ abstract class AbstractPollutionLevel implements PollutionLevelInterface
 {
     protected array $levels = [];
 
+    #[\Override]
     public function getLevels(): array
     {
         return $this->levels;
     }
 
+    #[\Override]
     public function getPollutionIdentifier(): string
     {
         $reflection = new \ReflectionClass($this);

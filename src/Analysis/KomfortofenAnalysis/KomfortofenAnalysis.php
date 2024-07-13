@@ -6,6 +6,7 @@ use App\Air\Measurement\MeasurementInterface;
 
 class KomfortofenAnalysis extends AbstractKomfortofenAnalysis
 {
+    #[\Override]
     public function analyze(): array
     {
         $pollutantQuery = new \Elastica\Query\Term(['pollutant' => MeasurementInterface::MEASUREMENT_PM10]);
