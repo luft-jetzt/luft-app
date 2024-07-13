@@ -11,7 +11,6 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 
 class StationApiController extends AbstractApiController
@@ -31,7 +30,6 @@ class StationApiController extends AbstractApiController
     #[OA\Response(
         response: 200,
         description: "Returns details for specified station",
-        content: new Model(type: App\Entity\Station::class)
     )]
     public function stationAction(Request $request, SerializerInterface $serializer, string $stationCode = null): Response
     {
@@ -76,7 +74,6 @@ class StationApiController extends AbstractApiController
     #[OA\Response(
         response: 200,
         description: "Returns a list of all known stations",
-        content: new Model(type: App\Entity\Station::class)
     )]
     public function listStationAction(Request $request, SerializerInterface $serializer): Response
     {
@@ -103,7 +100,6 @@ class StationApiController extends AbstractApiController
     #[OA\Response(
         response: 200,
         description: "Returns the newly created station",
-        content: new Model(type: App\Entity\Station::class)
     )]
     public function putStationAction(Request $request, SerializerInterface $serializer, ManagerRegistry $managerRegistry): Response
     {
