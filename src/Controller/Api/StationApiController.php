@@ -7,12 +7,11 @@ use App\Entity\Station;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\Persistence\ManagerRegistry;
 use JMS\Serializer\SerializerInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Annotations as OA;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use OpenApi\Attributes as OA;
 
 class StationApiController extends AbstractApiController
 {
@@ -20,20 +19,19 @@ class StationApiController extends AbstractApiController
      * Returns details of a specified station.
      *
      * Get details of the station identified by <code>stationCode</code>. Note this will not return any pollution data.
-     *
-     * @OA\Tag(name="Station")
-     * @OA\Parameter(
-     *     name="stationCode",
-     *     in="path",
-     *     description="station code",
-     *     @OA\Schema(type="string")
-     * )
-     * @OA\Response(
-     *   response=200,
-     *   description="Returns details for specified station",
-     *   @Model(type=App\Entity\Station::class)
-     * )
      */
+    #[OA\Tag(name: "Station")]
+    #[OA\Parameter(
+        name: "stationCode",
+        description: "station code",
+        in: "path",
+        schema: new OA\Schema(type: "string")
+    )]
+    #[OA\Response(
+        response: 200,
+        description: "Returns details for specified station",
+        content: new Model(type: App\Entity\Station::class)
+    )]
     public function stationAction(Request $request, SerializerInterface $serializer, string $stationCode = null): Response
     {
         $providerIdentifier = $request->get('provider');
@@ -56,7 +54,7 @@ class StationApiController extends AbstractApiController
     }
 
     /**
-     * List all known stations. You may limit the list by specifing a provider identifier.
+     * List all known stations. You may limit the list by specifying a provider identifier.
      *
      * Possible provider identifiers are:
      *
@@ -66,20 +64,19 @@ class StationApiController extends AbstractApiController
      * <li><code>hqc</code>: HQCasanova</li>
      * <li><code>owm</code>: OpenWeatherMap</li>
      * </ul>
-     *
-     * @OA\Tag(name="Station")
-     * @OA\Parameter(
-     *     name="provider",
-     *     in="query",
-     *     description="Provider identifier",
-     *     @OA\Schema(type="string")
-     * )
-     * @OA\Response(
-     *   response=200,
-     *   description="Returns a list of all known stations",
-     *   @Model(type=App\Entity\Station::class)
-     * )
      */
+    #[OA\Tag(name: "Station")]
+    #[OA\Parameter(
+        name: "provider",
+        description: "Provider identifier",
+        in: "query",
+        schema: new OA\Schema(type: "string")
+    )]
+    #[OA\Response(
+        response: 200,
+        description: "Returns a list of all known stations",
+        content: new Model(type: App\Entity\Station::class)
+    )]
     public function listStationAction(Request $request, SerializerInterface $serializer): Response
     {
         $providerIdentifier = $request->get('provider');
@@ -95,23 +92,20 @@ class StationApiController extends AbstractApiController
 
     /**
      * Add a new station.
-     *
-     * @OA\Tag(name="Station")
-     * @OA\RequestBody(
-     *     description="Json of station data",
-     *     required=true,
-     *     @OA\JsonContent()
-     * )
-     * @OA\Response(
-     *   response=200,
-     *   description="Returns the new created station",
-     *   @Model(type=App\Entity\Station::class)
-     * )
      */
+    #[OA\Tag(name: "Station")]
+    #[OA\RequestBody(
+        description: "Json of station data",
+        required: true,
+        content: new OA\JsonContent()
+    )]
+    #[OA\Response(
+        response: 200,
+        description: "Returns the newly created station",
+        content: new Model(type: App\Entity\Station::class)
+    )]
     public function putStationAction(Request $request, SerializerInterface $serializer, ManagerRegistry $managerRegistry): Response
     {
-        $body = $request->getContent();
-
         $stationList = $this->deserializeRequestBodyToArray($request, $serializer, Station::class);
 
         try {
@@ -151,18 +145,17 @@ class StationApiController extends AbstractApiController
 
     /**
      * Updates station data.
-     *
-     * @OA\Tag(name="Station")
-     * @OA\RequestBody(
-     *     description="Json of station data",
-     *     @OA\Schema(type="string")
-     * )
-     * @OA\Response(
-     *   response=200,
-     *   description="Returns the updated station",
-     *   @Model(type=App\Entity\Station::class)
-     * )
      */
+    #[OA\Tag(name: "Station")]
+    #[OA\RequestBody(
+        description: "Json of station data",
+        content: new OA\JsonContent()
+    )]
+    #[OA\Response(
+        response: 200,
+        description: "Returns the updated station",
+        content: new Model(type: App\Entity\Station::class)
+    )]
     public function postStationAction(Request $request, SerializerInterface $serializer, #[MapEntity(expr: 'repository.findOneByStationCode(stationCode)')] Station $station, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
     {
         $requestBody = $request->getContent();
