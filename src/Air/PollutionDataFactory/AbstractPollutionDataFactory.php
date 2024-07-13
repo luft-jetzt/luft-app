@@ -11,15 +11,11 @@ abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInter
 {
     protected CoordinateInterface $coord;
 
-    protected DataList $dataList;
-
     public function __construct(
         protected PollutantViewModelFactoryInterface $pollutantViewModelFactory,
         protected DataRetrieverInterface $dataRetriever,
-        protected PollutantFactoryStrategyInterface $strategy
     )
     {
-        $this->dataList = new DataList();
     }
 
     #[\Override]
@@ -34,13 +30,6 @@ abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInter
     public function setStation(Station $station): PollutionDataFactoryInterface
     {
         $this->coord = $station;
-
-        return $this;
-    }
-
-    protected function reset(): AbstractPollutionDataFactory
-    {
-        $this->dataList->reset();
 
         return $this;
     }
