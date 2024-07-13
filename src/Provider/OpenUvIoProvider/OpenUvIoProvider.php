@@ -10,7 +10,7 @@ use App\SourceFetcher\FetchResult;
 
 class OpenUvIoProvider extends AbstractProvider
 {
-    final const IDENTIFIER = 'ouvio';
+    final public const string IDENTIFIER = 'ouvio';
 
     public function __construct(protected SourceFetcher $sourceFetcher)
     {

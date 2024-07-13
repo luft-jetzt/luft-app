@@ -12,7 +12,7 @@ use Caldera\GeoBasic\Coord\Coord;
 
 class OpenWeatherMapProvider extends AbstractProvider
 {
-    final public const IDENTIFIER = 'owm';
+    final public const string IDENTIFIER = 'owm';
 
     public function __construct(protected SourceFetcher $sourceFetcher)
     {
