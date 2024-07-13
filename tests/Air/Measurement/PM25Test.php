@@ -2,7 +2,7 @@
 
 namespace App\Tests\Air\Measurement;
 
-use App\Air\Measurement\PM25;
+use App\Air\Pollutant\PM25;
 use PHPUnit\Framework\TestCase;
 
 class PM25Test extends TestCase

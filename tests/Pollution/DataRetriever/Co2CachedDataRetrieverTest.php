@@ -2,7 +2,7 @@
 
 namespace App\Tests\Pollution\DataRetriever;
 
-use App\Air\Measurement\MeasurementInterface;
+use App\Air\Pollutant\PollutantInterface;
 use App\Entity\Data;
 use App\Entity\Station;
 use App\Pollution\DataCache\DataCacheInterface;
@@ -46,7 +46,7 @@ class Co2CachedDataRetrieverTest extends TestCase
 
         $coord = new Coord(57.3, 10.5);
 
-        $resultDataList = $co2CacheDataRetriever->retrieveDataForCoord($coord, MeasurementInterface::MEASUREMENT_CO2);
+        $resultDataList = $co2CacheDataRetriever->retrieveDataForCoord($coord, PollutantInterface::MEASUREMENT_CO2);
 
         $this->assertCount(1, $resultDataList);
         $this->assertEquals([$data], $resultDataList);
@@ -68,7 +68,7 @@ class Co2CachedDataRetrieverTest extends TestCase
 
         $coord = new Coord(57.3, 10.5);
 
-        $resultDataList = $co2CacheDataRetriever->retrieveDataForCoord($coord, MeasurementInterface::MEASUREMENT_PM25);
+        $resultDataList = $co2CacheDataRetriever->retrieveDataForCoord($coord, PollutantInterface::MEASUREMENT_PM25);
 
         $this->assertCount(0, $resultDataList);
         $this->assertEquals([], $resultDataList);
@@ -90,7 +90,7 @@ class Co2CachedDataRetrieverTest extends TestCase
 
         $coord = new Station(57.3, 10.5);
 
-        $resultDataList = $co2CacheDataRetriever->retrieveDataForCoord($coord, MeasurementInterface::MEASUREMENT_CO2);
+        $resultDataList = $co2CacheDataRetriever->retrieveDataForCoord($coord, PollutantInterface::MEASUREMENT_CO2);
 
         $this->assertCount(0, $resultDataList);
         $this->assertEquals([], $resultDataList);

@@ -2,7 +2,7 @@
 
 namespace App\Air\Provider;
 
-use App\Air\Measurement\MeasurementInterface;
+use App\Air\Pollutant\PollutantInterface;
 
 abstract class AbstractProvider implements ProviderInterface
 {
@@ -15,7 +15,7 @@ abstract class AbstractProvider implements ProviderInterface
     }
 
     #[\Override]
-    public function providesMeasurement(MeasurementInterface $measurement): bool
+    public function providesMeasurement(PollutantInterface $measurement): bool
     {
         return in_array($measurement::class, $this->providedMeasurements());
     }

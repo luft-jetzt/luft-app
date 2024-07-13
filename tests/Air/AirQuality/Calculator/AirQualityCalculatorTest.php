@@ -4,7 +4,7 @@ namespace App\Tests\Air\AirQuality\Calculator;
 
 use App\Air\AirQuality\Calculator\AirQualityCalculator;
 use App\Air\AirQuality\PollutionLevel\PollutionLevelInterface;
-use App\Air\Measurement\CO;
+use App\Air\Pollutant\CO;
 use App\Air\ViewModel\MeasurementViewModel;
 use App\Entity\Data;
 use PHPUnit\Framework\TestCase;

@@ -2,23 +2,23 @@
 
 namespace App\Tests\Air\MeasurementList;
 
-use App\Air\Measurement\CO;
-use App\Air\Measurement\NO2;
-use App\Air\Measurement\O3;
-use App\Air\Measurement\SO2;
-use App\Air\MeasurementList\MeasurementList;
+use App\Air\Pollutant\CO;
+use App\Air\Pollutant\NO2;
+use App\Air\Pollutant\O3;
+use App\Air\Pollutant\SO2;
+use App\Air\PollutantList\PollutantList;
 use PHPUnit\Framework\TestCase;
 
 class MeasurementListTest extends TestCase
 {
     public function testEmptyList(): void
     {
-        $this->assertCount(0, (new MeasurementList())->getMeasurements());
+        $this->assertCount(0, (new PollutantList())->getMeasurements());
     }
 
     public function testListWithTwoElements(): void
     {
-        $measurementList = new MeasurementList();
+        $measurementList = new PollutantList();
 
         $measurementList
             ->addMeasurement(new CO())
@@ -29,7 +29,7 @@ class MeasurementListTest extends TestCase
 
     public function testListContentWithTwoElements(): void
     {
-        $measurementList = new MeasurementList();
+        $measurementList = new PollutantList();
 
         $measurementList
             ->addMeasurement(new CO())
@@ -46,7 +46,7 @@ class MeasurementListTest extends TestCase
 
     public function testListWithIds(): void
     {
-        $measurementList = new MeasurementList();
+        $measurementList = new PollutantList();
 
         $measurementList
             ->addMeasurement(new O3())

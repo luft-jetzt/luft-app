@@ -3,17 +3,17 @@
 namespace App\Air\ViewModelFactory;
 
 use App\Air\AirQuality\Calculator\AirQualityCalculatorInterface;
-use App\Air\Measurement\CO;
-use App\Air\Measurement\CO2;
-use App\Air\Measurement\MeasurementInterface;
-use App\Air\Measurement\NO2;
-use App\Air\Measurement\O3;
-use App\Air\Measurement\PM10;
-use App\Air\Measurement\PM25;
-use App\Air\Measurement\SO2;
-use App\Air\Measurement\Temperature;
-use App\Air\Measurement\UVIndex;
-use App\Air\Measurement\UVIndexMax;
+use App\Air\Pollutant\CO;
+use App\Air\Pollutant\CO2;
+use App\Air\Pollutant\PollutantInterface;
+use App\Air\Pollutant\NO2;
+use App\Air\Pollutant\O3;
+use App\Air\Pollutant\PM10;
+use App\Air\Pollutant\PM25;
+use App\Air\Pollutant\SO2;
+use App\Air\Pollutant\Temperature;
+use App\Air\Pollutant\UVIndex;
+use App\Air\Pollutant\UVIndexMax;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Caldera\GeoBasic\Coordinate\CoordinateInterface;
 
@@ -41,7 +41,7 @@ abstract class AbstractMeasurementViewModelFactory implements MeasurementViewMod
         return $this->pollutantList;
     }
 
-    protected function getPollutantById(int $pollutantId): MeasurementInterface
+    protected function getPollutantById(int $pollutantId): PollutantInterface
     {
         switch ($pollutantId) {
             case 1: return new PM10();

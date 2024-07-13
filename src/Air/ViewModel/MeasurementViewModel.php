@@ -2,7 +2,7 @@
 
 namespace App\Air\ViewModel;
 
-use App\Air\Measurement\MeasurementInterface;
+use App\Air\Pollutant\PollutantInterface;
 use App\Entity\Data;
 use App\Entity\Station;
 use JMS\Serializer\Annotation as JMS;
@@ -14,7 +14,7 @@ class MeasurementViewModel
     protected ? Station $station = null;
 
     #[JMS\Expose]
-    protected ?MeasurementInterface $measurement = null;
+    protected ?PollutantInterface $measurement = null;
 
     #[JMS\Expose]
     protected ?int $pollutionLevel = null;
@@ -55,12 +55,12 @@ class MeasurementViewModel
         return $this;
     }
 
-    public function getMeasurement(): MeasurementInterface
+    public function getMeasurement(): PollutantInterface
     {
         return $this->measurement;
     }
 
-    public function setMeasurement(MeasurementInterface $measurement): self
+    public function setMeasurement(PollutantInterface $measurement): self
     {
         $this->measurement = $measurement;
 

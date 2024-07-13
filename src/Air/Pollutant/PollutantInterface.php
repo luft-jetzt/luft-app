@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace App\Air\Measurement;
+namespace App\Air\Pollutant;
 
 use JMS\Serializer\Annotation as JMS;
 
-interface MeasurementInterface
+interface PollutantInterface
 {
     public const MEASUREMENT_PM10 = 1;
     public const MEASUREMENT_PM25 = 6;

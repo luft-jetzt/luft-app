@@ -2,7 +2,7 @@
 
 namespace App\Air\Provider\OpenUvIoProvider;
 
-use App\Air\Measurement\UVIndex;
+use App\Air\Pollutant\UVIndex;
 use App\Air\Provider\AbstractProvider;
 use App\Air\Provider\OpenWeatherMapProvider\SourceFetcher\SourceFetcher;
 use App\Air\SourceFetcher\FetchProcess;

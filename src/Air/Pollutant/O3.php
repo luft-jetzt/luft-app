@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace App\Air\Measurement;
+namespace App\Air\Pollutant;
 
-class SO2 extends AbstractMeasurement
+class O3 extends AbstractPollutant
 {
     public function __construct()
     {
         $this->unitHtml = 'µg/m<sup>3</sup>';
         $this->unitPlain = 'µg/m³';
-        $this->name = 'Schwefeldioxid';
-        $this->shortNameHtml = 'SO<sub>2</sub>';
+        $this->name = 'Ozon';
+        $this->shortNameHtml = 'O<sub>3</sub>';
         $this->showOnMap = true;
         $this->includeInTweets = true;
         $this->decimals = 0;

@@ -2,14 +2,14 @@
 
 namespace App\Twig\Extension;
 
-use App\Air\Measurement\MeasurementInterface;
-use App\Air\MeasurementList\MeasurementListInterface;
+use App\Air\Pollutant\PollutantInterface;
+use App\Air\PollutantList\PollutantListInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class MeasurementTwigExtension extends AbstractExtension
 {
-    public function __construct(protected MeasurementListInterface $measurementList)
+    public function __construct(protected PollutantListInterface $measurementList)
     {
     }
 
@@ -29,7 +29,7 @@ class MeasurementTwigExtension extends AbstractExtension
         return $this->measurementList->getMeasurementWithIds();
     }
 
-    public function measurementById(int $measurementId): MeasurementInterface
+    public function measurementById(int $measurementId): PollutantInterface
     {
         return $this->measurementList->getMeasurementWithIds()[$measurementId];
     }

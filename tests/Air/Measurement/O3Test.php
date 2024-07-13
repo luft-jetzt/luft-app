@@ -2,7 +2,7 @@
 
 namespace App\Tests\Air\Measurement;
 
-use App\Air\Measurement\O3;
+use App\Air\Pollutant\O3;
 use PHPUnit\Framework\TestCase;
 
 class O3Test extends TestCase

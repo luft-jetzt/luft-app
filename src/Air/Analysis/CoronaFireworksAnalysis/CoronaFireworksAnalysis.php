@@ -4,7 +4,7 @@ namespace App\Air\Analysis\CoronaFireworksAnalysis;
 
 use App\Air\AirQuality\Calculator\AirQualityCalculatorInterface;
 use App\Air\Analysis\CoronaFireworksAnalysis\Slot\YearSlot;
-use App\Air\Measurement\PM10;
+use App\Air\Pollutant\PM10;
 use App\Air\ViewModel\MeasurementViewModel;
 use App\Air\ViewModelFactory\DistanceCalculator;
 use App\Air\ViewModelFactory\MeasurementViewModelFactoryInterface;

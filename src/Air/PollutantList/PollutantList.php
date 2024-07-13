@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace App\Air\MeasurementList;
+namespace App\Air\PollutantList;
 
-use App\Air\Measurement\MeasurementInterface;
+use App\Air\Pollutant\PollutantInterface;
 
-class MeasurementList implements MeasurementListInterface
+class PollutantList implements PollutantListInterface
 {
     protected array $list = [];
 
     #[\Override]
-    public function addMeasurement(MeasurementInterface $measurement): MeasurementListInterface
+    public function addMeasurement(PollutantInterface $measurement): PollutantListInterface
     {
         $this->list[$measurement->getIdentifier()] = $measurement;
 
@@ -27,9 +27,9 @@ class MeasurementList implements MeasurementListInterface
     {
         $measurementListWithIds = [];
 
-        /** @var MeasurementInterface $measurement */
+        /** @var PollutantInterface $measurement */
         foreach ($this->list as $measurement) {
-            $measurementId = constant(sprintf('App\\Air\\Measurement\\MeasurementInterface::MEASUREMENT_%s', strtoupper($measurement->getIdentifier())));
+            $measurementId = constant(sprintf('App\\Air\\Measurement\\PollutantInterface::MEASUREMENT_%s', strtoupper($measurement->getIdentifier())));
 
             $measurementListWithIds[$measurementId] = $measurement;
         }

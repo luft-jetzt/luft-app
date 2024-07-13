@@ -2,7 +2,7 @@
 
 namespace App\Air\Analysis\FireworksAnalysis;
 
-use App\Air\Measurement\MeasurementInterface;
+use App\Air\Pollutant\PollutantInterface;
 use Elastica\Query\BoolQuery;
 
 class FireworksAnalysis extends AbstractFireworksAnalysis
@@ -10,7 +10,7 @@ class FireworksAnalysis extends AbstractFireworksAnalysis
     #[\Override]
     public function analyze(): array
     {
-        $pm10Query = new \Elastica\Query\Term(['pollutant' => MeasurementInterface::MEASUREMENT_PM10]);
+        $pm10Query = new \Elastica\Query\Term(['pollutant' => PollutantInterface::MEASUREMENT_PM10]);
         //$pm25Query = new \Elastica\Query\Term(['pollutant' => PollutantInterface::POLLUTANT_PM25]);
 
         $pollutantQuery = new BoolQuery();

@@ -3,7 +3,7 @@
 namespace App\Air\PollutionDataFactory;
 
 use App\Air\DataRetriever\DataRetrieverInterface;
-use App\Air\Measurement\MeasurementInterface;
+use App\Air\Pollutant\PollutantInterface;
 use App\Air\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
 use App\Air\UniqueStrategy\Hasher;
 use App\Air\ViewModel\MeasurementViewModel;
@@ -58,8 +58,8 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
                 if ($dataElement) {
                     $pollutant = $dataElement->getPollutant();
 
-                    if ($pollutant === MeasurementInterface::MEASUREMENT_UVINDEXMAX) {
-                        $pollutant = MeasurementInterface::MEASUREMENT_UVINDEX; // @todo this needs to be improved into a strategy
+                    if ($pollutant === PollutantInterface::MEASUREMENT_UVINDEXMAX) {
+                        $pollutant = PollutantInterface::MEASUREMENT_UVINDEX; // @todo this needs to be improved into a strategy
                     }
 
                     $measurementViewModelList[$pollutant][Hasher::hashData($dataElement)] = new MeasurementViewModel($dataElement);

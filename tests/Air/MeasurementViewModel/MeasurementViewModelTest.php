@@ -2,7 +2,7 @@
 
 namespace App\Tests\Air\MeasurementViewModel;
 
-use App\Air\Measurement\CO;
+use App\Air\Pollutant\CO;
 use App\Air\ViewModel\MeasurementViewModel;
 use App\Entity\Data;
 use App\Entity\Station;

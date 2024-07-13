@@ -2,7 +2,7 @@
 
 namespace App\Air\ValueDataConverter;
 
-use App\Air\Measurement\MeasurementInterface;
+use App\Air\Pollutant\PollutantInterface;
 use App\Air\Value\Value;
 use App\Entity\Data;
 use App\Entity\Station;
@@ -40,7 +40,7 @@ class ValueDataConverter
 
     protected static function convertPollutant(string $pollutantIdentifier): ?int
     {
-        $reflectionClass = new \ReflectionClass(MeasurementInterface::class);
+        $reflectionClass = new \ReflectionClass(PollutantInterface::class);
 
         $pollutantIdentifier = str_replace('_', '', $pollutantIdentifier);
 

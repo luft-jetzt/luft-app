@@ -2,7 +2,7 @@
 
 namespace App\Tests\Air\Measurement;
 
-use App\Air\Measurement\UVIndex;
+use App\Air\Pollutant\UVIndex;
 use PHPUnit\Framework\TestCase;
 
 class UVIndexTest extends TestCase

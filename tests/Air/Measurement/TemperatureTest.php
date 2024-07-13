@@ -2,7 +2,7 @@
 
 namespace App\Tests\Air\Measurement;
 
-use App\Air\Measurement\Temperature;
+use App\Air\Pollutant\Temperature;
 use PHPUnit\Framework\TestCase;
 
 class TemperatureTest extends TestCase

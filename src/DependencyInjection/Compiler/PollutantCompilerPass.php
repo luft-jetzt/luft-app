@@ -2,7 +2,7 @@
 
 namespace App\DependencyInjection\Compiler;
 
-use App\Air\MeasurementList\MeasurementListInterface;
+use App\Air\PollutantList\PollutantListInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
@@ -12,11 +12,11 @@ class PollutantCompilerPass implements CompilerPassInterface
     #[\Override]
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has(MeasurementListInterface::class)) {
+        if (!$container->has(PollutantListInterface::class)) {
             return;
         }
 
-        $measurementList = $container->findDefinition(MeasurementListInterface::class);
+        $measurementList = $container->findDefinition(PollutantListInterface::class);
 
         $taggedServices = $container->findTaggedServiceIds('measurement');
 

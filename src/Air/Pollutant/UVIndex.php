@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Air\Measurement;
+namespace App\Air\Pollutant;
 
-class UVIndex extends AbstractMeasurement
+class UVIndex extends AbstractPollutant
 {
     public function __construct()
     {

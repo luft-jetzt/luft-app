@@ -2,7 +2,7 @@
 
 namespace App\Air\DataList;
 
-use App\Air\Measurement\MeasurementInterface;
+use App\Air\Pollutant\PollutantInterface;
 use App\Air\UniqueStrategy\Hasher;
 use App\Entity\Data;
 
@@ -47,16 +47,16 @@ class DataList implements DataListInterface
     public function reset(): DataListInterface
     {
         $this->list = [
-            MeasurementInterface::MEASUREMENT_PM25 => [],
-            MeasurementInterface::MEASUREMENT_PM10 => [],
-            MeasurementInterface::MEASUREMENT_O3 => [],
-            MeasurementInterface::MEASUREMENT_NO2 => [],
-            MeasurementInterface::MEASUREMENT_SO2 => [],
-            MeasurementInterface::MEASUREMENT_CO => [],
-            MeasurementInterface::MEASUREMENT_CO2 => [],
-            MeasurementInterface::MEASUREMENT_UVINDEX => [],
-            MeasurementInterface::MEASUREMENT_TEMPERATURE => [],
-            MeasurementInterface::MEASUREMENT_UVINDEXMAX => [],
+            PollutantInterface::MEASUREMENT_PM25 => [],
+            PollutantInterface::MEASUREMENT_PM10 => [],
+            PollutantInterface::MEASUREMENT_O3 => [],
+            PollutantInterface::MEASUREMENT_NO2 => [],
+            PollutantInterface::MEASUREMENT_SO2 => [],
+            PollutantInterface::MEASUREMENT_CO => [],
+            PollutantInterface::MEASUREMENT_CO2 => [],
+            PollutantInterface::MEASUREMENT_UVINDEX => [],
+            PollutantInterface::MEASUREMENT_TEMPERATURE => [],
+            PollutantInterface::MEASUREMENT_UVINDEXMAX => [],
         ];
 
         return $this;

@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Air\Measurement;
+namespace App\Air\Pollutant;
 
-abstract class AbstractMeasurement implements MeasurementInterface
+abstract class AbstractPollutant implements PollutantInterface
 {
     protected string $unitHtml;
     protected string $unitPlain;

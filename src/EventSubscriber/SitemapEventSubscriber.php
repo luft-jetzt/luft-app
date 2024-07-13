@@ -2,7 +2,7 @@
 
 namespace App\EventSubscriber;
 
-use App\Air\MeasurementList\MeasurementListInterface;
+use App\Air\PollutantList\PollutantListInterface;
 use App\Entity\City;
 use App\Entity\Station;
 use Doctrine\Persistence\ManagerRegistry;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 class SitemapEventSubscriber implements EventSubscriberInterface
 {
-    public function __construct(protected UrlGeneratorInterface $urlGenerator, protected RouterInterface $router, protected ManagerRegistry $registry, protected MeasurementListInterface $measurementList)
+    public function __construct(protected UrlGeneratorInterface $urlGenerator, protected RouterInterface $router, protected ManagerRegistry $registry, protected PollutantListInterface $measurementList)
     {
     }
 
@@ -60,7 +60,7 @@ class SitemapEventSubscriber implements EventSubscriberInterface
 
     public function registerPollutantUrls(UrlContainerInterface $urlContainer): void
     {
-        /** @var MeasurementListInterface $measurement */
+        /** @var PollutantListInterface $measurement */
         foreach ($this->measurementList->getMeasurements() as $measurement) {
             $routeName = sprintf('pollutant_%s', $measurement->getIdentifier());
 

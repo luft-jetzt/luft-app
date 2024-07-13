@@ -2,7 +2,7 @@
 
 namespace App\Air\DataRetriever;
 
-use App\Air\Measurement\MeasurementInterface;
+use App\Air\Pollutant\PollutantInterface;
 use App\Air\Provider\OpenUvIoProvider\SourceFetcher\Parser\JsonParserInterface as OpenUvIoJsonParserInterface;
 use App\Air\Provider\OpenUvIoProvider\SourceFetcher\SourceFetcher as OpenUvIoSourceFetcher;
 use App\Air\Provider\OpenWeatherMapProvider\SourceFetcher\Parser\JsonParserInterface as OwmJsonParserInterface;
@@ -31,7 +31,7 @@ class AdhocDataRetriever implements DataRetrieverInterface
             return [];
         }
 
-        if (MeasurementInterface::MEASUREMENT_UVINDEXMAX === $pollutantId) {
+        if (PollutantInterface::MEASUREMENT_UVINDEXMAX === $pollutantId) {
             $data = $this->retrieveUVIndexMaxForCoord($coord);
 
             if (!$data) {
@@ -41,7 +41,7 @@ class AdhocDataRetriever implements DataRetrieverInterface
             return [$data];
         }
 
-        if (MeasurementInterface::MEASUREMENT_TEMPERATURE === $pollutantId) {
+        if (PollutantInterface::MEASUREMENT_TEMPERATURE === $pollutantId) {
             $data = $this->retrieveTemperatureForCoord($coord);
 
             if (!$data) {

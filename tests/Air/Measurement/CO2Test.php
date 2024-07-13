@@ -2,7 +2,7 @@
 
 namespace App\Tests\Air\Measurement;
 
-use App\Air\Measurement\CO2;
+use App\Air\Pollutant\CO2;
 use PHPUnit\Framework\TestCase;
 
 class CO2Test extends TestCase

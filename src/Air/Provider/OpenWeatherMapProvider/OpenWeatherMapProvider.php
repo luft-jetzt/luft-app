@@ -2,8 +2,8 @@
 
 namespace App\Air\Provider\OpenWeatherMapProvider;
 
-use App\Air\Measurement\Temperature;
-use App\Air\Measurement\UVIndex;
+use App\Air\Pollutant\Temperature;
+use App\Air\Pollutant\UVIndex;
 use App\Air\Provider\AbstractProvider;
 use App\Air\Provider\OpenWeatherMapProvider\SourceFetcher\SourceFetcher;
 use App\Air\SourceFetcher\FetchProcess;
