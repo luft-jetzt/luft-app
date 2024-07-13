@@ -37,10 +37,10 @@ class AirQualityCalculatorTest extends TestCase
 
     protected function viewModel(Data $data): PollutantViewModel
     {
-        $measurementViewModel = new PollutantViewModel($data);
-        $measurementViewModel->setPollutant(new CO());
+        $pollutantViewModel = new PollutantViewModel($data);
+        $pollutantViewModel->setPollutant(new CO());
 
-        return $measurementViewModel;
+        return $pollutantViewModel;
     }
 
     protected function pollutionLevel(): PollutionLevelInterface

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Tests\Air\MeasurementViewModel;
+namespace App\Tests\Air\PollutantViewModel;
 
 use App\Air\Pollutant\CO;
 use App\Air\ViewModel\PollutantViewModel;
@@ -8,7 +8,7 @@ use App\Entity\Data;
 use App\Entity\Station;
 use PHPUnit\Framework\TestCase;
 
-class MeasurementViewModelTest extends TestCase
+class PollutantViewModelTest extends TestCase
 {
     public function testData(): void
     {
@@ -62,14 +62,14 @@ class MeasurementViewModelTest extends TestCase
         $this->assertEquals($station, $viewModel->getStation());
     }
 
-    public function testMeasurement(): void
+    public function testPollutant(): void
     {
         $data = new Data();
         $viewModel = new PollutantViewModel($data);
 
-        $measurement = new CO();
-        $viewModel->setPollutant($measurement);
+        $pollutant = new CO();
+        $viewModel->setPollutant($pollutant);
 
-        $this->assertEquals($measurement, $viewModel->getPollutant());
+        $this->assertEquals($pollutant, $viewModel->getPollutant());
     }
 }

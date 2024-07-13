@@ -38,7 +38,7 @@ class Kernel extends BaseKernel
         $container->registerForAutoconfiguration(ProviderInterface::class)->addTag('air_provider');
 
         $container->addCompilerPass(new PollutantCompilerPass());
-        $container->registerForAutoconfiguration(PollutantInterface::class)->addTag('measurement');
+        $container->registerForAutoconfiguration(PollutantInterface::class)->addTag('pollutant');
 
         $container->addCompilerPass(new LevelColorCompilerPass());
         $container->registerForAutoconfiguration(LevelColorsInterface::class)->addTag('level_colors');

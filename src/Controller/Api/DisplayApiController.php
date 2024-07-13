@@ -43,7 +43,7 @@ class DisplayApiController extends AbstractApiController
         description: "Returns pollution data of specified station",
         content: new OA\JsonContent(
             type: "array",
-            items: new OA\Items(ref: new Model(type: App\Air\ViewModel\MeasurementViewModel::class))
+            items: new OA\Items(ref: new Model(type: App\Air\ViewModel\PollutantViewModel::class))
         )
     )]
     public function displayAction(
@@ -73,7 +73,7 @@ class DisplayApiController extends AbstractApiController
         description: "Retrieve pollution data for station",
         content: new OA\JsonContent(
             type: "array",
-            items: new OA\Items(ref: new Model(type: App\Air\ViewModel\MeasurementViewModel::class))
+            items: new OA\Items(ref: new Model(type: App\Air\ViewModel\PollutantViewModel::class))
         )
     )]
     #[OA\Parameter(

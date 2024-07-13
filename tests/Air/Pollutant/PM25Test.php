@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Tests\Air\Measurement;
+namespace App\Tests\Air\Pollutant;
 
 use App\Air\Pollutant\PM25;
 use PHPUnit\Framework\TestCase;

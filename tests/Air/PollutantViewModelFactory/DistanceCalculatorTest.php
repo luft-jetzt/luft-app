@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Tests\Air\MeasurementViewModelFactory;
+namespace App\Tests\Air\PollutantViewModelFactory;
 
 use App\Air\ViewModelFactory\DistanceCalculator;
 use App\Entity\Station;

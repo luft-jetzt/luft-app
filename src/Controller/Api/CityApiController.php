@@ -25,7 +25,7 @@ class CityApiController extends AbstractApiController
         description: "Retrieve details about a city identified by the provided slug",
         content: new OA\JsonContent(
             type: "array",
-            items: new OA\Items(ref: new Model(type: App\Air\ViewModel\MeasurementViewModel::class))
+            items: new OA\Items(ref: new Model(type: App\Air\ViewModel\PollutantViewModel::class))
         )
     )]
     public function displayCityAction(

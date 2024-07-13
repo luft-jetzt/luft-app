@@ -67,7 +67,7 @@ class SimplePollutantFactoryStrategyTest extends TestCase
         $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_SO2));
     }
 
-    public function testEmptyStrategyNotSatisfiedWithPopulatedDataListForeignMeasurement(): void
+    public function testEmptyStrategyNotSatisfiedWithPopulatedDataListForeignPollutant(): void
     {
         $dataList = new DataList();
         $dataList->addData($this->createData(PollutantInterface::POLLUTANT_NO2));
@@ -260,7 +260,7 @@ class SimplePollutantFactoryStrategyTest extends TestCase
         $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_PM25));
     }
 
-    protected function createData(int $measurementId, string $provider = 'test-provider'): Data
+    protected function createData(int $pollutantId, string $provider = 'test-provider'): Data
     {
         $station = new Station(53.4, 9.73);
         $station
@@ -270,7 +270,7 @@ class SimplePollutantFactoryStrategyTest extends TestCase
         $data = new Data();
         $data
             ->setId(++$this->testDataId)
-            ->setPollutant($measurementId)
+            ->setPollutant($pollutantId)
             ->setStation($station)
             ->setDateTime(new \DateTime('2019-01-01 12:34:56'))
             ->setValue(42.3);

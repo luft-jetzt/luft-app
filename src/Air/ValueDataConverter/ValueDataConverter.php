@@ -44,7 +44,7 @@ class ValueDataConverter
 
         $pollutantIdentifier = str_replace('_', '', $pollutantIdentifier);
 
-        $expectedClassConstantName = sprintf('MEASUREMENT_%s', strtoupper($pollutantIdentifier));
+        $expectedClassConstantName = sprintf('POLLUTANT_%s', strtoupper($pollutantIdentifier));
 
         $classConstantList = $reflectionClass->getConstants();
 
