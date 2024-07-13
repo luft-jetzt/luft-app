@@ -2,7 +2,7 @@
 
 namespace App\Air\PollutionDataFactory;
 
-interface HistoryDataFactoryInterface extends PollutionDataFactoryInterface
+interface HistoryDataFactoryInterface
 {
     public function createDecoratedPollutantListForInterval(\DateTime $fromDateTime, \DateTime $untilDateTime): array;
 }

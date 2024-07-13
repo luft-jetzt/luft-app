@@ -38,7 +38,7 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
             $dataList = $this->managerRegistry->getRepository(Data::class)->findCurrentDataForCoord($this->coord);
         }*/
 
-        $dataList = $this->getDataListFromStationList($workingSetSize, $dateTime, $dateInterval);
+        $dataList = $this->getDataListFromStationList();
 
         $pollutantViewModelList = $this->getPollutantViewModelList($dataList);
 
@@ -82,28 +82,23 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
         ;
     }
 
-    protected function getDataListFromStationList(int $workingSetSize, \DateTime $fromDateTime = null, \DateInterval $interval = null): array
+    protected function getDataListFromStationList(): array
     {
-        $this->dataList->reset();
+        $dataList = $this->dataRetriever->retrieveDataForCoord($this->coord);
 
-        $missingPollutants = $this->strategy->getMissingPollutants($this->dataList);
+        $pollutantDataList = [];
 
-        foreach ($missingPollutants as $pollutantId) {
-            $dataList = $this->dataRetriever->retrieveDataForCoord($this->coord, $pollutantId, $fromDateTime, $interval, 20.0, $workingSetSize);
+        /** @var Data $data */
+        foreach ($dataList as $data) {
+            $pollutantId = $data->getPollutant();
 
-            if (0 === count($dataList)) {
-                continue;
+            if (!array_key_exists($pollutantId, $pollutantDataList)) {
+                $pollutantDataList[$pollutantId] = [];
             }
 
-            while (!$this->strategy->isSatisfied($this->dataList, $pollutantId) && count($dataList)) {
-                $data = array_shift($dataList);
-
-                if ($this->strategy->accepts($this->dataList, $data)) {
-                    $this->strategy->addDataToList($this->dataList, $data);
-                }
-            }
+            $pollutantDataList[$data->getPollutant()][] = $data;
         }
 
-        return $this->dataList->getList();
+        return $pollutantDataList;
     }
 }

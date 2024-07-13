@@ -15,7 +15,11 @@ abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInter
 
     protected DataList $dataList;
 
-    public function __construct(protected PollutantViewModelFactoryInterface $pollutantViewModelFactory, protected DataRetrieverInterface $dataRetriever, protected PollutantFactoryStrategyInterface $strategy)
+    public function __construct(
+        protected PollutantViewModelFactoryInterface $pollutantViewModelFactory,
+        protected DataRetrieverInterface $dataRetriever,
+        protected PollutantFactoryStrategyInterface $strategy
+    )
     {
         $this->dataList = new DataList();
     }
