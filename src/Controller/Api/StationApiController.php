@@ -107,8 +107,6 @@ class StationApiController extends AbstractApiController
     )]
     public function putStationAction(Request $request, SerializerInterface $serializer, ManagerRegistry $managerRegistry): Response
     {
-        $body = $request->getContent();
-
         $stationList = $this->deserializeRequestBodyToArray($request, $serializer, Station::class);
 
         try {
