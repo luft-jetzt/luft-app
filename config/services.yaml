@@ -37,9 +37,6 @@ services:
     App\Air\DataRetriever\DataRetrieverInterface:
         alias: App\Air\DataRetriever\ChainedDataRetriever
 
-    App\Air\PollutantFactoryStrategy\PollutantFactoryStrategyInterface:
-        alias: App\Air\PollutantFactoryStrategy\LuftdatenPollutantFactoryStrategy
-
     App\Air\PollutionDataFactory\PollutionDataFactoryInterface:
         alias: App\Air\PollutionDataFactory\PollutionDataFactory
 

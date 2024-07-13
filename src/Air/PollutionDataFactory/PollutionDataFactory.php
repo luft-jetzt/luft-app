@@ -4,7 +4,6 @@ namespace App\Air\PollutionDataFactory;
 
 use App\Air\DataRetriever\DataRetrieverInterface;
 use App\Air\Pollutant\PollutantInterface;
-use App\Air\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
 use App\Air\UniqueStrategy\Hasher;
 use App\Air\ViewModel\PollutantViewModel;
 use App\Air\ViewModelFactory\PollutantViewModelFactoryInterface;
@@ -13,9 +12,13 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class PollutionDataFactory extends AbstractPollutionDataFactory
 {
-    public function __construct(protected ManagerRegistry $managerRegistry, PollutantViewModelFactoryInterface $pollutantViewModelFactory, DataRetrieverInterface $dataRetriever, PollutantFactoryStrategyInterface $strategy)
+    public function __construct(
+        protected ManagerRegistry $managerRegistry,
+        PollutantViewModelFactoryInterface $pollutantViewModelFactory,
+        DataRetrieverInterface $dataRetriever,
+    )
     {
-        parent::__construct($pollutantViewModelFactory, $dataRetriever, $strategy);
+        parent::__construct($pollutantViewModelFactory, $dataRetriever);
     }
 
     #[\Override]
@@ -73,7 +76,6 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
     protected function decoratePollutantList(array $pollutantList): array
     {
         return $this
-            ->reset()
             ->pollutantViewModelFactory
             ->setCoord($this->coord)
             ->setPollutantList($pollutantList)

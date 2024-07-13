@@ -2,9 +2,7 @@
 
 namespace App\Air\PollutionDataFactory;
 
-use App\Air\DataList\DataList;
 use App\Air\DataRetriever\DataRetrieverInterface;
-use App\Air\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
 use App\Air\ViewModelFactory\PollutantViewModelFactoryInterface;
 use App\Entity\Station;
 use Caldera\GeoBasic\Coordinate\CoordinateInterface;
@@ -43,14 +41,6 @@ abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInter
     protected function reset(): AbstractPollutionDataFactory
     {
         $this->dataList->reset();
-
-        return $this;
-    }
-
-    #[\Override]
-    public function setStrategy(PollutantFactoryStrategyInterface $strategy): PollutionDataFactoryInterface
-    {
-        $this->strategy = $strategy;
 
         return $this;
     }
