@@ -11,6 +11,7 @@ class KomfortofenModelFactory implements KomfortofenModelFactoryInterface
     {
     }
 
+    #[\Override]
     public function convert(array $buckets): array
     {
         $resultList = [];

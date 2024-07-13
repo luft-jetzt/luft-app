@@ -14,6 +14,7 @@ class OrmUniqueStrategy implements UniqueStrategyInterface
     {
     }
 
+    #[\Override]
     public function init(array $values): UniqueStrategyInterface
     {
         $fromDateTime = null;
@@ -45,21 +46,25 @@ class OrmUniqueStrategy implements UniqueStrategyInterface
         return $this;
     }
 
+    #[\Override]
     public function isDataDuplicate(Data $data): bool
     {
         return array_key_exists(Hasher::hashData($data), $this->existentDataList);
     }
 
+    #[\Override]
     public function addData(Data $data): UniqueStrategyInterface
     {
         return $this;
     }
 
+    #[\Override]
     public function addDataList(array $dataList): UniqueStrategyInterface
     {
         return $this;
     }
 
+    #[\Override]
     public function save(): UniqueStrategyInterface
     {
         return $this;

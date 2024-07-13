@@ -21,6 +21,7 @@ abstract class AbstractKomfortofenAnalysis implements KomfortofenAnalysisInterfa
     {
     }
 
+    #[\Override]
     public function setMinSlope(float $minSlope): KomfortofenAnalysisInterface
     {
         $this->minSlope = $minSlope;
@@ -28,6 +29,7 @@ abstract class AbstractKomfortofenAnalysis implements KomfortofenAnalysisInterfa
         return $this;
     }
 
+    #[\Override]
     public function setPollutant(MeasurementInterface $pollutant): KomfortofenAnalysisInterface
     {
         $this->pollutant = $pollutant;
@@ -35,6 +37,7 @@ abstract class AbstractKomfortofenAnalysis implements KomfortofenAnalysisInterfa
         return $this;
     }
 
+    #[\Override]
     public function setFromDateTime(\DateTimeInterface $fromDateTime): KomfortofenAnalysisInterface
     {
         $this->fromDateTime = $fromDateTime;
@@ -42,6 +45,7 @@ abstract class AbstractKomfortofenAnalysis implements KomfortofenAnalysisInterfa
         return $this;
     }
 
+    #[\Override]
     public function setUntilDateTime(\DateTimeInterface $untilDateTime): KomfortofenAnalysisInterface
     {
         $this->untilDateTime = $untilDateTime;
@@ -49,6 +53,7 @@ abstract class AbstractKomfortofenAnalysis implements KomfortofenAnalysisInterfa
         return $this;
     }
 
+    #[\Override]
     public function setMaxSlope(float $maxSlope): KomfortofenAnalysisInterface
     {
         $this->maxSlope = $maxSlope;
