@@ -5,7 +5,7 @@ namespace App\Tests\Air\AirQuality\Calculator;
 use App\Air\AirQuality\Calculator\AirQualityCalculator;
 use App\Air\AirQuality\PollutionLevel\PollutionLevelInterface;
 use App\Air\Pollutant\CO;
-use App\Air\ViewModel\MeasurementViewModel;
+use App\Air\ViewModel\PollutantViewModel;
 use App\Entity\Data;
 use PHPUnit\Framework\TestCase;
 
@@ -35,10 +35,10 @@ class AirQualityCalculatorTest extends TestCase
         $this->assertEquals(2, $viewModel->getPollutionLevel());
     }
 
-    protected function viewModel(Data $data): MeasurementViewModel
+    protected function viewModel(Data $data): PollutantViewModel
     {
-        $measurementViewModel = new MeasurementViewModel($data);
-        $measurementViewModel->setMeasurement(new CO());
+        $measurementViewModel = new PollutantViewModel($data);
+        $measurementViewModel->setPollutant(new CO());
 
         return $measurementViewModel;
     }

@@ -21,13 +21,13 @@ class SimplePollutantFactoryStrategyTest extends TestCase
         $simplePollutantFactoryStrategy = new SimplePollutantFactoryStrategy();
 
         $expectedMissingPollutantsList = [
-            PollutantInterface::MEASUREMENT_PM25,
-            PollutantInterface::MEASUREMENT_PM10,
-            PollutantInterface::MEASUREMENT_O3,
-            PollutantInterface::MEASUREMENT_NO2,
-            PollutantInterface::MEASUREMENT_SO2,
-            PollutantInterface::MEASUREMENT_CO,
-            PollutantInterface::MEASUREMENT_CO2,
+            PollutantInterface::POLLUTANT_PM25,
+            PollutantInterface::POLLUTANT_PM10,
+            PollutantInterface::POLLUTANT_O3,
+            PollutantInterface::POLLUTANT_NO2,
+            PollutantInterface::POLLUTANT_SO2,
+            PollutantInterface::POLLUTANT_CO,
+            PollutantInterface::POLLUTANT_CO2,
         ];
 
         $this->assertEquals($expectedMissingPollutantsList, $simplePollutantFactoryStrategy->getMissingPollutants($dataList));
@@ -39,15 +39,15 @@ class SimplePollutantFactoryStrategyTest extends TestCase
 
         $simplePollutantFactoryStrategy = new SimplePollutantFactoryStrategy();
 
-        $simplePollutantFactoryStrategy->addDataToList($dataList, $this->createData(PollutantInterface::MEASUREMENT_CO));
-        $simplePollutantFactoryStrategy->addDataToList($dataList, $this->createData(PollutantInterface::MEASUREMENT_O3));
+        $simplePollutantFactoryStrategy->addDataToList($dataList, $this->createData(PollutantInterface::POLLUTANT_CO));
+        $simplePollutantFactoryStrategy->addDataToList($dataList, $this->createData(PollutantInterface::POLLUTANT_O3));
 
         $expectedMissingPollutantsList = [
-            PollutantInterface::MEASUREMENT_PM25,
-            PollutantInterface::MEASUREMENT_PM10,
-            PollutantInterface::MEASUREMENT_NO2,
-            PollutantInterface::MEASUREMENT_SO2,
-            PollutantInterface::MEASUREMENT_CO2,
+            PollutantInterface::POLLUTANT_PM25,
+            PollutantInterface::POLLUTANT_PM10,
+            PollutantInterface::POLLUTANT_NO2,
+            PollutantInterface::POLLUTANT_SO2,
+            PollutantInterface::POLLUTANT_CO2,
         ];
 
         $this->assertEquals($expectedMissingPollutantsList, $simplePollutantFactoryStrategy->getMissingPollutants($dataList));
@@ -59,22 +59,22 @@ class SimplePollutantFactoryStrategyTest extends TestCase
 
         $simplePollutantFactoryStrategy = new SimplePollutantFactoryStrategy();
 
-        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_PM25));
-        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_PM10));
-        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_CO));
-        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_O3));
-        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_NO2));
-        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_SO2));
+        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_PM25));
+        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_PM10));
+        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_CO));
+        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_O3));
+        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_NO2));
+        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_SO2));
     }
 
     public function testEmptyStrategyNotSatisfiedWithPopulatedDataListForeignMeasurement(): void
     {
         $dataList = new DataList();
-        $dataList->addData($this->createData(PollutantInterface::MEASUREMENT_NO2));
+        $dataList->addData($this->createData(PollutantInterface::POLLUTANT_NO2));
 
         $simplePollutantFactoryStrategy = new SimplePollutantFactoryStrategy();
 
-        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_CO));
+        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_CO));
     }
 
     public function testStrategy(): void
@@ -84,116 +84,116 @@ class SimplePollutantFactoryStrategyTest extends TestCase
         $simplePollutantFactoryStrategy = new SimplePollutantFactoryStrategy();
 
         $expectedMissingPollutantsList = [
-            PollutantInterface::MEASUREMENT_PM25,
-            PollutantInterface::MEASUREMENT_PM10,
-            PollutantInterface::MEASUREMENT_O3,
-            PollutantInterface::MEASUREMENT_NO2,
-            PollutantInterface::MEASUREMENT_SO2,
-            PollutantInterface::MEASUREMENT_CO,
-            PollutantInterface::MEASUREMENT_CO2,
+            PollutantInterface::POLLUTANT_PM25,
+            PollutantInterface::POLLUTANT_PM10,
+            PollutantInterface::POLLUTANT_O3,
+            PollutantInterface::POLLUTANT_NO2,
+            PollutantInterface::POLLUTANT_SO2,
+            PollutantInterface::POLLUTANT_CO,
+            PollutantInterface::POLLUTANT_CO2,
         ];
 
         $this->assertEquals($expectedMissingPollutantsList, $simplePollutantFactoryStrategy->getMissingPollutants($dataList));
 
         // add SO2
-        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_SO2));
+        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_SO2));
 
-        $simplePollutantFactoryStrategy->addDataToList($dataList, $this->createData(PollutantInterface::MEASUREMENT_SO2));
+        $simplePollutantFactoryStrategy->addDataToList($dataList, $this->createData(PollutantInterface::POLLUTANT_SO2));
 
-        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_SO2));
+        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_SO2));
 
         $expectedMissingPollutantsList = [
-            PollutantInterface::MEASUREMENT_PM25,
-            PollutantInterface::MEASUREMENT_PM10,
-            PollutantInterface::MEASUREMENT_O3,
-            PollutantInterface::MEASUREMENT_NO2,
-            PollutantInterface::MEASUREMENT_CO,
-            PollutantInterface::MEASUREMENT_CO2,
+            PollutantInterface::POLLUTANT_PM25,
+            PollutantInterface::POLLUTANT_PM10,
+            PollutantInterface::POLLUTANT_O3,
+            PollutantInterface::POLLUTANT_NO2,
+            PollutantInterface::POLLUTANT_CO,
+            PollutantInterface::POLLUTANT_CO2,
         ];
 
         $this->assertEquals($expectedMissingPollutantsList, $simplePollutantFactoryStrategy->getMissingPollutants($dataList));
 
         // add PM10
-        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_PM10));
+        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_PM10));
 
-        $simplePollutantFactoryStrategy->addDataToList($dataList, $this->createData(PollutantInterface::MEASUREMENT_PM10));
+        $simplePollutantFactoryStrategy->addDataToList($dataList, $this->createData(PollutantInterface::POLLUTANT_PM10));
 
-        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_PM10));
+        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_PM10));
 
         $expectedMissingPollutantsList = [
-            PollutantInterface::MEASUREMENT_PM25,
-            PollutantInterface::MEASUREMENT_O3,
-            PollutantInterface::MEASUREMENT_NO2,
-            PollutantInterface::MEASUREMENT_CO,
-            PollutantInterface::MEASUREMENT_CO2,
+            PollutantInterface::POLLUTANT_PM25,
+            PollutantInterface::POLLUTANT_O3,
+            PollutantInterface::POLLUTANT_NO2,
+            PollutantInterface::POLLUTANT_CO,
+            PollutantInterface::POLLUTANT_CO2,
         ];
 
         $this->assertEquals($expectedMissingPollutantsList, $simplePollutantFactoryStrategy->getMissingPollutants($dataList));
 
         // add O3
-        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_O3));
+        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_O3));
 
-        $simplePollutantFactoryStrategy->addDataToList($dataList, $this->createData(PollutantInterface::MEASUREMENT_O3));
+        $simplePollutantFactoryStrategy->addDataToList($dataList, $this->createData(PollutantInterface::POLLUTANT_O3));
 
-        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_O3));
+        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_O3));
 
         $expectedMissingPollutantsList = [
-            PollutantInterface::MEASUREMENT_PM25,
-            PollutantInterface::MEASUREMENT_NO2,
-            PollutantInterface::MEASUREMENT_CO,
-            PollutantInterface::MEASUREMENT_CO2,
+            PollutantInterface::POLLUTANT_PM25,
+            PollutantInterface::POLLUTANT_NO2,
+            PollutantInterface::POLLUTANT_CO,
+            PollutantInterface::POLLUTANT_CO2,
         ];
 
         $this->assertEquals($expectedMissingPollutantsList, $simplePollutantFactoryStrategy->getMissingPollutants($dataList));
 
         // add PM25
-        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_PM25));
+        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_PM25));
 
-        $simplePollutantFactoryStrategy->addDataToList($dataList, $this->createData(PollutantInterface::MEASUREMENT_PM25));
+        $simplePollutantFactoryStrategy->addDataToList($dataList, $this->createData(PollutantInterface::POLLUTANT_PM25));
 
-        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_PM25));
+        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_PM25));
 
         $expectedMissingPollutantsList = [
-            PollutantInterface::MEASUREMENT_NO2,
-            PollutantInterface::MEASUREMENT_CO,
-            PollutantInterface::MEASUREMENT_CO2,
+            PollutantInterface::POLLUTANT_NO2,
+            PollutantInterface::POLLUTANT_CO,
+            PollutantInterface::POLLUTANT_CO2,
         ];
 
         $this->assertEquals($expectedMissingPollutantsList, $simplePollutantFactoryStrategy->getMissingPollutants($dataList));
 
         // add NO2
-        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_NO2));
+        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_NO2));
 
-        $simplePollutantFactoryStrategy->addDataToList($dataList, $this->createData(PollutantInterface::MEASUREMENT_NO2));
+        $simplePollutantFactoryStrategy->addDataToList($dataList, $this->createData(PollutantInterface::POLLUTANT_NO2));
 
-        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_NO2));
+        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_NO2));
 
         $expectedMissingPollutantsList = [
-            PollutantInterface::MEASUREMENT_CO,
-            PollutantInterface::MEASUREMENT_CO2,
+            PollutantInterface::POLLUTANT_CO,
+            PollutantInterface::POLLUTANT_CO2,
         ];
 
         $this->assertEquals($expectedMissingPollutantsList, $simplePollutantFactoryStrategy->getMissingPollutants($dataList));
 
         // add CO
-        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_CO));
+        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_CO));
 
-        $simplePollutantFactoryStrategy->addDataToList($dataList, $this->createData(PollutantInterface::MEASUREMENT_CO));
+        $simplePollutantFactoryStrategy->addDataToList($dataList, $this->createData(PollutantInterface::POLLUTANT_CO));
 
-        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_CO));
+        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_CO));
 
         $expectedMissingPollutantsList = [
-            PollutantInterface::MEASUREMENT_CO2,
+            PollutantInterface::POLLUTANT_CO2,
         ];
 
         $this->assertEquals($expectedMissingPollutantsList, $simplePollutantFactoryStrategy->getMissingPollutants($dataList));
 
         // add CO2
-        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_CO2));
+        $this->assertFalse($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_CO2));
 
-        $simplePollutantFactoryStrategy->addDataToList($dataList, $this->createData(PollutantInterface::MEASUREMENT_CO2));
+        $simplePollutantFactoryStrategy->addDataToList($dataList, $this->createData(PollutantInterface::POLLUTANT_CO2));
 
-        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_CO2));
+        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_CO2));
 
         $expectedMissingPollutantsList = [];
 
@@ -203,61 +203,61 @@ class SimplePollutantFactoryStrategyTest extends TestCase
     public function testStrategySatisfiedWithDataListContainingCO(): void
     {
         $dataList = new DataList();
-        $dataList->addData($this->createData(PollutantInterface::MEASUREMENT_CO));
+        $dataList->addData($this->createData(PollutantInterface::POLLUTANT_CO));
 
         $simplePollutantFactoryStrategy = new SimplePollutantFactoryStrategy();
 
-        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_CO));
+        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_CO));
     }
 
     public function testStrategySatisfiedWithDataListContainingSO2(): void
     {
         $dataList = new DataList();
-        $dataList->addData($this->createData(PollutantInterface::MEASUREMENT_SO2));
+        $dataList->addData($this->createData(PollutantInterface::POLLUTANT_SO2));
 
         $simplePollutantFactoryStrategy = new SimplePollutantFactoryStrategy();
 
-        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_SO2));
+        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_SO2));
     }
 
     public function testStrategySatisfiedWithDataListContainingO3(): void
     {
         $dataList = new DataList();
-        $dataList->addData($this->createData(PollutantInterface::MEASUREMENT_O3));
+        $dataList->addData($this->createData(PollutantInterface::POLLUTANT_O3));
 
         $simplePollutantFactoryStrategy = new SimplePollutantFactoryStrategy();
 
-        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_O3));
+        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_O3));
     }
 
     public function testStrategySatisfiedWithDataListContainingNO2(): void
     {
         $dataList = new DataList();
-        $dataList->addData($this->createData(PollutantInterface::MEASUREMENT_NO2));
+        $dataList->addData($this->createData(PollutantInterface::POLLUTANT_NO2));
 
         $simplePollutantFactoryStrategy = new SimplePollutantFactoryStrategy();
 
-        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_NO2));
+        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_NO2));
     }
 
     public function testStrategySatisfiedWithDataListContainingPM10(): void
     {
         $dataList = new DataList();
-        $dataList->addData($this->createData(PollutantInterface::MEASUREMENT_PM10));
+        $dataList->addData($this->createData(PollutantInterface::POLLUTANT_PM10));
 
         $simplePollutantFactoryStrategy = new SimplePollutantFactoryStrategy();
 
-        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_PM10));
+        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_PM10));
     }
 
     public function testStrategySatisfiedWithDataListContainingPM25(): void
     {
         $dataList = new DataList();
-        $dataList->addData($this->createData(PollutantInterface::MEASUREMENT_PM25));
+        $dataList->addData($this->createData(PollutantInterface::POLLUTANT_PM25));
 
         $simplePollutantFactoryStrategy = new SimplePollutantFactoryStrategy();
 
-        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::MEASUREMENT_PM25));
+        $this->assertTrue($simplePollutantFactoryStrategy->isSatisfied($dataList, PollutantInterface::POLLUTANT_PM25));
     }
 
     protected function createData(int $measurementId, string $provider = 'test-provider'): Data

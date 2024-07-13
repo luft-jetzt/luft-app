@@ -5,7 +5,7 @@ namespace App\Air\PollutionDataFactory;
 use App\Air\DataList\DataList;
 use App\Air\DataRetriever\DataRetrieverInterface;
 use App\Air\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
-use App\Air\ViewModelFactory\MeasurementViewModelFactoryInterface;
+use App\Air\ViewModelFactory\PollutantViewModelFactoryInterface;
 use App\Entity\Station;
 use Caldera\GeoBasic\Coordinate\CoordinateInterface;
 
@@ -15,7 +15,7 @@ abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInter
 
     protected DataList $dataList;
 
-    public function __construct(protected MeasurementViewModelFactoryInterface $measurementViewModelFactory, protected DataRetrieverInterface $dataRetriever, protected PollutantFactoryStrategyInterface $strategy)
+    public function __construct(protected PollutantViewModelFactoryInterface $pollutantViewModelFactory, protected DataRetrieverInterface $dataRetriever, protected PollutantFactoryStrategyInterface $strategy)
     {
         $this->dataList = new DataList();
     }

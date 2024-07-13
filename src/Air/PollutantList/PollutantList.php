@@ -9,31 +9,31 @@ class PollutantList implements PollutantListInterface
     protected array $list = [];
 
     #[\Override]
-    public function addMeasurement(PollutantInterface $measurement): PollutantListInterface
+    public function addPollutant(PollutantInterface $pollutant): PollutantListInterface
     {
-        $this->list[$measurement->getIdentifier()] = $measurement;
+        $this->list[$pollutant->getIdentifier()] = $pollutant;
 
         return $this;
     }
 
     #[\Override]
-    public function getMeasurements(): array
+    public function getPollutants(): array
     {
         return $this->list;
     }
 
     #[\Override]
-    public function getMeasurementWithIds(): array
+    public function getPollutantListWithIds(): array
     {
-        $measurementListWithIds = [];
+        $pollutantsListWithIds = [];
 
-        /** @var PollutantInterface $measurement */
-        foreach ($this->list as $measurement) {
-            $measurementId = constant(sprintf('App\\Air\\Measurement\\PollutantInterface::MEASUREMENT_%s', strtoupper($measurement->getIdentifier())));
+        /** @var PollutantInterface $pollutant */
+        foreach ($this->list as $pollutant) {
+            $pollutantId = constant(sprintf('App\\Air\\Pollutant\\PollutantInterface::POLLUTANT_%s', strtoupper($pollutant->getIdentifier())));
 
-            $measurementListWithIds[$measurementId] = $measurement;
+            $pollutantsListWithIds[$pollutantId] = $pollutant;
         }
 
-        return $measurementListWithIds;
+        return $pollutantsListWithIds;
     }
 }

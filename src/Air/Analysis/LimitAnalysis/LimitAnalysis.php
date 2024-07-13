@@ -9,7 +9,7 @@ use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 class LimitAnalysis implements LimitAnalysisInterface
 {
     protected ?Station $station = null;
-    protected ?PollutantInterface $measurement = null;
+    protected ?PollutantInterface $pollutant = null;
     protected ?\DateTimeInterface $fromDateTime = null;
     protected ?\DateTimeInterface $untilDateTime = null;
 
@@ -26,9 +26,9 @@ class LimitAnalysis implements LimitAnalysisInterface
     }
 
     #[\Override]
-    public function setMeasurement(PollutantInterface $measurement): LimitAnalysisInterface
+    public function setPollutant(PollutantInterface $pollutant): LimitAnalysisInterface
     {
-        $this->measurement = $measurement;
+        $this->pollutant = $pollutant;
 
         return $this;
     }

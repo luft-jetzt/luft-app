@@ -15,63 +15,63 @@ class DataListTest extends TestCase
         $dataList = new DataList();
 
         $this->assertCount(7, $dataList->getList());
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_PM10]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_PM25]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_SO2]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_CO]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_NO2]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_CO2]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_O3]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_PM10]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_PM25]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_SO2]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_CO]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_NO2]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_CO2]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_O3]);
     }
 
     public function testAddData(): void
     {
         $dataList = new DataList();
 
-        $dataList->addData($this->createData(PollutantInterface::MEASUREMENT_PM10));
+        $dataList->addData($this->createData(PollutantInterface::POLLUTANT_PM10));
 
         $this->assertCount(7, $dataList->getList());
-        $this->assertCount(1, $dataList->getList()[PollutantInterface::MEASUREMENT_PM10]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_PM25]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_SO2]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_CO]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_NO2]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_CO2]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_O3]);
+        $this->assertCount(1, $dataList->getList()[PollutantInterface::POLLUTANT_PM10]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_PM25]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_SO2]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_CO]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_NO2]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_CO2]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_O3]);
     }
 
     public function testAddIdenticalData(): void
     {
         $dataList = new DataList();
 
-        $dataList->addData($this->createData(PollutantInterface::MEASUREMENT_PM10));
-        $dataList->addData($this->createData(PollutantInterface::MEASUREMENT_PM10));
+        $dataList->addData($this->createData(PollutantInterface::POLLUTANT_PM10));
+        $dataList->addData($this->createData(PollutantInterface::POLLUTANT_PM10));
 
         $this->assertCount(7, $dataList->getList());
-        $this->assertCount(1, $dataList->getList()[PollutantInterface::MEASUREMENT_PM10]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_PM25]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_SO2]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_CO]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_NO2]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_CO2]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_O3]);
+        $this->assertCount(1, $dataList->getList()[PollutantInterface::POLLUTANT_PM10]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_PM25]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_SO2]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_CO]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_NO2]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_CO2]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_O3]);
     }
 
     public function testAddNonIdenticallData(): void
     {
         $dataList = new DataList();
 
-        $dataList->addData($this->createData(PollutantInterface::MEASUREMENT_PM10, 23.5));
-        $dataList->addData($this->createData(PollutantInterface::MEASUREMENT_PM10, 42.3));
+        $dataList->addData($this->createData(PollutantInterface::POLLUTANT_PM10, 23.5));
+        $dataList->addData($this->createData(PollutantInterface::POLLUTANT_PM10, 42.3));
 
         $this->assertCount(7, $dataList->getList());
-        $this->assertCount(2, $dataList->getList()[PollutantInterface::MEASUREMENT_PM10]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_PM25]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_SO2]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_CO]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_NO2]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_CO2]);
-        $this->assertEmpty($dataList->getList()[PollutantInterface::MEASUREMENT_O3]);
+        $this->assertCount(2, $dataList->getList()[PollutantInterface::POLLUTANT_PM10]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_PM25]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_SO2]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_CO]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_NO2]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_CO2]);
+        $this->assertEmpty($dataList->getList()[PollutantInterface::POLLUTANT_O3]);
     }
 
     protected function createData(int $pollutant, float $value = 42.3, Station $station = null): Data

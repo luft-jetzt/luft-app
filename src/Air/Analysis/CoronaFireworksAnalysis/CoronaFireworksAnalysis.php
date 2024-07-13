@@ -5,16 +5,16 @@ namespace App\Air\Analysis\CoronaFireworksAnalysis;
 use App\Air\AirQuality\Calculator\AirQualityCalculatorInterface;
 use App\Air\Analysis\CoronaFireworksAnalysis\Slot\YearSlot;
 use App\Air\Pollutant\PM10;
-use App\Air\ViewModel\MeasurementViewModel;
+use App\Air\ViewModel\PollutantViewModel;
 use App\Air\ViewModelFactory\DistanceCalculator;
-use App\Air\ViewModelFactory\MeasurementViewModelFactoryInterface;
+use App\Air\ViewModelFactory\PollutantViewModelFactoryInterface;
 use App\Entity\Data;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Carbon\Carbon;
 
 class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
 {
-    public function __construct(protected ValueFetcherInterface $valueFetcher, protected MeasurementViewModelFactoryInterface $measurementViewModelFactory, protected AirQualityCalculatorInterface $airQualityCalculator)
+    public function __construct(protected ValueFetcherInterface $valueFetcher, protected PollutantViewModelFactoryInterface $pollutantViewModelFactory, protected AirQualityCalculatorInterface $airQualityCalculator)
     {
     }
 
@@ -60,12 +60,12 @@ class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface
     /**
      * @todo Use ViewModelFactory for this
      */
-    protected function decorateData(Data $data, CoordInterface $coord): MeasurementViewModel
+    protected function decorateData(Data $data, CoordInterface $coord): PollutantViewModel
     {
-        $viewModel = new MeasurementViewModel($data);
+        $viewModel = new PollutantViewModel($data);
         $viewModel
             ->setStation($data->getStation())
-            ->setMeasurement(new PM10())
+            ->setPollutant(new PM10())
             ->setDistance(DistanceCalculator::distance($coord, $data->getStation()))
             ->setPollutionLevel($this->airQualityCalculator->calculateViewModel($viewModel))
         ;

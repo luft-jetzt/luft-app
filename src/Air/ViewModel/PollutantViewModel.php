@@ -8,13 +8,13 @@ use App\Entity\Station;
 use JMS\Serializer\Annotation as JMS;
 
 #[JMS\ExclusionPolicy('ALL')]
-class MeasurementViewModel
+class PollutantViewModel
 {
     #[JMS\Expose]
     protected ? Station $station = null;
 
     #[JMS\Expose]
-    protected ?PollutantInterface $measurement = null;
+    protected ?PollutantInterface $pollutant = null;
 
     #[JMS\Expose]
     protected ?int $pollutionLevel = null;
@@ -55,14 +55,14 @@ class MeasurementViewModel
         return $this;
     }
 
-    public function getMeasurement(): PollutantInterface
+    public function getPollutant(): PollutantInterface
     {
-        return $this->measurement;
+        return $this->pollutant;
     }
 
-    public function setMeasurement(PollutantInterface $measurement): self
+    public function setPollutant(PollutantInterface $pollutant): self
     {
-        $this->measurement = $measurement;
+        $this->pollutant = $pollutant;
 
         return $this;
     }
@@ -105,6 +105,6 @@ class MeasurementViewModel
 
     public function showOnMap(): bool
     {
-        return $this->measurement->showOnMap();
+        return $this->pollutant->showOnMap();
     }
 }

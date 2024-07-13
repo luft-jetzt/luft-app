@@ -3,7 +3,7 @@
 namespace App\Tests\Air\MeasurementViewModel;
 
 use App\Air\Pollutant\CO;
-use App\Air\ViewModel\MeasurementViewModel;
+use App\Air\ViewModel\PollutantViewModel;
 use App\Entity\Data;
 use App\Entity\Station;
 use PHPUnit\Framework\TestCase;
@@ -13,7 +13,7 @@ class MeasurementViewModelTest extends TestCase
     public function testData(): void
     {
         $data = new Data();
-        $viewModel = new MeasurementViewModel($data);
+        $viewModel = new PollutantViewModel($data);
 
         $this->assertEquals($data, $viewModel->getData());
     }
@@ -22,7 +22,7 @@ class MeasurementViewModelTest extends TestCase
     {
         $data = new Data();
         $data->setValue(10);
-        $viewModel = new MeasurementViewModel($data);
+        $viewModel = new PollutantViewModel($data);
 
         $newData = new Data();
         $newData->setValue(20);
@@ -35,7 +35,7 @@ class MeasurementViewModelTest extends TestCase
     public function testCaption(): void
     {
         $data = new Data();
-        $viewModel = new MeasurementViewModel($data);
+        $viewModel = new PollutantViewModel($data);
 
         $viewModel->setCaption("Testcaption");
 
@@ -45,7 +45,7 @@ class MeasurementViewModelTest extends TestCase
     public function testDistance(): void
     {
         $data = new Data();
-        $viewModel = new MeasurementViewModel($data);
+        $viewModel = new PollutantViewModel($data);
 
         $viewModel->setDistance(42.3);
         $this->assertEquals(42.3, $viewModel->getDistance());
@@ -54,7 +54,7 @@ class MeasurementViewModelTest extends TestCase
     public function testStation(): void
     {
         $data = new Data();
-        $viewModel = new MeasurementViewModel($data);
+        $viewModel = new PollutantViewModel($data);
 
         $station = new Station(57.4, 10.3);
         $viewModel->setStation($station);
@@ -65,11 +65,11 @@ class MeasurementViewModelTest extends TestCase
     public function testMeasurement(): void
     {
         $data = new Data();
-        $viewModel = new MeasurementViewModel($data);
+        $viewModel = new PollutantViewModel($data);
 
         $measurement = new CO();
-        $viewModel->setMeasurement($measurement);
+        $viewModel->setPollutant($measurement);
 
-        $this->assertEquals($measurement, $viewModel->getMeasurement());
+        $this->assertEquals($measurement, $viewModel->getPollutant());
     }
 }

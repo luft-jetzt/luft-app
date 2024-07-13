@@ -2,7 +2,7 @@
 
 namespace App\Air\Analysis\CoronaFireworksAnalysis\Slot;
 
-use App\Air\ViewModel\MeasurementViewModel;
+use App\Air\ViewModel\PollutantViewModel;
 use App\Entity\Data;
 use Carbon\Carbon;
 use Carbon\CarbonTimeZone;
@@ -32,7 +32,7 @@ class YearSlot
         $this->modelList[$key] = null;
     }
 
-    public function addModel(MeasurementViewModel $model): void
+    public function addModel(PollutantViewModel $model): void
     {
         $fromDateTimeSpec = sprintf('%d-12-31 18:00:00', $this->startYear);
         $fromDateTime = new Carbon($fromDateTimeSpec, $this->dateTimeZone);

@@ -31,7 +31,7 @@ class AdhocDataRetriever implements DataRetrieverInterface
             return [];
         }
 
-        if (PollutantInterface::MEASUREMENT_UVINDEXMAX === $pollutantId) {
+        if (PollutantInterface::POLLUTANT_UVINDEXMAX === $pollutantId) {
             $data = $this->retrieveUVIndexMaxForCoord($coord);
 
             if (!$data) {
@@ -41,7 +41,7 @@ class AdhocDataRetriever implements DataRetrieverInterface
             return [$data];
         }
 
-        if (PollutantInterface::MEASUREMENT_TEMPERATURE === $pollutantId) {
+        if (PollutantInterface::POLLUTANT_TEMPERATURE === $pollutantId) {
             $data = $this->retrieveTemperatureForCoord($coord);
 
             if (!$data) {

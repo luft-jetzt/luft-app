@@ -12,9 +12,9 @@ interface ProviderInterface
 
     public function getStationLoader(): StationLoaderInterface;
 
-    public function providedMeasurements(): array;
+    public function providedPollutants(): array;
 
-    public function providesMeasurement(PollutantInterface $measurement): bool;
+    public function providesPollutant(PollutantInterface $pollutant): bool;
 
-    public function fetchMeasurements(FetchProcess $fetchProcess): FetchResult;
+    public function fetchPollutant(FetchProcess $fetchProcess): FetchResult;
 }

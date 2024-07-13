@@ -6,7 +6,7 @@ use Caldera\GeoBasic\Coord\CoordInterface;
 
 class FetchProcess
 {
-    protected array $measurementList = [];
+    protected array $pollutantList = [];
 
     protected ?\DateTimeInterface $fromDateTime = null;
 
@@ -16,14 +16,14 @@ class FetchProcess
 
     protected ?\DateInterval $interval = null;
 
-    public function getMeasurementList(): array
+    public function getPollutantList(): array
     {
-        return $this->measurementList;
+        return $this->pollutantList;
     }
 
-    public function setMeasurementList(array $measurementList): FetchProcess
+    public function setPollutantList(array $pollutantList): FetchProcess
     {
-        $this->measurementList = $measurementList;
+        $this->pollutantList = $pollutantList;
 
         return $this;
     }

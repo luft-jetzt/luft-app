@@ -23,7 +23,7 @@ class OpenUvIoProvider extends AbstractProvider
     }
 
     #[\Override]
-    public function providedMeasurements(): array
+    public function providedPollutants(): array
     {
         return [
             UVIndex::class,
@@ -31,7 +31,7 @@ class OpenUvIoProvider extends AbstractProvider
     }
 
     #[\Override]
-    public function fetchMeasurements(FetchProcess $fetchProcess): FetchResult
+    public function fetchPollutant(FetchProcess $fetchProcess): FetchResult
     {
         return $this->sourceFetcher->fetch($fetchProcess);
     }

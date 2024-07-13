@@ -19,11 +19,11 @@ class LuftdatenPollutantFactoryStrategy implements PollutantFactoryStrategyInter
                 array_push($missingList, $key);
             }
 
-            if (in_array($key, [PollutantInterface::MEASUREMENT_PM25, PollutantInterface::MEASUREMENT_PM10]) && count($list) < 2) {
+            if (in_array($key, [PollutantInterface::POLLUTANT_PM25, PollutantInterface::POLLUTANT_PM10]) && count($list) < 2) {
                 array_push($missingList, $key);
             }
 
-            if (!in_array($key, [PollutantInterface::MEASUREMENT_PM25, PollutantInterface::MEASUREMENT_PM10]) && count($list) < 1) {
+            if (!in_array($key, [PollutantInterface::POLLUTANT_PM25, PollutantInterface::POLLUTANT_PM10]) && count($list) < 1) {
                 array_push($missingList, $key);
             }
         });
@@ -55,7 +55,7 @@ class LuftdatenPollutantFactoryStrategy implements PollutantFactoryStrategyInter
     public function isSatisfied(DataListInterface $dataList, int $pollutantId): bool
     {
         // Luftdaten only collects pm10 and pm25, so there is no need to wait for o3, no2 or so2
-        if (in_array($pollutantId, [PollutantInterface::MEASUREMENT_PM10, PollutantInterface::MEASUREMENT_PM25])) {
+        if (in_array($pollutantId, [PollutantInterface::POLLUTANT_PM10, PollutantInterface::POLLUTANT_PM25])) {
             if ($dataList->countPollutant($pollutantId) === 2) {
                 $list = $dataList->getList()[$pollutantId];
 

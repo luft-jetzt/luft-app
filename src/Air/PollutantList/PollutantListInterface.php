@@ -6,7 +6,7 @@ use App\Air\Pollutant\PollutantInterface;
 
 interface PollutantListInterface
 {
-    public function addMeasurement(PollutantInterface $measurement): PollutantListInterface;
-    public function getMeasurements(): array;
-    public function getMeasurementWithIds(): array;
+    public function addPollutant(PollutantInterface $pollutant): PollutantListInterface;
+    public function getPollutants(): array;
+    public function getPollutantListWithIds(): array;
 }

@@ -15,8 +15,8 @@ abstract class AbstractProvider implements ProviderInterface
     }
 
     #[\Override]
-    public function providesMeasurement(PollutantInterface $measurement): bool
+    public function providesPollutant(PollutantInterface $pollutant): bool
     {
-        return in_array($measurement::class, $this->providedMeasurements());
+        return in_array($pollutant::class, $this->providedPollutants());
     }
 }

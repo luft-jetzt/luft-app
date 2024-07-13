@@ -16,12 +16,12 @@ class PollutantCompilerPass implements CompilerPassInterface
             return;
         }
 
-        $measurementList = $container->findDefinition(PollutantListInterface::class);
+        $pollutantList = $container->findDefinition(PollutantListInterface::class);
 
-        $taggedServices = $container->findTaggedServiceIds('measurement');
+        $taggedServices = $container->findTaggedServiceIds('pollutant');
 
         foreach ($taggedServices as $id => $tags) {
-            $measurementList->addMethodCall('addMeasurement', [new Reference($id)]);
+            $pollutantList->addMethodCall('addPollutant', [new Reference($id)]);
         }
     }
 }

@@ -17,7 +17,7 @@ use App\Air\Pollutant\UVIndexMax;
 use Caldera\GeoBasic\Coord\CoordInterface;
 use Caldera\GeoBasic\Coordinate\CoordinateInterface;
 
-abstract class AbstractMeasurementViewModelFactory implements MeasurementViewModelFactoryInterface
+abstract class AbstractPollutantViewModelFactory implements PollutantViewModelFactoryInterface
 {
     protected array $pollutantList = [];
 
@@ -28,7 +28,7 @@ abstract class AbstractMeasurementViewModelFactory implements MeasurementViewMod
     }
 
     #[\Override]
-    public function setPollutantList(array $pollutantList): MeasurementViewModelFactoryInterface
+    public function setPollutantList(array $pollutantList): PollutantViewModelFactoryInterface
     {
         $this->pollutantList = $pollutantList;
 
@@ -58,7 +58,7 @@ abstract class AbstractMeasurementViewModelFactory implements MeasurementViewMod
     }
 
     #[\Override]
-    public function setCoord(CoordinateInterface $coord): MeasurementViewModelFactoryInterface
+    public function setCoord(CoordinateInterface $coord): PollutantViewModelFactoryInterface
     {
         $this->coord = $coord;
 
@@ -66,5 +66,5 @@ abstract class AbstractMeasurementViewModelFactory implements MeasurementViewMod
     }
 
     #[\Override]
-    abstract public function decorate(): MeasurementViewModelFactoryInterface;
+    abstract public function decorate(): PollutantViewModelFactoryInterface;
 }

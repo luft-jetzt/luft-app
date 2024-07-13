@@ -13,7 +13,7 @@ class MeasurementListTest extends TestCase
 {
     public function testEmptyList(): void
     {
-        $this->assertCount(0, (new PollutantList())->getMeasurements());
+        $this->assertCount(0, (new PollutantList())->getPollutants());
     }
 
     public function testListWithTwoElements(): void
@@ -21,10 +21,10 @@ class MeasurementListTest extends TestCase
         $measurementList = new PollutantList();
 
         $measurementList
-            ->addMeasurement(new CO())
-            ->addMeasurement(new NO2());
+            ->addPollutant(new CO())
+            ->addPollutant(new NO2());
 
-        $this->assertCount(2, $measurementList->getMeasurements());
+        $this->assertCount(2, $measurementList->getPollutants());
     }
 
     public function testListContentWithTwoElements(): void
@@ -32,10 +32,10 @@ class MeasurementListTest extends TestCase
         $measurementList = new PollutantList();
 
         $measurementList
-            ->addMeasurement(new CO())
-            ->addMeasurement(new NO2());
+            ->addPollutant(new CO())
+            ->addPollutant(new NO2());
 
-        $actualMeasurementList = $measurementList->getMeasurements();
+        $actualMeasurementList = $measurementList->getPollutants();
         $expectedMeasurementList = [
             'co' => new CO(),
             'no2' => new NO2(),
@@ -49,10 +49,10 @@ class MeasurementListTest extends TestCase
         $measurementList = new PollutantList();
 
         $measurementList
-            ->addMeasurement(new O3())
-            ->addMeasurement(new SO2());
+            ->addPollutant(new O3())
+            ->addPollutant(new SO2());
 
-        $actualMeasurementList = $measurementList->getMeasurements();
+        $actualMeasurementList = $measurementList->getPollutants();
         $expectedMeasurementList = [
             'o3' => new O3(),
             'so2' => new SO2(),

@@ -8,7 +8,7 @@ use App\Air\Analysis\FireworksAnalysis\FireworksAnalysisInterface;
 use App\Air\Analysis\KomfortofenAnalysis\KomfortofenAnalysisInterface;
 use App\Air\Geocoding\RequestConverter\RequestConverterInterface;
 use App\Air\SeoPage\SeoPageInterface;
-use App\Air\ViewModel\MeasurementViewModel;
+use App\Air\ViewModel\PollutantViewModel;
 use Flagception\Bundle\FlagceptionBundle\Annotations\Feature;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -82,7 +82,7 @@ class AnalysisController extends AbstractController
 
         /** @var YearSlot $yearSlot */
         foreach ($yearSlotList as $year => $yearSlot) {
-            /** @var MeasurementViewModel $model */
+            /** @var PollutantViewModel $model */
             foreach ($yearSlot->getList() as $slot => $model) {
                 if (!array_key_exists($slot, $dataList)) {
                     $dataList[$slot] = [];

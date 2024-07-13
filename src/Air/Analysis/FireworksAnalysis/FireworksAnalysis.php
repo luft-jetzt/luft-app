@@ -10,7 +10,7 @@ class FireworksAnalysis extends AbstractFireworksAnalysis
     #[\Override]
     public function analyze(): array
     {
-        $pm10Query = new \Elastica\Query\Term(['pollutant' => PollutantInterface::MEASUREMENT_PM10]);
+        $pm10Query = new \Elastica\Query\Term(['pollutant' => PollutantInterface::POLLUTANT_PM10]);
         //$pm25Query = new \Elastica\Query\Term(['pollutant' => PollutantInterface::POLLUTANT_PM25]);
 
         $pollutantQuery = new BoolQuery();

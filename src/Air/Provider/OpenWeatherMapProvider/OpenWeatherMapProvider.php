@@ -24,7 +24,7 @@ class OpenWeatherMapProvider extends AbstractProvider
     }
 
     #[\Override]
-    public function providedMeasurements(): array
+    public function providedPollutants(): array
     {
         return [
             Temperature::class,
@@ -33,7 +33,7 @@ class OpenWeatherMapProvider extends AbstractProvider
     }
 
     #[\Override]
-    public function fetchMeasurements(FetchProcess $fetchProcess): FetchResult
+    public function fetchPollutant(FetchProcess $fetchProcess): FetchResult
     {
         return $this->sourceFetcher->fetch($fetchProcess);
     }

@@ -9,7 +9,7 @@ class KomfortofenAnalysis extends AbstractKomfortofenAnalysis
     #[\Override]
     public function analyze(): array
     {
-        $pollutantQuery = new \Elastica\Query\Term(['pollutant' => PollutantInterface::MEASUREMENT_PM10]);
+        $pollutantQuery = new \Elastica\Query\Term(['pollutant' => PollutantInterface::POLLUTANT_PM10]);
 
         $dateTimeQuery = new \Elastica\Query\Range('dateTime', [
             'gt' => $this->fromDateTime->format('Y-m-d H:i:s'),

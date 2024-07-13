@@ -3,7 +3,7 @@
 namespace App\Air\PollutionDataFactory;
 
 use App\Air\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
-use App\Air\ViewModelFactory\MeasurementViewModelFactoryInterface;
+use App\Air\ViewModelFactory\PollutantViewModelFactoryInterface;
 use App\Entity\Data;
 use App\Pollution\DataRetriever\HistoryElasticDataRetriever;
 use App\Util\DateTimeUtil;
@@ -11,7 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class HistoryDataFactory extends PollutionDataFactory implements HistoryDataFactoryInterface
 {
-    public function __construct(ManagerRegistry $managerRegistry, MeasurementViewModelFactoryInterface $viewModelFactory, HistoryElasticDataRetriever $dataRetriever, PollutantFactoryStrategyInterface $strategy)
+    public function __construct(ManagerRegistry $managerRegistry, PollutantViewModelFactoryInterface $viewModelFactory, HistoryElasticDataRetriever $dataRetriever, PollutantFactoryStrategyInterface $strategy)
     {
         parent::__construct($managerRegistry, $viewModelFactory, $dataRetriever, $strategy);
     }
@@ -23,16 +23,16 @@ class HistoryDataFactory extends PollutionDataFactory implements HistoryDataFact
 
         $dataLists = $this->convert();
 
-        $measurementModelLists = [];
+        $pollutionModelList = [];
 
         /** @var array $dataList */
         foreach ($dataLists as $timestamp => $dataList) {
-            $measurementModelList = $this->getMeasurementViewModelListFromDataList($dataList);
+            $pollutantViewModelList = $this->getPollutantViewModelList($dataList);
 
-            $measurementModelLists[$timestamp] = $this->decoratePollutantList($measurementModelList);
+            $pollutionModelList[$timestamp] = $this->decoratePollutantList($pollutantViewModelList);
         }
 
-        return $measurementModelLists;
+        return $pollutionModelList;
     }
 
     public function getDataListsForInterval(\DateTime $fromDateTime, \DateTime $untilDateTime): void

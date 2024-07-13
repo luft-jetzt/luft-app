@@ -19,13 +19,13 @@ class SourceFetcher implements SourceFetcherInterface
     {
         $fetchResult = new FetchResult();
 
-        if (array_key_exists('uvindex', $fetchProcess->getMeasurementList()) && $fetchProcess->getCoord()) {
+        if (array_key_exists('uvindex', $fetchProcess->getPollutantList()) && $fetchProcess->getCoord()) {
             $this->queryUVIndex($fetchProcess->getCoord());
 
             $fetchResult->incCounter('uvindex');
         }
 
-        if (array_key_exists('temperature', $fetchProcess->getMeasurementList()) && $fetchProcess->getCoord()) {
+        if (array_key_exists('temperature', $fetchProcess->getPollutantList()) && $fetchProcess->getCoord()) {
             $this->queryTemperature($fetchProcess->getCoord());
 
             $fetchResult->incCounter('temperature');

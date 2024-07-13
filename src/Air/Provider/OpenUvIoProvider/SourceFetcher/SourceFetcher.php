@@ -22,7 +22,7 @@ class SourceFetcher implements SourceFetcherInterface
     {
         $fetchResult = new FetchResult();
 
-        if (array_key_exists('uvindex_max', $fetchProcess->getMeasurementList()) && $fetchProcess->getCoord()) {
+        if (array_key_exists('uvindex_max', $fetchProcess->getPollutantList()) && $fetchProcess->getCoord()) {
             $this->queryUVMaxIndex($fetchProcess->getCoord());
 
             $fetchResult->incCounter('uvindex_max');
