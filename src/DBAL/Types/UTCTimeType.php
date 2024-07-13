@@ -15,6 +15,7 @@ class UTCTimeType extends TimeType
         return new \DateTimeZone('UTC');
     }
 
+    #[\Override]
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if ($value instanceof \DateTime) {
@@ -24,6 +25,7 @@ class UTCTimeType extends TimeType
         return parent::convertToDatabaseValue($value, $platform);
     }
 
+    #[\Override]
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if (null === $value || $value instanceof \DateTime) {

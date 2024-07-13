@@ -9,8 +9,8 @@ use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 class StationCache implements StationCacheInterface
 {
-    final const TTL = 3;
-    final const CACHE_KEY = 'luft_stations';
+    final public const int TTL = 3;
+    final public const string CACHE_KEY = 'luft_stations';
     protected array $list = [];
     protected AbstractAdapter $cache;
 
@@ -25,11 +25,13 @@ class StationCache implements StationCacheInterface
         }
     }
 
+    #[\Override]
     public function getList(): array
     {
         return $this->list;
     }
 
+    #[\Override]
     public function getStationReferenceByCode(string $stationCode): ?Station
     {
         if (!$this->stationExists($stationCode)) {
@@ -41,6 +43,7 @@ class StationCache implements StationCacheInterface
         return $reference;
     }
 
+    #[\Override]
     public function getStationByCode(string $stationCode): ?Station
     {
         if (!$this->stationExists($stationCode)) {
@@ -50,6 +53,7 @@ class StationCache implements StationCacheInterface
         return $this->list[$stationCode];
     }
 
+    #[\Override]
     public function stationExists(string $stationCode): bool
     {
         return array_key_exists($stationCode, $this->list);

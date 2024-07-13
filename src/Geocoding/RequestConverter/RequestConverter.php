@@ -18,6 +18,7 @@ class RequestConverter implements RequestConverterInterface
     {
     }
 
+    #[\Override]
     public function getCoordByRequest(Request $request): ?CoordinateInterface
     {
         $latitude = (float) $request->query->get('latitude');

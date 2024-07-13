@@ -8,6 +8,7 @@ use App\Pollution\DataList\DataListInterface;
 
 class LuftdatenPollutantFactoryStrategy implements PollutantFactoryStrategyInterface
 {
+    #[\Override]
     public function getMissingPollutants(DataListInterface $dataList): array
     {
         $list = $dataList->getList();
@@ -30,6 +31,7 @@ class LuftdatenPollutantFactoryStrategy implements PollutantFactoryStrategyInter
         return $missingList;
     }
 
+    #[\Override]
     public function accepts(DataListInterface $dataList, Data $data = null): bool
     {
         if (!$data) {
@@ -49,6 +51,7 @@ class LuftdatenPollutantFactoryStrategy implements PollutantFactoryStrategyInter
         return $this->isProvidersDifferent($existingData, $data);
     }
 
+    #[\Override]
     public function isSatisfied(DataListInterface $dataList, int $pollutantId): bool
     {
         // Luftdaten only collects pm10 and pm25, so there is no need to wait for o3, no2 or so2
@@ -68,6 +71,7 @@ class LuftdatenPollutantFactoryStrategy implements PollutantFactoryStrategyInter
         return $dataList->countPollutant($pollutantId) >= 1;
     }
 
+    #[\Override]
     public function addDataToList(DataListInterface $dataList, Data $data = null): bool
     {
         if (!$data) {

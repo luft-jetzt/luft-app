@@ -2,12 +2,24 @@
 
 namespace App\Pollution\PollutionDataFactory;
 
+use App\Air\Measurement\MeasurementInterface;
 use App\Air\ViewModel\MeasurementViewModel;
+use App\Air\ViewModelFactory\MeasurementViewModelFactoryInterface;
 use App\Entity\Data;
+use App\Entity\Station;
+use App\Pollution\DataRetriever\DataRetrieverInterface;
+use App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
 use App\Pollution\UniqueStrategy\Hasher;
+use Doctrine\Persistence\ManagerRegistry;
 
 class PollutionDataFactory extends AbstractPollutionDataFactory
 {
+    public function __construct(protected ManagerRegistry $managerRegistry, MeasurementViewModelFactoryInterface $measurementViewModelFactory, DataRetrieverInterface $dataRetriever, PollutantFactoryStrategyInterface $strategy)
+    {
+        parent::__construct($measurementViewModelFactory, $dataRetriever, $strategy);
+    }
+
+    #[\Override]
     public function createDecoratedPollutantList(\DateTime $dateTime = null, \DateInterval $dateInterval = null, int $workingSetSize = 20): array
     {
         if (!$dateTime) {
@@ -20,6 +32,13 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
 
         $dateTime->sub($dateInterval);
 
+        /**
+        if ($this->coord instanceof Station) {
+            $dataList = $this->managerRegistry->getRepository(Data::class)->findCurrentDataForStation($this->coord);
+        } else {
+            $dataList = $this->managerRegistry->getRepository(Data::class)->findCurrentDataForCoord($this->coord);
+        }*/
+
         $dataList = $this->getDataListFromStationList($workingSetSize, $dateTime, $dateInterval);
 
         $measurementViewModelList = $this->getMeasurementViewModelListFromDataList($dataList);
@@ -27,6 +46,41 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
         $measurementViewModelList = $this->decoratePollutantList($measurementViewModelList);
 
         return $measurementViewModelList;
+    }
+
+    protected function getMeasurementViewModelListFromDataList(array $dataList): array
+    {
+        $measurementViewModelList = [];
+
+        /** @var array $data */
+        foreach ($dataList as $data) {
+            /** @var Data $dataElement */
+            foreach ($data as $dataElement) {
+                if ($dataElement) {
+                    $pollutant = $dataElement->getPollutant();
+
+                    if ($pollutant === MeasurementInterface::MEASUREMENT_UVINDEXMAX) {
+                        $pollutant = MeasurementInterface::MEASUREMENT_UVINDEX; // @todo this needs to be improved into a strategy
+                    }
+
+                    $measurementViewModelList[$pollutant][Hasher::hashData($dataElement)] = new MeasurementViewModel($dataElement);
+                }
+            }
+        }
+
+        return $measurementViewModelList;
+    }
+
+    protected function decoratePollutantList(array $pollutantList): array
+    {
+        return $this
+            ->reset()
+            ->measurementViewModelFactory
+            ->setCoord($this->coord)
+            ->setPollutantList($pollutantList)
+            ->decorate()
+            ->getPollutantList()
+        ;
     }
 
     protected function getDataListFromStationList(int $workingSetSize, \DateTime $fromDateTime = null, \DateInterval $interval = null): array
@@ -52,34 +106,5 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
         }
 
         return $this->dataList->getList();
-    }
-
-    protected function getMeasurementViewModelListFromDataList(array $dataList): array
-    {
-        $measurementViewModelList = [];
-
-        /** @var array $data */
-        foreach ($dataList as $data) {
-            /** @var Data $dataElement */
-            foreach ($data as $dataElement) {
-                if ($dataElement) {
-                    $measurementViewModelList[$dataElement->getPollutant()][Hasher::hashData($dataElement)] = new MeasurementViewModel($dataElement);
-                }
-            }
-        }
-
-        return $measurementViewModelList;
-    }
-
-    protected function decoratePollutantList(array $pollutantList): array
-    {
-        return $this
-            ->reset()
-            ->measurementViewModelFactory
-            ->setCoord($this->coord)
-            ->setPollutantList($pollutantList)
-            ->decorate()
-            ->getPollutantList()
-        ;
     }
 }

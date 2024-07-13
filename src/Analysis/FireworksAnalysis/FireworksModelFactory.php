@@ -12,6 +12,7 @@ class FireworksModelFactory implements FireworksModelFactoryInterface
     {
     }
 
+    #[\Override]
     public function convert(array $dataResult): array
     {
         $resultList = [];

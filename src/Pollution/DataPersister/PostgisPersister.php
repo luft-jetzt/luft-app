@@ -1,25 +1,23 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace App\Pollution\DataPersister;
 
-use App\Pollution\DataCache\DataCacheInterface;
 use App\Pollution\StationCache\StationCacheInterface;
 use App\Pollution\Value\Value;
 use App\Pollution\ValueDataConverter\ValueDataConverter;
+use Doctrine\Persistence\ManagerRegistry;
 
-class CachePersister extends AbstractPersister
+class PostgisPersister extends AbstractPersister
 {
-    public function __construct(protected DataCacheInterface $dataCache, StationCacheInterface $stationCache)
+    public function __construct(protected ManagerRegistry $managerRegistry, protected StationCacheInterface $stationCache)
     {
-        parent::__construct($stationCache);
+
     }
 
+    #[\Override]
     public function persistValues(array $values): PersisterInterface
     {
-        if (0 === count($values)) {
-            return $this;
-        }
+        $em = $this->managerRegistry->getManager();
 
         /** @var Value $value */
         foreach ($values as $value) {
@@ -28,24 +26,22 @@ class CachePersister extends AbstractPersister
 
                 $data = ValueDataConverter::convert($value, $station);
 
-                if (!$data) {
-                    continue;
-                }
-            } else {
-                continue;
+                $em->persist($data);
             }
-
-            $this->dataCache->addData($data);
         }
+
+        $em->flush();
 
         return $this;
     }
 
+    #[\Override]
     public function getNewValueList(): array
     {
         return [];
     }
 
+    #[\Override]
     public function reset(): PersisterInterface
     {
         return $this;

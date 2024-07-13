@@ -8,14 +8,16 @@ use App\Pollution\DataList\DataList;
 use App\Pollution\DataRetriever\HistoryElasticDataRetriever;
 use App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
 use App\Util\DateTimeUtil;
+use Doctrine\Persistence\ManagerRegistry;
 
 class HistoryDataFactory extends PollutionDataFactory implements HistoryDataFactoryInterface
 {
-    public function __construct(MeasurementViewModelFactoryInterface $viewModelFactory, HistoryElasticDataRetriever $dataRetriever, PollutantFactoryStrategyInterface $strategy)
+    public function __construct(ManagerRegistry $managerRegistry, MeasurementViewModelFactoryInterface $viewModelFactory, HistoryElasticDataRetriever $dataRetriever, PollutantFactoryStrategyInterface $strategy)
     {
-        parent::__construct($viewModelFactory, $dataRetriever, $strategy);
+        parent::__construct($managerRegistry, $viewModelFactory, $dataRetriever, $strategy);
     }
 
+    #[\Override]
     public function createDecoratedPollutantListForInterval(\DateTime $fromDateTime, \DateTime $untilDateTime): array
     {
         $this->getDataListsForInterval($fromDateTime, $untilDateTime);

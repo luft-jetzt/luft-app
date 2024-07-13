@@ -7,6 +7,7 @@ use Elastica\Query\BoolQuery;
 
 class FireworksAnalysis extends AbstractFireworksAnalysis
 {
+    #[\Override]
     public function analyze(): array
     {
         $pm10Query = new \Elastica\Query\Term(['pollutant' => MeasurementInterface::MEASUREMENT_PM10]);

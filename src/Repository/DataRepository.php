@@ -4,218 +4,133 @@ namespace App\Repository;
 
 use App\Entity\Data;
 use App\Entity\Station;
-use App\Provider\ProviderInterface;
+use Caldera\GeoBasic\Coord\CoordInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 class DataRepository extends EntityRepository
 {
-    public function findLatestDataForStationAndPollutant(Station $station, int $pollutant, \DateInterval $dateInterval, \DateTime $fromDateTime = null, string $order = 'DESC'): ?Data
+    public function findCurrentDataForCoord(CoordInterface $coord): array
     {
-        $qb = $this->createQueryBuilder('d');
+        $rsm = new ResultSetMapping();
+        $rsm
+            ->addEntityResult(Data::class, 'd')
+            ->addFieldResult('d', 'id', 'id')
+            ->addFieldResult('d', 'value', 'value')
+            ->addFieldResult('d', 'pollutant', 'pollutant')
+            ->addFieldResult('d', 'date_time', 'dateTime')
+            ->addJoinedEntityResult(Station::class, 's', 'd', 'station')
+            ->addFieldResult('s', 'station_id', 'id')
+            ->addFieldResult('s', 'title', 'title')
+            ->addFieldResult('s', 'latitude', 'latitude')
+            ->addFieldResult('s', 'longitude', 'longitude')
+            ->addFieldResult('s', 'station_code', 'stationCode')
+            ->addFieldResult('s', 'title', 'title')
+            ->addFieldResult('s', 'station_type', 'stationType')
+            ->addFieldResult('s', 'provider', 'provider')
+        ;
 
-        $qb
-            ->where($qb->expr()->eq('d.station', ':station'))
-            ->andWhere($qb->expr()->eq('d.pollutant', ':pollutant'))
-            ->orderBy('d.dateTime', ':order')
-            ->setMaxResults(1)
-            ->setParameter('station', $station)
-            ->setParameter('pollutant', $pollutant)
-            ->setParameter('order', $order);
+        $sql = 'SELECT DISTINCT ON (pollutant, provider) id, value, pollutant, date_time,
+                                             id AS station_id, title, latitude, longitude, station_code, station_type, provider,
+                                             coord <-> ST_MakePoint(?, ?) AS dist
+FROM current_data
+ORDER BY pollutant ASC, provider ASC, dist ASC, date_time DESC
+LIMIT 10';
 
-        if ($fromDateTime && $dateInterval) {
-            $qb
-                ->andWhere($qb->expr()->gt('d.dateTime', ':fromDateTime'))
-                ->andWhere($qb->expr()->lte('d.dateTime', ':untilDateTime'))
-                ->setParameter('fromDateTime', $fromDateTime)
-                ->setParameter('untilDateTime', $fromDateTime->add($dateInterval));
-        }
+        $query = $this->_em->createNativeQuery($sql, $rsm);
+        $query
+            ->setParameter(1, $coord->getLongitude())
+            ->setParameter(2, $coord->getLatitude())
+        ;
 
-        $query = $qb->getQuery();
-
-        return $query->getOneOrNullResult();
+        //dd($query->getResult());
+        return $query->getResult();
     }
 
-    public function findInInterval(\DateTimeInterface $fromDateTime = null, \DateTimeInterface $untilDateTime = null, ProviderInterface $provider = null): array
+    public function findCurrentDataForStation(Station $station): array
     {
-        $qb = $this->createQueryBuilder('d');
+        $rsm = new ResultSetMapping();
+        $rsm
+            ->addEntityResult(Data::class, 'd')
+            ->addFieldResult('d', 'id', 'id')
+            ->addFieldResult('d', 'value', 'value')
+            ->addFieldResult('d', 'pollutant', 'pollutant')
+            ->addFieldResult('d', 'date_time', 'dateTime')
+            ->addJoinedEntityResult(Station::class, 's', 'd', 'station')
+            ->addFieldResult('s', 'station_id', 'id')
+            ->addFieldResult('s', 'title', 'title')
+            ->addFieldResult('s', 'latitude', 'latitude')
+            ->addFieldResult('s', 'longitude', 'longitude')
+            ->addFieldResult('s', 'station_code', 'stationCode')
+            ->addFieldResult('s', 'title', 'title')
+            ->addFieldResult('s', 'station_type', 'stationType')
+            ->addFieldResult('s', 'provider', 'provider')
+        ;
 
-        if ($fromDateTime) {
-            $qb
-                ->andWhere($qb->expr()->gte('d.dateTime', ':fromDateTime'))
-                ->setParameter('fromDateTime', $fromDateTime);
-        }
+        $sql = 'SELECT DISTINCT ON (d.pollutant) d.id, d.value, d.pollutant, d.date_time,
+s.id AS station_id, s.title, s.latitude, s.longitude, s.station_code, s.title, s.station_type, s.provider
+FROM data AS d
+INNER JOIN station AS s ON s.id = d.station_id 
+WHERE s.id = ?
+ORDER BY d.pollutant ASC, d.date_time DESC
+LIMIT 10';
 
-        if ($untilDateTime) {
-            $qb
-                ->andWhere($qb->expr()->lte('d.dateTime', ':untilDateTime'))
-                ->setParameter('untilDateTime', $untilDateTime);
-        }
+        $query = $this->_em->createNativeQuery($sql, $rsm);
+        $query
+            ->setParameter(1, $station->getId())
+        ;
 
-        if ($provider) {
-            $qb
-                ->join('d.station', 's')
-                ->andWhere($qb->expr()->eq('s.provider', ':providerIdentifier'))
-                ->setParameter('providerIdentifier', $provider->getIdentifier());
-        }
+        //dd($query->getResult());
+        return $query->getResult();
+    }
 
-        $query = $qb->getQuery();
+    public function findDataForCoronaFireworksAnalysis(CoordInterface $coord): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm
+            ->addEntityResult(Data::class, 'd')
+            ->addFieldResult('d', 'data_id', 'id')
+            ->addFieldResult('d', 'value', 'value')
+            ->addFieldResult('d', 'pollutant', 'pollutant')
+            ->addFieldResult('d', 'date_time', 'dateTime')
+            ->addJoinedEntityResult(Station::class, 's', 'd', 'station')
+            ->addFieldResult('s', 'station_id', 'id')
+            ->addFieldResult('s', 'title', 'title')
+            ->addFieldResult('s', 'latitude', 'latitude')
+            ->addFieldResult('s', 'longitude', 'longitude')
+            ->addFieldResult('s', 'station_code', 'stationCode')
+            ->addFieldResult('s', 'title', 'title')
+            ->addFieldResult('s', 'station_type', 'stationType')
+            ->addFieldResult('s', 'provider', 'provider')
+        ;
+
+        $sql = 'SELECT DISTINCT ON (date_trunc(\'hour\', date_time)) data_id, value, pollutant, date_time, station_id, title, latitude, longitude, station_code, station_type, provider
+        FROM silvester_data
+        WHERE station_id IN (SELECT id FROM station WHERE coord <-> ST_MakePoint(?, ?) < 2 ORDER BY coord <-> ST_MakePoint(?, ?) ASC)
+        AND pollutant = 1
+        AND ((DATE_PART(\'day\', date_time) = 31 AND DATE_PART(\'hour\', date_time) >= 17) OR (DATE_PART(\'day\', date_time) = 1 AND DATE_PART(\'hour\', date_time) <= 7))
+        ORDER BY date_trunc(\'hour\', date_time), coord <-> ST_MakePoint(?, ?) ASC, value DESC';
+
+        $query = $this->_em->createNativeQuery($sql, $rsm);
+        $query
+            ->setParameter(1, $coord->getLongitude())
+            ->setParameter(2, $coord->getLatitude())
+            ->setParameter(3, $coord->getLongitude())
+            ->setParameter(4, $coord->getLatitude())
+            ->setParameter(5, $coord->getLongitude())
+            ->setParameter(6, $coord->getLatitude())
+        ;
 
         return $query->getResult();
     }
 
-    public function findTaggedInInterval(\DateTimeInterface $fromDateTime = null, \DateTimeInterface $untilDateTime = null, ProviderInterface $provider = null, string $tag = null): array
+    public function refreshMaterializedView(): void
     {
-        $qb = $this->createQueryBuilder('d');
+        $sql = 'REFRESH MATERIALIZED VIEW data_view;';
+        $sql = 'REFRESH MATERIALIZED VIEW silvester_data;';
+        $sql = 'REFRESH MATERIALIZED VIEW current_data;';
 
-        if ($fromDateTime) {
-            $qb
-                ->andWhere($qb->expr()->gte('d.dateTime', ':fromDateTime'))
-                ->setParameter('fromDateTime', $fromDateTime);
-        }
-
-        if ($untilDateTime) {
-            $qb
-                ->andWhere($qb->expr()->lte('d.dateTime', ':untilDateTime'))
-                ->setParameter('untilDateTime', $untilDateTime);
-        }
-
-        if ($provider) {
-            $qb
-                ->join('d.station', 's')
-                ->andWhere($qb->expr()->eq('s.provider', ':providerIdentifier'))
-                ->setParameter('providerIdentifier', $provider->getIdentifier());
-        }
-
-        $qb->andWhere($qb->expr()->isNotNull('d.tag'));
-
-        if ($tag) {
-            $qb
-                ->andWhere($qb->expr()->eq('d.tag', ':tag'))
-                ->setParameter('tag', $tag);
-        }
-
-        $query = $qb->getQuery();
-
-        return $query->getResult();
-    }
-
-    public function findUntaggedInInterval(\DateTimeInterface $fromDateTime = null, \DateTimeInterface $untilDateTime = null, ProviderInterface $provider = null, string $tag = null): array
-    {
-        $qb = $this->createQueryBuilder('d');
-
-        if ($fromDateTime) {
-            $qb
-                ->andWhere($qb->expr()->gte('d.dateTime', ':fromDateTime'))
-                ->setParameter('fromDateTime', $fromDateTime);
-        }
-
-        if ($untilDateTime) {
-            $qb
-                ->andWhere($qb->expr()->lte('d.dateTime', ':untilDateTime'))
-                ->setParameter('untilDateTime', $untilDateTime);
-        }
-
-        if ($provider) {
-            $qb
-                ->join('d.station', 's')
-                ->andWhere($qb->expr()->eq('s.provider', ':providerIdentifier'))
-                ->setParameter('providerIdentifier', $provider->getIdentifier());
-        }
-
-        $qb->andWhere($qb->expr()->isNull('d.tag'));
-
-        $query = $qb->getQuery();
-
-        return $query->getResult();
-    }
-
-    public function findHashsInterval(\DateTimeInterface $fromDateTime, \DateTimeInterface $untilDateTime, array $stationList = []): array
-    {
-        $sql = 'SELECT CONCAT(d.station_id, UNIX_TIMESTAMP(d.date_time), d.pollutant, d.value) AS hash FROM data AS d';
-
-        if (0 !== count($stationList)) {
-            $sql.= ' JOIN station AS s ON d.station_id = s.id';
-        }
-
-        $sql.= ' WHERE d.date_time >= \''.$fromDateTime->format('Y-m-d H:i:s').'\' AND d.date_time <= \''.$untilDateTime->format('Y-m-d H:i:s').'\'';
-
-        if (0 !== count($stationList)) {
-            $sql.= ' AND s.station_code IN (\''.implode('\', \'', $stationList).'\')';
-        }
-
-        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
-        $stmt->execute();
-
-        return $stmt->fetchAll();
-    }
-
-    public function findForAnalysis(Station $station, int $pollutant, \DateTimeInterface $fromDateTime = null, \DateTimeInterface $untilDateTime = null): array
-    {
-        $qb = $this->createQueryBuilder('d');
-
-        $qb
-            ->where($qb->expr()->eq('d.station', ':station'))
-            ->setParameter('station', $station)
-            ->andWhere($qb->expr()->eq('d.pollutant', ':pollutant'))
-            ->setParameter('pollutant', $pollutant)
-            ->leftJoin(
-                \App\Entity\Data::class,
-                'd2',
-                'WITH',
-                'd2.pollutant = d.pollutant AND d2.station = d.station AND d2.value > d.value'
-            )
-            ->andWhere($qb->expr()->isNull('d2.value'))
-            ->orderBy('d.dateTime','ASC');
-
-
-        $query = $qb->getQuery();
-
-        return $query->getResult();
-    }
-
-    public function deleteData(\DateTimeInterface $untilDateTime, ProviderInterface $provider = null, bool $tagged = false): int
-    {
-        if ($provider) {
-            $providerStationIdResult = $this->getEntityManager()->createQuery(
-                'SELECT s.id FROM App:Station s
-                WHERE s.provider = :provider'
-            )->setParameter('provider', $provider->getIdentifier())->execute();
-
-            $providerStationIdList = array_map(fn(array $stationRsult) => $stationRsult['id'], $providerStationIdResult);
-
-            if ($tagged) {
-                $query = $this->getEntityManager()->createQuery(
-                    'DELETE App:Data d 
-                    WHERE d.dateTime < :untilDateTime AND d.station IN (:stationIdList)')
-                    ->setParameter('untilDateTime', $untilDateTime)
-                    ->setParameter('stationIdList', $providerStationIdList)
-                ;
-            } else {
-                $query = $this->getEntityManager()->createQuery(
-                    'DELETE App:Data d 
-                    WHERE d.dateTime < :untilDateTime AND d.station IN (:stationIdList) AND d.tag IS NOT NULL')
-                    ->setParameter('untilDateTime', $untilDateTime)
-                    ->setParameter('stationIdList', $providerStationIdList)
-                ;
-            }
-
-            $result = $query->execute();
-        } elseif ($tagged) {
-            $query = $this->getEntityManager()->createQuery(
-                'DELETE App:Data d 
-                WHERE d.dateTime < :untilDateTime AND d.tag IS NOT NULL')
-                ->setParameter('untilDateTime', $untilDateTime);
-
-            $result = $query->execute();
-        } else {
-            $query = $this->getEntityManager()->createQuery(
-                'DELETE App:Data d 
-                WHERE d.dateTime < :untilDateTime AND d.tag IS NULL')
-                ->setParameter('untilDateTime', $untilDateTime);
-
-            $result = $query->execute();
-        }
-
-        return $result;
+        $query = $this->_em->createNativeQuery($sql, new ResultSetMapping());
+        $query->getResult();
     }
 }

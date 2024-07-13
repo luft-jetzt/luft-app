@@ -15,6 +15,7 @@ class DataList implements DataListInterface
         $this->reset();
     }
 
+    #[\Override]
     public function addData(Data $data): DataListInterface
     {
         $this->list[$data->getPollutant()][Hasher::hashData($data)] = $data;
@@ -22,6 +23,7 @@ class DataList implements DataListInterface
         return $this;
     }
 
+    #[\Override]
     public function hasPollutant(Data $data): bool
     {
         $pollutant = $data->getPollutant();
@@ -29,16 +31,19 @@ class DataList implements DataListInterface
         return 0 !== (is_countable($this->list[$pollutant]) ? count($this->list[$pollutant]) : 0);
     }
 
+    #[\Override]
     public function countPollutant(int $pollutant): int
     {
         return is_countable($this->list[$pollutant]) ? count($this->list[$pollutant]) : 0;
     }
 
+    #[\Override]
     public function getList(): array
     {
         return $this->list;
     }
 
+    #[\Override]
     public function reset(): DataListInterface
     {
         $this->list = [
@@ -51,7 +56,7 @@ class DataList implements DataListInterface
             MeasurementInterface::MEASUREMENT_CO2 => [],
             MeasurementInterface::MEASUREMENT_UVINDEX => [],
             MeasurementInterface::MEASUREMENT_TEMPERATURE => [],
-            MeasurementInterface::MEASUREMENT_CORONAINCIDENCE => [],
+            MeasurementInterface::MEASUREMENT_UVINDEXMAX => [],
         ];
 
         return $this;

@@ -18,7 +18,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
-    final const CONFIG_EXTS = '.{php,xml,yaml,yml}';
+    final public const string CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
     {
@@ -29,7 +29,6 @@ class Kernel extends BaseKernel
         $loader->load($confDir.'/{packages}/*'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{packages}/'.$this->environment.'/**/*'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{services}'.self::CONFIG_EXTS, 'glob');
-        $loader->load($confDir.'/services/*'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{services}_'.$this->environment.self::CONFIG_EXTS, 'glob');
 
         $container->addCompilerPass(new PollutionLevelCompilerPass());

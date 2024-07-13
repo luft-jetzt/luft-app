@@ -2,21 +2,22 @@
 
 namespace App\Air\Measurement;
 
-class CoronaIncidence extends AbstractMeasurement
+class UVIndexMax extends AbstractMeasurement
 {
     public function __construct()
     {
         $this->unitHtml = '';
         $this->unitPlain = '';
-        $this->name = 'Corona-Inzidenz';
-        $this->shortNameHtml = 'Corona-Inzidenz';
+        $this->name = 'maximaler UV-Index';
+        $this->shortNameHtml = 'UV-Index Max';
         $this->showOnMap = false;
         $this->includeInTweets = false;
-        $this->decimals = 0;
+        $this->decimals = 1;
     }
 
+    #[\Override]
     public function getIdentifier(): string
     {
-        return 'coronaincidence';
+        return 'uvindex_max';
     }
 }

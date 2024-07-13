@@ -19,6 +19,7 @@ services:
         bind:
             $graphCacheDirectory: '%env(GRAPH_CACHE_DIRECTORY)%'
             $openWeatherMapAppId: '%env(OPENWEATHERMAP_APPID)%'
+            $openUvIoKey: '%env(OPENUVIO_KEY)%'
             $redisHost: 'redis://%env(REDIS_HOST)%'
 
     # makes classes in src/ available to be used as services
@@ -34,9 +35,8 @@ services:
     # please note that last definitions always *replace* previous ones
 
     App\Pollution\DataRetriever\DataRetrieverInterface:
-        #alias: App\Pollution\DataRetriever\CachedElasticDataRetriever
+        #alias: App\Pollution\DataRetriever\PostgisDataRetriever
         alias: App\Pollution\DataRetriever\ChainedDataRetriever
-        #alias: App\Pollution\DataRetriever\ElasticDataRetriever
 
     App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface:
         alias: App\Pollution\PollutantFactoryStrategy\LuftdatenPollutantFactoryStrategy
@@ -52,8 +52,7 @@ services:
         alias: App\Pollution\UniqueStrategy\CacheUniqueStrategy
 
     App\Pollution\DataPersister\PersisterInterface:
-        #alias: App\Pollution\DataPersister\ElasticPersister
-        alias: App\Pollution\DataPersister\CachePersister
+        alias: App\Pollution\DataPersister\PostgisPersister
 
     App\Geocoding\Guesser\CityGuesser:
         $provider: '@bazinga_geocoder.provider.nominatim'
@@ -65,28 +64,6 @@ services:
         class: Symfony\Component\Cache\Psr16Cache
         arguments: ['@app.cache.geocoding']
 
-    App\DataPurger\DataPurgerInterface:
-        alias: App\DataPurger\FastDataPurger
-
-    App\Pollution\DataFinder\ElasticFinder:
-        arguments:
-            $searchable: '@fos_elastica.index.air_data'
-
-    App\Pollution\DataPersister\ElasticPersister:
-        arguments:
-            $index: '@fos_elastica.index.air_data'
-
-    App\Pollution\DataFinder\FinderInterface:
-        alias: App\Pollution\DataFinder\ElasticFinder
-
-    App\DataPurger\FastDataPurger:
-        arguments:
-            $client: '@fos_elastica.client.default'
-
-    App\Command\UpdateDataCommand:
-        arguments:
-            $client: '@fos_elastica.client.default'
-
-    App\Pollution\DataRetriever\CachedElasticDataRetriever:
-        arguments:
-            $dataFinder: '@fos_elastica.finder.air_station'
+    Jsor\Doctrine\PostGIS\Event\ORMSchemaEventSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }

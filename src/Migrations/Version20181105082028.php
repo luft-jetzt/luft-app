@@ -10,6 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20181105082028 extends AbstractMigration
 {
+    #[\Override]
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -21,6 +22,7 @@ final class Version20181105082028 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_9F39F8B134128B91 ON station (network_id)');
     }
 
+    #[\Override]
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs

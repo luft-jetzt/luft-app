@@ -7,6 +7,7 @@ use Twig\TwigTest;
 
 class TypeTwigExtension extends AbstractExtension
 {
+    #[\Override]
     public function getTests(): array
     {
         return [

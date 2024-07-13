@@ -7,7 +7,6 @@ use App\Util\EntityMerger\EntityMergerInterface;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\Persistence\ManagerRegistry;
 use JMS\Serializer\SerializerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,7 +62,7 @@ class StationApiController extends AbstractApiController
      *
      * <ul>
      * <li><code>uba_de</code>: Umweltbundesamt</li>
-     * <li><code>ld</code>: Luftdaten.info</li>
+     * <li><code>ld</code>: Sensor.Community</li>
      * <li><code>hqc</code>: HQCasanova</li>
      * <li><code>owm</code>: OpenWeatherMap</li>
      * </ul>
@@ -101,7 +100,8 @@ class StationApiController extends AbstractApiController
      * @OA\RequestBody(
      *     @Model(type=App\Entity\Station::class),
      *     description="Json of station data",
-     *     @OA\Schema(type="string")
+     *     required=true,
+     *     @OA\JsonContent()
      * )
      * @OA\Response(
      *   response=200,

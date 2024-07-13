@@ -61,8 +61,15 @@ class AnalysisController extends AbstractController
     /**
      * @Feature("analysis_fireworks")
      */
-    public function coronaFireworksAction(Request $request, RequestConverterInterface $requestConverter, CoronaFireworksAnalysisInterface $coronaFireworksAnalysis): Response
+    public function coronaFireworksAction(Request $request, RequestConverterInterface $requestConverter, CoronaFireworksAnalysisInterface $coronaFireworksAnalysis, SeoPageInterface $seoPage): Response
     {
+        $seoPage
+            ->setTwitterPreviewPhoto('/img/share/silvester/twitter.jpg')
+            ->setOpenGraphPreviewPhoto('/img/share/silvester/facebook.jpg')
+            ->setTitle('Feinstaub aus Silvester-Feuerwerken')
+            ->setDescription('Vergleiche die Feinstaub-Konzentration zum Jahreswechsel in deiner Umgebung.')
+        ;
+
         $coord = $requestConverter->getCoordByRequest($request);
 
         if (!$coord) {

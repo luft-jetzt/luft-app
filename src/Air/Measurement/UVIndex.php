@@ -8,13 +8,14 @@ class UVIndex extends AbstractMeasurement
     {
         $this->unitHtml = '';
         $this->unitPlain = '';
-        $this->name = 'UV-Index';
-        $this->shortNameHtml = 'UV-Index';
+        $this->name = 'aktueller UV-Index';
+        $this->shortNameHtml = 'aktueller UV-Index';
         $this->showOnMap = false;
         $this->includeInTweets = false;
-        $this->decimals = 0;
+        $this->decimals = 1;
     }
 
+    #[\Override]
     public function getIdentifier(): string
     {
         return 'uvindex';

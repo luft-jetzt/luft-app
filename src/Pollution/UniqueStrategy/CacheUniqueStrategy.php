@@ -11,16 +11,19 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
     {
     }
 
+    #[\Override]
     public function init(array $values): UniqueStrategyInterface
     {
         return $this;
     }
 
+    #[\Override]
     public function isDataDuplicate(Data $data): bool
     {
         return $this->importCache->has(Hasher::hashData($data));
     }
 
+    #[\Override]
     public function addData(Data $data): UniqueStrategyInterface
     {
         $this->importCache->set(Hasher::hashData($data), (int) $data->getDateTime()->format('U'));
@@ -28,6 +31,7 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
         return $this;
     }
 
+    #[\Override]
     public function addDataList(array $dataList): UniqueStrategyInterface
     {
         /** @var Data $data */
@@ -43,6 +47,7 @@ class CacheUniqueStrategy implements UniqueStrategyInterface
         return [];
     }
 
+    #[\Override]
     public function save(): UniqueStrategyInterface
     {
         return $this;

@@ -18,7 +18,7 @@ class StartDateTimeCalculator
             $year = static::calculateStartYear();
         }
 
-        $startDateTimeSpec = '%d-12-31 12:00:00';
+        $startDateTimeSpec = '%d-12-31 18:00:00';
         return new Carbon(sprintf($startDateTimeSpec, $year), new CarbonTimeZone('Europe/Berlin'));
     }
 
