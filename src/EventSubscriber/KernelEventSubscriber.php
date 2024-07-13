@@ -2,7 +2,7 @@
 
 namespace App\EventSubscriber;
 
-use App\SeoPage\SeoPageInterface;
+use App\Air\SeoPage\SeoPageInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;

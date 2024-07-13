@@ -2,7 +2,7 @@
 
 namespace App\Command\ImportCache;
 
-use App\Pollution\UniqueStrategy\UniqueStrategyInterface;
+use App\Air\UniqueStrategy\UniqueStrategyInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

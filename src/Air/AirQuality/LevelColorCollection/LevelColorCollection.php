@@ -4,9 +4,6 @@ namespace App\Air\AirQuality\LevelColorCollection;
 
 use App\Air\AirQuality\LevelColors\LevelColorsInterface;
 use App\Air\AirQuality\LevelColors\StandardLevelColors;
-use App\Util\ClassUtil;
-use Symfony\Component\String\ByteString;
-use function Symfony\Component\String\b;
 
 class LevelColorCollection implements LevelColorCollectionInterface
 {

@@ -2,17 +2,17 @@
 
 namespace App\Controller\Api;
 
+use App\Air\PollutionDataFactory\PollutionDataFactory;
+use App\Air\Util\EntityMerger\EntityMergerInterface;
 use App\Entity\City;
-use App\Pollution\PollutionDataFactory\PollutionDataFactory;
-use App\Util\EntityMerger\EntityMergerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use JMS\Serializer\SerializerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Annotations as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Annotations as OA;
 
 class CityApiController extends AbstractApiController
 {

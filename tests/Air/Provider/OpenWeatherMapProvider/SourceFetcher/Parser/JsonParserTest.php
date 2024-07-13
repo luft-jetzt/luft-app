@@ -2,9 +2,8 @@
 
 namespace App\Tests\Air\Provider\OpenWeatherMapProvider\SourceFetcher\Parser;
 
-use App\Air\Measurement\MeasurementInterface;
-use App\Pollution\Value\Value;
-use App\Provider\OpenWeatherMapProvider\SourceFetcher\Parser\JsonParser;
+use App\Air\Provider\OpenWeatherMapProvider\SourceFetcher\Parser\JsonParser;
+use App\Air\Value\Value;
 use PHPUnit\Framework\TestCase;
 
 class JsonParserTest extends TestCase

@@ -2,8 +2,8 @@
 
 namespace App\Command\ImportCache;
 
+use App\Air\UniqueStrategy\UniqueStrategyInterface;
 use App\Entity\Data;
-use App\Pollution\UniqueStrategy\UniqueStrategyInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

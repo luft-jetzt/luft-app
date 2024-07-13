@@ -2,11 +2,11 @@
 
 namespace App\Tests\Pollutant\PollutantFactoryStrategy;
 
+use App\Air\DataList\DataList;
 use App\Air\Measurement\MeasurementInterface;
+use App\Air\PollutantFactoryStrategy\SimplePollutantFactoryStrategy;
 use App\Entity\Data;
 use App\Entity\Station;
-use App\Pollution\DataList\DataList;
-use App\Pollution\PollutantFactoryStrategy\SimplePollutantFactoryStrategy;
 use PHPUnit\Framework\TestCase;
 
 class SimplePollutantFactoryStrategyTest extends TestCase

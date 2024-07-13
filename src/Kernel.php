@@ -5,15 +5,15 @@ namespace App;
 use App\Air\AirQuality\LevelColors\LevelColorsInterface;
 use App\Air\AirQuality\PollutionLevel\PollutionLevelInterface;
 use App\Air\Measurement\MeasurementInterface;
+use App\Air\Provider\ProviderInterface;
 use App\DependencyInjection\Compiler\LevelColorCompilerPass;
 use App\DependencyInjection\Compiler\PollutantCompilerPass;
 use App\DependencyInjection\Compiler\PollutionLevelCompilerPass;
 use App\DependencyInjection\Compiler\ProviderCompilerPass;
-use App\Provider\ProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
-use Symfony\Component\Config\Loader\LoaderInterface;
 
 class Kernel extends BaseKernel
 {

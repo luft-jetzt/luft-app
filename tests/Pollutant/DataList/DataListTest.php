@@ -2,10 +2,10 @@
 
 namespace App\Tests\Pollutant\DataList;
 
+use App\Air\DataList\DataList;
 use App\Air\Measurement\MeasurementInterface;
 use App\Entity\Data;
 use App\Entity\Station;
-use App\Pollution\DataList\DataList;
 use PHPUnit\Framework\TestCase;
 
 class DataListTest extends TestCase

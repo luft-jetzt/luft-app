@@ -2,9 +2,9 @@
 
 namespace App\Controller\Api;
 
+use App\Air\PollutionDataFactory\PollutionDataFactory;
 use App\Entity\Data;
 use App\Entity\Station;
-use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

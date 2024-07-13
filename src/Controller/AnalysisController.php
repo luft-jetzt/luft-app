@@ -2,16 +2,16 @@
 
 namespace App\Controller;
 
+use App\Air\Analysis\CoronaFireworksAnalysis\CoronaFireworksAnalysisInterface;
+use App\Air\Analysis\CoronaFireworksAnalysis\Slot\YearSlot;
+use App\Air\Analysis\FireworksAnalysis\FireworksAnalysisInterface;
+use App\Air\Analysis\KomfortofenAnalysis\KomfortofenAnalysisInterface;
+use App\Air\Geocoding\RequestConverter\RequestConverterInterface;
+use App\Air\SeoPage\SeoPageInterface;
 use App\Air\ViewModel\MeasurementViewModel;
-use App\Analysis\CoronaFireworksAnalysis\CoronaFireworksAnalysisInterface;
-use App\Analysis\CoronaFireworksAnalysis\Slot\YearSlot;
-use App\Analysis\FireworksAnalysis\FireworksAnalysisInterface;
-use App\Analysis\KomfortofenAnalysis\KomfortofenAnalysisInterface;
-use App\Geocoding\RequestConverter\RequestConverterInterface;
-use App\SeoPage\SeoPageInterface;
+use Flagception\Bundle\FlagceptionBundle\Annotations\Feature;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Flagception\Bundle\FlagceptionBundle\Annotations\Feature;
 
 /**
  * @Feature("analysis")
