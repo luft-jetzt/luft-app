@@ -16,6 +16,7 @@ abstract class AbstractStationLoader implements StationLoaderInterface
     {
     }
 
+    #[\Override]
     public function getNewStationList(): array
     {
         return $this->newStationList;

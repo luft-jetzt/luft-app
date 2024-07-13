@@ -6,6 +6,7 @@
 
  class DateTimeImmutableHandler implements SubscribingHandlerInterface
  {
+     #[\Override]
      public static function getSubscribingMethods()
      {
          return [

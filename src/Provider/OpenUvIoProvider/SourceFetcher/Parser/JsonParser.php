@@ -6,6 +6,7 @@ use App\Pollution\Value\Value;
 
 class JsonParser implements JsonParserInterface
 {
+    #[\Override]
     public function parseUVIndex(string $jsonData): Value
     {
         $jsonData = json_decode($jsonData, null, 512, JSON_THROW_ON_ERROR);
@@ -20,6 +21,7 @@ class JsonParser implements JsonParserInterface
         return $value;
     }
 
+    #[\Override]
     public function parseUVIndexMax(string $jsonData): Value
     {
         $jsonData = json_decode($jsonData, null, 512, JSON_THROW_ON_ERROR);

@@ -12,6 +12,7 @@ class ValueFetcher implements ValueFetcherInterface
     {
     }
 
+    #[\Override]
     public function fetchValues(CoordInterface $coord, array $yearList = [], int $startHour = 12, int $rangeInMinutes = 1440, float $maxDistance = 15): array
     {
         return $this->managerRegistry->getRepository(Data::class)->findDataForCoronaFireworksAnalysis($coord);

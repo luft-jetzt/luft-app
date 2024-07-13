@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class ProviderCompilerPass implements CompilerPassInterface
 {
+    #[\Override]
     public function process(ContainerBuilder $container)
     {
         if (!$container->has(ProviderListInterface::class)) {

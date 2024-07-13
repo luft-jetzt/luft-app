@@ -17,6 +17,7 @@ class LimitAnalysis implements LimitAnalysisInterface
     {
     }
 
+    #[\Override]
     public function setStation(Station $station): LimitAnalysisInterface
     {
         $this->station = $station;
@@ -24,6 +25,7 @@ class LimitAnalysis implements LimitAnalysisInterface
         return $this;
     }
 
+    #[\Override]
     public function setMeasurement(MeasurementInterface $measurement): LimitAnalysisInterface
     {
         $this->measurement = $measurement;
@@ -31,6 +33,7 @@ class LimitAnalysis implements LimitAnalysisInterface
         return $this;
     }
 
+    #[\Override]
     public function setFromDateTime(\DateTimeInterface $fromDateTime): LimitAnalysisInterface
     {
         $this->fromDateTime = $fromDateTime;
@@ -38,6 +41,7 @@ class LimitAnalysis implements LimitAnalysisInterface
         return $this;
     }
 
+    #[\Override]
     public function setUntilDateTime(\DateTimeInterface $untilDateTime): LimitAnalysisInterface
     {
         $this->untilDateTime = $untilDateTime;
@@ -57,6 +61,7 @@ class LimitAnalysis implements LimitAnalysisInterface
         return $resultList;
     }
 
+    #[\Override]
     public function analyze(): array
     {
         $stationQuery = new \Elastica\Query\Term(['station' => $this->station->getId()]);

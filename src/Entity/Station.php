@@ -274,11 +274,13 @@ class Station extends Coordinate
         return $this;
     }
 
+    #[\Override]
     public function getLatitude(): ?float
     {
         return $this->latitude;
     }
 
+    #[\Override]
     public function getLongitude(): ?float
     {
         return $this->longitude;

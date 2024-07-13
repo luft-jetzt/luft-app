@@ -62,6 +62,7 @@ class DisplayController extends AbstractController
         return $this->render('Default/no_stations.html.twig');
     }
 
+    #[\Override]
     protected function findCityForName(string $cityName): ?City
     {
         return $this->getDoctrine()->getRepository(City::class)->findOneByName($cityName);

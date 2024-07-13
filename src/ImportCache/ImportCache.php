@@ -18,6 +18,7 @@ class ImportCache implements ImportCacheInterface
         );
     }
 
+    #[\Override]
     public function get(string $key): ?int
     {
         $cacheItem = $this->cacheAdapter->getItem($key);
@@ -29,11 +30,13 @@ class ImportCache implements ImportCacheInterface
         return (int) $cacheItem->get();
     }
 
+    #[\Override]
     public function has(string $key): bool
     {
         return $this->cacheAdapter->hasItem($key);
     }
 
+    #[\Override]
     public function set(string $key, int $timestamp): void
     {
         $cacheItem = $this->cacheAdapter->getItem($key);
@@ -43,6 +46,7 @@ class ImportCache implements ImportCacheInterface
         $this->cacheAdapter->save($cacheItem);
     }
 
+    #[\Override]
     public function clear(): void
     {
         $this->cacheAdapter->clear();

@@ -17,6 +17,7 @@ class HistoryDataFactory extends PollutionDataFactory implements HistoryDataFact
         parent::__construct($managerRegistry, $viewModelFactory, $dataRetriever, $strategy);
     }
 
+    #[\Override]
     public function createDecoratedPollutantListForInterval(\DateTime $fromDateTime, \DateTime $untilDateTime): array
     {
         $this->getDataListsForInterval($fromDateTime, $untilDateTime);

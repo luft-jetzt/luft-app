@@ -8,6 +8,7 @@ use Geocoder\Query\GeocodeQuery;
 
 class Geocoder extends AbstractGeocoder
 {
+    #[\Override]
     public function query(string $queryString): array
     {
         $query = GeocodeQuery::create($queryString);
@@ -68,6 +69,7 @@ class Geocoder extends AbstractGeocoder
 
         return $result;
     }
+    #[\Override]
     public function queryZip(string $zipCode): AddressCollection
     {
         $query = GeocodeQuery::create(sprintf('%s, Germany', $zipCode));

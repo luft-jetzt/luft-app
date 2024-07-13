@@ -7,6 +7,7 @@ use App\Pollution\DataList\DataListInterface;
 
 class SimplePollutantFactoryStrategy implements PollutantFactoryStrategyInterface
 {
+    #[\Override]
     public function getMissingPollutants(DataListInterface $dataList): array
     {
         $list = $dataList->getList();
@@ -21,6 +22,7 @@ class SimplePollutantFactoryStrategy implements PollutantFactoryStrategyInterfac
         return $missingList;
     }
 
+    #[\Override]
     public function accepts(DataListInterface $dataList, Data $data = null): bool
     {
         if (!$data) {
@@ -30,6 +32,7 @@ class SimplePollutantFactoryStrategy implements PollutantFactoryStrategyInterfac
         return $data && !$this->isSatisfied($dataList, $data->getPollutant());
     }
 
+    #[\Override]
     public function addDataToList(DataListInterface $dataList, Data $data = null): bool
     {
         if (!$data) {
@@ -41,6 +44,7 @@ class SimplePollutantFactoryStrategy implements PollutantFactoryStrategyInterfac
         return true;
     }
 
+    #[\Override]
     public function isSatisfied(DataListInterface $dataList, int $pollutantId): bool
     {
         return $dataList->countPollutant($pollutantId) >= 1;

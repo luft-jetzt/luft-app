@@ -18,11 +18,13 @@ class OpenWeatherMapProvider extends AbstractProvider
     {
     }
 
+    #[\Override]
     public function getIdentifier(): string
     {
         return self::IDENTIFIER;
     }
 
+    #[\Override]
     public function providedMeasurements(): array
     {
         return [
@@ -31,6 +33,7 @@ class OpenWeatherMapProvider extends AbstractProvider
         ];
     }
 
+    #[\Override]
     public function fetchMeasurements(FetchProcess $fetchProcess): FetchResult
     {
         return $this->sourceFetcher->fetch($fetchProcess);

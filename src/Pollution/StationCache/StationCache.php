@@ -25,11 +25,13 @@ class StationCache implements StationCacheInterface
         }
     }
 
+    #[\Override]
     public function getList(): array
     {
         return $this->list;
     }
 
+    #[\Override]
     public function getStationReferenceByCode(string $stationCode): ?Station
     {
         if (!$this->stationExists($stationCode)) {
@@ -41,6 +43,7 @@ class StationCache implements StationCacheInterface
         return $reference;
     }
 
+    #[\Override]
     public function getStationByCode(string $stationCode): ?Station
     {
         if (!$this->stationExists($stationCode)) {
@@ -50,6 +53,7 @@ class StationCache implements StationCacheInterface
         return $this->list[$stationCode];
     }
 
+    #[\Override]
     public function stationExists(string $stationCode): bool
     {
         return array_key_exists($stationCode, $this->list);
