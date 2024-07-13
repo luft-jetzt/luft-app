@@ -20,6 +20,7 @@ abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInter
         $this->dataList = new DataList();
     }
 
+    #[\Override]
     public function setCoord(CoordinateInterface $coord): PollutionDataFactoryInterface
     {
         $this->coord = $coord;
@@ -27,6 +28,7 @@ abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInter
         return $this;
     }
 
+    #[\Override]
     public function setStation(Station $station): PollutionDataFactoryInterface
     {
         $this->coord = $station;
@@ -41,6 +43,7 @@ abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInter
         return $this;
     }
 
+    #[\Override]
     public function setStrategy(PollutantFactoryStrategyInterface $strategy): PollutionDataFactoryInterface
     {
         $this->strategy = $strategy;

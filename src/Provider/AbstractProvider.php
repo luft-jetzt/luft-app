@@ -8,11 +8,13 @@ abstract class AbstractProvider implements ProviderInterface
 {
     protected StationLoaderInterface $stationLoader;
 
+    #[\Override]
     public function getStationLoader(): StationLoaderInterface
     {
         return $this->stationLoader;
     }
 
+    #[\Override]
     public function providesMeasurement(MeasurementInterface $measurement): bool
     {
         return in_array($measurement::class, $this->providedMeasurements());

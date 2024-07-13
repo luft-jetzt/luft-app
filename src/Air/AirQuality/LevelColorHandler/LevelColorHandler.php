@@ -13,6 +13,7 @@ class LevelColorHandler implements LevelColorHandlerInterface
     {
     }
 
+    #[\Override]
     public function maxPollutionLevel(array $pollutionList): int
     {
         $maxLevel = 0;
@@ -30,6 +31,7 @@ class LevelColorHandler implements LevelColorHandlerInterface
         return $maxLevel;
     }
 
+    #[\Override]
     public function maxPollutionColorName(array $pollutionList): string
     {
         $maxLevel = $this->maxPollutionLevel($pollutionList);
@@ -37,16 +39,19 @@ class LevelColorHandler implements LevelColorHandlerInterface
         return $this->levelColorCollection->getLevelColorsList()['standard']->getBackgroundColorNames()[$maxLevel];
     }
 
+    #[\Override]
     public function pollutionColor(MeasurementViewModel $measurementViewModel): string
     {
         return $this->levelColorCollection->getLevelColorsForMeasurement($measurementViewModel->getMeasurement()->getIdentifier())->getBackgroundColors()[$measurementViewModel->getPollutionLevel()];
     }
 
+    #[\Override]
     public function pollutionColorName(MeasurementViewModel $measurementViewModel): string
     {
         return $this->levelColorCollection->getLevelColorsForMeasurement($measurementViewModel->getMeasurement()->getIdentifier())->getBackgroundColorNames()[$measurementViewModel->getPollutionLevel()];
     }
 
+    #[\Override]
     public function getLevelsForMeasurement(string $pollutantIdentifier): PollutionLevelInterface
     {
         $pollutionLevels = $this->airQualityCalculator->getPollutionLevels();

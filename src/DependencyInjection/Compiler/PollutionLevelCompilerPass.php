@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class PollutionLevelCompilerPass implements CompilerPassInterface
 {
+    #[\Override]
     public function process(ContainerBuilder $container): void
     {
         if (!$container->has(AirQualityCalculatorInterface::class)) {

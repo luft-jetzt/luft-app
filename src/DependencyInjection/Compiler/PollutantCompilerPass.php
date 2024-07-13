@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class PollutantCompilerPass implements CompilerPassInterface
 {
+    #[\Override]
     public function process(ContainerBuilder $container)
     {
         if (!$container->has(MeasurementListInterface::class)) {

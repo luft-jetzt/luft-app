@@ -10,6 +10,7 @@ use Http\Client\Exception\NetworkException;
 
 class CityGuesser extends AbstractGuesser implements CityGuesserInterface
 {
+    #[\Override]
     public function guessForLatLng(float $latitude, float $longitude): ?string
     {
         $coord = new Coord($latitude, $longitude);
@@ -17,6 +18,7 @@ class CityGuesser extends AbstractGuesser implements CityGuesserInterface
         return $this->guess($coord);
     }
 
+    #[\Override]
     public function guess(Coord $coord): ?string
     {
         $query = ReverseQuery::fromCoordinates($coord->getLatitude(), $coord->getLongitude());

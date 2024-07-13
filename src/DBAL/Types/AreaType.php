@@ -6,9 +6,9 @@ use Fresh\DoctrineEnumBundle\DBAL\Types\AbstractEnumType;
 
 final class AreaType extends AbstractEnumType
 {
-    public const URBAN = 'urban';
-    public const SUBURBAN = 'suburban';
-    public const RURAL = 'rural';
+    final public const string URBAN = 'urban';
+    final public const string SUBURBAN = 'suburban';
+    final public const string RURAL = 'rural';
 
     protected static array $choices = [
         self::URBAN => 'station.area.urban',

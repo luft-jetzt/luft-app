@@ -8,6 +8,7 @@ abstract class AbstractAirQualityCalculator implements AirQualityCalculatorInter
 {
     protected array $pollutionLevels = [];
 
+    #[\Override]
     public function addPollutionLevel(PollutionLevelInterface $pollutionLevel): AirQualityCalculatorInterface
     {
         $this->pollutionLevels[$pollutionLevel->getPollutionIdentifier()] = $pollutionLevel;
@@ -15,6 +16,7 @@ abstract class AbstractAirQualityCalculator implements AirQualityCalculatorInter
         return $this;
     }
 
+    #[\Override]
     public function getPollutionLevels(): array
     {
         return $this->pollutionLevels;

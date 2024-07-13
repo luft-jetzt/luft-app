@@ -20,6 +20,7 @@ class PopulateImportCacheCommand extends Command
 {
     protected UniqueStrategyInterface $cacheUniqueStrategy;
 
+    #[\Override]
     protected function configure(): void
     {
         $this->addOption('interval', 'i', InputOption::VALUE_REQUIRED, 'Provide an interval starting from today backwards', 'P3D');
@@ -32,6 +33,7 @@ class PopulateImportCacheCommand extends Command
         parent::__construct();
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $intervalSpec = $input->getOption('interval');

@@ -15,6 +15,7 @@ class UVIndexMax extends AbstractMeasurement
         $this->decimals = 1;
     }
 
+    #[\Override]
     public function getIdentifier(): string
     {
         return 'uvindex_max';

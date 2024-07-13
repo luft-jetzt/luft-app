@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as JMS;
 
 #[ORM\Table(name: 'station')]
-#[ORM\Entity(repositoryClass: 'App\Repository\StationRepository')]
+#[ORM\Entity(repositoryClass: \App\Repository\StationRepository::class)]
 #[UniqueEntity('stationCode')]
 #[JMS\ExclusionPolicy('ALL')]
 #[ORM\HasLifecycleCallbacks]
@@ -66,11 +66,11 @@ class Station extends Coordinate
     #[JMS\Expose]
     protected ?int $altitude = null;
 
-    #[DoctrineAssert\EnumType(entity: 'App\DBAL\Types\StationType')]
+    #[DoctrineAssert\EnumType(entity: \App\DBAL\Types\StationType::class)]
     #[ORM\Column(type: 'StationType', nullable: true)]
     protected ?string $stationType = null;
 
-    #[DoctrineAssert\EnumType(entity: 'App\DBAL\Types\AreaType')]
+    #[DoctrineAssert\EnumType(entity: \App\DBAL\Types\AreaType::class)]
     #[ORM\Column(type: 'AreaType', nullable: true)]
     protected ?string $areaType = null;
 
@@ -274,11 +274,13 @@ class Station extends Coordinate
         return $this;
     }
 
+    #[\Override]
     public function getLatitude(): ?float
     {
         return $this->latitude;
     }
 
+    #[\Override]
     public function getLongitude(): ?float
     {
         return $this->longitude;
