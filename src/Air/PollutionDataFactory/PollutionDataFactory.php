@@ -4,7 +4,6 @@ namespace App\Air\PollutionDataFactory;
 
 use App\Air\DataRetriever\DataRetrieverInterface;
 use App\Air\Pollutant\PollutantInterface;
-use App\Air\UniqueStrategy\Hasher;
 use App\Air\ViewModel\PollutantViewModel;
 use App\Air\ViewModelFactory\PollutantViewModelFactoryInterface;
 use App\Entity\Data;
@@ -65,7 +64,7 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
                         $pollutant = PollutantInterface::POLLUTANT_UVINDEX; // @todo this needs to be improved into a strategy
                     }
 
-                    $pollutantViewModelList[$pollutant][Hasher::hashData($dataElement)] = new PollutantViewModel($dataElement);
+                    $pollutantViewModelList[$pollutant][$dataElement->getId()] = new PollutantViewModel($dataElement);
                 }
             }
         }

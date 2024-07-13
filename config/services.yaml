@@ -44,9 +44,6 @@ services:
         arguments:
             $sonataSeoPage: '@sonata.seo.page.default'
 
-    App\Air\UniqueStrategy\UniqueStrategyInterface:
-        alias: App\Air\UniqueStrategy\CacheUniqueStrategy
-
     App\Air\Pollution\DataPersister\PersisterInterface:
         alias: App\Air\Pollution\DataPersister\PostgisPersister
 
