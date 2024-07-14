@@ -2,11 +2,10 @@
 
 namespace App\Controller\Api;
 
-use App\Air\PollutionDataFactory\PollutionDataFactory;
 use App\Entity\Data;
 use App\Entity\Station;
+use Caldera\LuftApiBundle\Serializer\LuftSerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use App\Serializer\LuftSerializerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class AnalysisApiController extends AbstractApiController

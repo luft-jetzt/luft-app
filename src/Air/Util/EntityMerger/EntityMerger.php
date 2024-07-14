@@ -6,11 +6,6 @@ use Symfony\Component\Serializer\Attribute\Ignore;
 
 class EntityMerger implements EntityMergerInterface
 {
-    public function __construct()
-    {
-
-    }
-
     #[\Override]
     public function merge(object $source, object $destination): object
     {

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\DBAL\Types\AreaType;
+use App\DBAL\Types\StationType;
 use Caldera\GeoBasic\Coordinate\Coordinate;
 use Doctrine\Common\Collections\ArrayCollection;
 use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
@@ -58,18 +60,17 @@ class Station extends Coordinate
     #[ORM\Column(type: 'integer', nullable: true)]
     protected ?int $altitude = null;
 
-    #[DoctrineAssert\EnumType(entity: \App\DBAL\Types\StationType::class)]
+    #[DoctrineAssert\EnumType(entity: StationType::class)]
     #[ORM\Column(type: 'StationType', nullable: true)]
     #[Ignore]
     protected ?string $stationType = null;
 
-    #[DoctrineAssert\EnumType(entity: \App\DBAL\Types\AreaType::class)]
+    #[DoctrineAssert\EnumType(entity: AreaType::class)]
     #[ORM\Column(type: 'AreaType', nullable: true)]
     #[Ignore]
     protected ?string $areaType = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    #[Ignore]
     protected ?string $provider = null;
 
     #[ORM\ManyToOne(targetEntity: 'Network', inversedBy: 'stations')]

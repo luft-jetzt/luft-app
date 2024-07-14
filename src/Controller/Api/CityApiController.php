@@ -2,22 +2,16 @@
 
 namespace App\Controller\Api;
 
-use App\Air\PollutionDataFactory\PollutionDataFactory;
 use App\Air\Util\EntityMerger\EntityMergerInterface;
 use App\Entity\City;
-use App\Pollution\PollutionDataFactory\PollutionDataFactory;
-use App\Serializer\LuftSerializerInterface;
-use App\Util\EntityMerger\EntityMergerInterface;
+use Caldera\LuftApiBundle\Serializer\LuftSerializerInterface;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\Persistence\ManagerRegistry;
-use JMS\Serializer\SerializerInterface;
 use Nelmio\ApiDocBundle\Model\Model;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use OpenApi\Attributes as OA;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class CityApiController extends AbstractApiController
 {
@@ -35,7 +29,6 @@ class CityApiController extends AbstractApiController
     )]
     public function displayCityAction(
         LuftSerializerInterface $serializer,
-        PollutionDataFactory $pollutionDataFactory,
         string $citySlug
     ): Response {
         $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
