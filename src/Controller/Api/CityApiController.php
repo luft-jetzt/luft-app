@@ -2,16 +2,16 @@
 
 namespace App\Controller\Api;
 
+use App\Air\PollutionDataFactory\PollutionDataFactory;
+use App\Air\Util\EntityMerger\EntityMergerInterface;
 use App\Entity\City;
-use App\Pollution\PollutionDataFactory\PollutionDataFactory;
-use App\Util\EntityMerger\EntityMergerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use JMS\Serializer\SerializerInterface;
+use Nelmio\ApiDocBundle\Model\Model;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 
 class CityApiController extends AbstractApiController
@@ -25,7 +25,7 @@ class CityApiController extends AbstractApiController
         description: "Retrieve details about a city identified by the provided slug",
         content: new OA\JsonContent(
             type: "array",
-            items: new OA\Items(ref: new Model(type: App\Air\ViewModel\MeasurementViewModel::class))
+            items: new OA\Items(ref: new Model(type: App\Air\ViewModel\PollutantViewModel::class))
         )
     )]
     public function displayCityAction(

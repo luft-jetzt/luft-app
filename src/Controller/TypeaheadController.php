@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
+use App\Air\Geocoding\Geocoder\GeocoderInterface;
 use App\Entity\City;
 use App\Entity\Station;
-use App\Geocoding\Geocoder\GeocoderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

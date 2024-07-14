@@ -2,8 +2,8 @@
 
 namespace App\Controller\Api;
 
+use App\Air\Util\EntityMerger\EntityMergerInterface;
 use App\Entity\Station;
-use App\Util\EntityMerger\EntityMergerInterface;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\Persistence\ManagerRegistry;
 use JMS\Serializer\SerializerInterface;

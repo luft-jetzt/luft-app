@@ -5,7 +5,7 @@ namespace App\Air\AirQuality\LevelColorHandler;
 use App\Air\AirQuality\Calculator\AirQualityCalculatorInterface;
 use App\Air\AirQuality\LevelColorCollection\LevelColorCollectionInterface;
 use App\Air\AirQuality\PollutionLevel\PollutionLevelInterface;
-use App\Air\ViewModel\MeasurementViewModel;
+use App\Air\ViewModel\PollutantViewModel;
 
 class LevelColorHandler implements LevelColorHandlerInterface
 {
@@ -20,10 +20,10 @@ class LevelColorHandler implements LevelColorHandlerInterface
 
         /** @var array $pollutant */
         foreach ($pollutionList as $pollutant) {
-            /** @var MeasurementViewModel $measurementViewModel */
-            foreach ($pollutant as $measurementViewModel) {
-                if ($maxLevel < $measurementViewModel->getPollutionLevel()) {
-                    $maxLevel = $measurementViewModel->getPollutionLevel();
+            /** @var PollutantViewModel $pollutantViewModel */
+            foreach ($pollutant as $pollutantViewModel) {
+                if ($maxLevel < $pollutantViewModel->getPollutionLevel()) {
+                    $maxLevel = $pollutantViewModel->getPollutionLevel();
                 }
             }
         }
@@ -40,19 +40,19 @@ class LevelColorHandler implements LevelColorHandlerInterface
     }
 
     #[\Override]
-    public function pollutionColor(MeasurementViewModel $measurementViewModel): string
+    public function pollutionColor(PollutantViewModel $pollutantViewModel): string
     {
-        return $this->levelColorCollection->getLevelColorsForMeasurement($measurementViewModel->getMeasurement()->getIdentifier())->getBackgroundColors()[$measurementViewModel->getPollutionLevel()];
+        return $this->levelColorCollection->getLevelColorsForPollutant($pollutantViewModel->getPollutant()->getIdentifier())->getBackgroundColors()[$pollutantViewModel->getPollutionLevel()];
     }
 
     #[\Override]
-    public function pollutionColorName(MeasurementViewModel $measurementViewModel): string
+    public function pollutionColorName(PollutantViewModel $pollutantViewModel): string
     {
-        return $this->levelColorCollection->getLevelColorsForMeasurement($measurementViewModel->getMeasurement()->getIdentifier())->getBackgroundColorNames()[$measurementViewModel->getPollutionLevel()];
+        return $this->levelColorCollection->getLevelColorsForPollutant($pollutantViewModel->getPollutant()->getIdentifier())->getBackgroundColorNames()[$pollutantViewModel->getPollutionLevel()];
     }
 
     #[\Override]
-    public function getLevelsForMeasurement(string $pollutantIdentifier): PollutionLevelInterface
+    public function getLevelsForPollutant(string $pollutantIdentifier): PollutionLevelInterface
     {
         $pollutionLevels = $this->airQualityCalculator->getPollutionLevels();
 

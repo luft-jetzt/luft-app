@@ -4,9 +4,6 @@ namespace App\Air\AirQuality\LevelColorCollection;
 
 use App\Air\AirQuality\LevelColors\LevelColorsInterface;
 use App\Air\AirQuality\LevelColors\StandardLevelColors;
-use App\Util\ClassUtil;
-use Symfony\Component\String\ByteString;
-use function Symfony\Component\String\b;
 
 class LevelColorCollection implements LevelColorCollectionInterface
 {
@@ -26,12 +23,12 @@ class LevelColorCollection implements LevelColorCollectionInterface
     }
 
     #[\Override]
-    public function getLevelColorsForMeasurement(string $measurementIdentifier): LevelColorsInterface
+    public function getLevelColorsForPollutant(string $pollutantIdentifier): LevelColorsInterface
     {
-        if (!array_key_exists($measurementIdentifier, $this->levelColorsList)) {
+        if (!array_key_exists($pollutantIdentifier, $this->levelColorsList)) {
             return new StandardLevelColors();
         }
 
-        return $this->levelColorsList[$measurementIdentifier];
+        return $this->levelColorsList[$pollutantIdentifier];
     }
 }
