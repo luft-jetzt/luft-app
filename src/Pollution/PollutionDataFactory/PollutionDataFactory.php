@@ -19,6 +19,7 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
         parent::__construct($measurementViewModelFactory, $dataRetriever, $strategy);
     }
 
+    #[\Override]
     public function createDecoratedPollutantList(\DateTime $dateTime = null, \DateInterval $dateInterval = null, int $workingSetSize = 20): array
     {
         if (!$dateTime) {

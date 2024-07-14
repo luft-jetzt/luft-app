@@ -20,6 +20,7 @@ class UVIndexLevelColors extends AbstractLevelColors
         5 => 'purple',
     ];
 
+    #[\Override]
     public function getIdentifier(): string
     {
         return 'uvindex';

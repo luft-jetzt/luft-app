@@ -11,6 +11,7 @@ class EntityMerger implements EntityMergerInterface
     {
     }
 
+    #[\Override]
     public function merge(object $source, object $destination): object
     {
         $reflectionClass = new \ReflectionClass($source);

@@ -11,24 +11,23 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class CityApiController extends AbstractApiController
 {
     /**
      * Retrieve details about a city identified by the provided slug.
-     *
-     * @OA\Tag(name="City")
-     * @OA\Response(
-     *   response=200,
-     *   description="Retrieve details about a city identified by the provided slug",
-     *   @OA\Schema(
-     *     type="array",
-     *     @OA\Items(ref=@Model(type=App\Air\ViewModel\MeasurementViewModel::class))
-     *   )
-     * )
      */
+    #[OA\Tag(name: "City")]
+    #[OA\Response(
+        response: 200,
+        description: "Retrieve details about a city identified by the provided slug",
+        content: new OA\JsonContent(
+            type: "array",
+            items: new OA\Items(ref: new Model(type: App\Air\ViewModel\MeasurementViewModel::class))
+        )
+    )]
     public function displayCityAction(
         SerializerInterface $serializer,
         PollutionDataFactory $pollutionDataFactory,
@@ -44,17 +43,16 @@ class CityApiController extends AbstractApiController
     }
 
     /**
-     * Get a list of all registered cities form the databases.
+     * Get a list of all registered cities from the databases.
      *
      * Note this endpoint will not return any pollution data.
-     *
-     * @OA\Tag(name="City")
-     * @OA\Response(
-     *   response=200,
-     *   description="Returns a list of all cities",
-     *   @Model(type=App\Entity\City::class)
-     * )
      */
+    #[OA\Tag(name: "City")]
+    #[OA\Response(
+        response: 200,
+        description: "Returns a list of all cities",
+        content: new Model(type: App\Entity\City::class)
+    )]
     public function cityAction(SerializerInterface $serializer): Response
     {
         $cityList = $this->getDoctrine()->getRepository(City::class)->findAll();
@@ -64,18 +62,17 @@ class CityApiController extends AbstractApiController
 
     /**
      * Adds a new city.
-     *
-     * @OA\Tag(name="City")
-     * @OA\RequestBody(
-     *     description="Json of city data",
-     *     @OA\JsonContent()
-     * )
-     * @OA\Response(
-     *   response=200,
-     *   description="Returns the new created city",
-     *   @Model(type=App\Entity\City::class)
-     * )
      */
+    #[OA\Tag(name: "City")]
+    #[OA\RequestBody(
+        description: "Json of city data",
+        content: new OA\JsonContent()
+    )]
+    #[OA\Response(
+        response: 200,
+        description: "Returns the newly created city",
+        content: new Model(type: App\Entity\City::class)
+    )]
     public function putCityAction(Request $request, SerializerInterface $serializer, ManagerRegistry $managerRegistry): Response
     {
         $requestBody = $request->getContent();
@@ -91,19 +88,18 @@ class CityApiController extends AbstractApiController
 
     /**
      * Updates city data.
-     *
-     * @OA\Tag(name="City")
-     * @OA\RequestBody(
-     *     description="Json of city data",
-     *     required=true,
-     *     @OA\JsonContent()
-     * )
-     * @OA\Response(
-     *   response=200,
-     *   description="Returns the updated station",
-     *   @Model(type=App\Entity\City::class)
-     * )
      */
+    #[OA\Tag(name: "City")]
+    #[OA\RequestBody(
+        description: "Json of city data",
+        required: true,
+        content: new OA\JsonContent()
+    )]
+    #[OA\Response(
+        response: 200,
+        description: "Returns the updated city",
+        content: new Model(type: App\Entity\City::class)
+    )]
     #[Entity('city', expr: 'repository.findOneBySlug(citySlug)')]
     public function postCityAction(Request $request, SerializerInterface $serializer, City $city, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
     {

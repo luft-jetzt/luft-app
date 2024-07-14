@@ -10,6 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20191025162108 extends AbstractMigration
 {
+    #[\Override]
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -18,6 +19,7 @@ final class Version20191025162108 extends AbstractMigration
         $this->addSql('ALTER TABLE station CHANGE uba_station_id uba_station_id INT DEFAULT NULL');
     }
 
+    #[\Override]
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs

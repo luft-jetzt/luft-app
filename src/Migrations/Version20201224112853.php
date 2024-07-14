@@ -10,6 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20201224112853 extends AbstractMigration
 {
+    #[\Override]
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -18,6 +19,7 @@ final class Version20201224112853 extends AbstractMigration
         $this->addSql('ALTER TABLE data ADD tag VARCHAR(32) DEFAULT NULL');
     }
 
+    #[\Override]
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs

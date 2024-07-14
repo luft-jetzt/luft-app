@@ -4,36 +4,35 @@ namespace App\Controller\Api;
 
 use App\Pollution\DataPersister\PersisterInterface;
 use App\Pollution\Value\Value;
+use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Annotations as OA;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ValueApiController extends AbstractApiController
 {
+    #[OA\Tag(name: "Value")]
+    #[OA\RequestBody(
+        description: "data value",
+        required: true,
+        content: new OA\JsonContent(
+            example: [
+                "station_code" => "DENI200",
+                "pollutant" => "CO",
+                "date_time" => 123456,
+                "value" => 4.2
+            ]
+        )
+    )]
+    #[OA\Response(
+        response: 200,
+        description: "Returns details for specified station",
+        content: new Model(type: App\Entity\Data::class)
+    )]
     /**
      * Add values of stations.
-     *
-     * @OA\Tag(name="Value")
-     * @OA\RequestBody(
-     *     required=true,
-     *     description="data value",
-     *     @OA\JsonContent(
-     *      example={
-     *       "station_code": "DENI200",
-     *       "pollutant": "CO",
-     *       "date_time": 123456,
-     *       "value": 4.2
-     *     }
-     *   )
-     * )
-     * @OA\Response(
-     *   response=200,
-     *   description="Returns details for specified station",
-     *   @Model(type=App\Entity\Data::class)
-     * )
      */
     public function putValueAction(Request $request, SerializerInterface $serializer, PersisterInterface $persister): Response
     {

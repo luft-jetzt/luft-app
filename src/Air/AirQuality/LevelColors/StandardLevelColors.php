@@ -24,6 +24,7 @@ class StandardLevelColors extends AbstractLevelColors
         6 => 'red',
     ];
 
+    #[\Override]
     public function getIdentifier(): string
     {
         return 'standard';

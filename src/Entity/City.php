@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table(name: 'city')]
-#[ORM\Entity(repositoryClass: 'App\Repository\CityRepository')]
+#[ORM\Entity(repositoryClass: \App\Repository\CityRepository::class)]
 class City implements \Stringable
 {
     #[ORM\Id]
@@ -115,6 +115,7 @@ class City implements \Stringable
         return $this;
     }
 
+    #[\Override]
     public function __toString(): string
     {
         return $this->name ?: '';

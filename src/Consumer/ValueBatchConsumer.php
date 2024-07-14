@@ -14,6 +14,7 @@ class ValueBatchConsumer implements BatchConsumerInterface
     {
     }
 
+    #[\Override]
     public function batchExecute(array $messages): array
     {
         $valueList = [];

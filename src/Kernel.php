@@ -18,7 +18,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
-    final const CONFIG_EXTS = '.{php,xml,yaml,yml}';
+    final public const string CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
     {

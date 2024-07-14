@@ -19,6 +19,7 @@ class ChainedDataRetriever implements DataRetrieverInterface
         ];
     }
 
+    #[\Override]
     public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId = null, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 250): array
     {
         $dataList = [];

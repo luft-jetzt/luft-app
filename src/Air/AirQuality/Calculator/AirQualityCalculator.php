@@ -8,6 +8,7 @@ use App\Air\AirQuality\PollutionLevel\PollutionLevelInterface;
 
 class AirQualityCalculator extends AbstractAirQualityCalculator
 {
+    #[\Override]
     public function calculatePollutantList(array $pollutantList): int
     {
         $maxLevel = 1;
@@ -27,6 +28,7 @@ class AirQualityCalculator extends AbstractAirQualityCalculator
         return $maxLevel;
     }
 
+    #[\Override]
     public function calculateViewModel(MeasurementViewModel $measurementViewModel): int
     {
         /** @var PollutionLevelInterface $level */

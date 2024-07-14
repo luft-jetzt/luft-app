@@ -4,6 +4,7 @@ namespace App\SeoPage;
 
 class SeoPage extends AbstractSeoPage
 {
+    #[\Override]
     public function setTitle(string $title): SeoPageInterface
     {
         $this->sonataSeoPage
@@ -13,6 +14,7 @@ class SeoPage extends AbstractSeoPage
         return $this;
     }
 
+    #[\Override]
     public function setDescription(string $description): SeoPageInterface
     {
         $this->sonataSeoPage
@@ -22,6 +24,7 @@ class SeoPage extends AbstractSeoPage
         return $this;
     }
 
+    #[\Override]
     public function setStandardPreviewPhoto(): SeoPageInterface
     {
         $this->sonataSeoPage
@@ -32,6 +35,7 @@ class SeoPage extends AbstractSeoPage
         return $this;
     }
 
+    #[\Override]
     public function setOpenGraphPreviewPhoto(string $assetUrl): SeoPageInterface
     {
         $this->sonataSeoPage->addMeta('property', 'og:image', $this->asset($assetUrl));
@@ -39,6 +43,7 @@ class SeoPage extends AbstractSeoPage
         return $this;
     }
 
+    #[\Override]
     public function setTwitterPreviewPhoto(string $assetUrl): SeoPageInterface
     {
         $this->sonataSeoPage
@@ -48,6 +53,7 @@ class SeoPage extends AbstractSeoPage
         return $this;
     }
 
+    #[\Override]
     public function setCanonicalLink(string $link): SeoPageInterface
     {
         $this->sonataSeoPage

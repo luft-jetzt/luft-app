@@ -12,17 +12,19 @@ use Caldera\GeoBasic\Coord\Coord;
 
 class OpenWeatherMapProvider extends AbstractProvider
 {
-    final const IDENTIFIER = 'owm';
+    final public const string IDENTIFIER = 'owm';
 
     public function __construct(protected SourceFetcher $sourceFetcher)
     {
     }
 
+    #[\Override]
     public function getIdentifier(): string
     {
         return self::IDENTIFIER;
     }
 
+    #[\Override]
     public function providedMeasurements(): array
     {
         return [
@@ -31,6 +33,7 @@ class OpenWeatherMapProvider extends AbstractProvider
         ];
     }
 
+    #[\Override]
     public function fetchMeasurements(FetchProcess $fetchProcess): FetchResult
     {
         return $this->sourceFetcher->fetch($fetchProcess);

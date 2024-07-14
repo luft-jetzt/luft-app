@@ -37,7 +37,7 @@ FROM current_data
 ORDER BY pollutant ASC, provider ASC, dist ASC, date_time DESC
 LIMIT 10';
 
-        $query = $this->_em->createNativeQuery($sql, $rsm);
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
         $query
             ->setParameter(1, $coord->getLongitude())
             ->setParameter(2, $coord->getLatitude())
@@ -75,7 +75,7 @@ WHERE s.id = ?
 ORDER BY d.pollutant ASC, d.date_time DESC
 LIMIT 10';
 
-        $query = $this->_em->createNativeQuery($sql, $rsm);
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
         $query
             ->setParameter(1, $station->getId())
         ;
@@ -111,7 +111,7 @@ LIMIT 10';
         AND ((DATE_PART(\'day\', date_time) = 31 AND DATE_PART(\'hour\', date_time) >= 17) OR (DATE_PART(\'day\', date_time) = 1 AND DATE_PART(\'hour\', date_time) <= 7))
         ORDER BY date_trunc(\'hour\', date_time), coord <-> ST_MakePoint(?, ?) ASC, value DESC';
 
-        $query = $this->_em->createNativeQuery($sql, $rsm);
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
         $query
             ->setParameter(1, $coord->getLongitude())
             ->setParameter(2, $coord->getLatitude())
@@ -130,7 +130,7 @@ LIMIT 10';
         $sql = 'REFRESH MATERIALIZED VIEW silvester_data;';
         $sql = 'REFRESH MATERIALIZED VIEW current_data;';
 
-        $query = $this->_em->createNativeQuery($sql, new ResultSetMapping());
+        $query = $this->getEntityManager()->createNativeQuery($sql, new ResultSetMapping());
         $query->getResult();
     }
 }

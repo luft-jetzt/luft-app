@@ -27,6 +27,7 @@ abstract class AbstractMeasurementViewModelFactory implements MeasurementViewMod
     {
     }
 
+    #[\Override]
     public function setPollutantList(array $pollutantList): MeasurementViewModelFactoryInterface
     {
         $this->pollutantList = $pollutantList;
@@ -34,6 +35,7 @@ abstract class AbstractMeasurementViewModelFactory implements MeasurementViewMod
         return $this;
     }
 
+    #[\Override]
     public function getPollutantList(): array
     {
         return $this->pollutantList;
@@ -55,6 +57,7 @@ abstract class AbstractMeasurementViewModelFactory implements MeasurementViewMod
         }
     }
 
+    #[\Override]
     public function setCoord(CoordinateInterface $coord): MeasurementViewModelFactoryInterface
     {
         $this->coord = $coord;
@@ -62,5 +65,6 @@ abstract class AbstractMeasurementViewModelFactory implements MeasurementViewMod
         return $this;
     }
 
+    #[\Override]
     abstract public function decorate(): MeasurementViewModelFactoryInterface;
 }
