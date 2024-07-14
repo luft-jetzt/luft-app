@@ -6,7 +6,7 @@ use Caldera\GeoBasic\Coord\CoordInterface;
 
 class ChainedDataRetriever implements DataRetrieverInterface
 {
-    protected array $chain = [];
+    private array $chain = [];
 
     public function __construct(
         PostgisDataRetriever $postgisDataRetriever,
@@ -20,13 +20,13 @@ class ChainedDataRetriever implements DataRetrieverInterface
     }
 
     #[\Override]
-    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId = null, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 250): array
+    public function retrieveDataForCoord(CoordInterface $coord): array
     {
         $dataList = [];
 
         /** @var DataRetrieverInterface $dataRetriever */
         foreach ($this->chain as $dataRetriever) {
-            $dataList = array_merge($dataList, $dataRetriever->retrieveDataForCoord($coord, $pollutantId, $fromDateTime, $dateInterval, $maxDistance, $maxResults));
+            $dataList = array_merge($dataList, $dataRetriever->retrieveDataForCoord($coord));
         }
 
         return $dataList;

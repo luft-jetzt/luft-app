@@ -4,8 +4,6 @@ namespace App\Air\PollutionDataFactory;
 
 use App\Air\DataRetriever\DataRetrieverInterface;
 use App\Air\Pollutant\PollutantInterface;
-use App\Air\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
-use App\Air\UniqueStrategy\Hasher;
 use App\Air\ViewModel\PollutantViewModel;
 use App\Air\ViewModelFactory\PollutantViewModelFactoryInterface;
 use App\Entity\Data;
@@ -13,9 +11,13 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class PollutionDataFactory extends AbstractPollutionDataFactory
 {
-    public function __construct(protected ManagerRegistry $managerRegistry, PollutantViewModelFactoryInterface $pollutantViewModelFactory, DataRetrieverInterface $dataRetriever, PollutantFactoryStrategyInterface $strategy)
+    public function __construct(
+        protected ManagerRegistry $managerRegistry,
+        PollutantViewModelFactoryInterface $pollutantViewModelFactory,
+        DataRetrieverInterface $dataRetriever,
+    )
     {
-        parent::__construct($pollutantViewModelFactory, $dataRetriever, $strategy);
+        parent::__construct($pollutantViewModelFactory, $dataRetriever);
     }
 
     #[\Override]
@@ -38,7 +40,7 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
             $dataList = $this->managerRegistry->getRepository(Data::class)->findCurrentDataForCoord($this->coord);
         }*/
 
-        $dataList = $this->getDataListFromStationList($workingSetSize, $dateTime, $dateInterval);
+        $dataList = $this->getDataListFromStationList();
 
         $pollutantViewModelList = $this->getPollutantViewModelList($dataList);
 
@@ -62,7 +64,7 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
                         $pollutant = PollutantInterface::POLLUTANT_UVINDEX; // @todo this needs to be improved into a strategy
                     }
 
-                    $pollutantViewModelList[$pollutant][Hasher::hashData($dataElement)] = new PollutantViewModel($dataElement);
+                    $pollutantViewModelList[$pollutant][$dataElement->getId()] = new PollutantViewModel($dataElement);
                 }
             }
         }
@@ -73,7 +75,6 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
     protected function decoratePollutantList(array $pollutantList): array
     {
         return $this
-            ->reset()
             ->pollutantViewModelFactory
             ->setCoord($this->coord)
             ->setPollutantList($pollutantList)
@@ -82,28 +83,23 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
         ;
     }
 
-    protected function getDataListFromStationList(int $workingSetSize, \DateTime $fromDateTime = null, \DateInterval $interval = null): array
+    protected function getDataListFromStationList(): array
     {
-        $this->dataList->reset();
+        $dataList = $this->dataRetriever->retrieveDataForCoord($this->coord);
 
-        $missingPollutants = $this->strategy->getMissingPollutants($this->dataList);
+        $pollutantDataList = [];
 
-        foreach ($missingPollutants as $pollutantId) {
-            $dataList = $this->dataRetriever->retrieveDataForCoord($this->coord, $pollutantId, $fromDateTime, $interval, 20.0, $workingSetSize);
+        /** @var Data $data */
+        foreach ($dataList as $data) {
+            $pollutantId = $data->getPollutant();
 
-            if (0 === count($dataList)) {
-                continue;
+            if (!array_key_exists($pollutantId, $pollutantDataList)) {
+                $pollutantDataList[$pollutantId] = [];
             }
 
-            while (!$this->strategy->isSatisfied($this->dataList, $pollutantId) && count($dataList)) {
-                $data = array_shift($dataList);
-
-                if ($this->strategy->accepts($this->dataList, $data)) {
-                    $this->strategy->addDataToList($this->dataList, $data);
-                }
-            }
+            $pollutantDataList[$data->getPollutant()][] = $data;
         }
 
-        return $this->dataList->getList();
+        return $pollutantDataList;
     }
 }

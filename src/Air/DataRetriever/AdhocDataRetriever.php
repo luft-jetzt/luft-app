@@ -15,43 +15,28 @@ use Caldera\GeoBasic\Coord\CoordInterface;
 class AdhocDataRetriever implements DataRetrieverInterface
 {
     public function __construct(
-        protected OwmSourceFetcher $owmSourceFetcher,
-        protected OwmJsonParserInterface $owmJsonParser,
-        protected OpenUvIoJsonParserInterface $openUvIoJsonParser,
-        protected OpenUvIoSourceFetcher $openUvIoSourceFetcher
+        private readonly OwmSourceFetcher $owmSourceFetcher,
+        private readonly OwmJsonParserInterface $owmJsonParser,
+        private readonly OpenUvIoJsonParserInterface $openUvIoJsonParser,
+        private readonly OpenUvIoSourceFetcher $openUvIoSourceFetcher
     )
     {
 
     }
 
     #[\Override]
-    public function retrieveDataForCoord(CoordInterface $coord, int $pollutantId = null, \DateTime $fromDateTime = null, \DateInterval $dateInterval = null, float $maxDistance = 20.0, int $maxResults = 250): array
+    public function retrieveDataForCoord(CoordInterface $coord): array
     {
         if ($coord instanceof Station) {
             return [];
         }
 
-        if (PollutantInterface::POLLUTANT_UVINDEXMAX === $pollutantId) {
-            $data = $this->retrieveUVIndexMaxForCoord($coord);
+        $maxUvIndex = $this->retrieveUVIndexMaxForCoord($coord);
+        $temperature = $this->retrieveTemperatureForCoord($coord);
 
-            if (!$data) {
-                return [];
-            }
+        $dataList = [$maxUvIndex, $temperature];
 
-            return [$data];
-        }
-
-        if (PollutantInterface::POLLUTANT_TEMPERATURE === $pollutantId) {
-            $data = $this->retrieveTemperatureForCoord($coord);
-
-            if (!$data) {
-                return [];
-            }
-
-            return [$data];
-        }
-
-        return [];
+        return array_filter($dataList);
     }
 
     protected function retrieveUVIndexMaxForCoord(CoordInterface $coord): ?Data

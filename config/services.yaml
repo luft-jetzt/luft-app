@@ -37,18 +37,12 @@ services:
     App\Air\DataRetriever\DataRetrieverInterface:
         alias: App\Air\DataRetriever\ChainedDataRetriever
 
-    App\Air\PollutantFactoryStrategy\PollutantFactoryStrategyInterface:
-        alias: App\Air\PollutantFactoryStrategy\LuftdatenPollutantFactoryStrategy
-
     App\Air\PollutionDataFactory\PollutionDataFactoryInterface:
         alias: App\Air\PollutionDataFactory\PollutionDataFactory
 
     App\Air\SeoPage\SeoPage:
         arguments:
             $sonataSeoPage: '@sonata.seo.page.default'
-
-    App\Air\UniqueStrategy\UniqueStrategyInterface:
-        alias: App\Air\UniqueStrategy\CacheUniqueStrategy
 
     App\Air\Pollution\DataPersister\PersisterInterface:
         alias: App\Air\Pollution\DataPersister\PostgisPersister
