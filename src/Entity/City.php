@@ -5,14 +5,16 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ORM\Table(name: 'city')]
-#[ORM\Entity(repositoryClass: \App\Repository\CityRepository::class)]
+#[ORM\Entity(repositoryClass: 'App\Repository\CityRepository')]
 class City implements \Stringable
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[Ignore]
     protected ?int $id = null;
 
     #[ORM\Column(type: 'datetime', nullable: false)]
@@ -28,6 +30,7 @@ class City implements \Stringable
     protected ?string $description = null;
 
     #[ORM\OneToMany(targetEntity: 'Station', mappedBy: 'city')]
+    #[Ignore]
     protected Collection $stations;
 
     public function __construct()

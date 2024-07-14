@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\Station;
+use App\Serializer\LuftSerializerInterface;
 use App\Util\EntityMerger\EntityMergerInterface;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -11,7 +12,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use OpenApi\Attributes as OA;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class StationApiController extends AbstractApiController
 {
@@ -31,7 +31,7 @@ class StationApiController extends AbstractApiController
         response: 200,
         description: "Returns details for specified station",
     )]
-    public function stationAction(Request $request, SerializerInterface $serializer, string $stationCode = null): Response
+    public function stationAction(Request $request, LuftSerializerInterface $serializer, string $stationCode = null): Response
     {
         $providerIdentifier = $request->get('provider');
 
@@ -75,7 +75,7 @@ class StationApiController extends AbstractApiController
         response: 200,
         description: "Returns a list of all known stations",
     )]
-    public function listStationAction(Request $request, SerializerInterface $serializer): Response
+    public function listStationAction(Request $request, LuftSerializerInterface $serializer): Response
     {
         $providerIdentifier = $request->get('provider');
 
@@ -101,7 +101,7 @@ class StationApiController extends AbstractApiController
         response: 200,
         description: "Returns the newly created station",
     )]
-    public function putStationAction(Request $request, SerializerInterface $serializer, ManagerRegistry $managerRegistry): Response
+    public function putStationAction(Request $request, LuftSerializerInterface $serializer, ManagerRegistry $managerRegistry): Response
     {
         $stationList = $this->deserializeRequestBodyToArray($request, $serializer, Station::class);
 
@@ -153,7 +153,7 @@ class StationApiController extends AbstractApiController
         description: "Returns the updated station",
         content: new Model(type: App\Entity\Station::class)
     )]
-    public function postStationAction(Request $request, SerializerInterface $serializer, #[MapEntity(expr: 'repository.findOneByStationCode(stationCode)')] Station $station, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
+    public function postStationAction(Request $request, LuftSerializerInterface $serializer, #[MapEntity(expr: 'repository.findOneByStationCode(stationCode)')] Station $station, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
     {
         $requestBody = $request->getContent();
 

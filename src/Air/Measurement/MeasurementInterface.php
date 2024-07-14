@@ -2,6 +2,8 @@
 
 namespace App\Air\Measurement;
 
+use Symfony\Component\Serializer\Attribute\Ignore;
+
 interface MeasurementInterface
 {
     public const MEASUREMENT_PM10 = 1;
@@ -25,7 +27,9 @@ interface MeasurementInterface
 
     public function getShortNameHtml(): string;
 
+    #[Ignore()]
     public function showOnMap(): bool;
 
+    #[Ignore()]
     public function includeInTweets(): bool;
 }

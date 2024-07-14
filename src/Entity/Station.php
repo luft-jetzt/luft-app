@@ -8,6 +8,7 @@ use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Jsor\Doctrine\PostGIS\Types\PostGISType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ORM\Table(name: 'station')]
 #[ORM\Entity(repositoryClass: \App\Repository\StationRepository::class)]
@@ -18,6 +19,7 @@ class Station extends Coordinate
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[Ignore]
     protected ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 12, unique: true, nullable: false)]
@@ -39,10 +41,12 @@ class Station extends Coordinate
         type: PostGISType::GEOMETRY,
         options: ['geometry_type' => 'POINT'],
     )]
+    #[Ignore]
     public ?string $coord = null;
 
     #[ORM\ManyToOne(targetEntity: 'City', inversedBy: 'stations')]
     #[ORM\JoinColumn(name: 'city_id', referencedColumnName: 'id')]
+    #[Ignore]
     protected ?City $city = null;
 
     #[ORM\Column(type: 'date', nullable: true)]
@@ -56,20 +60,25 @@ class Station extends Coordinate
 
     #[DoctrineAssert\EnumType(entity: \App\DBAL\Types\StationType::class)]
     #[ORM\Column(type: 'StationType', nullable: true)]
+    #[Ignore]
     protected ?string $stationType = null;
 
     #[DoctrineAssert\EnumType(entity: \App\DBAL\Types\AreaType::class)]
     #[ORM\Column(type: 'AreaType', nullable: true)]
+    #[Ignore]
     protected ?string $areaType = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
+    #[Ignore]
     protected ?string $provider = null;
 
     #[ORM\ManyToOne(targetEntity: 'Network', inversedBy: 'stations')]
     #[ORM\JoinColumn(name: 'network_id', referencedColumnName: 'id')]
+    #[Ignore]
     protected ?Network $network = null;
 
     #[ORM\OneToMany(targetEntity: 'Data', mappedBy: 'station')]
+    #[Ignore]
     protected $datas;
 
     public function __construct(float $latitude, float $longitude)

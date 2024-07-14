@@ -2,20 +2,23 @@
 
 namespace App\Air\ViewModel;
 
-use App\Air\Measurement\MeasurementInterface;
 use App\Entity\Data;
 use App\Entity\Station;
 
 class MeasurementViewModel
 {
     protected ? Station $station = null;
-    protected ?MeasurementInterface $measurement = null;
+
+    protected ?PollutantInterface $measurement = null;
+
     protected ?int $pollutionLevel = null;
+
     protected ?string $caption = null;
+
     protected ?float $distance = null;
 
     public function __construct(
-        protected ?\App\Entity\Data $data
+        protected ?Data $data
     )
     {
     }

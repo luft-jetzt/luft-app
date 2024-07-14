@@ -2,13 +2,13 @@
 
 namespace App\Util\EntityMerger;
 
-use Doctrine\Common\Annotations\Reader;
-use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 class EntityMerger implements EntityMergerInterface
 {
-    public function __construct(protected Reader $annotationReader)
+    public function __construct()
     {
+
     }
 
     #[\Override]
@@ -16,7 +16,7 @@ class EntityMerger implements EntityMergerInterface
     {
         $reflectionClass = new \ReflectionClass($source);
 
-        /** @var \ReflectionProperty $reflectionClass */
+        /** @var \ReflectionClass $reflectionClass */
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             if ($this->isPropertyExposed($reflectionProperty)) {
                 $setMethodName = $this->generateSetMethodName($reflectionProperty);
@@ -43,10 +43,10 @@ class EntityMerger implements EntityMergerInterface
 
     protected function isPropertyExposed(\ReflectionProperty $reflectionProperty): bool
     {
-        $propertyAnnotations = $this->annotationReader->getPropertyAnnotations($reflectionProperty);
+        $propertyAttributes = $reflectionProperty->getAttributes(Ignore::class);
 
-        foreach ($propertyAnnotations as $propertyAnnotation) {
-            if ($propertyAnnotation instanceof Ignore) {
+        foreach ($propertyAttributes as $propertyAttribute) {
+            if ($propertyAttribute instanceof Ignore) {
                 return false;
             }
         }

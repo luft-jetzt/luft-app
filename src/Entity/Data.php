@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ORM\Table(name: 'data')]
 #[ORM\Entity(repositoryClass: \App\Repository\DataRepository::class)]
@@ -11,6 +12,7 @@ class Data
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[Ignore]
     protected ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: 'Station', inversedBy: 'datas')]

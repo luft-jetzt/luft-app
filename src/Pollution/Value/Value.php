@@ -2,6 +2,8 @@
 
 namespace App\Pollution\Value;
 
+use JetBrains\PhpStorm\Deprecated;
+
 class Value
 {
     protected ?string $stationCode = null;
@@ -19,12 +21,26 @@ class Value
 
     }
 
+    #[Deprecated]
     public function getStation(): ?string
     {
         return $this->stationCode;
     }
 
+    #[Deprecated]
     public function setStation(string $stationCode): Value
+    {
+        $this->stationCode = $stationCode;
+
+        return $this;
+    }
+
+    public function getStationCode(): ?string
+    {
+        return $this->stationCode;
+    }
+
+    public function setStationCode(string $stationCode): Value
     {
         $this->stationCode = $stationCode;
 
