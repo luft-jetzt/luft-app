@@ -2,9 +2,9 @@
 
 namespace App\Controller\Api;
 
+use App\Air\PollutionDataFactory\PollutionDataFactory;
 use App\Entity\Data;
 use App\Entity\Station;
-use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Serializer\LuftSerializerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,8 +13,7 @@ class AnalysisApiController extends AbstractApiController
 {
     public function stationAnalysisAction(
         LuftSerializerInterface $serializer,
-        string $stationCode,
-        PollutionDataFactory $pollutionDataFactory
+        string $stationCode
     ): Response {
         $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
 

@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
+use App\Air\Geocoding\Guesser\CityGuesserInterface;
+use App\Air\Geocoding\RequestConverter\RequestConverterInterface;
+use App\Air\PollutionDataFactory\PollutionDataFactoryInterface;
+use App\Air\SeoPage\SeoPage;
 use App\Entity\City;
-use App\Geocoding\Guesser\CityGuesserInterface;
-use App\Geocoding\RequestConverter\RequestConverterInterface;
-use App\Pollution\PollutionDataFactory\PollutionDataFactoryInterface;
-use App\SeoPage\SeoPage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;

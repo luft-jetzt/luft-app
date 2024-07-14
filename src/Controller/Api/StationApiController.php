@@ -2,9 +2,9 @@
 
 namespace App\Controller\Api;
 
+use App\Air\Util\EntityMerger\EntityMergerInterface;
 use App\Entity\Station;
 use App\Serializer\LuftSerializerInterface;
-use App\Util\EntityMerger\EntityMergerInterface;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;

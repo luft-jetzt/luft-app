@@ -2,14 +2,14 @@
 
 namespace App\Controller\Api;
 
+use App\Air\Geocoding\RequestConverter\RequestConverterInterface;
+use App\Air\PollutionDataFactory\PollutionDataFactory;
 use App\Entity\Station;
-use App\Geocoding\RequestConverter\RequestConverterInterface;
-use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use App\Serializer\LuftSerializerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 
 class DisplayApiController extends AbstractApiController
@@ -43,7 +43,7 @@ class DisplayApiController extends AbstractApiController
         description: "Returns pollution data of specified station",
         content: new OA\JsonContent(
             type: "array",
-            items: new OA\Items(ref: new Model(type: App\Air\ViewModel\MeasurementViewModel::class))
+            items: new OA\Items(ref: new Model(type: App\Air\ViewModel\PollutantViewModel::class))
         )
     )]
     public function displayAction(
@@ -73,7 +73,7 @@ class DisplayApiController extends AbstractApiController
         description: "Retrieve pollution data for station",
         content: new OA\JsonContent(
             type: "array",
-            items: new OA\Items(ref: new Model(type: App\Air\ViewModel\MeasurementViewModel::class))
+            items: new OA\Items(ref: new Model(type: App\Air\ViewModel\PollutantViewModel::class))
         )
     )]
     #[OA\Parameter(

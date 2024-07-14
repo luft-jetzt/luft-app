@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\SeoPage\SeoPage;
+use App\Air\SeoPage\SeoPage;
 use Symfony\Component\HttpFoundation\Response;
 
 class FrontpageController extends AbstractController

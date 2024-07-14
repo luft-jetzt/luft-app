@@ -2,14 +2,13 @@
 
 namespace App\Controller;
 
-use App\Analysis\LimitAnalysis\LimitAnalysisInterface;
+use App\Air\Analysis\LimitAnalysis\LimitAnalysisInterface;
+use App\Air\PollutionDataFactory\HistoryDataFactoryInterface;
+use App\Air\PollutionDataFactory\PollutionDataFactory;
+use App\Air\SeoPage\SeoPageInterface;
 use App\Entity\Station;
-use App\Pollution\PollutionDataFactory\HistoryDataFactoryInterface;
-use App\Pollution\PollutionDataFactory\PollutionDataFactory;
-use App\SeoPage\SeoPageInterface;
 use Carbon\Carbon;
 use Flagception\Bundle\FlagceptionBundle\Annotations\Feature;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

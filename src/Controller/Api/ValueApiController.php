@@ -2,14 +2,14 @@
 
 namespace App\Controller\Api;
 
-use App\Pollution\DataPersister\PersisterInterface;
-use App\Pollution\Value\Value;
+use App\Air\DataPersister\PersisterInterface;
+use App\Air\Value\Value;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use App\Serializer\LuftSerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Nelmio\ApiDocBundle\Annotation\Model;
 
 class ValueApiController extends AbstractApiController
 {

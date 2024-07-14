@@ -34,30 +34,23 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\Pollution\DataRetriever\DataRetrieverInterface:
-        #alias: App\Pollution\DataRetriever\PostgisDataRetriever
-        alias: App\Pollution\DataRetriever\ChainedDataRetriever
+    App\Air\DataRetriever\DataRetrieverInterface:
+        alias: App\Air\DataRetriever\ChainedDataRetriever
 
-    App\Pollution\PollutantFactoryStrategy\PollutantFactoryStrategyInterface:
-        alias: App\Pollution\PollutantFactoryStrategy\LuftdatenPollutantFactoryStrategy
+    App\Air\PollutionDataFactory\PollutionDataFactoryInterface:
+        alias: App\Air\PollutionDataFactory\PollutionDataFactory
 
-    App\Pollution\PollutionDataFactory\PollutionDataFactoryInterface:
-        alias: App\Pollution\PollutionDataFactory\PollutionDataFactory
-
-    App\SeoPage\SeoPage:
+    App\Air\SeoPage\SeoPage:
         arguments:
             $sonataSeoPage: '@sonata.seo.page.default'
 
-    App\Pollution\UniqueStrategy\UniqueStrategyInterface:
-        alias: App\Pollution\UniqueStrategy\CacheUniqueStrategy
+    App\Air\Pollution\DataPersister\PersisterInterface:
+        alias: App\Air\Pollution\DataPersister\PostgisPersister
 
-    App\Pollution\DataPersister\PersisterInterface:
-        alias: App\Pollution\DataPersister\PostgisPersister
-
-    App\Geocoding\Guesser\CityGuesser:
+    App\Air\Geocoding\Guesser\CityGuesser:
         $provider: '@bazinga_geocoder.provider.nominatim'
 
-    App\Geocoding\Geocoder\Geocoder:
+    App\Air\Geocoding\Geocoder\Geocoder:
         $provider: '@bazinga_geocoder.provider.nominatim'
 
     app.geocoding_cache:

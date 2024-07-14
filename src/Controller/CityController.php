@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
+use App\Air\PollutionDataFactory\PollutionDataFactory;
+use App\Air\SeoPage\SeoPage;
 use App\Entity\City;
-use App\Pollution\PollutionDataFactory\PollutionDataFactory;
-use App\SeoPage\SeoPage;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;

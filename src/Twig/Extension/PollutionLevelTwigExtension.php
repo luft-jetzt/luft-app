@@ -5,7 +5,7 @@ namespace App\Twig\Extension;
 use App\Air\AirQuality\Calculator\AirQualityCalculatorInterface;
 use App\Air\AirQuality\LevelColorHandler\LevelColorHandlerInterface;
 use App\Air\AirQuality\PollutionLevel\PollutionLevelInterface;
-use App\Air\ViewModel\MeasurementViewModel;
+use App\Air\ViewModel\PollutantViewModel;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -23,7 +23,7 @@ class PollutionLevelTwigExtension extends AbstractExtension
             new TwigFunction('max_pollution_color_name', $this->maxPollutionColorName(...), ['is_safe' => ['raw']]),
             new TwigFunction('pollution_color', $this->pollutionColor(...), ['is_safe' => ['raw']]),
             new TwigFunction('pollution_color_name', $this->pollutionColorName(...), ['is_safe' => ['raw']]),
-            new TwigFunction('pollution_levels', $this->getLevelsForMeasurement(...), ['is_safe' => ['raw']]),
+            new TwigFunction('pollution_levels', $this->getLevelsForPollutant(...), ['is_safe' => ['raw']]),
         ];
     }
 
@@ -36,19 +36,19 @@ class PollutionLevelTwigExtension extends AbstractExtension
     {
         return $this->levelColorHandler->maxPollutionColorName($pollutionList);
     }
-    public function pollutionColor(MeasurementViewModel $measurementViewModel): string
+    public function pollutionColor(PollutantViewModel $pollutantViewModel): string
     {
-        return $this->levelColorHandler->pollutionColor($measurementViewModel);
+        return $this->levelColorHandler->pollutionColor($pollutantViewModel);
     }
 
-    public function pollutionColorName(MeasurementViewModel $measurementViewModel): string
+    public function pollutionColorName(PollutantViewModel $pollutantViewModel): string
     {
-        return $this->levelColorHandler->pollutionColorName($measurementViewModel);
+        return $this->levelColorHandler->pollutionColorName($pollutantViewModel);
     }
 
-    public function getLevelsForMeasurement(string $pollutantIdentifier): PollutionLevelInterface
+    public function getLevelsForPollutant(string $pollutantIdentifier): PollutionLevelInterface
     {
-        return $this->levelColorHandler->getLevelsForMeasurement($pollutantIdentifier);
+        return $this->levelColorHandler->getLevelsForPollutant($pollutantIdentifier);
     }
 
     public function getName(): string
