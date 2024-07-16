@@ -4,7 +4,6 @@ namespace App\Controller\Api;
 
 use App\Air\DataPersister\PersisterInterface;
 use App\Air\Value\Value;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use App\Air\Serializer\LuftSerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,7 +28,6 @@ class ValueApiController extends AbstractApiController
     #[OA\Response(
         response: 200,
         description: "Returns details for specified station",
-        content: new Model(type: App\Entity\Data::class)
     )]
     /**
      * Add values of stations.

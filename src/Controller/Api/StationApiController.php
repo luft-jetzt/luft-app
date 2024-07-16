@@ -151,7 +151,6 @@ class StationApiController extends AbstractApiController
     #[OA\Response(
         response: 200,
         description: "Returns the updated station",
-        content: new Model(type: App\Entity\Station::class)
     )]
     public function postStationAction(Request $request, LuftSerializerInterface $serializer, #[MapEntity(expr: 'repository.findOneByStationCode(stationCode)')] Station $station, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
     {

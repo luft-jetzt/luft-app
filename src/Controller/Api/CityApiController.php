@@ -5,9 +5,8 @@ namespace App\Controller\Api;
 use App\Air\Util\EntityMerger\EntityMergerInterface;
 use App\Entity\City;
 use Caldera\LuftApiBundle\Serializer\LuftSerializerInterface;
-use Doctrine\ORM\Mapping\Entity;
 use Doctrine\Persistence\ManagerRegistry;
-use Nelmio\ApiDocBundle\Model\Model;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +23,7 @@ class CityApiController extends AbstractApiController
         description: "Retrieve details about a city identified by the provided slug",
         content: new OA\JsonContent(
             type: "array",
-            items: new OA\Items(ref: new Model(type: App\Air\ViewModel\PollutantViewModel::class))
+            items: new OA\Items()
         )
     )]
     public function displayCityAction(
@@ -49,7 +48,6 @@ class CityApiController extends AbstractApiController
     #[OA\Response(
         response: 200,
         description: "Returns a list of all cities",
-        content: new Model(type: App\Entity\City::class)
     )]
     public function cityAction(LuftSerializerInterface $serializer): Response
     {
@@ -69,7 +67,6 @@ class CityApiController extends AbstractApiController
     #[OA\Response(
         response: 200,
         description: "Returns the newly created city",
-        content: new Model(type: App\Entity\City::class)
     )]
     public function putCityAction(Request $request, LuftSerializerInterface $serializer, ManagerRegistry $managerRegistry): Response
     {
@@ -96,7 +93,6 @@ class CityApiController extends AbstractApiController
     #[OA\Response(
         response: 200,
         description: "Returns the updated city",
-        content: new Model(type: App\Entity\City::class)
     )]
     #[Entity('city', expr: 'repository.findOneBySlug(citySlug)')]
     public function postCityAction(Request $request, LuftSerializerInterface $serializer, City $city, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
