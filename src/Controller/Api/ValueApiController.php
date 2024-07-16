@@ -6,7 +6,7 @@ use App\Air\DataPersister\PersisterInterface;
 use App\Air\Value\Value;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
-use App\Serializer\LuftSerializerInterface;
+use App\Air\Serializer\LuftSerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

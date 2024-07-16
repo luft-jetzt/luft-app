@@ -2,8 +2,8 @@
 
 namespace App\Controller\Api;
 
+use App\Air\Serializer\LuftSerializerInterface;
 use App\Controller\AbstractController;
-use App\Serializer\LuftSerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractApiController extends AbstractController
