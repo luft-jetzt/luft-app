@@ -34,6 +34,10 @@
         <default key="_controller">App\Controller\Api\CityApiController::putCityAction</default>
     </route>
 
+    <route id="api_value_put" path="/api/value" methods="PUT">
+        <default key="_controller">App\Controller\Api\ValueApiController::putValueAction</default>
+    </route>
+    
     <route id="api_city" path="/api/{citySlug}" methods="GET">
         <default key="_controller">App\Controller\Api\CityApiController::displayCityAction</default>
         <requirement key="citySlug">^([A-Za-z-]+)$</requirement>
@@ -56,9 +60,5 @@
     
     <route id="api_display" path="/api" methods="GET">
         <default key="_controller">App\Controller\Api\DisplayApiController::displayAction</default>
-    </route>
-
-    <route id="api_value_put" path="/api/value" methods="PUT">
-        <default key="_controller">App\Controller\Api\ValueApiController::putValueAction</default>
     </route>
 </routes>
