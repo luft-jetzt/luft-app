@@ -33,6 +33,8 @@ class LuftSerializer implements LuftSerializerInterface
 
     public function deserialize(mixed $data, string $type, string $format = self::FORMAT, array $context = []): mixed
     {
+        $context[AbstractObjectNormalizer::SKIP_NULL_VALUES] = true;
+
         return $this->serializer->deserialize($data, $type, $format, $context);
     }
 
