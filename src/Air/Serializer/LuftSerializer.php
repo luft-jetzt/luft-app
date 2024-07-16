@@ -24,14 +24,14 @@ class LuftSerializer implements LuftSerializerInterface
         $this->createSerializer();
     }
 
-    public function serialize(mixed $data, string $format, array $context = []): string
+    public function serialize(mixed $data, string $format = self::FORMAT, array $context = []): string
     {
         $context[AbstractObjectNormalizer::SKIP_NULL_VALUES] = true;
 
         return $this->serializer->serialize($data, $format, $context);
     }
 
-    public function deserialize(mixed $data, string $type, string $format, array $context = []): mixed
+    public function deserialize(mixed $data, string $type, string $format = self::FORMAT, array $context = []): mixed
     {
         return $this->serializer->deserialize($data, $type, $format, $context);
     }
