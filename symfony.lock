@@ -150,12 +150,6 @@
     "guzzlehttp/psr7": {
         "version": "1.4.2"
     },
-    "jms/metadata": {
-        "version": "1.6.0"
-    },
-    "jms/serializer": {
-        "version": "1.11.0"
-    },
     "jsor/doctrine-postgis": {
         "version": "2.1",
         "recipe": {
