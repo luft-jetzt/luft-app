@@ -58,7 +58,7 @@ class DisplayApiController extends AbstractApiController
 
         $pollutantList = $pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();
 
-        return new JsonResponse($this->serializer->serialize($this->unpackPollutantList($pollutantList), 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($this->unpackPollutantList($pollutantList), 'json'), Response::HTTP_OK, [], true);
     }
 
 
@@ -92,6 +92,6 @@ class DisplayApiController extends AbstractApiController
 
         $pollutantList = $pollutionDataFactory->setStation($station)->createDecoratedPollutantList();
 
-        return new JsonResponse($this->serializer->serialize($this->unpackPollutantList($pollutantList), 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($this->unpackPollutantList($pollutantList), 'json'), Response::HTTP_OK, [], true);
     }
 }

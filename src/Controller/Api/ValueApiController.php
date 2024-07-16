@@ -5,7 +5,6 @@ namespace App\Controller\Api;
 use App\Air\DataPersister\PersisterInterface;
 use App\Air\Value\Value;
 use OpenApi\Attributes as OA;
-use App\Air\Serializer\LuftSerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -40,14 +40,14 @@ class StationApiController extends AbstractApiController
                 throw $this->createNotFoundException();
             }
 
-            return new JsonResponse($this->serializer->serialize($station, 'json'), 200, [], true);
+            return new JsonResponse($this->serializer->serialize($station, 'json'), Response::HTTP_OK, [], true);
         } elseif ($providerIdentifier) {
             $stationList = $this->managerRegistry->getRepository(Station::class)->findActiveStationsByProvider($providerIdentifier);
         } else {
             $stationList = $this->managerRegistry->getRepository(Station::class)->findAll();
         }
 
-        return new JsonResponse($this->serializer->serialize($stationList, 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($stationList, 'json'), Response::HTTP_OK, [], true);
     }
 
     /**
@@ -83,7 +83,7 @@ class StationApiController extends AbstractApiController
             $stationList = $this->managerRegistry->getRepository(Station::class)->findAll();
         }
 
-        return new JsonResponse($this->serializer->serialize($stationList, 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($stationList, 'json'), Response::HTTP_OK, [], true);
     }
 
     /**
@@ -164,6 +164,6 @@ class StationApiController extends AbstractApiController
 
         $this->managerRegistry->getManager()->flush();
 
-        return new JsonResponse($this->serializer->serialize($station, 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($station, 'json'), Response::HTTP_OK, [], true);
     }
 }

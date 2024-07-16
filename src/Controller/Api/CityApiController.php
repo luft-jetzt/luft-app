@@ -33,7 +33,7 @@ class CityApiController extends AbstractApiController
             throw $this->createNotFoundException();
         }
 
-        return new JsonResponse($this->serializer->serialize($city, 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($city, 'json'), Response::HTTP_OK, [], true);
     }
 
     /**
@@ -75,7 +75,7 @@ class CityApiController extends AbstractApiController
         $em->persist($city);
         $em->flush();
 
-        return new JsonResponse($this->serializer->serialize($city, 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($city, 'json'), Response::HTTP_OK, [], true);
     }
 
     /**
@@ -102,6 +102,6 @@ class CityApiController extends AbstractApiController
 
         $this->managerRegistry->getManager()->flush();
 
-        return new JsonResponse($this->serializer->serialize($city, 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($city, 'json'), Response::HTTP_OK, [], true);
     }
 }
