@@ -225,29 +225,24 @@
     "nikic/php-parser": {
         "version": "v4.0.4"
     },
-    "paragonie/constant_time_encoding": {
-        "version": "v2.4.0"
-    },
-    "paragonie/random_compat": {
-        "version": "v9.99.100"
-    },
     "phar-io/manifest": {
         "version": "1.0.3"
     },
     "phar-io/version": {
         "version": "2.0.1"
     },
-    "php-amqplib/php-amqplib": {
-        "version": "v2.8.1"
-    },
     "php-amqplib/rabbitmq-bundle": {
-        "version": "1.12",
+        "version": "2.16",
         "recipe": {
             "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
+            "branch": "main",
             "version": "1.12",
             "ref": "ce3ca2e4577270c4f518539aa6b9e878998fcfef"
-        }
+        },
+        "files": [
+            "config/packages/old_sound_rabbit_mq.yaml",
+            "src/Consumer/.gitignore"
+        ]
     },
     "php-http/client-common": {
         "version": "1.7.0"
@@ -296,9 +291,6 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "0.4.0"
-    },
-    "phpseclib/phpseclib": {
-        "version": "2.0.27"
     },
     "phpspec/prophecy": {
         "version": "1.8.1"
@@ -602,6 +594,18 @@
             "version": "1.0",
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
+    },
+    "symfony/messenger": {
+        "version": "7.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.0",
+            "ref": "ba1ac4e919baba5644d31b57a3284d6ba12d52ee"
+        },
+        "files": [
+            "config/packages/messenger.yaml"
+        ]
     },
     "symfony/monolog-bridge": {
         "version": "v4.0.6"
