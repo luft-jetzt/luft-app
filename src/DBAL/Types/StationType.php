@@ -6,9 +6,9 @@ use Fresh\DoctrineEnumBundle\DBAL\Types\AbstractEnumType;
 
 final class StationType extends AbstractEnumType
 {
-    public const TRAFFIC = 'traffic';
-    public const BACKGROUND = 'background';
-    public const INDUSTRIAL= 'industrial';
+    final public const string TRAFFIC = 'traffic';
+    final public const string BACKGROUND = 'background';
+    final public const string INDUSTRIAL= 'industrial';
 
     protected static array $choices = [
         self::TRAFFIC => 'station.type.traffic',

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
 #[ORM\Table(name: 'city')]
-#[ORM\Entity(repositoryClass: 'App\Repository\CityRepository')]
+#[ORM\Entity(repositoryClass: \App\Repository\CityRepository::class)]
 #[JMS\ExclusionPolicy('ALL')]
 class City implements \Stringable
 {
@@ -122,6 +122,7 @@ class City implements \Stringable
         return $this;
     }
 
+    #[\Override]
     public function __toString(): string
     {
         return $this->name ?: '';

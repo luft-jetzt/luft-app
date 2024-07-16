@@ -2,8 +2,8 @@
 
 namespace App\Consumer;
 
-use App\Pollution\DataPersister\PersisterInterface;
-use App\Pollution\Value\Value;
+use App\Air\DataPersister\PersisterInterface;
+use App\Air\Value\Value;
 use JMS\Serializer\SerializerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -14,6 +14,7 @@ class ValueConsumer implements ConsumerInterface
     {
     }
 
+    #[\Override]
     public function execute(AMQPMessage $message): int
     {
         $value = $this->serializer->deserialize($message->getBody(), Value::class, 'json');

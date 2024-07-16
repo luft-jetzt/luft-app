@@ -2,13 +2,14 @@
 
 namespace App\DependencyInjection\Compiler;
 
-use App\Provider\ProviderListInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use App\Air\Provider\ProviderListInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 class ProviderCompilerPass implements CompilerPassInterface
 {
+    #[\Override]
     public function process(ContainerBuilder $container)
     {
         if (!$container->has(ProviderListInterface::class)) {

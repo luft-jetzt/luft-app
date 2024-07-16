@@ -2,15 +2,15 @@
 
 namespace App\Controller\Api;
 
+use App\Air\Geocoding\RequestConverter\RequestConverterInterface;
+use App\Air\PollutionDataFactory\PollutionDataFactory;
 use App\Entity\Station;
-use App\Geocoding\RequestConverter\RequestConverterInterface;
-use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use JMS\Serializer\SerializerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DisplayApiController extends AbstractApiController
@@ -19,35 +19,34 @@ class DisplayApiController extends AbstractApiController
      * Get pollution data for a coord by latitude and longitude or a zip code.
      *
      * You must either provide a coord with <code>latitude</code> and <code>longitude</code> or a five digit zip code.
-     *
-     * @OA\Tag(name="Display")
-     * @OA\Parameter(
-     *     name="latitude",
-     *     in="query",
-     *     description="Latitude",
-     *     @OA\Schema(type="float")
-     * )
-     * @OA\Parameter(
-     *     name="longitude",
-     *     in="query",
-     *     description="Longitude",
-     *     @OA\Schema(type="float")
-     * )
-     * @OA\Parameter(
-     *     name="zip",
-     *     in="query",
-     *     description="Zip code",
-     *     @OA\Schema(type="number")
-     * )
-     * @OA\Response(
-     *   response=200,
-     *   description="Returns pollution data of specified station",
-     *   @OA\Schema(
-     *     type="array",
-     *     @OA\Items(ref=@Model(type=App\Air\ViewModel\MeasurementViewModel::class))
-     *   )
-     * )
      */
+    #[OA\Tag(name: "Display")]
+    #[OA\Parameter(
+        name: "latitude",
+        description: "Latitude",
+        in: "query",
+        schema: new OA\Schema(type: "float")
+    )]
+    #[OA\Parameter(
+        name: "longitude",
+        description: "Longitude",
+        in: "query",
+        schema: new OA\Schema(type: "float")
+    )]
+    #[OA\Parameter(
+        name: "zip",
+        description: "Zip code",
+        in: "query",
+        schema: new OA\Schema(type: "number")
+    )]
+    #[OA\Response(
+        response: 200,
+        description: "Returns pollution data of specified station",
+        content: new OA\JsonContent(
+            type: "array",
+            items: new OA\Items(ref: new Model(type: App\Air\ViewModel\PollutantViewModel::class))
+        )
+    )]
     #[Route(path: '/api', name: 'api_display', methods: ['GET'], priority: 212)]
     public function displayAction(
         Request $request,
@@ -69,23 +68,22 @@ class DisplayApiController extends AbstractApiController
 
     /**
      * Get pollution data for a provided station code.
-     *
-     * @OA\Tag(name="Display")
-     * @OA\Response(
-     *   response=200,
-     *   description="Retrieve pollution data for station",
-     *   @OA\Schema(
-     *     type="array",
-     *     @OA\Items(ref=@Model(type=App\Air\ViewModel\MeasurementViewModel::class))
-     *   )
-     * )
-     * @OA\Parameter(
-     *     name="stationCode",
-     *     in="path",
-     *     description="station code",
-     *     @OA\Schema(type="string")
-     * )
      */
+    #[OA\Tag(name: "Display")]
+    #[OA\Response(
+        response: 200,
+        description: "Retrieve pollution data for station",
+        content: new OA\JsonContent(
+            type: "array",
+            items: new OA\Items(ref: new Model(type: App\Air\ViewModel\PollutantViewModel::class))
+        )
+    )]
+    #[OA\Parameter(
+        name: "stationCode",
+        description: "station code",
+        in: "path",
+        schema: new OA\Schema(type: "string")
+    )]
     #[Route(path: '/api/{stationCode}', name: 'api_station', requirements: ['stationCode' => '^([A-Z]{2,6})([A-Z0-9]{0,8})$'], methods: ['GET'], priority: 210)]
     public function displayStationAction(
         SerializerInterface $serializer,

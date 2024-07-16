@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
+use App\Air\PollutionDataFactory\PollutionDataFactory;
 use App\Entity\City;
 use App\Entity\Station;
-use App\Pollution\PollutionDataFactory\PollutionDataFactory;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as FrameworkAbstractController;
 

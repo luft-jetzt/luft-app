@@ -2,16 +2,16 @@
 
 namespace App\Controller;
 
-use App\Air\ViewModel\MeasurementViewModel;
-use App\Analysis\CoronaFireworksAnalysis\CoronaFireworksAnalysisInterface;
-use App\Analysis\CoronaFireworksAnalysis\Slot\YearSlot;
-use App\Analysis\FireworksAnalysis\FireworksAnalysisInterface;
-use App\Analysis\KomfortofenAnalysis\KomfortofenAnalysisInterface;
-use App\Geocoding\RequestConverter\RequestConverterInterface;
-use App\SeoPage\SeoPageInterface;
+use App\Air\Analysis\CoronaFireworksAnalysis\CoronaFireworksAnalysisInterface;
+use App\Air\Analysis\CoronaFireworksAnalysis\Slot\YearSlot;
+use App\Air\Analysis\FireworksAnalysis\FireworksAnalysisInterface;
+use App\Air\Analysis\KomfortofenAnalysis\KomfortofenAnalysisInterface;
+use App\Air\Geocoding\RequestConverter\RequestConverterInterface;
+use App\Air\SeoPage\SeoPageInterface;
+use App\Air\ViewModel\PollutantViewModel;
+use Flagception\Bundle\FlagceptionBundle\Annotations\Feature;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Flagception\Bundle\FlagceptionBundle\Annotations\Feature;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -65,8 +65,15 @@ class AnalysisController extends AbstractController
      * @Feature("analysis_fireworks")
      */
     #[Route(path: '/analysis/corona-silvester', name: 'analysis_fireworks_corona', priority: 503)]
-    public function coronaFireworksAction(Request $request, RequestConverterInterface $requestConverter, CoronaFireworksAnalysisInterface $coronaFireworksAnalysis): Response
+    public function coronaFireworksAction(Request $request, RequestConverterInterface $requestConverter, CoronaFireworksAnalysisInterface $coronaFireworksAnalysis, SeoPageInterface $seoPage): Response
     {
+        $seoPage
+            ->setTwitterPreviewPhoto('/img/share/silvester/twitter.jpg')
+            ->setOpenGraphPreviewPhoto('/img/share/silvester/facebook.jpg')
+            ->setTitle('Feinstaub aus Silvester-Feuerwerken')
+            ->setDescription('Vergleiche die Feinstaub-Konzentration zum Jahreswechsel in deiner Umgebung.')
+        ;
+
         $coord = $requestConverter->getCoordByRequest($request);
 
         if (!$coord) {
@@ -79,7 +86,7 @@ class AnalysisController extends AbstractController
 
         /** @var YearSlot $yearSlot */
         foreach ($yearSlotList as $year => $yearSlot) {
-            /** @var MeasurementViewModel $model */
+            /** @var PollutantViewModel $model */
             foreach ($yearSlot->getList() as $slot => $model) {
                 if (!array_key_exists($slot, $dataList)) {
                     $dataList[$slot] = [];

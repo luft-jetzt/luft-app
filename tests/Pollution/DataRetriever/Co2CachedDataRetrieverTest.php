@@ -2,11 +2,11 @@
 
 namespace App\Tests\Pollution\DataRetriever;
 
-use App\Air\Measurement\MeasurementInterface;
+use App\Air\Pollutant\PollutantInterface;
 use App\Entity\Data;
 use App\Entity\Station;
 use App\Pollution\DataCache\DataCacheInterface;
-use App\Pollution\DataRetriever\Co2CachedDataRetriever;
+use App\Pollution\DataRetriever\Co2DataRetriever;
 use App\Provider\NoaaProvider\NoaaProvider;
 use App\Repository\StationRepository;
 use Caldera\GeoBasic\Coord\Coord;
@@ -42,11 +42,11 @@ class Co2CachedDataRetrieverTest extends TestCase
             ->with($this->equalTo(Station::class))
             ->will($this->returnValue($stationRepository));
 
-        $co2CacheDataRetriever = new Co2CachedDataRetriever($dataCache, $registry);
+        $co2CacheDataRetriever = new Co2DataRetriever($dataCache, $registry);
 
         $coord = new Coord(57.3, 10.5);
 
-        $resultDataList = $co2CacheDataRetriever->retrieveDataForCoord($coord, MeasurementInterface::MEASUREMENT_CO2);
+        $resultDataList = $co2CacheDataRetriever->retrieveDataForCoord($coord, PollutantInterface::POLLUTANT_CO2);
 
         $this->assertCount(1, $resultDataList);
         $this->assertEquals([$data], $resultDataList);
@@ -64,11 +64,11 @@ class Co2CachedDataRetrieverTest extends TestCase
             ->expects($this->never())
             ->method('getRepository');
 
-        $co2CacheDataRetriever = new Co2CachedDataRetriever($dataCache, $registry);
+        $co2CacheDataRetriever = new Co2DataRetriever($dataCache, $registry);
 
         $coord = new Coord(57.3, 10.5);
 
-        $resultDataList = $co2CacheDataRetriever->retrieveDataForCoord($coord, MeasurementInterface::MEASUREMENT_PM25);
+        $resultDataList = $co2CacheDataRetriever->retrieveDataForCoord($coord, PollutantInterface::POLLUTANT_PM25);
 
         $this->assertCount(0, $resultDataList);
         $this->assertEquals([], $resultDataList);
@@ -86,11 +86,11 @@ class Co2CachedDataRetrieverTest extends TestCase
             ->expects($this->never())
             ->method('getRepository');
 
-        $co2CacheDataRetriever = new Co2CachedDataRetriever($dataCache, $registry);
+        $co2CacheDataRetriever = new Co2DataRetriever($dataCache, $registry);
 
         $coord = new Station(57.3, 10.5);
 
-        $resultDataList = $co2CacheDataRetriever->retrieveDataForCoord($coord, MeasurementInterface::MEASUREMENT_CO2);
+        $resultDataList = $co2CacheDataRetriever->retrieveDataForCoord($coord, PollutantInterface::POLLUTANT_CO2);
 
         $this->assertCount(0, $resultDataList);
         $this->assertEquals([], $resultDataList);

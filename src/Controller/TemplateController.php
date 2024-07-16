@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
+use App\Air\SeoPage\SeoPage;
 use App\Entity\City;
-use App\SeoPage\SeoPage;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Response;

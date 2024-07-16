@@ -4,21 +4,21 @@ namespace App;
 
 use App\Air\AirQuality\LevelColors\LevelColorsInterface;
 use App\Air\AirQuality\PollutionLevel\PollutionLevelInterface;
-use App\Air\Measurement\MeasurementInterface;
+use App\Air\Pollutant\PollutantInterface;
+use App\Air\Provider\ProviderInterface;
 use App\DependencyInjection\Compiler\LevelColorCompilerPass;
 use App\DependencyInjection\Compiler\PollutantCompilerPass;
 use App\DependencyInjection\Compiler\PollutionLevelCompilerPass;
 use App\DependencyInjection\Compiler\ProviderCompilerPass;
-use App\Provider\ProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
-use Symfony\Component\Config\Loader\LoaderInterface;
 
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
-    final const CONFIG_EXTS = '.{php,xml,yaml,yml}';
+    final public const string CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
     {
@@ -29,7 +29,6 @@ class Kernel extends BaseKernel
         $loader->load($confDir.'/{packages}/*'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{packages}/'.$this->environment.'/**/*'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{services}'.self::CONFIG_EXTS, 'glob');
-        $loader->load($confDir.'/services/*'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{services}_'.$this->environment.self::CONFIG_EXTS, 'glob');
 
         $container->addCompilerPass(new PollutionLevelCompilerPass());
@@ -39,7 +38,7 @@ class Kernel extends BaseKernel
         $container->registerForAutoconfiguration(ProviderInterface::class)->addTag('air_provider');
 
         $container->addCompilerPass(new PollutantCompilerPass());
-        $container->registerForAutoconfiguration(MeasurementInterface::class)->addTag('measurement');
+        $container->registerForAutoconfiguration(PollutantInterface::class)->addTag('pollutant');
 
         $container->addCompilerPass(new LevelColorCompilerPass());
         $container->registerForAutoconfiguration(LevelColorsInterface::class)->addTag('level_colors');

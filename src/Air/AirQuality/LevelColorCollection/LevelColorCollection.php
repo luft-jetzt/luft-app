@@ -4,7 +4,6 @@ namespace App\Air\AirQuality\LevelColorCollection;
 
 use App\Air\AirQuality\LevelColors\LevelColorsInterface;
 use App\Air\AirQuality\LevelColors\StandardLevelColors;
-use App\Util\ClassUtil;
 
 class LevelColorCollection implements LevelColorCollectionInterface
 {
@@ -12,25 +11,24 @@ class LevelColorCollection implements LevelColorCollectionInterface
 
     public function addLevelColors(LevelColorsInterface $levelColors): LevelColorCollectionInterface
     {
-        $lowercaseClassName = ClassUtil::getLowercaseShortname($levelColors);
-        $identifier = str_replace('levelcolors', '', $lowercaseClassName);
-
-        $this->levelColorsList[$identifier] = $levelColors;
+        $this->levelColorsList[$levelColors->getIdentifier()] = $levelColors;
 
         return $this;
     }
 
+    #[\Override]
     public function getLevelColorsList(): array
     {
         return $this->levelColorsList;
     }
 
-    public function getLevelColorsForMeasurement(string $measurementIdentifier): LevelColorsInterface
+    #[\Override]
+    public function getLevelColorsForPollutant(string $pollutantIdentifier): LevelColorsInterface
     {
-        if (!array_key_exists($measurementIdentifier, $this->levelColorsList)) {
+        if (!array_key_exists($pollutantIdentifier, $this->levelColorsList)) {
             return new StandardLevelColors();
         }
 
-        return $this->levelColorsList[$measurementIdentifier];
+        return $this->levelColorsList[$pollutantIdentifier];
     }
 }

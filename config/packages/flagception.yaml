@@ -1,9 +1,11 @@
 flagception:
     features:
         analysis:
-            default: false
+            default: true
         analysis_fireworks:
             default: false
+        analysis_fireworks_corona:
+            default: true
         analysis_komfortofen:
             default: false
         station_history:

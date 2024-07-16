@@ -2,9 +2,9 @@
 
 namespace App\Command;
 
+use App\Air\Geocoding\Guesser\CityGuesserInterface;
 use App\Entity\City;
 use App\Entity\Station;
-use App\Geocoding\Guesser\CityGuesserInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -24,6 +24,7 @@ class AssignStationCommand extends Command
         parent::__construct();
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $stationList = $this->registry->getRepository(Station::class)->findWithoutCity();

@@ -10,6 +10,7 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20180112003845 extends AbstractMigration
 {
+    #[\Override]
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -18,6 +19,7 @@ class Version20180112003845 extends AbstractMigration
         $this->addSql('ALTER TABLE city DROP twitter_token, DROP twitter_secret, DROP twitter_username');
     }
 
+    #[\Override]
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
