@@ -23,7 +23,6 @@
         "mhujer/breadcrumbs-bundle": "^1.5",
         "nelmio/api-doc-bundle": "^4.0",
         "nesbot/carbon": "^2.7",
-        "php-amqplib/rabbitmq-bundle": "^2.11",
         "php-http/guzzle6-adapter": "^2.0.2",
         "php-http/httplug-bundle": "^1.20.0",
         "php-http/message": "^1.7",
