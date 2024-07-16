@@ -14,8 +14,8 @@ use WhiteOctober\BreadcrumbsBundle\Model\Breadcrumbs;
 class TemplateController extends AbstractController
 {
     public function __construct(
-        protected EntrypointLookupCollectionInterface $entrypointLookupCollection,
-        protected ManagerRegistry $managerRegistry
+        private readonly EntrypointLookupCollectionInterface $entrypointLookupCollection,
+        ManagerRegistry $managerRegistry
     )
     {
         parent::__construct($managerRegistry);
@@ -25,7 +25,7 @@ class TemplateController extends AbstractController
     {
         return $this->render(
             'Template/city_list.html.twig', [
-                'cityList' => $this->getDoctrine()->getRepository(City::class)->findCitiesWithActiveStations(),
+                'cityList' => $this->managerRegistry->getRepository(City::class)->findCitiesWithActiveStations(),
             ]
         );
     }

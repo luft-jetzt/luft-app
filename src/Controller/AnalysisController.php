@@ -12,6 +12,7 @@ use App\Air\ViewModel\PollutantViewModel;
 use Flagception\Bundle\FlagceptionBundle\Annotations\Feature;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Feature("analysis")
@@ -21,6 +22,7 @@ class AnalysisController extends AbstractController
     /**
      * @Feature("analysis_komfortofen")
      */
+    #[Route(path: '/analysis/komfortofen', name: 'analysis_komfortofen', priority: 501)]
     public function komfortofenAction(KomfortofenAnalysisInterface $komfortofenAnalysis, SeoPageInterface $seoPage): Response
     {
         $interval = new \DateInterval('P30D');
@@ -43,6 +45,7 @@ class AnalysisController extends AbstractController
     /**
      * @Feature("analysis_fireworks")
      */
+    #[Route(path: '/analysis/silvester', name: 'analysis_fireworks', priority: 502)]
     public function fireworksAction(FireworksAnalysisInterface $fireworksAnalysis, SeoPageInterface $seoPage): Response
     {
         $seoPage
@@ -61,6 +64,7 @@ class AnalysisController extends AbstractController
     /**
      * @Feature("analysis_fireworks")
      */
+    #[Route(path: '/analysis/corona-silvester', name: 'analysis_fireworks_corona', priority: 503)]
     public function coronaFireworksAction(Request $request, RequestConverterInterface $requestConverter, CoronaFireworksAnalysisInterface $coronaFireworksAnalysis, SeoPageInterface $seoPage): Response
     {
         $seoPage

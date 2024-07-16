@@ -8,9 +8,11 @@ use App\Entity\Station;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class AnalysisApiController extends AbstractApiController
 {
+    #[Route(path: '/api/{stationCode}/analysis', name: 'api_station_analysis', requirements: ['stationCode' => '^([A-Z]{4,6})([0-9]{1,5})$'], methods: ['GET'], priority: 211)]
     public function stationAnalysisAction(
         SerializerInterface $serializer,
         string $stationCode,

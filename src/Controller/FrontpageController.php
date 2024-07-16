@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Air\SeoPage\SeoPage;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class FrontpageController extends AbstractController
 {
+    #[Route('/', name: 'frontpage', options: ['expose' => true], priority: 403)]
     public function indexAction(SeoPage $seoPage): Response
     {
         $seoPage

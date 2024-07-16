@@ -8,10 +8,12 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\Persistence\ManagerRegistry;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use OpenApi\Attributes as OA;
+use Symfony\Component\Routing\Annotation\Route;
 
 class StationApiController extends AbstractApiController
 {
@@ -31,6 +33,7 @@ class StationApiController extends AbstractApiController
         response: 200,
         description: "Returns details for specified station",
     )]
+    #[Route(path: '/api/station/{stationCode}', name: 'api_station_station', requirements: ['stationCode' => '^([A-Z]{4,6})([0-9]{0,8})$'], methods: ['GET'], priority: 202)]
     public function stationAction(Request $request, SerializerInterface $serializer, string $stationCode = null): Response
     {
         $providerIdentifier = $request->get('provider');
@@ -75,6 +78,7 @@ class StationApiController extends AbstractApiController
         response: 200,
         description: "Returns a list of all known stations",
     )]
+    #[Route(path: '/api/station', name: 'api_station_all', methods: ['GET'], priority: 204)]
     public function listStationAction(Request $request, SerializerInterface $serializer): Response
     {
         $providerIdentifier = $request->get('provider');
@@ -101,6 +105,7 @@ class StationApiController extends AbstractApiController
         response: 200,
         description: "Returns the newly created station",
     )]
+    #[Route(path: '/api/station', name: 'api_station_put', methods: ['PUT'], priority: 205)]
     public function putStationAction(Request $request, SerializerInterface $serializer, ManagerRegistry $managerRegistry): Response
     {
         $stationList = $this->deserializeRequestBodyToArray($request, $serializer, Station::class);
@@ -153,6 +158,7 @@ class StationApiController extends AbstractApiController
         description: "Returns the updated station",
         content: new Model(type: App\Entity\Station::class)
     )]
+    #[Route(path: '/api/station/{stationCode}', name: 'api_station_post', requirements: ['stationCode' => '^([A-Z]{4,6})([0-9]{0,8})$'], methods: ['POST'], priority: 203)]
     public function postStationAction(Request $request, SerializerInterface $serializer, #[MapEntity(expr: 'repository.findOneByStationCode(stationCode)')] Station $station, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
     {
         $requestBody = $request->getContent();

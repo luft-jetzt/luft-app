@@ -10,6 +10,7 @@ use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ValueApiController extends AbstractApiController
 {
@@ -34,6 +35,7 @@ class ValueApiController extends AbstractApiController
     /**
      * Add values of stations.
      */
+    #[Route(path: '/api/value', name: 'api_value_put', methods: ['PUT'], priority: 213)]
     public function putValueAction(Request $request, SerializerInterface $serializer, PersisterInterface $persister): Response
     {
         $valueList = $this->deserializeRequestBodyToArray($request, $serializer, Value::class);
