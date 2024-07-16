@@ -7,6 +7,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Symfony\Component\Serializer\Mapping\Loader\AttributeLoader;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
@@ -25,6 +26,8 @@ class LuftSerializer implements LuftSerializerInterface
 
     public function serialize(mixed $data, string $format, array $context = []): string
     {
+        $context[AbstractObjectNormalizer::SKIP_NULL_VALUES] = true;
+
         return $this->serializer->serialize($data, $format, $context);
     }
 
