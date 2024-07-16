@@ -26,17 +26,14 @@ class CityApiController extends AbstractApiController
             items: new OA\Items()
         )
     )]
-    public function displayCityAction(
-        LuftSerializerInterface $serializer,
-        string $citySlug
-    ): Response {
-        $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
+    public function displayCityAction(string $citySlug): Response {
+        $city = $this->managerRegistry->getRepository(City::class)->findOneBySlug($citySlug);
 
         if (!$city) {
             throw $this->createNotFoundException();
         }
 
-        return new JsonResponse($serializer->serialize($city, 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($city, 'json'), 200, [], true);
     }
 
     /**
@@ -49,11 +46,11 @@ class CityApiController extends AbstractApiController
         response: 200,
         description: "Returns a list of all cities",
     )]
-    public function cityAction(LuftSerializerInterface $serializer): Response
+    public function cityAction(): Response
     {
-        $cityList = $this->getDoctrine()->getRepository(City::class)->findAll();
+        $cityList = $this->managerRegistry->getRepository(City::class)->findAll();
 
-        return new JsonResponse($serializer->serialize($cityList, 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($cityList, 'json'), 200, [], true);
     }
 
     /**
@@ -68,17 +65,17 @@ class CityApiController extends AbstractApiController
         response: 200,
         description: "Returns the newly created city",
     )]
-    public function putCityAction(Request $request, LuftSerializerInterface $serializer, ManagerRegistry $managerRegistry): Response
+    public function putCityAction(Request $request): Response
     {
         $requestBody = $request->getContent();
 
-        $city = $serializer->deserialize($requestBody, City::class, 'json');
+        $city = $this->serializer->deserialize($requestBody, City::class, 'json');
 
-        $em = $managerRegistry->getManager();
+        $em = $this->managerRegistry->getManager();
         $em->persist($city);
         $em->flush();
 
-        return new JsonResponse($serializer->serialize($city, 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($city, 'json'), 200, [], true);
     }
 
     /**
@@ -95,16 +92,16 @@ class CityApiController extends AbstractApiController
         description: "Returns the updated city",
     )]
     #[Entity('city', expr: 'repository.findOneBySlug(citySlug)')]
-    public function postCityAction(Request $request, LuftSerializerInterface $serializer, City $city, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
+    public function postCityAction(Request $request, City $city, EntityMergerInterface $entityMerger): Response
     {
         $requestBody = $request->getContent();
 
-        $updatedCity = $serializer->deserialize($requestBody, City::class, 'json');
+        $updatedCity = $this->serializer->deserialize($requestBody, City::class, 'json');
 
         $city = $entityMerger->merge($updatedCity, $city);
 
-        $managerRegistry->getManager()->flush();
+        $this->managerRegistry->getManager()->flush();
 
-        return new JsonResponse($serializer->serialize($city, 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($city, 'json'), 200, [], true);
     }
 }

@@ -32,9 +32,9 @@ class ValueApiController extends AbstractApiController
     /**
      * Add values of stations.
      */
-    public function putValueAction(Request $request, LuftSerializerInterface $serializer, PersisterInterface $persister): Response
+    public function putValueAction(Request $request, PersisterInterface $persister): Response
     {
-        $valueList = $this->deserializeRequestBodyToArray($request, $serializer, Value::class);
+        $valueList = $this->deserializeRequestBodyToArray($request, Value::class);
 
         $persister->persistValues($valueList);
 
@@ -44,6 +44,6 @@ class ValueApiController extends AbstractApiController
             $result = $valueList;
         }
 
-        return new JsonResponse($serializer->serialize($result, 'json'), Response::HTTP_OK, [], true);
+        return new JsonResponse($this->serializer->serialize($result, 'json'), Response::HTTP_OK, [], true);
     }
 }

@@ -4,7 +4,6 @@ namespace App\Controller\Api;
 
 use App\Air\Geocoding\RequestConverter\RequestConverterInterface;
 use App\Air\PollutionDataFactory\PollutionDataFactory;
-use App\Air\ViewModel\PollutantViewModel;
 use App\Entity\Station;
 use App\Air\Serializer\LuftSerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -48,7 +47,6 @@ class DisplayApiController extends AbstractApiController
     )]
     public function displayAction(
         Request $request,
-        LuftSerializerInterface $serializer,
         PollutionDataFactory $pollutionDataFactory,
         RequestConverterInterface $requestConverter
     ): Response {
@@ -60,7 +58,7 @@ class DisplayApiController extends AbstractApiController
 
         $pollutantList = $pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();
 
-        return new JsonResponse($serializer->serialize($this->unpackPollutantList($pollutantList), 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($this->unpackPollutantList($pollutantList), 'json'), 200, [], true);
     }
 
 
@@ -83,11 +81,10 @@ class DisplayApiController extends AbstractApiController
         schema: new OA\Schema(type: "string")
     )]
     public function displayStationAction(
-        LuftSerializerInterface $serializer,
         string $stationCode,
         PollutionDataFactory $pollutionDataFactory
     ): Response {
-        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
+        $station = $this->managerRegistry->getRepository(Station::class)->findOneByStationCode($stationCode);
 
         if (!$station) {
             throw $this->createNotFoundException();
@@ -95,6 +92,6 @@ class DisplayApiController extends AbstractApiController
 
         $pollutantList = $pollutionDataFactory->setStation($station)->createDecoratedPollutantList();
 
-        return new JsonResponse($serializer->serialize($this->unpackPollutantList($pollutantList), 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($this->unpackPollutantList($pollutantList), 'json'), 200, [], true);
     }
 }
