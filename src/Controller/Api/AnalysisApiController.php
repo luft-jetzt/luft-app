@@ -18,6 +18,6 @@ class AnalysisApiController extends AbstractApiController
 
         $valueList = $this->managerRegistry->getRepository(Data::class)->findForAnalysis($station, 1);
 
-        return new JsonResponse($this->serializer->serialize($valueList, 'json'), Response::HTTP_OK, [], true);
+        return new JsonResponse($this->serializer->serialize($valueList), Response::HTTP_OK, [], true);
     }
 }

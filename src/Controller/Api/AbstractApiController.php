@@ -35,9 +35,9 @@ abstract class AbstractApiController extends AbstractController
         if ('[' === $body[0]) {
             $type = sprintf('%s[]', $expectedFqcn);
 
-            $objectList = $this->serializer->deserialize($body, $type, 'json');
+            $objectList = $this->serializer->deserialize($body, $type);
         } else {
-            $object = $this->serializer->deserialize($body, $expectedFqcn, 'json');
+            $object = $this->serializer->deserialize($body, $expectedFqcn);
 
             $objectList = [$object];
         }

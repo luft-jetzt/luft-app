@@ -5,7 +5,6 @@ namespace App\Controller\Api;
 use App\Air\Geocoding\RequestConverter\RequestConverterInterface;
 use App\Air\PollutionDataFactory\PollutionDataFactory;
 use App\Entity\Station;
-use App\Air\Serializer\LuftSerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,7 +57,7 @@ class DisplayApiController extends AbstractApiController
 
         $pollutantList = $pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();
 
-        return new JsonResponse($this->serializer->serialize($this->unpackPollutantList($pollutantList), 'json'), Response::HTTP_OK, [], true);
+        return new JsonResponse($this->serializer->serialize($this->unpackPollutantList($pollutantList)), Response::HTTP_OK, [], true);
     }
 
 
@@ -92,6 +91,6 @@ class DisplayApiController extends AbstractApiController
 
         $pollutantList = $pollutionDataFactory->setStation($station)->createDecoratedPollutantList();
 
-        return new JsonResponse($this->serializer->serialize($this->unpackPollutantList($pollutantList), 'json'), Response::HTTP_OK, [], true);
+        return new JsonResponse($this->serializer->serialize($this->unpackPollutantList($pollutantList)), Response::HTTP_OK, [], true);
     }
 }

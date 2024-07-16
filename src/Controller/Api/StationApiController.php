@@ -40,14 +40,14 @@ class StationApiController extends AbstractApiController
                 throw $this->createNotFoundException();
             }
 
-            return new JsonResponse($this->serializer->serialize($station, 'json'), Response::HTTP_OK, [], true);
+            return new JsonResponse($this->serializer->serialize($station), Response::HTTP_OK, [], true);
         } elseif ($providerIdentifier) {
             $stationList = $this->managerRegistry->getRepository(Station::class)->findActiveStationsByProvider($providerIdentifier);
         } else {
             $stationList = $this->managerRegistry->getRepository(Station::class)->findAll();
         }
 
-        return new JsonResponse($this->serializer->serialize($stationList, 'json'), Response::HTTP_OK, [], true);
+        return new JsonResponse($this->serializer->serialize($stationList), Response::HTTP_OK, [], true);
     }
 
     /**
@@ -83,7 +83,7 @@ class StationApiController extends AbstractApiController
             $stationList = $this->managerRegistry->getRepository(Station::class)->findAll();
         }
 
-        return new JsonResponse($this->serializer->serialize($stationList, 'json'), Response::HTTP_OK, [], true);
+        return new JsonResponse($this->serializer->serialize($stationList), Response::HTTP_OK, [], true);
     }
 
     /**
@@ -112,12 +112,12 @@ class StationApiController extends AbstractApiController
                 $result = $stationList;
             }
 
-            return new JsonResponse($this->serializer->serialize($result, 'json'), Response::HTTP_OK, [], true);
+            return new JsonResponse($this->serializer->serialize($result), Response::HTTP_OK, [], true);
         } catch (UniqueConstraintViolationException) {
             return new JsonResponse($this->serializer->serialize([
                 'status' => 'error',
                 'message' => 'This record already exists',
-            ], 'json'), Response::HTTP_CONFLICT, [], true);
+            ]), Response::HTTP_CONFLICT, [], true);
         }
 
     }
@@ -158,12 +158,12 @@ class StationApiController extends AbstractApiController
     {
         $requestBody = $request->getContent();
 
-        $updatedStation = $this->serializer->deserialize($requestBody, Station::class, 'json');
+        $updatedStation = $this->serializer->deserialize($requestBody, Station::class);
 
         $station = $entityMerger->merge($updatedStation, $station);
 
         $this->managerRegistry->getManager()->flush();
 
-        return new JsonResponse($this->serializer->serialize($station, 'json'), Response::HTTP_OK, [], true);
+        return new JsonResponse($this->serializer->serialize($station), Response::HTTP_OK, [], true);
     }
 }

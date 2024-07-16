@@ -43,6 +43,6 @@ class ValueApiController extends AbstractApiController
             $result = $valueList;
         }
 
-        return new JsonResponse($this->serializer->serialize($result, 'json'), Response::HTTP_OK, [], true);
+        return new JsonResponse($this->serializer->serialize($result), Response::HTTP_OK, [], true);
     }
 }

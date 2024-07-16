@@ -4,8 +4,6 @@ namespace App\Controller\Api;
 
 use App\Air\Util\EntityMerger\EntityMergerInterface;
 use App\Entity\City;
-use Caldera\LuftApiBundle\Serializer\LuftSerializerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -96,12 +94,12 @@ class CityApiController extends AbstractApiController
     {
         $requestBody = $request->getContent();
 
-        $updatedCity = $this->serializer->deserialize($requestBody, City::class, 'json');
+        $updatedCity = $this->serializer->deserialize($requestBody, City::class);
 
         $city = $entityMerger->merge($updatedCity, $city);
 
         $this->managerRegistry->getManager()->flush();
 
-        return new JsonResponse($this->serializer->serialize($city, 'json'), Response::HTTP_OK, [], true);
+        return new JsonResponse($this->serializer->serialize($city), Response::HTTP_OK, [], true);
     }
 }
