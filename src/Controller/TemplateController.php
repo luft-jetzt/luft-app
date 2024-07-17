@@ -15,7 +15,7 @@ class TemplateController extends AbstractController
 {
     public function __construct(
         protected EntrypointLookupCollectionInterface $entrypointLookupCollection,
-        protected ManagerRegistry $managerRegistry
+        ManagerRegistry $managerRegistry
     )
     {
         parent::__construct($managerRegistry);

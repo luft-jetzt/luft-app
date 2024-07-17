@@ -5,8 +5,6 @@ namespace App\Controller\Api;
 use App\Air\Util\EntityMerger\EntityMergerInterface;
 use App\Entity\Station;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use Doctrine\Persistence\ManagerRegistry;
-use JMS\Serializer\SerializerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,25 +29,25 @@ class StationApiController extends AbstractApiController
         response: 200,
         description: "Returns details for specified station",
     )]
-    public function stationAction(Request $request, SerializerInterface $serializer, string $stationCode = null): Response
+    public function stationAction(Request $request, string $stationCode = null): Response
     {
         $providerIdentifier = $request->get('provider');
 
         if ($stationCode) {
-            $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
+            $station = $this->managerRegistry->getRepository(Station::class)->findOneByStationCode($stationCode);
 
             if (!$station) {
                 throw $this->createNotFoundException();
             }
 
-            return new JsonResponse($serializer->serialize($station, 'json'), 200, [], true);
+            return new JsonResponse($this->serializer->serialize($station), Response::HTTP_OK, [], true);
         } elseif ($providerIdentifier) {
-            $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStationsByProvider($providerIdentifier);
+            $stationList = $this->managerRegistry->getRepository(Station::class)->findActiveStationsByProvider($providerIdentifier);
         } else {
-            $stationList = $this->getDoctrine()->getRepository(Station::class)->findAll();
+            $stationList = $this->managerRegistry->getRepository(Station::class)->findAll();
         }
 
-        return new JsonResponse($serializer->serialize($stationList, 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($stationList), Response::HTTP_OK, [], true);
     }
 
     /**
@@ -75,17 +73,17 @@ class StationApiController extends AbstractApiController
         response: 200,
         description: "Returns a list of all known stations",
     )]
-    public function listStationAction(Request $request, SerializerInterface $serializer): Response
+    public function listStationAction(Request $request): Response
     {
         $providerIdentifier = $request->get('provider');
 
         if ($providerIdentifier) {
-            $stationList = $this->getDoctrine()->getRepository(Station::class)->findStationsByProvider($providerIdentifier);
+            $stationList = $this->managerRegistry->getRepository(Station::class)->findStationsByProvider($providerIdentifier);
         } else {
-            $stationList = $this->getDoctrine()->getRepository(Station::class)->findAll();
+            $stationList = $this->managerRegistry->getRepository(Station::class)->findAll();
         }
 
-        return new JsonResponse($serializer->serialize($stationList, 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($stationList), Response::HTTP_OK, [], true);
     }
 
     /**
@@ -101,12 +99,12 @@ class StationApiController extends AbstractApiController
         response: 200,
         description: "Returns the newly created station",
     )]
-    public function putStationAction(Request $request, SerializerInterface $serializer, ManagerRegistry $managerRegistry): Response
+    public function putStationAction(Request $request): Response
     {
-        $stationList = $this->deserializeRequestBodyToArray($request, $serializer, Station::class);
+        $stationList = $this->deserializeRequestBodyToArray($request, Station::class);
 
         try {
-            $this->persistStationList($managerRegistry, $stationList);
+            $this->persistStationList($stationList);
 
             if (1 === count($stationList)) {
                 $result = array_pop($stationList);
@@ -114,19 +112,19 @@ class StationApiController extends AbstractApiController
                 $result = $stationList;
             }
 
-            return new JsonResponse($serializer->serialize($result, 'json'), Response::HTTP_OK, [], true);
+            return new JsonResponse($this->serializer->serialize($result), Response::HTTP_OK, [], true);
         } catch (UniqueConstraintViolationException) {
-            return new JsonResponse($serializer->serialize([
+            return new JsonResponse($this->serializer->serialize([
                 'status' => 'error',
                 'message' => 'This record already exists',
-            ], 'json'), Response::HTTP_CONFLICT, [], true);
+            ]), Response::HTTP_CONFLICT, [], true);
         }
 
     }
 
-    protected function persistStationList(ManagerRegistry $managerRegistry, array $stationList): array
+    protected function persistStationList(array $stationList): array
     {
-        $em = $managerRegistry->getManager();
+        $em = $this->managerRegistry->getManager();
 
         /** @var Station $station */
         foreach ($stationList as $station) {
@@ -151,18 +149,21 @@ class StationApiController extends AbstractApiController
     #[OA\Response(
         response: 200,
         description: "Returns the updated station",
-        content: new Model(type: App\Entity\Station::class)
     )]
-    public function postStationAction(Request $request, SerializerInterface $serializer, #[MapEntity(expr: 'repository.findOneByStationCode(stationCode)')] Station $station, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
+    public function postStationAction(
+        Request $request,
+        #[MapEntity(expr: 'repository.findOneByStationCode(stationCode)')] Station $station,
+        EntityMergerInterface $entityMerger
+    ): Response
     {
         $requestBody = $request->getContent();
 
-        $updatedStation = $serializer->deserialize($requestBody, Station::class, 'json');
+        $updatedStation = $this->serializer->deserialize($requestBody, Station::class);
 
         $station = $entityMerger->merge($updatedStation, $station);
 
-        $managerRegistry->getManager()->flush();
+        $this->managerRegistry->getManager()->flush();
 
-        return new JsonResponse($serializer->serialize($station, 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($station), Response::HTTP_OK, [], true);
     }
 }

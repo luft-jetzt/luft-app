@@ -4,8 +4,6 @@ namespace App\Controller\Api;
 
 use App\Air\DataPersister\PersisterInterface;
 use App\Air\Value\Value;
-use JMS\Serializer\SerializerInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,14 +27,13 @@ class ValueApiController extends AbstractApiController
     #[OA\Response(
         response: 200,
         description: "Returns details for specified station",
-        content: new Model(type: App\Entity\Data::class)
     )]
     /**
      * Add values of stations.
      */
-    public function putValueAction(Request $request, SerializerInterface $serializer, PersisterInterface $persister): Response
+    public function putValueAction(Request $request, PersisterInterface $persister): Response
     {
-        $valueList = $this->deserializeRequestBodyToArray($request, $serializer, Value::class);
+        $valueList = $this->deserializeRequestBodyToArray($request, Value::class);
 
         $persister->persistValues($valueList);
 
@@ -46,6 +43,6 @@ class ValueApiController extends AbstractApiController
             $result = $valueList;
         }
 
-        return new JsonResponse($serializer->serialize($result, 'json'), Response::HTTP_OK, [], true);
+        return new JsonResponse($this->serializer->serialize($result), Response::HTTP_OK, [], true);
     }
 }

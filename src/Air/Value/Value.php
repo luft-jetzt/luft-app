@@ -2,29 +2,18 @@
 
 namespace App\Air\Value;
 
-use JMS\Serializer\Annotation as JMS;
+use JetBrains\PhpStorm\Deprecated;
 
-#[JMS\ExclusionPolicy('ALL')]
 class Value
 {
-    #[JMS\Expose]
-    #[JMS\Type('string')]
     protected ?string $stationCode = null;
 
-    #[JMS\Expose]
-    #[JMS\Type("DateTime<'U'>")]
     protected ?\DateTime $dateTime = null;
 
-    #[JMS\Expose]
-    #[JMS\Type('float')]
     protected ?float $value = null;
 
-    #[JMS\Expose]
-    #[JMS\Type('string')]
     protected ?string $pollutant = null;
 
-    #[JMS\Expose]
-    #[JMS\Type('string')]
     protected ?string $tag = null;
 
     public function __construct()
@@ -32,12 +21,26 @@ class Value
 
     }
 
+    #[Deprecated]
     public function getStation(): ?string
     {
         return $this->stationCode;
     }
 
-    public function setStation(string $stationCode): Value
+    #[Deprecated]
+    public function setStation(string $stationCode): self
+    {
+        $this->stationCode = $stationCode;
+
+        return $this;
+    }
+
+    public function getStationCode(): ?string
+    {
+        return $this->stationCode;
+    }
+
+    public function setStationCode(string $stationCode): self
     {
         $this->stationCode = $stationCode;
 
@@ -49,7 +52,7 @@ class Value
         return $this->dateTime;
     }
 
-    public function setDateTime(\DateTime $dateTime): Value
+    public function setDateTime(\DateTime $dateTime): self
     {
         $this->dateTime = $dateTime;
 
@@ -61,7 +64,7 @@ class Value
         return $this->value;
     }
 
-    public function setValue(float $value): Value
+    public function setValue(float $value): self
     {
         $this->value = $value;
 
@@ -73,7 +76,7 @@ class Value
         return $this->pollutant;
     }
 
-    public function setPollutant(string $pollutant): Value
+    public function setPollutant(string $pollutant): self
     {
         $this->pollutant = $pollutant;
 
@@ -85,7 +88,7 @@ class Value
         return $this->tag;
     }
 
-    public function setTag(string $tag): Value
+    public function setTag(?string $tag = null): self
     {
         $this->tag = $tag;
 

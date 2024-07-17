@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as FrameworkAbs
 
 abstract class AbstractController extends FrameworkAbstractController
 {
-    public function __construct(protected ManagerRegistry $managerRegistry)
+    public function __construct(protected readonly ManagerRegistry $managerRegistry)
     {
 
     }

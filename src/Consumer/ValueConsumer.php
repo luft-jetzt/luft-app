@@ -4,13 +4,13 @@ namespace App\Consumer;
 
 use App\Air\DataPersister\PersisterInterface;
 use App\Air\Value\Value;
-use JMS\Serializer\SerializerInterface;
+use App\Air\Serializer\LuftSerializerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class ValueConsumer implements ConsumerInterface
 {
-    public function __construct(protected PersisterInterface $persister, protected SerializerInterface $serializer)
+    public function __construct(protected PersisterInterface $persister, protected LuftSerializerInterface $serializer)
     {
     }
 
