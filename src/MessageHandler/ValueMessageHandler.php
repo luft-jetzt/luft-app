@@ -2,7 +2,7 @@
 
 namespace App\MessageHandler;
 
-use App\Air\Value\Value;
+use Caldera\LuftModel\Model\Value;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
