@@ -3,39 +3,32 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ORM\Table(name: 'data')]
 #[ORM\Entity(repositoryClass: \App\Repository\DataRepository::class)]
-#[JMS\ExclusionPolicy('ALL')]
 class Data
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[Ignore]
     protected ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: 'Station', inversedBy: 'datas')]
     #[ORM\JoinColumn(name: 'station_id', referencedColumnName: 'id')]
-    #[JMS\Expose]
-    #[JMS\Type(\App\Entity\Station::class)]
     protected ?Station $station = null;
 
     #[ORM\Column(type: 'datetime', nullable: false)]
-    #[JMS\Expose]
-    #[JMS\Type("DateTime<'U'>")]
     protected ?\DateTime $dateTime = null;
 
     #[ORM\Column(type: 'float', nullable: false)]
-    #[JMS\Expose]
     protected ?float $value = null;
 
     #[ORM\Column(type: 'smallint', nullable: false)]
-    #[JMS\Expose]
     protected ?int $pollutant = null;
 
     #[ORM\Column(type: 'string', length: 32, nullable: true)]
-    #[JMS\Expose]
     private ?string $tag = null;
 
     public function setId(int $id): Data

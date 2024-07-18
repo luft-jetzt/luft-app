@@ -2,12 +2,8 @@
 
 namespace App\Controller\Api;
 
-use App\Air\PollutionDataFactory\PollutionDataFactory;
 use App\Air\Util\EntityMerger\EntityMergerInterface;
 use App\Entity\City;
-use Doctrine\Persistence\ManagerRegistry;
-use JMS\Serializer\SerializerInterface;
-use Nelmio\ApiDocBundle\Model\Model;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,21 +21,17 @@ class CityApiController extends AbstractApiController
         description: "Retrieve details about a city identified by the provided slug",
         content: new OA\JsonContent(
             type: "array",
-            items: new OA\Items(ref: new Model(type: App\Air\ViewModel\PollutantViewModel::class))
+            items: new OA\Items()
         )
     )]
-    public function displayCityAction(
-        SerializerInterface $serializer,
-        PollutionDataFactory $pollutionDataFactory,
-        string $citySlug
-    ): Response {
-        $city = $this->getDoctrine()->getRepository(City::class)->findOneBySlug($citySlug);
+    public function displayCityAction(string $citySlug): Response {
+        $city = $this->managerRegistry->getRepository(City::class)->findOneBySlug($citySlug);
 
         if (!$city) {
             throw $this->createNotFoundException();
         }
 
-        return new JsonResponse($serializer->serialize($city, 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($city, 'json'), Response::HTTP_OK, [], true);
     }
 
     /**
@@ -51,13 +43,12 @@ class CityApiController extends AbstractApiController
     #[OA\Response(
         response: 200,
         description: "Returns a list of all cities",
-        content: new Model(type: App\Entity\City::class)
     )]
-    public function cityAction(SerializerInterface $serializer): Response
+    public function cityAction(): Response
     {
-        $cityList = $this->getDoctrine()->getRepository(City::class)->findAll();
+        $cityList = $this->managerRegistry->getRepository(City::class)->findAll();
 
-        return new JsonResponse($serializer->serialize($cityList, 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($cityList, 'json'), 200, [], true);
     }
 
     /**
@@ -71,19 +62,18 @@ class CityApiController extends AbstractApiController
     #[OA\Response(
         response: 200,
         description: "Returns the newly created city",
-        content: new Model(type: App\Entity\City::class)
     )]
-    public function putCityAction(Request $request, SerializerInterface $serializer, ManagerRegistry $managerRegistry): Response
+    public function putCityAction(Request $request): Response
     {
         $requestBody = $request->getContent();
 
-        $city = $serializer->deserialize($requestBody, City::class, 'json');
+        $city = $this->serializer->deserialize($requestBody, City::class, 'json');
 
-        $em = $managerRegistry->getManager();
+        $em = $this->managerRegistry->getManager();
         $em->persist($city);
         $em->flush();
 
-        return new JsonResponse($serializer->serialize($city, 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($city, 'json'), Response::HTTP_OK, [], true);
     }
 
     /**
@@ -98,19 +88,18 @@ class CityApiController extends AbstractApiController
     #[OA\Response(
         response: 200,
         description: "Returns the updated city",
-        content: new Model(type: App\Entity\City::class)
     )]
     #[Entity('city', expr: 'repository.findOneBySlug(citySlug)')]
-    public function postCityAction(Request $request, SerializerInterface $serializer, City $city, EntityMergerInterface $entityMerger, ManagerRegistry $managerRegistry): Response
+    public function postCityAction(Request $request, City $city, EntityMergerInterface $entityMerger): Response
     {
         $requestBody = $request->getContent();
 
-        $updatedCity = $serializer->deserialize($requestBody, City::class, 'json');
+        $updatedCity = $this->serializer->deserialize($requestBody, City::class);
 
         $city = $entityMerger->merge($updatedCity, $city);
 
-        $managerRegistry->getManager()->flush();
+        $this->managerRegistry->getManager()->flush();
 
-        return new JsonResponse($serializer->serialize($city, 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($city), Response::HTTP_OK, [], true);
     }
 }

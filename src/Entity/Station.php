@@ -2,87 +2,84 @@
 
 namespace App\Entity;
 
+use App\DBAL\Types\AreaType;
+use App\DBAL\Types\StationType;
 use Caldera\GeoBasic\Coordinate\Coordinate;
 use Doctrine\Common\Collections\ArrayCollection;
 use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Jsor\Doctrine\PostGIS\Types\PostGISType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ORM\Table(name: 'station')]
 #[ORM\Entity(repositoryClass: \App\Repository\StationRepository::class)]
 #[UniqueEntity('stationCode')]
-#[JMS\ExclusionPolicy('ALL')]
 #[ORM\HasLifecycleCallbacks]
 class Station extends Coordinate
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[Ignore]
     protected ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 12, unique: true, nullable: false)]
-    #[JMS\Expose]
     protected ?string $stationCode = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    #[JMS\Expose]
     protected ?int $ubaStationId = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    #[JMS\Expose]
     protected ?string $title = null;
 
     #[ORM\Column(type: 'float', nullable: false)]
-    #[JMS\Expose]
     protected ?float $latitude = null;
 
     #[ORM\Column(type: 'float', nullable: false)]
-    #[JMS\Expose]
     protected ?float $longitude = null;
 
     #[ORM\Column(
         type: PostGISType::GEOMETRY,
         options: ['geometry_type' => 'POINT'],
     )]
+    #[Ignore]
     public ?string $coord = null;
 
     #[ORM\ManyToOne(targetEntity: 'City', inversedBy: 'stations')]
     #[ORM\JoinColumn(name: 'city_id', referencedColumnName: 'id')]
+    #[Ignore]
     protected ?City $city = null;
 
     #[ORM\Column(type: 'date', nullable: true)]
-    #[JMS\Expose]
-    #[JMS\Type("DateTime<'U'>")]
     protected ?\DateTime $fromDate = null;
 
     #[ORM\Column(type: 'date', nullable: true)]
-    #[JMS\Expose]
-    #[JMS\Type("DateTime<'U'>")]
     protected ?\DateTime $untilDate = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    #[JMS\Expose]
     protected ?int $altitude = null;
 
-    #[DoctrineAssert\EnumType(entity: \App\DBAL\Types\StationType::class)]
+    #[DoctrineAssert\EnumType(entity: StationType::class)]
     #[ORM\Column(type: 'StationType', nullable: true)]
+    #[Ignore]
     protected ?string $stationType = null;
 
-    #[DoctrineAssert\EnumType(entity: \App\DBAL\Types\AreaType::class)]
+    #[DoctrineAssert\EnumType(entity: AreaType::class)]
     #[ORM\Column(type: 'AreaType', nullable: true)]
+    #[Ignore]
     protected ?string $areaType = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    #[JMS\Expose]
     protected ?string $provider = null;
 
     #[ORM\ManyToOne(targetEntity: 'Network', inversedBy: 'stations')]
     #[ORM\JoinColumn(name: 'network_id', referencedColumnName: 'id')]
+    #[Ignore]
     protected ?Network $network = null;
 
     #[ORM\OneToMany(targetEntity: 'Data', mappedBy: 'station')]
+    #[Ignore]
     protected $datas;
 
     public function __construct(float $latitude, float $longitude)

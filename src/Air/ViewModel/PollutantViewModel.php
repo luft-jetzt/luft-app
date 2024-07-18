@@ -2,31 +2,24 @@
 
 namespace App\Air\ViewModel;
 
-use App\Air\Pollutant\PollutantInterface;
 use App\Entity\Data;
+use App\Air\Pollutant\PollutantInterface;
 use App\Entity\Station;
-use JMS\Serializer\Annotation as JMS;
 
-#[JMS\ExclusionPolicy('ALL')]
 class PollutantViewModel
 {
-    #[JMS\Expose]
     protected ? Station $station = null;
 
-    #[JMS\Expose]
     protected ?PollutantInterface $pollutant = null;
 
-    #[JMS\Expose]
     protected ?int $pollutionLevel = null;
 
-    #[JMS\Expose]
     protected ?string $caption = null;
 
-    #[JMS\Expose]
     protected ?float $distance = null;
 
     public function __construct(
-        #[JMS\Expose] protected ?\App\Entity\Data $data
+        protected ?Data $data
     )
     {
     }

@@ -2,12 +2,21 @@
 
 namespace App\Controller\Api;
 
+use App\Air\Serializer\LuftSerializerInterface;
 use App\Controller\AbstractController;
-use JMS\Serializer\SerializerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractApiController extends AbstractController
 {
+    public function __construct(
+        protected readonly LuftSerializerInterface $serializer,
+        ManagerRegistry $managerRegistry
+    )
+    {
+        parent::__construct($managerRegistry);
+    }
+
     protected function unpackPollutantList(array $pollutantList): array
     {
         $viewModelList = [];
@@ -19,16 +28,16 @@ abstract class AbstractApiController extends AbstractController
         return $viewModelList;
     }
 
-    protected function deserializeRequestBodyToArray(Request $request, SerializerInterface $serializer, string $expectedFqcn): array
+    protected function deserializeRequestBodyToArray(Request $request, string $expectedFqcn): array
     {
         $body = $request->getContent();
 
         if ('[' === $body[0]) {
-            $type = sprintf('array<%s>', $expectedFqcn);
+            $type = sprintf('%s[]', $expectedFqcn);
 
-            $objectList = $serializer->deserialize($body, $type, 'json');
+            $objectList = $this->serializer->deserialize($body, $type);
         } else {
-            $object = $serializer->deserialize($body, $expectedFqcn, 'json');
+            $object = $this->serializer->deserialize($body, $expectedFqcn);
 
             $objectList = [$object];
         }

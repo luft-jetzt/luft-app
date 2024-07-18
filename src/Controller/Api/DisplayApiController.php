@@ -5,8 +5,6 @@ namespace App\Controller\Api;
 use App\Air\Geocoding\RequestConverter\RequestConverterInterface;
 use App\Air\PollutionDataFactory\PollutionDataFactory;
 use App\Entity\Station;
-use JMS\Serializer\SerializerInterface;
-use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,12 +41,11 @@ class DisplayApiController extends AbstractApiController
         description: "Returns pollution data of specified station",
         content: new OA\JsonContent(
             type: "array",
-            items: new OA\Items(ref: new Model(type: App\Air\ViewModel\PollutantViewModel::class))
+            items: new OA\Items(),
         )
     )]
     public function displayAction(
         Request $request,
-        SerializerInterface $serializer,
         PollutionDataFactory $pollutionDataFactory,
         RequestConverterInterface $requestConverter
     ): Response {
@@ -60,7 +57,7 @@ class DisplayApiController extends AbstractApiController
 
         $pollutantList = $pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();
 
-        return new JsonResponse($serializer->serialize($this->unpackPollutantList($pollutantList), 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($this->unpackPollutantList($pollutantList)), Response::HTTP_OK, [], true);
     }
 
 
@@ -73,7 +70,7 @@ class DisplayApiController extends AbstractApiController
         description: "Retrieve pollution data for station",
         content: new OA\JsonContent(
             type: "array",
-            items: new OA\Items(ref: new Model(type: App\Air\ViewModel\PollutantViewModel::class))
+            items: new OA\Items(),
         )
     )]
     #[OA\Parameter(
@@ -83,11 +80,10 @@ class DisplayApiController extends AbstractApiController
         schema: new OA\Schema(type: "string")
     )]
     public function displayStationAction(
-        SerializerInterface $serializer,
         string $stationCode,
         PollutionDataFactory $pollutionDataFactory
     ): Response {
-        $station = $this->getDoctrine()->getRepository(Station::class)->findOneByStationCode($stationCode);
+        $station = $this->managerRegistry->getRepository(Station::class)->findOneByStationCode($stationCode);
 
         if (!$station) {
             throw $this->createNotFoundException();
@@ -95,6 +91,6 @@ class DisplayApiController extends AbstractApiController
 
         $pollutantList = $pollutionDataFactory->setStation($station)->createDecoratedPollutantList();
 
-        return new JsonResponse($serializer->serialize($this->unpackPollutantList($pollutantList), 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($this->unpackPollutantList($pollutantList)), Response::HTTP_OK, [], true);
     }
 }
