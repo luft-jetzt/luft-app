@@ -19,7 +19,7 @@ framework:
                     queues:
                         luft_value: luft_value
         routing:
-            App\Air\Value\Value: luft_value
+            Caldera\LuftModel\Model\Value: luft_value
 
 # when@test:
 #    framework:
