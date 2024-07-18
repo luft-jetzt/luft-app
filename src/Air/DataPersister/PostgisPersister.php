@@ -21,8 +21,8 @@ class PostgisPersister extends AbstractPersister
 
         /** @var Value $value */
         foreach ($values as $value) {
-            if ($this->stationExists($value->getStation())) {
-                $station = $this->getStationByCode($value->getStation());
+            if ($this->stationExists($value->getStationCode())) {
+                $station = $this->getStationByCode($value->getStationCode());
 
                 $data = ValueDataConverter::convert($value, $station);
 
