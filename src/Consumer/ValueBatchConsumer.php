@@ -3,7 +3,7 @@
 namespace App\Consumer;
 
 use App\Air\DataPersister\PersisterInterface;
-use App\Air\Value\Value;
+use Caldera\LuftModel\Model\Value;
 use App\Air\Serializer\LuftSerializerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\BatchConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;

@@ -3,7 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Air\DataPersister\PersisterInterface;
-use App\Air\Value\Value;
+use Caldera\LuftModel\Model\Value;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

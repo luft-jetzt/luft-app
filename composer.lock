@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "74d8a7d24fcf2d598b1e4e85dfa61cc9",
+    "content-hash": "a078cc615decbd3daff09dc4685a7dae",
     "packages": [
         {
             "name": "cache/adapter-common",
@@ -2951,6 +2951,42 @@
                 "source": "https://github.com/thephpleague/geotools"
             },
             "time": "2024-03-14T22:24:18+00:00"
+        },
+        {
+            "name": "luft-jetzt/luft-model",
+            "version": "0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/luft-jetzt/luft-model.git",
+                "reference": "70b9ffbeb2651c806f45617cb4051bcd67687a7d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/luft-jetzt/luft-model/zipball/70b9ffbeb2651c806f45617cb4051bcd67687a7d",
+                "reference": "70b9ffbeb2651c806f45617cb4051bcd67687a7d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Caldera\\LuftModel\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Malte Huebner",
+                    "email": "maltehuebner@gmx.org"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/luft-jetzt/luft-model/issues",
+                "source": "https://github.com/luft-jetzt/luft-model/tree/0.4"
+            },
+            "time": "2024-06-24T15:01:14+00:00"
         },
         {
             "name": "maltehuebner/impress-bundle",

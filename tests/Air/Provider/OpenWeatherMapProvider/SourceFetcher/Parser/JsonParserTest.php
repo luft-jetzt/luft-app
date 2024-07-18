@@ -3,7 +3,7 @@
 namespace App\Tests\Air\Provider\OpenWeatherMapProvider\SourceFetcher\Parser;
 
 use App\Air\Provider\OpenWeatherMapProvider\SourceFetcher\Parser\JsonParser;
-use App\Air\Value\Value;
+use Caldera\LuftModel\Model\Value;
 use PHPUnit\Framework\TestCase;
 
 class JsonParserTest extends TestCase

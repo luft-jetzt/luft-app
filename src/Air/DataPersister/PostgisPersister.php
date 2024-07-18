@@ -2,14 +2,14 @@
 
 namespace App\Air\DataPersister;
 
-use App\Air\StationCache\StationCacheInterface;
-use App\Air\Value\Value;
 use App\Air\ValueDataConverter\ValueDataConverter;
 use Doctrine\Persistence\ManagerRegistry;
 
 class PostgisPersister extends AbstractPersister
 {
-    public function __construct(protected ManagerRegistry $managerRegistry, protected StationCacheInterface $stationCache)
+    public function __construct(
+        private readonly ManagerRegistry $managerRegistry
+    )
     {
 
     }

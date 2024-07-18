@@ -18,6 +18,7 @@
         "http-interop/http-factory-guzzle": "*",
         "jsor/doctrine-postgis": "^2.1",
         "league/geotools": "^1.0",
+        "luft-jetzt/luft-model": "^0.4.0",
         "maltehuebner/impress-bundle": "dev-main",
         "mhujer/breadcrumbs-bundle": "^1.5",
         "nelmio/api-doc-bundle": "^4.0",

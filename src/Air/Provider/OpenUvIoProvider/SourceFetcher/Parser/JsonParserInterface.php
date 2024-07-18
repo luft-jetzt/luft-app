@@ -2,7 +2,7 @@
 
 namespace App\Air\Provider\OpenUvIoProvider\SourceFetcher\Parser;
 
-use App\Air\Value\Value;
+use Caldera\LuftModel\Model\Value;
 
 interface JsonParserInterface
 {
