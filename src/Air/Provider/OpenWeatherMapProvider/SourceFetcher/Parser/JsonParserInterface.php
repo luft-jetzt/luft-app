@@ -2,7 +2,7 @@
 
 namespace App\Air\Provider\OpenWeatherMapProvider\SourceFetcher\Parser;
 
-use App\Air\Value\Value;
+use Caldera\LuftModel\Model\Value;
 
 interface JsonParserInterface
 {

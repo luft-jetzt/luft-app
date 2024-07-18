@@ -3,7 +3,7 @@
 namespace App\Air\ValueDataConverter;
 
 use App\Air\Pollutant\PollutantInterface;
-use App\Air\Value\Value;
+use Caldera\LuftModel\Model\Value;;
 use App\Entity\Data;
 use App\Entity\Station;
 
