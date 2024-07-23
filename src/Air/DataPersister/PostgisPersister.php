@@ -2,16 +2,19 @@
 
 namespace App\Air\DataPersister;
 
+use App\Air\StationCache\StationCacheInterface;
 use App\Air\ValueDataConverter\ValueDataConverter;
+use Caldera\LuftModel\Model\Value;
 use Doctrine\Persistence\ManagerRegistry;
 
 class PostgisPersister extends AbstractPersister
 {
     public function __construct(
-        private readonly ManagerRegistry $managerRegistry
+        private readonly ManagerRegistry $managerRegistry,
+        StationCacheInterface $stationCache
     )
     {
-
+        parent::__construct($stationCache);
     }
 
     #[\Override]

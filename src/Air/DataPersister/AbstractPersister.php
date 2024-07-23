@@ -7,8 +7,9 @@ use App\Entity\Station;
 
 abstract class AbstractPersister implements PersisterInterface
 {
-    public function __construct(protected StationCacheInterface $stationCache)
+    public function __construct(protected readonly StationCacheInterface $stationCache)
     {
+
     }
 
     protected function stationExists(string $stationCode): bool

@@ -11,7 +11,7 @@ framework:
                     max_retries: 3
                     delay: 1000
                     multiplier: 2
-                    max_delay: 0
+                    max_delay: 2500
                 options:
                     exchange:
                         name: luft_value
