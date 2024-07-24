@@ -1,0 +1,30 @@
+framework:
+    messenger:
+        # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
+        # failure_transport: failed
+        serializer:
+            default_serializer: messenger.transport.symfony_serializer
+        transports:
+            luft_value:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                retry_strategy:
+                    max_retries: 3
+                    delay: 1000
+                    multiplier: 2
+                    max_delay: 2500
+                options:
+                    exchange:
+                        name: luft_value
+                        type: direct
+                    queues:
+                        luft_value: luft_value
+        routing:
+            Caldera\LuftModel\Model\Value: luft_value
+
+# when@test:
+#    framework:
+#        messenger:
+#            transports:
+#                # replace with your transport name here (e.g., my_transport: 'in-memory://')
+#                # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
+#                async: 'in-memory://'
