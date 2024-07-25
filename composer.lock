@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c2674e341e6d79c2560bcfabb51eccdc",
+    "content-hash": "f093a95751fc592c1fda11806b0b7b8d",
     "packages": [
         {
             "name": "cache/adapter-common",
@@ -2954,16 +2954,16 @@
         },
         {
             "name": "luft-jetzt/luft-model",
-            "version": "0.5",
+            "version": "0.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/luft-jetzt/luft-model.git",
-                "reference": "fae0c299133c93f879c5a6cc80bc0de91de8c890"
+                "reference": "e13712d7e723417b6c301b14b6ceb2f62bd34d32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/luft-jetzt/luft-model/zipball/fae0c299133c93f879c5a6cc80bc0de91de8c890",
-                "reference": "fae0c299133c93f879c5a6cc80bc0de91de8c890",
+                "url": "https://api.github.com/repos/luft-jetzt/luft-model/zipball/e13712d7e723417b6c301b14b6ceb2f62bd34d32",
+                "reference": "e13712d7e723417b6c301b14b6ceb2f62bd34d32",
                 "shasum": ""
             },
             "require": {
@@ -2984,9 +2984,9 @@
             ],
             "support": {
                 "issues": "https://github.com/luft-jetzt/luft-model/issues",
-                "source": "https://github.com/luft-jetzt/luft-model/tree/0.5"
+                "source": "https://github.com/luft-jetzt/luft-model/tree/0.5.1"
             },
-            "time": "2024-07-18T12:55:58+00:00"
+            "time": "2024-07-25T07:09:15+00:00"
         },
         {
             "name": "maltehuebner/impress-bundle",
