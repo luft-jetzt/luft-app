@@ -30,17 +30,25 @@ class DataRepository extends EntityRepository
             ->addFieldResult('s', 'provider', 'provider')
         ;
 
-        $sql = 'SELECT DISTINCT ON (pollutant, provider) id, value, pollutant, date_time,
-                                             id AS station_id, title, latitude, longitude, station_code, station_type, provider,
-                                             coord <-> ST_MakePoint(?, ?) AS dist
-FROM current_data
-ORDER BY pollutant ASC, provider ASC, dist ASC, date_time DESC
+        $sql = 'SELECT DISTINCT ON (pollutant, provider) value, pollutant, date_time, station_id, title, latitude, longitude, station_code, station_type, provider
+FROM data_view
+WHERE
+    date_time > CURRENT_DATE - INTERVAL \'?\' HOUR
+    AND station_id IN (SELECT id FROM station WHERE coord <-> ST_MakePoint(?, ?) < ? ORDER BY coord <-> ST_MakePoint(?, ?) ASC)
+   OR pollutant = 7
+ORDER BY pollutant ASC, provider ASC, coord <-> ST_MakePoint(?, ?) ASC
 LIMIT 10';
 
         $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
         $query
-            ->setParameter(1, $coord->getLongitude())
+            ->setParameter(1,32)
             ->setParameter(2, $coord->getLatitude())
+            ->setParameter(3, $coord->getLongitude())
+            ->setParameter(4, 0.2)
+            ->setParameter(5, $coord->getLongitude())
+            ->setParameter(6, $coord->getLatitude())
+            ->setParameter(7, $coord->getLongitude())
+            ->setParameter(8, $coord->getLatitude())
         ;
 
         //dd($query->getResult());
