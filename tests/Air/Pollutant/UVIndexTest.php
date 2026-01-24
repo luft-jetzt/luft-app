@@ -9,7 +9,7 @@ class UVIndexTest extends TestCase
 {
     public function testName(): void
     {
-        $this->assertEquals('UV-Index', (new UVIndex())->getName());
+        $this->assertEquals('aktueller UV-Index', (new UVIndex())->getName());
     }
 
     public function testShortName(): void
@@ -24,7 +24,7 @@ class UVIndexTest extends TestCase
 
     public function testShortNameHtml(): void
     {
-        $this->assertEquals('UV-Index', (new UVIndex())->getShortNameHtml());
+        $this->assertEquals('aktueller UV-Index', (new UVIndex())->getShortNameHtml());
     }
 
     public function testUnitHtml(): void

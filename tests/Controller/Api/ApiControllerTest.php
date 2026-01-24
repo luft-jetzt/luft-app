@@ -4,11 +4,14 @@ namespace App\Tests\Controller\Api;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * @group integration
+ */
 class ApiControllerTest extends WebTestCase
 {
     public function testApiDocVisible(): void
     {
-        $client = $client = static::createClient();
+        $client = static::createClient();
 
         $client->request('GET', '/api/doc');
 

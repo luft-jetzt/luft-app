@@ -1,14 +1,17 @@
 <?php declare(strict_types=1);
 
-namespace App\Tests\Controller\Api;
+namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * @group integration
+ */
 class ControllerTest extends WebTestCase
 {
     public function testFrontpage(): void
     {
-        $client = $client = static::createClient();
+        $client = static::createClient();
 
         $client->request('GET', '/');
 
@@ -17,7 +20,7 @@ class ControllerTest extends WebTestCase
 
     public function testImpressPage(): void
     {
-        $client = $client = static::createClient();
+        $client = static::createClient();
 
         $client->request('GET', '/impress');
 
@@ -27,7 +30,7 @@ class ControllerTest extends WebTestCase
 
     public function testPrivacyPage(): void
     {
-        $client = $client = static::createClient();
+        $client = static::createClient();
 
         $client->request('GET', '/privacy');
 
