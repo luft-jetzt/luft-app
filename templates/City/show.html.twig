@@ -57,10 +57,12 @@
 
     <div class="row mt-2">
         <div class="col-12">
-            <div class="card-columns">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             {% for station in stationList %}
             {% if stationBoxList[station.stationCode]|length > 0 %}
+            <div class="col">
             {% include 'Default/_station.html.twig' with { 'linkToStation': true, 'station': station, 'pollutantList': stationBoxList[station.stationCode], 'showMap': false } %}
+            </div>
             {% endif %}
             {% endfor %}
             </div>
