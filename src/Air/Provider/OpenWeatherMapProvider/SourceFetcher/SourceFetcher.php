@@ -5,7 +5,7 @@ namespace App\Air\Provider\OpenWeatherMapProvider\SourceFetcher;
 use App\Air\SourceFetcher\FetchProcess;
 use App\Air\SourceFetcher\FetchResult;
 use App\Air\SourceFetcher\SourceFetcherInterface;
-use Caldera\GeoBasic\Coord\CoordInterface;
+use App\Geo\Coord\CoordInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class SourceFetcher implements SourceFetcherInterface

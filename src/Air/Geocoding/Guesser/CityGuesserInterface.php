@@ -2,7 +2,7 @@
 
 namespace App\Air\Geocoding\Guesser;
 
-use Caldera\GeoBasic\Coord\Coord;
+use App\Geo\Coord\Coord;
 
 interface CityGuesserInterface
 {

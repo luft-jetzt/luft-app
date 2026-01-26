@@ -4,7 +4,7 @@ namespace App\Air\PollutionDataFactory;
 
 use App\Air\PollutantFactoryStrategy\PollutantFactoryStrategyInterface;
 use App\Entity\Station;
-use Caldera\GeoBasic\Coordinate\CoordinateInterface;
+use App\Geo\Coordinate\CoordinateInterface;
 
 interface PollutionDataFactoryInterface
 {

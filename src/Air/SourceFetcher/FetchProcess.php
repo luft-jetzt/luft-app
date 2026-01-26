@@ -2,7 +2,7 @@
 
 namespace App\Air\SourceFetcher;
 
-use Caldera\GeoBasic\Coord\CoordInterface;
+use App\Geo\Coord\CoordInterface;
 
 class FetchProcess
 {

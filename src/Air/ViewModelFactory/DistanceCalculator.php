@@ -3,7 +3,7 @@
 namespace App\Air\ViewModelFactory;
 
 use App\Entity\Station;
-use Caldera\GeoBasic\Coordinate\CoordinateInterface;
+use App\Geo\Coordinate\CoordinateInterface;
 
 class DistanceCalculator
 {

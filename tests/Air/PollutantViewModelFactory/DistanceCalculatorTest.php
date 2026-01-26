@@ -4,7 +4,7 @@ namespace App\Tests\Air\PollutantViewModelFactory;
 
 use App\Air\ViewModelFactory\DistanceCalculator;
 use App\Entity\Station;
-use Caldera\GeoBasic\Coordinate\Coordinate;
+use App\Geo\Coordinate\Coordinate;
 use PHPUnit\Framework\TestCase;
 
 class DistanceCalculatorTest extends TestCase
