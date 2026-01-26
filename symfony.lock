@@ -20,16 +20,6 @@
     "composer/package-versions-deprecated": {
         "version": "1.11.99.4"
     },
-    "doctrine/annotations": {
-        "version": "1.13",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "1.10",
-            "ref": "64d8583af5ea57b7afa4aba4b159907f3a148b05"
-        },
-        "files": []
-    },
     "doctrine/cache": {
         "version": "v1.7.1"
     },
@@ -171,9 +161,6 @@
     "laminas/laminas-code": {
         "version": "3.4.1"
     },
-    "league/geotools": {
-        "version": "0.8.0"
-    },
     "maltehuebner/impress-bundle": {
         "version": "0.1"
     },
@@ -240,9 +227,6 @@
     },
     "php-http/message": {
         "version": "1.6.0"
-    },
-    "php-http/message-factory": {
-        "version": "v1.0.2"
     },
     "php-http/promise": {
         "version": "v1.0.0"
@@ -329,12 +313,6 @@
     },
     "ralouphie/getallheaders": {
         "version": "2.0.5"
-    },
-    "react/event-loop": {
-        "version": "v0.4.3"
-    },
-    "react/promise": {
-        "version": "v2.5.1"
     },
     "rector/rector": {
         "version": "0.14.5"
