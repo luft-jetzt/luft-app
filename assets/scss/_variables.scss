@@ -1,0 +1,45 @@
+// ==========================================================================
+// Bootstrap Variable Overrides — must be imported BEFORE Bootstrap
+// ==========================================================================
+
+// -- Colors ----------------------------------------------------------------
+$primary:       #2563eb;
+$body-bg:       #f1f5f9;
+$dark:          #0f172a;
+
+// -- Typography ------------------------------------------------------------
+$font-family-sans-serif: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+  "Helvetica Neue", Arial, sans-serif;
+
+// -- Border-Radius ---------------------------------------------------------
+$border-radius:    0.75rem;
+$border-radius-sm: 0.5rem;
+$border-radius-lg: 1rem;
+$border-radius-pill: 50rem;
+
+// -- Shadows (Tailwind-inspired) -------------------------------------------
+$box-shadow:    0 1px 3px rgba(0, 0, 0, .1), 0 1px 2px rgba(0, 0, 0, .06);
+$box-shadow-sm: 0 1px 2px rgba(0, 0, 0, .05);
+$box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -4px rgba(0, 0, 0, .1);
+
+// -- Cards -----------------------------------------------------------------
+$card-border-width: 0;
+$card-border-radius: $border-radius-lg;
+$card-box-shadow: $box-shadow;
+
+// -- Buttons ---------------------------------------------------------------
+$btn-border-radius:    $border-radius;
+$btn-border-radius-sm: $border-radius-sm;
+$btn-border-radius-lg: $border-radius-lg;
+$btn-padding-y:     .5rem;
+$btn-padding-x:     1.25rem;
+$btn-font-weight:   600;
+
+// -- Inputs ----------------------------------------------------------------
+$input-border-color:       #cbd5e1;
+$input-focus-border-color: $primary;
+$input-focus-box-shadow:   0 0 0 .2rem rgba($primary, .25);
+
+// -- Dropdowns -------------------------------------------------------------
+$dropdown-border-width: 0;
+$dropdown-box-shadow:   $box-shadow-lg;
