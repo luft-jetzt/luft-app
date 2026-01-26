@@ -1,0 +1,285 @@
+// ==========================================================================
+// App Shell — all custom styles for the modern app-like UI
+// ==========================================================================
+
+// -- App-Shell Layout ------------------------------------------------------
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.luft-content-spacer {
+  height: 62px; // matches fixed-top navbar height
+}
+
+.luft-main {
+  flex: 1;
+  animation: luft-fade-in .3s ease-out;
+}
+
+@keyframes luft-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// -- Glasmorphism Navbar ---------------------------------------------------
+.luft-navbar {
+  background: rgba(255, 255, 255, .82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+  transition: box-shadow .2s ease-in-out;
+
+  .navbar-brand {
+    font-weight: 700;
+    font-size: 1.35rem;
+    letter-spacing: -.02em;
+  }
+}
+
+// -- Offcanvas (mobile full-screen nav) ------------------------------------
+.offcanvas-lg {
+  .nav-link {
+    padding: .75rem 1rem;
+    font-weight: 500;
+    transition: color .2s ease-in-out, background-color .2s ease-in-out;
+    border-radius: $border-radius-sm;
+
+    &:hover,
+    &:focus-visible {
+      background-color: rgba($primary, .06);
+    }
+  }
+
+  .offcanvas-header {
+    border-bottom: 1px solid rgba(0, 0, 0, .06);
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  .offcanvas-lg .nav-link {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+// -- Search form in navbar -------------------------------------------------
+.luft-search {
+  @include media-breakpoint-up(lg) {
+    max-width: 320px;
+  }
+}
+
+// -- Cards -----------------------------------------------------------------
+.card {
+  box-shadow: $box-shadow;
+  border: none;
+  overflow: hidden;
+  transition: transform .2s ease-in-out, box-shadow .2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $box-shadow-lg;
+  }
+}
+
+.card-body.box {
+  .display-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+  }
+
+  .btn {
+    border-radius: $border-radius-pill;
+    backdrop-filter: blur(4px);
+  }
+}
+
+// -- Card groups: stack vertically on mobile -------------------------------
+@include media-breakpoint-down(sm) {
+  .card-group {
+    flex-direction: column;
+
+    > .card {
+      border-radius: $card-border-radius !important;
+
+      + .card {
+        margin-top: .75rem;
+        margin-left: 0;
+      }
+
+      .card-img-top,
+      .card-header {
+        border-radius: $card-border-radius $card-border-radius 0 0 !important;
+      }
+
+      .card-img-bottom,
+      .card-footer {
+        border-radius: 0 0 $card-border-radius $card-border-radius !important;
+      }
+    }
+  }
+}
+
+// -- Bottom Navigation Bar (mobile only) -----------------------------------
+.luft-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
+  background: rgba(255, 255, 255, .88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, .08);
+  padding-bottom: env(safe-area-inset-bottom);
+
+  .luft-bottom-nav-items {
+    display: flex;
+    justify-content: space-around;
+    align-items: stretch;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .luft-bottom-nav-item {
+    flex: 1;
+    text-align: center;
+
+    a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: .45rem .25rem;
+      min-height: 52px;
+      font-size: .68rem;
+      font-weight: 500;
+      color: #64748b;
+      text-decoration: none;
+      transition: color .2s ease-in-out;
+
+      &:hover,
+      &:focus-visible,
+      &.active {
+        color: $primary;
+      }
+
+      i {
+        font-size: 1.2rem;
+        margin-bottom: .15rem;
+      }
+    }
+  }
+}
+
+// -- Touch targets (accessibility) -----------------------------------------
+@include media-breakpoint-down(lg) {
+  .btn,
+  .nav-link,
+  .dropdown-item {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+// -- Transitions on interactive elements -----------------------------------
+.btn,
+.nav-link,
+.dropdown-item,
+.form-control {
+  transition: all .2s ease-in-out;
+}
+
+// Dropdown slide-in animation
+.dropdown-menu {
+  animation: luft-dropdown-in .15s ease-out;
+}
+
+@keyframes luft-dropdown-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// Focus-visible ring for accessibility
+:focus-visible {
+  outline: 2px solid $primary;
+  outline-offset: 2px;
+}
+
+// -- Footer ----------------------------------------------------------------
+.luft-footer {
+  background-color: $dark;
+  color: rgba(255, 255, 255, .7);
+  margin-top: auto;
+
+  a {
+    color: rgba(255, 255, 255, .8);
+    text-decoration: none;
+    transition: color .2s ease-in-out;
+
+    &:hover,
+    &:focus-visible {
+      color: #fff;
+    }
+  }
+
+  .luft-footer-heading {
+    color: #fff;
+    font-weight: 600;
+    font-size: .85rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: .75rem;
+  }
+
+  .luft-footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li + li {
+      margin-top: .35rem;
+    }
+
+    a {
+      font-size: .9rem;
+    }
+  }
+
+  .luft-footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, .1);
+    font-size: .8rem;
+    color: rgba(255, 255, 255, .45);
+  }
+}
+
+// Extra bottom-padding on mobile so content is not hidden behind bottom-nav
+@include media-breakpoint-down(lg) {
+  .luft-footer {
+    padding-bottom: 68px; // bottom-nav height + spacing
+  }
+}
+
+// -- Maps: taller on mobile ------------------------------------------------
+@include media-breakpoint-down(md) {
+  .leaflet-container {
+    min-height: 40vh;
+  }
+}
+
+// -- Tables with shadow and radius -----------------------------------------
+.table-responsive {
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  overflow: hidden;
+}
+
+// -- Breadcrumbs smaller ---------------------------------------------------
+.breadcrumb {
+  font-size: .85rem;
+}
