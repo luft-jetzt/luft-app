@@ -1,16 +1,4 @@
 {
-    "cache/adapter-common": {
-        "version": "1.1.0"
-    },
-    "cache/array-adapter": {
-        "version": "1.0.1"
-    },
-    "cache/hierarchical-cache": {
-        "version": "1.0.0"
-    },
-    "cache/tag-interop": {
-        "version": "1.0.0"
-    },
     "calderacc/geobasic": {
         "version": "0.2"
     },
@@ -164,9 +152,6 @@
     },
     "knplabs/knp-menu-bundle": {
         "version": "v2.2.1"
-    },
-    "league/geotools": {
-        "version": "0.8.0"
     },
     "maltehuebner/impress-bundle": {
         "version": "0.1"
@@ -323,12 +308,6 @@
     },
     "ralouphie/getallheaders": {
         "version": "2.0.5"
-    },
-    "react/event-loop": {
-        "version": "v0.4.3"
-    },
-    "react/promise": {
-        "version": "v2.5.1"
     },
     "rector/rector": {
         "version": "0.14.5"
