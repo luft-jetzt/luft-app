@@ -27,15 +27,44 @@
     <body>
         {% include 'Includes/menu.html.twig' %}
 
-        <a href="http://sqi.be/ed94a">
-            <img class="d-none d-md-block" style="position: absolute; top: 56px; right: 0; border: 0;" src="{{ asset('/build/images/github/black-topright.png') }}" />
-        </a>
+        <div class="luft-content-spacer"></div>
 
         {{ wo_render_breadcrumbs() }}
 
-        {% block content %}{% endblock %}
+        <main class="luft-main">
+            {% block content %}{% endblock %}
+        </main>
 
         {% include 'Includes/footer.html.twig' %}
+
+        <nav class="luft-bottom-nav d-lg-none" aria-label="Mobile navigation">
+            <ul class="luft-bottom-nav-items">
+                <li class="luft-bottom-nav-item">
+                    <a href="{{ path('frontpage') }}">
+                        <i class="fa fa-home"></i>
+                        <span>Start</span>
+                    </a>
+                </li>
+                <li class="luft-bottom-nav-item">
+                    <a href="{{ path('display') }}">
+                        <i class="fa fa-search"></i>
+                        <span>Suche</span>
+                    </a>
+                </li>
+                <li class="luft-bottom-nav-item">
+                    <a href="#" class="locate-button">
+                        <i class="fa fa-location-arrow"></i>
+                        <span>Standort</span>
+                    </a>
+                </li>
+                <li class="luft-bottom-nav-item">
+                    <a href="{{ path('pollutant_pm10') }}">
+                        <i class="fa fa-cloud"></i>
+                        <span>Feinstaub</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
 
         <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
