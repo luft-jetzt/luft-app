@@ -101,17 +101,5 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            $('.datatable').DataTable({
-                'paging':   false,
-                'info':     false,
-                'language': {
-                    'search': 'Suche:'
-                }
-            });
-        } );
-    </script>
+    {{ encore_entry_script_tags('js/datatables') }}
 {% endblock %}

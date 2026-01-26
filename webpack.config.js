@@ -14,6 +14,7 @@ Encore
     .enableSourceMaps(!Encore.isProduction())
     .enableSingleRuntimeChunk()
     .addEntry('js/app', './assets/js/app.js')
+    .addEntry('js/datatables', './assets/js/datatables.js')
     .addStyleEntry('css/app', './assets/scss/app.scss')
     .enableSassLoader()
     .autoProvidejQuery()
