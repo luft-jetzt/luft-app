@@ -50,9 +50,4 @@ class PollutionLevelTwigExtension extends AbstractExtension
     {
         return $this->levelColorHandler->getLevelsForPollutant($pollutantIdentifier);
     }
-
-    public function getName(): string
-    {
-        return 'pollution_level_extension';
-    }
 }

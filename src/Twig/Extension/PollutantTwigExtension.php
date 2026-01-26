@@ -33,10 +33,4 @@ class PollutantTwigExtension extends AbstractExtension
     {
         return $this->pollutantList->getPollutantListWithIds()[$pollutantId];
     }
-
-    public function getName(): string
-    {
-        return 'measurement_extension';
-    }
 }
-

@@ -14,7 +14,7 @@ class TypeaheadController extends AbstractController
 {
     public function prefetchCitiesAction(RouterInterface $router): Response
     {
-        $cityList = $this->getDoctrine()->getRepository(City::class)->findAll();
+        $cityList = $this->managerRegistry->getRepository(City::class)->findAll();
 
         $data = [];
 
@@ -33,7 +33,7 @@ class TypeaheadController extends AbstractController
 
     public function prefetchStationsAction(RouterInterface $router): Response
     {
-        $stationList = $this->getDoctrine()->getRepository(Station::class)->findActiveStations();
+        $stationList = $this->managerRegistry->getRepository(Station::class)->findActiveStations();
 
         $data = [];
 

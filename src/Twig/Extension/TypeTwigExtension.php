@@ -14,10 +14,4 @@ class TypeTwigExtension extends AbstractExtension
             new TwigTest('numeric', fn($value) => is_numeric($value)),
         ];
     }
-
-    public function getName(): string
-    {
-        return 'type_extension';
-    }
 }
-
