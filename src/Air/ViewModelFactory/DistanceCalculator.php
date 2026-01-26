@@ -7,20 +7,31 @@ use Caldera\GeoBasic\Coordinate\CoordinateInterface;
 
 class DistanceCalculator
 {
+    /** WGS84 semi-major axis in meters. */
+    private const WGS84_A = 6378137.0;
+
+    /** WGS84 inverse flattening. */
+    private const WGS84_INV_F = 298.257223563;
+
     private function __construct()
     {
-
     }
 
     public static function distance(CoordinateInterface $coord, Station $station): ?float
     {
-        $geotools = new \League\Geotools\Geotools();
+        $latA = deg2rad($coord->getLatitude());
+        $lngA = deg2rad($coord->getLongitude());
+        $latB = deg2rad($station->getLatitude());
+        $lngB = deg2rad($station->getLongitude());
 
-        $coordA = new \League\Geotools\Coordinate\Coordinate($coord->toArray());
-        $coordB = new \League\Geotools\Coordinate\Coordinate($station->toArray());
+        $dLat = $latB - $latA;
+        $dLng = $lngB - $lngA;
 
-        $distance = $geotools->distance()->setFrom($coordA)->setTo($coordB);
+        $a = sin($dLat / 2) ** 2 + cos($latA) * cos($latB) * sin($dLng / 2) ** 2;
+        $c = 2 * asin(sqrt($a));
 
-        return round($distance->in('km')->haversine(), 2);
+        $meanRadius = self::WGS84_A * (1 - 1 / self::WGS84_INV_F / 3);
+
+        return round($meanRadius * $c / 1000, 2);
     }
 }
