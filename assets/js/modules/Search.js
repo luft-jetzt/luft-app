@@ -1,120 +1,168 @@
-import 'corejs-typeahead';
-import Bloodhound from 'bloodhound-js';
-import Handlebars from 'handlebars/lib/handlebars';
+import { autocomplete } from '@algolia/autocomplete-js';
 
 export default class Search {
     constructor(element, options) {
         const defaults = {};
+        this.settings = { ...defaults, ...options };
+        this.element = element;
+        this.citiesData = [];
+        this.stationsData = [];
 
-        this.settings = {...defaults, ...options};
-
-        this.init(element);
+        this.init();
     }
-    init(element) {
-        const form = element.closest('form');
+
+    async init() {
+        const form = this.element.closest('form');
         const actionUri = form.action;
 
-        const prefetchedCities = new Bloodhound({
-            datumTokenizer: function (data) {
-                return Bloodhound.tokenizers.whitespace(data.value.name);
-            },
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            prefetch: Routing.generate('prefetch_cities'),
-            cache: false,
-            ttl: 60,
-        });
+        // Prefetch data
+        await this.prefetchData();
 
-        const prefetchedStations = new Bloodhound({
-            datumTokenizer: function (data) {
-                return Bloodhound.tokenizers.whitespace(data.value.stationCode + data.value.title);
-            },
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            prefetch: Routing.generate('prefetch_stations'),
-            cache: false,
-            ttl: 60,
-        });
+        // Create container for autocomplete
+        const container = document.createElement('div');
+        container.className = 'autocomplete-container';
+        this.element.parentNode.insertBefore(container, this.element);
+        this.element.style.display = 'none';
 
-        const remoteQueries = new Bloodhound({
-            datumTokenizer: function (data) {
-                return Bloodhound.tokenizers.whitespace(data.value);
-            },
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            cache: false,
-            ttl: 60,
-            remote: {
-                url: Routing.generate('search') + '?query=%QUERY',
-                wildcard: '%QUERY'
-            },
-        });
+        const self = this;
 
-        $('#' + element.id).typeahead({
-            hint: true,
-            highlight: true,
-            minLength: 2,
+        autocomplete({
+            container: container,
+            placeholder: this.element.placeholder || 'Suchbegriff, Postleitzahl, Stadtname…',
+            openOnFocus: true,
             classNames: {
-                dataset: 'tt-dataset tt-dataset-results container'
-            }
-        }, {
-            name: 'prefetchedCities',
-            source: prefetchedCities,
-            display: function(data) {
-                return data.value.name;
+                form: 'aa-Form',
+                input: 'aa-Input form-control',
+                panel: 'aa-Panel',
+                list: 'aa-List',
+                item: 'aa-Item',
             },
-            templates: {
-                header: '<strong>Städte</strong>',
-                suggestion: renderCity,
-            }
-        }, {
-            name: 'prefetchedStations',
-            source: prefetchedStations,
-            display: function(data) {
-                return data.value.name;
+            getSources({ query }) {
+                if (!query || query.length < 2) {
+                    return [];
+                }
+
+                const queryLower = query.toLowerCase();
+
+                return [
+                    {
+                        sourceId: 'cities',
+                        getItems() {
+                            return self.citiesData.filter(item =>
+                                item.value.name.toLowerCase().includes(queryLower)
+                            ).slice(0, 5);
+                        },
+                        templates: {
+                            header() {
+                                return '<div class="aa-SourceHeader">Städte</div>';
+                            },
+                            item({ item, html }) {
+                                return html`
+                                    <a href="${item.value.url}" class="aa-ItemLink">
+                                        <div class="aa-ItemContent">
+                                            <i class="fa fa-university"></i>
+                                            <span class="aa-ItemTitle">${item.value.name}</span>
+                                        </div>
+                                    </a>
+                                `;
+                            },
+                            noResults() {
+                                return null;
+                            },
+                        },
+                        onSelect({ item }) {
+                            window.location = item.value.url;
+                        },
+                    },
+                    {
+                        sourceId: 'stations',
+                        getItems() {
+                            return self.stationsData.filter(item => {
+                                const searchStr = (item.value.stationCode + ' ' + item.value.title).toLowerCase();
+                                return searchStr.includes(queryLower);
+                            }).slice(0, 5);
+                        },
+                        templates: {
+                            header() {
+                                return '<div class="aa-SourceHeader">Messstationen</div>';
+                            },
+                            item({ item, html }) {
+                                return html`
+                                    <a href="${item.value.url}" class="aa-ItemLink">
+                                        <div class="aa-ItemContent">
+                                            <i class="fa fa-thermometer-half"></i>
+                                            <div class="aa-ItemDetails">
+                                                ${item.value.title ? html`<span class="aa-ItemTitle">${item.value.title}</span>` : ''}
+                                                <span class="aa-ItemCode">${item.value.stationCode}</span>
+                                                ${item.value.city ? html`<span class="aa-ItemCity">${item.value.city}</span>` : ''}
+                                            </div>
+                                        </div>
+                                    </a>
+                                `;
+                            },
+                            noResults() {
+                                return null;
+                            },
+                        },
+                        onSelect({ item }) {
+                            window.location = item.value.url;
+                        },
+                    },
+                    {
+                        sourceId: 'remote',
+                        getItems() {
+                            return fetch(Routing.generate('search') + '?query=' + encodeURIComponent(query))
+                                .then(response => response.json())
+                                .then(data => data.slice(0, 5))
+                                .catch(() => []);
+                        },
+                        templates: {
+                            header() {
+                                return '<div class="aa-SourceHeader">Suchergebnisse</div>';
+                            },
+                            item({ item, html }) {
+                                const url = actionUri + '?latitude=' + item.value.latitude + '&longitude=' + item.value.longitude;
+                                return html`
+                                    <a href="${url}" class="aa-ItemLink">
+                                        <div class="aa-ItemContent">
+                                            <i class="fa fa-map-marker"></i>
+                                            <div class="aa-ItemDetails">
+                                                ${item.value.name ? html`<span class="aa-ItemTitle">${item.value.name}</span>` : ''}
+                                                <div class="aa-ItemAddress">
+                                                    ${item.value.address ? html`<span>${item.value.address}</span>` : ''}
+                                                    ${item.value.zipCode ? html`<span>${item.value.zipCode}</span>` : ''}
+                                                    ${item.value.city ? html`<span>${item.value.city}</span>` : ''}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                `;
+                            },
+                            noResults() {
+                                return null;
+                            },
+                        },
+                        onSelect({ item }) {
+                            const url = actionUri + '?latitude=' + item.value.latitude + '&longitude=' + item.value.longitude;
+                            window.location = url;
+                        },
+                    },
+                ];
             },
-            templates: {
-                header: '<strong>Messstationen</strong>',
-                suggestion: renderStation,
-            }
-        }, {
-            name: 'remoteQueries',
-            source: remoteQueries,
-            display: function(data) {
-                return data.value.name;
-            },
-            templates: {
-                header: '<strong>Suchergebnisse</strong>',
-                suggestion: renderQuery,
-            }
-        }).on('typeahead:selected', redirect);
+        });
+    }
 
-        function buildUri(data) {
-            return actionUri + '?latitude=' + data.value.latitude + '&longitude=' + data.value.longitude;
-        }
+    async prefetchData() {
+        try {
+            const [citiesResponse, stationsResponse] = await Promise.all([
+                fetch(Routing.generate('prefetch_cities')),
+                fetch(Routing.generate('prefetch_stations')),
+            ]);
 
-        function renderQuery(data) {
-            const source = document.getElementById('render-query-template').innerHTML;
-            const template = Handlebars.compile(source);
-
-            data.value.url = buildUri(data);
-
-            return template(data.value);
-        }
-
-        function renderCity(data) {
-            const source = document.getElementById('render-city-template').innerHTML;
-            const template = Handlebars.compile(source);
-
-            return template(data.value);
-        }
-
-        function renderStation(data) {
-            const source = document.getElementById('render-station-template').innerHTML;
-            const template = Handlebars.compile(source);
-
-            return template(data.value);
-        }
-
-        function redirect(event, datum) {
-            window.location = datum.value.url;
+            this.citiesData = await citiesResponse.json();
+            this.stationsData = await stationsResponse.json();
+        } catch (error) {
+            console.error('Failed to prefetch data:', error);
         }
     }
 }
@@ -125,6 +173,4 @@ document.addEventListener('DOMContentLoaded', () => {
     typeaheadInputList.forEach(function (typeaheadInput) {
         new Search(typeaheadInput);
     });
-
-
 });

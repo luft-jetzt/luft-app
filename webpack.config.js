@@ -26,7 +26,6 @@ Encore
         from: 'node_modules/leaflet-extra-markers/dist/img/',
         to: 'images/extramarkers/[name].[ext]',
     })
-    .addLoader({ test: /\.handlebars$/, loader: 'handlebars-loader' })
     .enableVersioning()
 ;
 
