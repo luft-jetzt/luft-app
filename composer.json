@@ -51,6 +51,7 @@
         "willdurand/geocoder-bundle": "^5.0"
     },
     "require-dev": {
+        "phpstan/phpstan": "^1.12",
         "phpunit/phpunit": "^9.0",
         "rector/rector": "^1.2",
         "symfony/browser-kit": "^7.1",
