@@ -69,21 +69,18 @@ export default class Search {
                             ).slice(0, 5);
                         },
                         templates: {
-                            header({ html }) {
-                                return html`<div class="aa-SourceHeader">Städte</div>`;
+                            header({ items, html }) {
+                                if (items.length === 0) return null;
+                                return html`<div class="aa-SourceHeader"><i class="fa fa-university"></i> Städte</div>`;
                             },
                             item({ item, html }) {
                                 return html`
                                     <a href="${item.value.url}" class="aa-ItemLink">
                                         <div class="aa-ItemContent">
-                                            <i class="fa fa-university"></i>
                                             <span class="aa-ItemTitle">${item.value.name}</span>
                                         </div>
                                     </a>
                                 `;
-                            },
-                            noResults() {
-                                return null;
                             },
                         },
                         onSelect({ item }) {
@@ -99,25 +96,21 @@ export default class Search {
                             }).slice(0, 5);
                         },
                         templates: {
-                            header({ html }) {
-                                return html`<div class="aa-SourceHeader">Messstationen</div>`;
+                            header({ items, html }) {
+                                if (items.length === 0) return null;
+                                return html`<div class="aa-SourceHeader"><i class="fa fa-thermometer-half"></i> Messstationen</div>`;
                             },
                             item({ item, html }) {
                                 return html`
                                     <a href="${item.value.url}" class="aa-ItemLink">
                                         <div class="aa-ItemContent">
-                                            <i class="fa fa-thermometer-half"></i>
                                             <div class="aa-ItemDetails">
                                                 ${item.value.title ? html`<span class="aa-ItemTitle">${item.value.title}</span>` : ''}
                                                 <span class="aa-ItemCode">${item.value.stationCode}</span>
-                                                ${item.value.city ? html`<span class="aa-ItemCity">${item.value.city}</span>` : ''}
                                             </div>
                                         </div>
                                     </a>
                                 `;
-                            },
-                            noResults() {
-                                return null;
                             },
                         },
                         onSelect({ item }) {
@@ -133,29 +126,24 @@ export default class Search {
                                 .catch(() => []);
                         },
                         templates: {
-                            header({ html }) {
-                                return html`<div class="aa-SourceHeader">Suchergebnisse</div>`;
+                            header({ items, html }) {
+                                if (items.length === 0) return null;
+                                return html`<div class="aa-SourceHeader"><i class="fa fa-map-marker"></i> Orte</div>`;
                             },
                             item({ item, html }) {
                                 const url = actionUri + '?latitude=' + item.value.latitude + '&longitude=' + item.value.longitude;
                                 return html`
                                     <a href="${url}" class="aa-ItemLink">
                                         <div class="aa-ItemContent">
-                                            <i class="fa fa-map-marker"></i>
                                             <div class="aa-ItemDetails">
                                                 ${item.value.name ? html`<span class="aa-ItemTitle">${item.value.name}</span>` : ''}
-                                                <div class="aa-ItemAddress">
-                                                    ${item.value.address ? html`<span>${item.value.address}</span>` : ''}
-                                                    ${item.value.zipCode ? html`<span>${item.value.zipCode}</span>` : ''}
-                                                    ${item.value.city ? html`<span>${item.value.city}</span>` : ''}
-                                                </div>
+                                                <span class="aa-ItemAddress">
+                                                    ${item.value.zipCode || ''} ${item.value.city || ''}
+                                                </span>
                                             </div>
                                         </div>
                                     </a>
                                 `;
-                            },
-                            noResults() {
-                                return null;
                             },
                         },
                         onSelect({ item }) {
