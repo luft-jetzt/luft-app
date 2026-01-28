@@ -11,22 +11,22 @@ export default class Search {
         this.init();
     }
 
-    async init() {
+    init() {
         const form = this.element.closest('form');
         const actionUri = form.action;
         const inputName = this.element.name;
+        const originalClasses = this.element.className.replace('typeahead', '').trim();
+        const isLarge = this.element.classList.contains('form-control-lg');
 
-        // Prefetch data
-        await this.prefetchData();
-
-        // Create container for autocomplete
+        // Create container that replaces the original input
         const container = document.createElement('div');
-        container.className = 'autocomplete-container';
-        this.element.parentNode.insertBefore(container, this.element);
-        this.element.style.display = 'none';
+        container.className = 'autocomplete-container' + (isLarge ? ' autocomplete-container-lg' : '');
+        this.element.parentNode.replaceChild(container, this.element);
+
+        // Start prefetch in background (don't await)
+        this.prefetchData();
 
         const self = this;
-        const originalInput = this.element;
 
         autocomplete({
             container: container,
@@ -36,19 +36,23 @@ export default class Search {
             detachedMediaQuery: 'none',
             classNames: {
                 form: 'aa-Form',
-                input: 'aa-Input form-control',
+                input: 'aa-Input ' + originalClasses,
                 panel: 'aa-Panel',
                 list: 'aa-List',
                 item: 'aa-Item',
             },
-            onStateChange({ state }) {
-                // Sync the autocomplete value to the original input
-                originalInput.value = state.query;
-            },
             onSubmit({ state }) {
                 // When user presses Enter without selecting, submit the form
                 if (state.query && state.query.length > 0) {
-                    originalInput.value = state.query;
+                    // Create hidden input for form submission
+                    let hiddenInput = form.querySelector('input[name="' + inputName + '"][type="hidden"]');
+                    if (!hiddenInput) {
+                        hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.name = inputName;
+                        form.appendChild(hiddenInput);
+                    }
+                    hiddenInput.value = state.query;
                     form.submit();
                 }
             },

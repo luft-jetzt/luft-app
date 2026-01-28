@@ -242,12 +242,10 @@
 }
 
 // Large form control variant
-.form-control-lg + .autocomplete-container,
-.autocomplete-container:has(.form-control-lg) {
+.autocomplete-container-lg {
   .aa-Input {
     padding: 0.5rem 1rem;
     font-size: 1.25rem;
-    border-radius: 0.5rem;
   }
 
   .aa-Form {
