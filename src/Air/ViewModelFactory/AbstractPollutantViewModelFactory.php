@@ -55,6 +55,8 @@ abstract class AbstractPollutantViewModelFactory implements PollutantViewModelFa
             case 9: return new Temperature();
             case 11: return new UVIndexMax();
         }
+
+        throw new \InvalidArgumentException(sprintf('Unknown pollutant id: %d', $pollutantId));
     }
 
     #[\Override]

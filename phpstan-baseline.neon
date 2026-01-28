@@ -1,0 +1,646 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$coord of static method App\\\\Air\\\\ViewModelFactory\\\\DistanceCalculator\\:\\:distance\\(\\) expects Caldera\\\\GeoBasic\\\\Coordinate\\\\CoordinateInterface, Caldera\\\\GeoBasic\\\\Coord\\\\CoordInterface given\\.$#"
+			count: 1
+			path: src/Air/Analysis/CoronaFireworksAnalysis/CoronaFireworksAnalysis.php
+
+		-
+			message: "#^Variable \\$slotList in PHPDoc tag @var does not match any variable in the foreach loop\\: \\$yearList, \\$year, \\$yearSlot$#"
+			count: 1
+			path: src/Air/Analysis/CoronaFireworksAnalysis/CoronaFireworksAnalysis.php
+
+		-
+			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$year \\(int\\) is implicitly nullable via default value null\\.$#"
+			count: 1
+			path: src/Air/Analysis/CoronaFireworksAnalysis/StartDateTimeCalculator.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Data\\>\\:\\:findDataForCoronaFireworksAnalysis\\(\\)\\.$#"
+			count: 1
+			path: src/Air/Analysis/CoronaFireworksAnalysis/ValueFetcher.php
+
+		-
+			message: "#^Parameter \\$finder of method App\\\\Air\\\\Analysis\\\\FireworksAnalysis\\\\AbstractFireworksAnalysis\\:\\:__construct\\(\\) has invalid type App\\\\Pollution\\\\DataFinder\\\\FinderInterface\\.$#"
+			count: 1
+			path: src/Air/Analysis/FireworksAnalysis/AbstractFireworksAnalysis.php
+
+		-
+			message: "#^Property App\\\\Air\\\\Analysis\\\\FireworksAnalysis\\\\AbstractFireworksAnalysis\\:\\:\\$finder has unknown class App\\\\Pollution\\\\DataFinder\\\\FinderInterface as its type\\.$#"
+			count: 1
+			path: src/Air/Analysis/FireworksAnalysis/AbstractFireworksAnalysis.php
+
+		-
+			message: "#^Call to method addMust\\(\\) on an unknown class Elastica\\\\Query\\\\BoolQuery\\.$#"
+			count: 1
+			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
+
+		-
+			message: "#^Call to method addShould\\(\\) on an unknown class Elastica\\\\Query\\\\BoolQuery\\.$#"
+			count: 2
+			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
+
+		-
+			message: "#^Call to method addSort\\(\\) on an unknown class Elastica\\\\Query\\.$#"
+			count: 1
+			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
+
+		-
+			message: "#^Call to method find\\(\\) on an unknown class App\\\\Pollution\\\\DataFinder\\\\FinderInterface\\.$#"
+			count: 1
+			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
+
+		-
+			message: "#^Instantiated class Elastica\\\\Query not found\\.$#"
+			count: 1
+			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
+
+		-
+			message: "#^Instantiated class Elastica\\\\Query\\\\BoolQuery not found\\.$#"
+			count: 3
+			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
+
+		-
+			message: "#^Instantiated class Elastica\\\\Query\\\\Range not found\\.$#"
+			count: 2
+			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
+
+		-
+			message: "#^Instantiated class Elastica\\\\Query\\\\Term not found\\.$#"
+			count: 2
+			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
+
+		-
+			message: "#^Method App\\\\Air\\\\Analysis\\\\FireworksAnalysis\\\\FireworksAnalysis\\:\\:createDateTimeQuery\\(\\) has invalid return type Elastica\\\\Query\\\\BoolQuery\\.$#"
+			count: 1
+			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
+
+		-
+			message: "#^Parameter \\$finder of method App\\\\Air\\\\Analysis\\\\KomfortofenAnalysis\\\\AbstractKomfortofenAnalysis\\:\\:__construct\\(\\) has invalid type App\\\\Pollution\\\\DataFinder\\\\FinderInterface\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/AbstractKomfortofenAnalysis.php
+
+		-
+			message: "#^Property App\\\\Air\\\\Analysis\\\\KomfortofenAnalysis\\\\AbstractKomfortofenAnalysis\\:\\:\\$finder has unknown class App\\\\Pollution\\\\DataFinder\\\\FinderInterface as its type\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/AbstractKomfortofenAnalysis.php
+
+		-
+			message: "#^Call to method addAggregation\\(\\) on an unknown class Elastica\\\\Aggregation\\\\DateHistogram\\.$#"
+			count: 4
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Call to method addAggregation\\(\\) on an unknown class Elastica\\\\Aggregation\\\\Terms\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Call to method addAggregation\\(\\) on an unknown class Elastica\\\\Query\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Call to method addMust\\(\\) on an unknown class Elastica\\\\Query\\\\BoolQuery\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Call to method findAggregations\\(\\) on an unknown class App\\\\Pollution\\\\DataFinder\\\\FinderInterface\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Call to method setBucketsPath\\(\\) on an unknown class Elastica\\\\Aggregation\\\\BucketSelector\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Call to method setBucketsPath\\(\\) on an unknown class Elastica\\\\Aggregation\\\\Derivative\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Call to method setField\\(\\) on an unknown class Elastica\\\\Aggregation\\\\Max\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Call to method setField\\(\\) on an unknown class Elastica\\\\Aggregation\\\\Terms\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Call to method setFormat\\(\\) on an unknown class Elastica\\\\Aggregation\\\\DateHistogram\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Call to method setGapPolicy\\(\\) on an unknown class Elastica\\\\Aggregation\\\\BucketSelector\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Call to method setScript\\(\\) on an unknown class Elastica\\\\Aggregation\\\\BucketSelector\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Call to method setSize\\(\\) on an unknown class Elastica\\\\Aggregation\\\\TopHits\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Call to method setSort\\(\\) on an unknown class Elastica\\\\Aggregation\\\\TopHits\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Call to method setTimezone\\(\\) on an unknown class Elastica\\\\Aggregation\\\\DateHistogram\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Instantiated class Elastica\\\\Aggregation\\\\BucketSelector not found\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Instantiated class Elastica\\\\Aggregation\\\\DateHistogram not found\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Instantiated class Elastica\\\\Aggregation\\\\Derivative not found\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Instantiated class Elastica\\\\Aggregation\\\\Max not found\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Instantiated class Elastica\\\\Aggregation\\\\Terms not found\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Instantiated class Elastica\\\\Aggregation\\\\TopHits not found\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Instantiated class Elastica\\\\Query not found\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Instantiated class Elastica\\\\Query\\\\BoolQuery not found\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Instantiated class Elastica\\\\Query\\\\Range not found\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Instantiated class Elastica\\\\Query\\\\Term not found\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
+
+		-
+			message: "#^Call to method convertArray\\(\\) on an unknown class App\\\\Pollution\\\\DataFinder\\\\DataConverterInterface\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenModelFactory.php
+
+		-
+			message: "#^Parameter \\$dataConverter of method App\\\\Air\\\\Analysis\\\\KomfortofenAnalysis\\\\KomfortofenModelFactory\\:\\:__construct\\(\\) has invalid type App\\\\Pollution\\\\DataFinder\\\\DataConverterInterface\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenModelFactory.php
+
+		-
+			message: "#^Property App\\\\Air\\\\Analysis\\\\KomfortofenAnalysis\\\\KomfortofenModelFactory\\:\\:\\$dataConverter has unknown class App\\\\Pollution\\\\DataFinder\\\\DataConverterInterface as its type\\.$#"
+			count: 1
+			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenModelFactory.php
+
+		-
+			message: "#^Call to method addAggregation\\(\\) on an unknown class Elastica\\\\Aggregation\\\\DateHistogram\\.$#"
+			count: 1
+			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
+
+		-
+			message: "#^Call to method addAggregation\\(\\) on an unknown class Elastica\\\\Query\\.$#"
+			count: 1
+			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
+
+		-
+			message: "#^Call to method addMust\\(\\) on an unknown class Elastica\\\\Query\\\\BoolQuery\\.$#"
+			count: 2
+			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
+
+		-
+			message: "#^Call to method findPaginated\\(\\) on an unknown class FOS\\\\ElasticaBundle\\\\Finder\\\\PaginatedFinderInterface\\.$#"
+			count: 1
+			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
+
+		-
+			message: "#^Call to method setField\\(\\) on an unknown class Elastica\\\\Aggregation\\\\Max\\.$#"
+			count: 1
+			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
+
+		-
+			message: "#^Call to method setFormat\\(\\) on an unknown class Elastica\\\\Aggregation\\\\DateHistogram\\.$#"
+			count: 1
+			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
+
+		-
+			message: "#^Call to method setTimezone\\(\\) on an unknown class Elastica\\\\Aggregation\\\\DateHistogram\\.$#"
+			count: 1
+			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
+
+		-
+			message: "#^Instantiated class Elastica\\\\Aggregation\\\\DateHistogram not found\\.$#"
+			count: 1
+			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
+
+		-
+			message: "#^Instantiated class Elastica\\\\Aggregation\\\\Max not found\\.$#"
+			count: 1
+			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
+
+		-
+			message: "#^Instantiated class Elastica\\\\Query not found\\.$#"
+			count: 1
+			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
+
+		-
+			message: "#^Instantiated class Elastica\\\\Query\\\\BoolQuery not found\\.$#"
+			count: 1
+			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
+
+		-
+			message: "#^Instantiated class Elastica\\\\Query\\\\Range not found\\.$#"
+			count: 1
+			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
+
+		-
+			message: "#^Instantiated class Elastica\\\\Query\\\\Term not found\\.$#"
+			count: 2
+			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
+
+		-
+			message: "#^Parameter \\$finder of method App\\\\Air\\\\Analysis\\\\LimitAnalysis\\\\LimitAnalysis\\:\\:__construct\\(\\) has invalid type FOS\\\\ElasticaBundle\\\\Finder\\\\PaginatedFinderInterface\\.$#"
+			count: 1
+			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
+
+		-
+			message: "#^Property App\\\\Air\\\\Analysis\\\\LimitAnalysis\\\\LimitAnalysis\\:\\:\\$finder has unknown class FOS\\\\ElasticaBundle\\\\Finder\\\\PaginatedFinderInterface as its type\\.$#"
+			count: 1
+			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Data\\>\\:\\:findCurrentDataForCoord\\(\\)\\.$#"
+			count: 1
+			path: src/Air/DataRetriever/PostgisDataRetriever.php
+
+		-
+			message: "#^Method App\\\\Air\\\\Geocoding\\\\Geocoder\\\\Geocoder\\:\\:queryZip\\(\\) should return Geocoder\\\\Model\\\\AddressCollection but returns Geocoder\\\\Collection\\.$#"
+			count: 1
+			path: src/Air/Geocoding/Geocoder/Geocoder.php
+
+		-
+			message: "#^Variable \\$addressCollection in PHPDoc tag @var does not exist\\.$#"
+			count: 1
+			path: src/Air/Geocoding/Geocoder/Geocoder.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 2
+			path: src/Air/Geocoding/Guesser/CityGuesser.php
+
+		-
+			message: "#^Result of \\|\\| is always false\\.$#"
+			count: 1
+			path: src/Air/Geocoding/Guesser/CityGuesser.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Air\\\\PollutionDataFactory\\\\HistoryDataFactory\\:\\:\\$dataList\\.$#"
+			count: 3
+			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
+
+		-
+			message: "#^Call to static method getHourStartDateTime\\(\\) on an unknown class App\\\\Util\\\\DateTimeUtil\\.$#"
+			count: 1
+			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
+
+		-
+			message: "#^Method App\\\\Air\\\\DataRetriever\\\\DataRetrieverInterface\\:\\:retrieveDataForCoord\\(\\) invoked with 4 parameters, 1 required\\.$#"
+			count: 1
+			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
+
+		-
+			message: "#^Method App\\\\Air\\\\PollutionDataFactory\\\\PollutionDataFactory\\:\\:__construct\\(\\) invoked with 4 parameters, 3 required\\.$#"
+			count: 1
+			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
+
+		-
+			message: "#^Parameter \\#3 \\$dataRetriever of method App\\\\Air\\\\PollutionDataFactory\\\\PollutionDataFactory\\:\\:__construct\\(\\) expects App\\\\Air\\\\DataRetriever\\\\DataRetrieverInterface, App\\\\Pollution\\\\DataRetriever\\\\HistoryElasticDataRetriever given\\.$#"
+			count: 1
+			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
+
+		-
+			message: "#^Parameter \\$dataRetriever of method App\\\\Air\\\\PollutionDataFactory\\\\HistoryDataFactory\\:\\:__construct\\(\\) has invalid type App\\\\Pollution\\\\DataRetriever\\\\HistoryElasticDataRetriever\\.$#"
+			count: 1
+			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
+
+		-
+			message: "#^Parameter \\$strategy of method App\\\\Air\\\\PollutionDataFactory\\\\HistoryDataFactory\\:\\:__construct\\(\\) has invalid type App\\\\Air\\\\PollutantFactoryStrategy\\\\PollutantFactoryStrategyInterface\\.$#"
+			count: 1
+			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
+
+		-
+			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$dateTime \\(DateTime\\) is implicitly nullable via default value null\\.$#"
+			count: 1
+			path: src/Air/PollutionDataFactory/PollutionDataFactory.php
+
+		-
+			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#2 \\$dateInterval \\(DateInterval\\) is implicitly nullable via default value null\\.$#"
+			count: 1
+			path: src/Air/PollutionDataFactory/PollutionDataFactory.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: src/Air/PollutionDataFactory/PollutionDataFactory.php
+
+		-
+			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$dateTime \\(DateTime\\) is implicitly nullable via default value null\\.$#"
+			count: 1
+			path: src/Air/PollutionDataFactory/PollutionDataFactoryInterface.php
+
+		-
+			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#2 \\$dateInterval \\(DateInterval\\) is implicitly nullable via default value null\\.$#"
+			count: 1
+			path: src/Air/PollutionDataFactory/PollutionDataFactoryInterface.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:getReference\\(\\)\\.$#"
+			count: 1
+			path: src/Air/StationCache/StationCache.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findAllIndexed\\(\\)\\.$#"
+			count: 1
+			path: src/Air/StationCache/StationCache.php
+
+		-
+			message: "#^Instanceof between ReflectionAttribute\\<Symfony\\\\Component\\\\Serializer\\\\Attribute\\\\Ignore\\> and Symfony\\\\Component\\\\Serializer\\\\Attribute\\\\Ignore will always evaluate to false\\.$#"
+			count: 1
+			path: src/Air/Util/EntityMerger/EntityMerger.php
+
+		-
+			message: "#^Variable \\$reflectionClass in PHPDoc tag @var does not match any variable in the foreach loop\\: \\$reflectionProperty$#"
+			count: 1
+			path: src/Air/Util/EntityMerger/EntityMerger.php
+
+		-
+			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#2 \\$station \\(App\\\\Entity\\\\Station\\) is implicitly nullable via default value null\\.$#"
+			count: 1
+			path: src/Air/ValueDataConverter/ValueDataConverter.php
+
+		-
+			message: "#^Call to an undefined method League\\\\Geotools\\\\Distance\\\\DistanceInterface\\:\\:haversine\\(\\)\\.$#"
+			count: 1
+			path: src/Air/ViewModelFactory/DistanceCalculator.php
+
+		-
+			message: "#^Parameter \\#1 \\$coord of static method App\\\\Air\\\\ViewModelFactory\\\\DistanceCalculator\\:\\:distance\\(\\) expects Caldera\\\\GeoBasic\\\\Coordinate\\\\CoordinateInterface, Caldera\\\\GeoBasic\\\\Coord\\\\CoordInterface given\\.$#"
+			count: 1
+			path: src/Air/ViewModelFactory/PollutantViewModelFactory.php
+
+		-
+			message: "#^Variable \\$boxArray in PHPDoc tag @var does not match any variable in the foreach loop\\: \\$pollutantViewModelList$#"
+			count: 1
+			path: src/Air/ViewModelFactory/PollutantViewModelFactory.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\City\\>\\:\\:findOneByName\\(\\)\\.$#"
+			count: 1
+			path: src/Command/AssignStationCommand.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findWithoutCity\\(\\)\\.$#"
+			count: 1
+			path: src/Command/AssignStationCommand.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Console\\\\Helper\\\\HelperInterface\\:\\:ask\\(\\)\\.$#"
+			count: 3
+			path: src/Command/AssignStationCommand.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Data\\>\\:\\:refreshMaterializedView\\(\\)\\.$#"
+			count: 1
+			path: src/Command/LuftRefreshCommand.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\City\\>\\:\\:findOneByName\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/AbstractController.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\City\\>\\:\\:findOneBySlug\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/AbstractController.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findActiveStationsForCity\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/AbstractController.php
+
+		-
+			message: "#^Call to an undefined method App\\\\Air\\\\Analysis\\\\CoronaFireworksAnalysis\\\\CoronaFireworksAnalysisInterface\\:\\:analyze\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/AnalysisController.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Data\\>\\:\\:findForAnalysis\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/Api/AnalysisApiController.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findOneByStationCode\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/Api/AnalysisApiController.php
+
+		-
+			message: "#^Attribute class Sensio\\\\Bundle\\\\FrameworkExtraBundle\\\\Configuration\\\\Entity does not exist\\.$#"
+			count: 1
+			path: src/Controller/Api/CityApiController.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\City\\>\\:\\:findOneBySlug\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/Api/CityApiController.php
+
+		-
+			message: "#^Attribute class OpenApi\\\\Attributes\\\\Parameter is not repeatable but is already present above the method\\.$#"
+			count: 2
+			path: src/Controller/Api/DisplayApiController.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findOneByStationCode\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/Api/DisplayApiController.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findActiveStationsByProvider\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/Api/StationApiController.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findOneByStationCode\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/Api/StationApiController.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findStationsByProvider\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/Api/StationApiController.php
+
+		-
+			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#2 \\$stationCode \\(string\\) is implicitly nullable via default value null\\.$#"
+			count: 1
+			path: src/Controller/Api/StationApiController.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\City\\>\\:\\:findOneByName\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/DisplayController.php
+
+		-
+			message: "#^Parameter \\#1 \\$coord of method App\\\\Air\\\\Geocoding\\\\Guesser\\\\CityGuesserInterface\\:\\:guess\\(\\) expects Caldera\\\\GeoBasic\\\\Coord\\\\Coord, Caldera\\\\GeoBasic\\\\Coordinate\\\\CoordinateInterface given\\.$#"
+			count: 1
+			path: src/Controller/DisplayController.php
+
+		-
+			message: "#^Call to an undefined method App\\\\Air\\\\PollutionDataFactory\\\\HistoryDataFactoryInterface\\:\\:setStation\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/StationController.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/Controller/StationController.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\City\\>\\:\\:findCitiesWithActiveStations\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Ternary operator condition is always true\\.$#"
+			count: 1
+			path: src/Controller/TemplateController.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findActiveStations\\(\\)\\.$#"
+			count: 1
+			path: src/Controller/TypeaheadController.php
+
+		-
+			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$description \\(string\\) is implicitly nullable via default value null\\.$#"
+			count: 1
+			path: src/Entity/City.php
+
+		-
+			message: "#^Parameter \\$targetEntity of attribute class Doctrine\\\\ORM\\\\Mapping\\\\OneToMany constructor expects class\\-string\\|null, string given\\.$#"
+			count: 1
+			path: src/Entity/City.php
+
+		-
+			message: "#^Parameter \\$targetEntity of attribute class Doctrine\\\\ORM\\\\Mapping\\\\ManyToOne constructor expects class\\-string\\|null, string given\\.$#"
+			count: 1
+			path: src/Entity/Data.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Data\\:\\:\\$dateTime \\(DateTime\\|null\\) does not accept DateTimeInterface\\.$#"
+			count: 1
+			path: src/Entity/Data.php
+
+		-
+			message: "#^Parameter \\$targetEntity of attribute class Doctrine\\\\ORM\\\\Mapping\\\\OneToMany constructor expects class\\-string\\|null, string given\\.$#"
+			count: 1
+			path: src/Entity/Network.php
+
+		-
+			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$areaType \\(string\\) is implicitly nullable via default value null\\.$#"
+			count: 1
+			path: src/Entity/Station.php
+
+		-
+			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$city \\(App\\\\Entity\\\\City\\) is implicitly nullable via default value null\\.$#"
+			count: 1
+			path: src/Entity/Station.php
+
+		-
+			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$fromDate \\(DateTime\\) is implicitly nullable via default value null\\.$#"
+			count: 1
+			path: src/Entity/Station.php
+
+		-
+			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$stationType \\(string\\) is implicitly nullable via default value null\\.$#"
+			count: 1
+			path: src/Entity/Station.php
+
+		-
+			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$title \\(string\\) is implicitly nullable via default value null\\.$#"
+			count: 1
+			path: src/Entity/Station.php
+
+		-
+			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$untilDate \\(DateTime\\) is implicitly nullable via default value null\\.$#"
+			count: 1
+			path: src/Entity/Station.php
+
+		-
+			message: "#^Parameter \\$targetEntity of attribute class Doctrine\\\\ORM\\\\Mapping\\\\ManyToOne constructor expects class\\-string\\|null, string given\\.$#"
+			count: 2
+			path: src/Entity/Station.php
+
+		-
+			message: "#^Parameter \\$targetEntity of attribute class Doctrine\\\\ORM\\\\Mapping\\\\OneToMany constructor expects class\\-string\\|null, string given\\.$#"
+			count: 1
+			path: src/Entity/Station.php
+
+		-
+			message: "#^Call to an undefined method App\\\\Air\\\\PollutantList\\\\PollutantListInterface\\:\\:getIdentifier\\(\\)\\.$#"
+			count: 1
+			path: src/EventSubscriber/SitemapEventSubscriber.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\City\\>\\:\\:findCitiesWithActiveStations\\(\\)\\.$#"
+			count: 1
+			path: src/EventSubscriber/SitemapEventSubscriber.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findActiveStations\\(\\)\\.$#"
+			count: 1
+			path: src/EventSubscriber/SitemapEventSubscriber.php
+
+		-
+			message: "#^Method App\\\\MessageHandler\\\\ValueMessageHandler\\:\\:process\\(\\) is unused\\.$#"
+			count: 1
+			path: src/MessageHandler/ValueMessageHandler.php
+
+		-
+			message: "#^Method App\\\\MessageHandler\\\\ValueMessageHandler\\:\\:shouldFlush\\(\\) is unused\\.$#"
+			count: 1
+			path: src/MessageHandler/ValueMessageHandler.php
+
+		-
+			message: "#^Call to static method factory\\(\\) on an unknown class Cron\\\\CronExpression\\.$#"
+			count: 1
+			path: src/Twig/Extension/CronTwigExtension.php
