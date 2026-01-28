@@ -15,6 +15,7 @@ export default class Search {
     async init() {
         const form = this.element.closest('form');
         const actionUri = form.action;
+        const inputName = this.element.name;
 
         // Prefetch data
         await this.prefetchData();
@@ -26,17 +27,30 @@ export default class Search {
         this.element.style.display = 'none';
 
         const self = this;
+        const originalInput = this.element;
 
         autocomplete({
             container: container,
             placeholder: this.element.placeholder || 'Suchbegriff, Postleitzahl, Stadtname…',
             openOnFocus: true,
+            detachedMediaQuery: 'none',
             classNames: {
                 form: 'aa-Form',
                 input: 'aa-Input form-control',
                 panel: 'aa-Panel',
                 list: 'aa-List',
                 item: 'aa-Item',
+            },
+            onStateChange({ state }) {
+                // Sync the autocomplete value to the original input
+                originalInput.value = state.query;
+            },
+            onSubmit({ state }) {
+                // When user presses Enter without selecting, submit the form
+                if (state.query && state.query.length > 0) {
+                    originalInput.value = state.query;
+                    form.submit();
+                }
             },
             getSources({ query }) {
                 if (!query || query.length < 2) {
@@ -79,7 +93,7 @@ export default class Search {
                         sourceId: 'stations',
                         getItems() {
                             return self.stationsData.filter(item => {
-                                const searchStr = (item.value.stationCode + ' ' + item.value.title).toLowerCase();
+                                const searchStr = (item.value.stationCode + ' ' + (item.value.title || '')).toLowerCase();
                                 return searchStr.includes(queryLower);
                             }).slice(0, 5);
                         },
