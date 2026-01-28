@@ -22,6 +22,7 @@
   "homepage": "https://github.com/calderacc/luft",
   "dependencies": {
     "@algolia/autocomplete-js": "^1.17.9",
+    "@algolia/autocomplete-theme-classic": "^1.19.4",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
     "chart.js": "^2.9.4",
