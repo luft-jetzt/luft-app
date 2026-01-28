@@ -1,5 +1,4 @@
 import { autocomplete } from '@algolia/autocomplete-js';
-import '@algolia/autocomplete-theme-classic';
 
 export default class Search {
     constructor(element, options) {
