@@ -31,6 +31,7 @@ export default class Search {
 
         autocomplete({
             container: container,
+            panelContainer: container,
             placeholder: this.element.placeholder || 'Suchbegriff, Postleitzahl, Stadtname…',
             openOnFocus: true,
             detachedMediaQuery: 'none',

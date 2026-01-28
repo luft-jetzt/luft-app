@@ -31,14 +31,21 @@
   }
 }
 
-// Panel styles - outside container because Algolia appends panel to body
+// Panel styles - now inside container via panelContainer option
 .aa-Panel {
   z-index: 5000 !important;
   background-color: var(--bs-body-bg);
   border: 1px solid var(--bs-border-color);
   border-radius: 0.375rem;
-  margin-top: 4px;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  // Override Algolia's inline positioning
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-top: 4px;
 }
 
 .aa-PanelLayout {
