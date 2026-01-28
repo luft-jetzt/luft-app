@@ -68,8 +68,8 @@ export default class Search {
                             ).slice(0, 5);
                         },
                         templates: {
-                            header() {
-                                return '<div class="aa-SourceHeader">Städte</div>';
+                            header({ html }) {
+                                return html`<div class="aa-SourceHeader">Städte</div>`;
                             },
                             item({ item, html }) {
                                 return html`
@@ -98,8 +98,8 @@ export default class Search {
                             }).slice(0, 5);
                         },
                         templates: {
-                            header() {
-                                return '<div class="aa-SourceHeader">Messstationen</div>';
+                            header({ html }) {
+                                return html`<div class="aa-SourceHeader">Messstationen</div>`;
                             },
                             item({ item, html }) {
                                 return html`
@@ -132,8 +132,8 @@ export default class Search {
                                 .catch(() => []);
                         },
                         templates: {
-                            header() {
-                                return '<div class="aa-SourceHeader">Suchergebnisse</div>';
+                            header({ html }) {
+                                return html`<div class="aa-SourceHeader">Suchergebnisse</div>`;
                             },
                             item({ item, html }) {
                                 const url = actionUri + '?latitude=' + item.value.latitude + '&longitude=' + item.value.longitude;
