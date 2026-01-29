@@ -38,11 +38,11 @@
         "symfony/messenger": "^7.1",
         "symfony/monolog-bundle": "^3.0",
         "symfony/property-access": "^7.1",
-
         "symfony/runtime": "^7.1",
         "symfony/serializer": "^7.1",
         "symfony/string": "^7.1",
         "symfony/twig-bridge": "^7.1",
+        "symfony/var-exporter": "^7.1",
         "symfony/webpack-encore-bundle": "^2.0",
         "symfony/yaml": "^7.1",
         "twig/extra-bundle": "^2.12|^3.0",
