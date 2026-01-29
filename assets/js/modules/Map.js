@@ -1,5 +1,7 @@
 import 'leaflet';
 import 'leaflet-extra-markers';
+import 'maplibre-gl/dist/maplibre-gl.css';
+import '@maplibre/maplibre-gl-leaflet';
 
 export default class Map {
     constructor(element, options) {
@@ -153,8 +155,9 @@ export default class Map {
     }
 
     addTileLayer(map) {
-        L.tileLayer('https://tiles.caldera.cc/wikimedia-intl/{z}/{x}/{y}.png', {
-            attribution: 'Wikimedia maps beta | Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+        L.maplibreGL({
+            style: 'https://tiles.openfreemap.org/styles/liberty',
+            attribution: '&copy; <a href="https://openfreemap.org">OpenFreeMap</a> &copy; <a href="https://openmaptiles.org">OpenMapTiles</a> Data from <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
     }
 
