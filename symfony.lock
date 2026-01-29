@@ -126,15 +126,6 @@
     "geocoder-php/plugin": {
         "version": "1.2.0"
     },
-    "guzzlehttp/guzzle": {
-        "version": "6.3.0"
-    },
-    "guzzlehttp/promises": {
-        "version": "v1.3.1"
-    },
-    "guzzlehttp/psr7": {
-        "version": "1.4.2"
-    },
     "jsor/doctrine-postgis": {
         "version": "2.1",
         "recipe": {
@@ -195,9 +186,6 @@
     },
     "php-http/discovery": {
         "version": "1.4.0"
-    },
-    "php-http/guzzle6-adapter": {
-        "version": "v1.1.1"
     },
     "php-http/httplug": {
         "version": "v1.1.0"
@@ -305,9 +293,6 @@
     },
     "psr/simple-cache": {
         "version": "1.0.1"
-    },
-    "ralouphie/getallheaders": {
-        "version": "2.0.5"
     },
     "rector/rector": {
         "version": "0.14.5"
@@ -588,9 +573,6 @@
     },
     "symfony/polyfill-intl-icu": {
         "version": "v1.25.0"
-    },
-    "symfony/polyfill-intl-idn": {
-        "version": "v1.11.0"
     },
     "symfony/polyfill-intl-normalizer": {
         "version": "v1.15.0"

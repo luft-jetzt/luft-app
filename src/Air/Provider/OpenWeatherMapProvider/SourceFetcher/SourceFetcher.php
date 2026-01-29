@@ -6,11 +6,11 @@ use App\Air\SourceFetcher\FetchProcess;
 use App\Air\SourceFetcher\FetchResult;
 use App\Air\SourceFetcher\SourceFetcherInterface;
 use Caldera\GeoBasic\Coord\CoordInterface;
-use GuzzleHttp\Client;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class SourceFetcher implements SourceFetcherInterface
 {
-    public function __construct(protected string $openWeatherMapAppId)
+    public function __construct(protected string $openWeatherMapAppId, protected HttpClientInterface $httpClient)
     {
     }
 
@@ -37,16 +37,14 @@ class SourceFetcher implements SourceFetcherInterface
     public function queryUVIndex(CoordInterface $coord): string
     {
         $url = sprintf('https://api.openweathermap.org/data/2.5/uvi?units=metric&lat=%f&lon=%f&appid=%s', $coord->getLatitude(), $coord->getLongitude(), $this->openWeatherMapAppId);
-        $response = (new Client())->get($url);
 
-        return $response->getBody()->getContents();
+        return $this->httpClient->request('GET', $url)->getContent();
     }
 
     public function queryTemperature(CoordInterface $coord): string
     {
         $url = sprintf('https://api.openweathermap.org/data/2.5/weather?units=metric&lat=%f&lon=%f&appid=%s', $coord->getLatitude(), $coord->getLongitude(), $this->openWeatherMapAppId);
-        $response = (new Client())->get($url);
 
-        return $response->getBody()->getContents();
+        return $this->httpClient->request('GET', $url)->getContent();
     }
 }
