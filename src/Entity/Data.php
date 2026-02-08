@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ORM\Table(name: 'data')]
+#[ORM\UniqueConstraint(name: 'unique_station_pollutant_datetime', columns: ['station_id', 'pollutant', 'date_time'])]
 #[ORM\Entity(repositoryClass: \App\Repository\DataRepository::class)]
 class Data
 {
