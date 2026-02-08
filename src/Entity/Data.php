@@ -107,7 +107,7 @@ class Data
 
     public function getProvider(): ?string
     {
-        return $this->station->getProvider();
+        return $this->station?->getProvider();
     }
 
     public function isIndexable(): bool
