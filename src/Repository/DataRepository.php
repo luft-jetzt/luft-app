@@ -12,23 +12,7 @@ class DataRepository extends EntityRepository
 {
     public function findCurrentDataForCoord(CoordInterface $coord): array
     {
-        $rsm = new ResultSetMapping();
-        $rsm
-            ->addEntityResult(Data::class, 'd')
-            ->addFieldResult('d', 'id', 'id')
-            ->addFieldResult('d', 'value', 'value')
-            ->addFieldResult('d', 'pollutant', 'pollutant')
-            ->addFieldResult('d', 'date_time', 'dateTime')
-            ->addJoinedEntityResult(Station::class, 's', 'd', 'station')
-            ->addFieldResult('s', 'station_id', 'id')
-            ->addFieldResult('s', 'title', 'title')
-            ->addFieldResult('s', 'latitude', 'latitude')
-            ->addFieldResult('s', 'longitude', 'longitude')
-            ->addFieldResult('s', 'station_code', 'stationCode')
-            ->addFieldResult('s', 'title', 'title')
-            ->addFieldResult('s', 'station_type', 'stationType')
-            ->addFieldResult('s', 'provider', 'provider')
-        ;
+        $rsm = $this->createDataStationResultSetMapping('id');
 
         $sql = 'SELECT DISTINCT ON (pollutant, provider) id, value, pollutant, date_time,
                                              id AS station_id, title, latitude, longitude, station_code, station_type, provider,
@@ -43,34 +27,17 @@ LIMIT 10';
             ->setParameter(2, $coord->getLatitude())
         ;
 
-        //dd($query->getResult());
         return $query->getResult();
     }
 
     public function findCurrentDataForStation(Station $station): array
     {
-        $rsm = new ResultSetMapping();
-        $rsm
-            ->addEntityResult(Data::class, 'd')
-            ->addFieldResult('d', 'id', 'id')
-            ->addFieldResult('d', 'value', 'value')
-            ->addFieldResult('d', 'pollutant', 'pollutant')
-            ->addFieldResult('d', 'date_time', 'dateTime')
-            ->addJoinedEntityResult(Station::class, 's', 'd', 'station')
-            ->addFieldResult('s', 'station_id', 'id')
-            ->addFieldResult('s', 'title', 'title')
-            ->addFieldResult('s', 'latitude', 'latitude')
-            ->addFieldResult('s', 'longitude', 'longitude')
-            ->addFieldResult('s', 'station_code', 'stationCode')
-            ->addFieldResult('s', 'title', 'title')
-            ->addFieldResult('s', 'station_type', 'stationType')
-            ->addFieldResult('s', 'provider', 'provider')
-        ;
+        $rsm = $this->createDataStationResultSetMapping('id');
 
         $sql = 'SELECT DISTINCT ON (d.pollutant) d.id, d.value, d.pollutant, d.date_time,
-s.id AS station_id, s.title, s.latitude, s.longitude, s.station_code, s.title, s.station_type, s.provider
+s.id AS station_id, s.title, s.latitude, s.longitude, s.station_code, s.station_type, s.provider
 FROM data AS d
-INNER JOIN station AS s ON s.id = d.station_id 
+INNER JOIN station AS s ON s.id = d.station_id
 WHERE s.id = ?
 ORDER BY d.pollutant ASC, d.date_time DESC
 LIMIT 10';
@@ -80,29 +47,12 @@ LIMIT 10';
             ->setParameter(1, $station->getId())
         ;
 
-        //dd($query->getResult());
         return $query->getResult();
     }
 
     public function findDataForCoronaFireworksAnalysis(CoordInterface $coord): array
     {
-        $rsm = new ResultSetMapping();
-        $rsm
-            ->addEntityResult(Data::class, 'd')
-            ->addFieldResult('d', 'data_id', 'id')
-            ->addFieldResult('d', 'value', 'value')
-            ->addFieldResult('d', 'pollutant', 'pollutant')
-            ->addFieldResult('d', 'date_time', 'dateTime')
-            ->addJoinedEntityResult(Station::class, 's', 'd', 'station')
-            ->addFieldResult('s', 'station_id', 'id')
-            ->addFieldResult('s', 'title', 'title')
-            ->addFieldResult('s', 'latitude', 'latitude')
-            ->addFieldResult('s', 'longitude', 'longitude')
-            ->addFieldResult('s', 'station_code', 'stationCode')
-            ->addFieldResult('s', 'title', 'title')
-            ->addFieldResult('s', 'station_type', 'stationType')
-            ->addFieldResult('s', 'provider', 'provider')
-        ;
+        $rsm = $this->createDataStationResultSetMapping('data_id');
 
         $sql = 'SELECT DISTINCT ON (date_trunc(\'hour\', date_time)) data_id, value, pollutant, date_time, station_id, title, latitude, longitude, station_code, station_type, provider
         FROM silvester_data
@@ -132,5 +82,27 @@ LIMIT 10';
 
         $query = $this->getEntityManager()->createNativeQuery($sql, new ResultSetMapping());
         $query->getResult();
+    }
+
+    private function createDataStationResultSetMapping(string $dataIdColumn): ResultSetMapping
+    {
+        $rsm = new ResultSetMapping();
+        $rsm
+            ->addEntityResult(Data::class, 'd')
+            ->addFieldResult('d', $dataIdColumn, 'id')
+            ->addFieldResult('d', 'value', 'value')
+            ->addFieldResult('d', 'pollutant', 'pollutant')
+            ->addFieldResult('d', 'date_time', 'dateTime')
+            ->addJoinedEntityResult(Station::class, 's', 'd', 'station')
+            ->addFieldResult('s', 'station_id', 'id')
+            ->addFieldResult('s', 'title', 'title')
+            ->addFieldResult('s', 'latitude', 'latitude')
+            ->addFieldResult('s', 'longitude', 'longitude')
+            ->addFieldResult('s', 'station_code', 'stationCode')
+            ->addFieldResult('s', 'station_type', 'stationType')
+            ->addFieldResult('s', 'provider', 'provider')
+        ;
+
+        return $rsm;
     }
 }
