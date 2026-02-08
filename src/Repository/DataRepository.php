@@ -126,11 +126,10 @@ LIMIT 10';
 
     public function refreshMaterializedView(): void
     {
-        $sql = 'REFRESH MATERIALIZED VIEW data_view;';
-        $sql = 'REFRESH MATERIALIZED VIEW silvester_data;';
-        $sql = 'REFRESH MATERIALIZED VIEW current_data;';
+        $connection = $this->getEntityManager()->getConnection();
 
-        $query = $this->getEntityManager()->createNativeQuery($sql, new ResultSetMapping());
-        $query->getResult();
+        $connection->executeStatement('REFRESH MATERIALIZED VIEW data_view');
+        $connection->executeStatement('REFRESH MATERIALIZED VIEW silvester_data');
+        $connection->executeStatement('REFRESH MATERIALIZED VIEW current_data');
     }
 }
