@@ -33,13 +33,6 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
 
         $dateTime->sub($dateInterval);
 
-        /**
-        if ($this->coord instanceof Station) {
-            $dataList = $this->managerRegistry->getRepository(Data::class)->findCurrentDataForStation($this->coord);
-        } else {
-            $dataList = $this->managerRegistry->getRepository(Data::class)->findCurrentDataForCoord($this->coord);
-        }*/
-
         $dataList = $this->getDataListFromStationList();
 
         $pollutantViewModelList = $this->getPollutantViewModelList($dataList);
