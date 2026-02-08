@@ -7,13 +7,12 @@ use App\Air\ViewModelFactory\PollutantViewModelFactoryInterface;
 use App\Entity\Data;
 use App\Pollution\DataRetriever\HistoryElasticDataRetriever;
 use App\Util\DateTimeUtil;
-use Doctrine\Persistence\ManagerRegistry;
 
 class HistoryDataFactory extends PollutionDataFactory implements HistoryDataFactoryInterface
 {
-    public function __construct(ManagerRegistry $managerRegistry, PollutantViewModelFactoryInterface $viewModelFactory, HistoryElasticDataRetriever $dataRetriever, PollutantFactoryStrategyInterface $strategy)
+    public function __construct(PollutantViewModelFactoryInterface $viewModelFactory, HistoryElasticDataRetriever $dataRetriever, PollutantFactoryStrategyInterface $strategy)
     {
-        parent::__construct($managerRegistry, $viewModelFactory, $dataRetriever, $strategy);
+        parent::__construct($viewModelFactory, $dataRetriever);
     }
 
     #[\Override]

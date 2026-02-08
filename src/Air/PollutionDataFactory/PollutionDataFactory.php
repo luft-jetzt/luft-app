@@ -7,12 +7,10 @@ use App\Air\Pollutant\PollutantInterface;
 use App\Air\ViewModel\PollutantViewModel;
 use App\Air\ViewModelFactory\PollutantViewModelFactoryInterface;
 use App\Entity\Data;
-use Doctrine\Persistence\ManagerRegistry;
 
 class PollutionDataFactory extends AbstractPollutionDataFactory
 {
     public function __construct(
-        protected ManagerRegistry $managerRegistry,
         PollutantViewModelFactoryInterface $pollutantViewModelFactory,
         DataRetrieverInterface $dataRetriever,
     )
@@ -32,13 +30,6 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
         }
 
         $dateTime->sub($dateInterval);
-
-        /**
-        if ($this->coord instanceof Station) {
-            $dataList = $this->managerRegistry->getRepository(Data::class)->findCurrentDataForStation($this->coord);
-        } else {
-            $dataList = $this->managerRegistry->getRepository(Data::class)->findCurrentDataForCoord($this->coord);
-        }*/
 
         $dataList = $this->getDataListFromStationList();
 
