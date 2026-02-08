@@ -86,7 +86,7 @@ class Station extends Coordinate
     {
         $this->datas = new ArrayCollection();
 
-        $this->coord = sprintf('POINT(%f %f)', $latitude, $longitude);
+        $this->coord = sprintf('POINT(%f %f)', $longitude, $latitude);
 
         parent::__construct($latitude, $longitude);
     }
