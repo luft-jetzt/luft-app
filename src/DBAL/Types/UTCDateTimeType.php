@@ -8,15 +8,15 @@ use Doctrine\DBAL\Types\DateTimeType;
 
 class UTCDateTimeType extends DateTimeType
 {
-    static private $utc;
+    private static ?\DateTimeZone $utc = null;
 
-    protected static function getUtc()
+    protected static function getUtc(): \DateTimeZone
     {
-        return new \DateTimeZone('UTC');
+        return self::$utc ??= new \DateTimeZone('UTC');
     }
 
     #[\Override]
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value instanceof \DateTime) {
             $value->setTimezone(self::getUtc());
@@ -26,7 +26,7 @@ class UTCDateTimeType extends DateTimeType
     }
 
     #[\Override]
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?\DateTime
     {
         if (null === $value || $value instanceof \DateTime) {
             return $value;
@@ -35,15 +35,15 @@ class UTCDateTimeType extends DateTimeType
         $converted = \DateTime::createFromFormat(
             $platform->getDateTimeFormatString(),
             $value,
-            self::$utc ?: (self::$utc = new \DateTimeZone('UTC'))
+            self::getUtc()
         );
 
         if (!$converted) {
-            throw ConversionException::conversionFailedFormat(
+            throw new ConversionException(sprintf(
+                'Could not convert database value "%s" to DateTime with format "%s"',
                 $value,
-                $this->getName(),
                 $platform->getDateTimeFormatString()
-            );
+            ));
         }
 
         return $converted;
