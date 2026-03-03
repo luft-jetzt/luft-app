@@ -5,7 +5,7 @@ namespace App\Air\PollutionDataFactory;
 use App\Air\DataRetriever\DataRetrieverInterface;
 use App\Air\ViewModelFactory\PollutantViewModelFactoryInterface;
 use App\Entity\Station;
-use Caldera\GeoBasic\Coordinate\CoordinateInterface;
+use App\Geo\Coordinate\CoordinateInterface;
 
 abstract class AbstractPollutionDataFactory implements PollutionDataFactoryInterface
 {

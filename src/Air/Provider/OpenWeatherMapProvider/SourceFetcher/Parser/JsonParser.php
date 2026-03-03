@@ -11,6 +11,10 @@ class JsonParser implements JsonParserInterface
     {
         $uvValue = json_decode($jsonData, null, 512, JSON_THROW_ON_ERROR);
 
+        if (!isset($uvValue->value, $uvValue->date)) {
+            throw new \RuntimeException('Unexpected OWM UV index response structure');
+        }
+
         $value = new Value();
         $value->setValue((float) $uvValue->value)
             ->setPollutant('uvindex')
@@ -23,6 +27,10 @@ class JsonParser implements JsonParserInterface
     public function parseTemperature(string $jsonData): Value
     {
         $temperatureValue = json_decode($jsonData, null, 512, JSON_THROW_ON_ERROR);
+
+        if (!isset($temperatureValue->main->temp, $temperatureValue->dt)) {
+            throw new \RuntimeException('Unexpected OWM weather response structure');
+        }
 
         $value = new Value();
         $value->setValue((float) $temperatureValue->main->temp)

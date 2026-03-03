@@ -14,8 +14,8 @@ use App\Air\Pollutant\SO2;
 use App\Air\Pollutant\Temperature;
 use App\Air\Pollutant\UVIndex;
 use App\Air\Pollutant\UVIndexMax;
-use Caldera\GeoBasic\Coord\CoordInterface;
-use Caldera\GeoBasic\Coordinate\CoordinateInterface;
+use App\Geo\Coord\CoordInterface;
+use App\Geo\Coordinate\CoordinateInterface;
 
 abstract class AbstractPollutantViewModelFactory implements PollutantViewModelFactoryInterface
 {

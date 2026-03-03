@@ -2,7 +2,7 @@
 
 namespace App\Air\Analysis\CoronaFireworksAnalysis;
 
-use Caldera\GeoBasic\Coord\CoordInterface;
+use App\Geo\Coord\CoordInterface;
 
 interface ValueFetcherInterface
 {

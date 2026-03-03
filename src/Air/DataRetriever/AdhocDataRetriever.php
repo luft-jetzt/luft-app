@@ -7,7 +7,7 @@ use App\Air\Provider\OpenWeatherMapProvider\SourceFetcher\SourceFetcher as OwmSo
 use App\Air\ValueDataConverter\ValueDataConverter;
 use App\Entity\Data;
 use App\Entity\Station;
-use Caldera\GeoBasic\Coord\CoordInterface;
+use App\Geo\Coord\CoordInterface;
 
 class AdhocDataRetriever implements DataRetrieverInterface
 {
@@ -35,11 +35,14 @@ class AdhocDataRetriever implements DataRetrieverInterface
 
     protected function retrieveTemperatureForCoord(CoordInterface $coord): ?Data
     {
-        $jsonData = $this->owmSourceFetcher->queryTemperature($coord);
+        try {
+            $jsonData = $this->owmSourceFetcher->queryTemperature($coord);
+            $value = $this->owmJsonParser->parseTemperature($jsonData);
 
-        $value = $this->owmJsonParser->parseTemperature($jsonData);
-
-        $station = new Station($coord->getLatitude(), $coord->getLongitude());
-        return ValueDataConverter::convert($value, $station);
+            $station = new Station($coord->getLatitude(), $coord->getLongitude());
+            return ValueDataConverter::convert($value, $station);
+        } catch (\Throwable) {
+            return null;
+        }
     }
 }
