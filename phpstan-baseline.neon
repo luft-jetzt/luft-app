@@ -1,6 +1,11 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Parameter \\#1 \\$key of method App\\\\Air\\\\Analysis\\\\CoronaFireworksAnalysis\\\\Slot\\\\YearSlot\\:\\:addSlot\\(\\) expects int, float given\\.$#"
+			count: 1
+			path: src/Air/Analysis/CoronaFireworksAnalysis/CoronaFireworksAnalysis.php
+
+		-
 			message: "#^Variable \\$slotList in PHPDoc tag @var does not match any variable in the foreach loop\\: \\$yearList, \\$year, \\$yearSlot$#"
 			count: 1
 			path: src/Air/Analysis/CoronaFireworksAnalysis/CoronaFireworksAnalysis.php
@@ -296,11 +301,6 @@ parameters:
 			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Data\\>\\:\\:findCurrentDataForCoord\\(\\)\\.$#"
-			count: 1
-			path: src/Air/DataRetriever/PostgisDataRetriever.php
-
-		-
 			message: "#^Method App\\\\Air\\\\Geocoding\\\\Geocoder\\\\Geocoder\\:\\:queryZip\\(\\) should return Geocoder\\\\Model\\\\AddressCollection but returns Geocoder\\\\Collection\\.$#"
 			count: 1
 			path: src/Air/Geocoding/Geocoder/Geocoder.php
@@ -336,26 +336,6 @@ parameters:
 			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
 
 		-
-			message: "#^Method App\\\\Air\\\\PollutionDataFactory\\\\PollutionDataFactory\\:\\:__construct\\(\\) invoked with 4 parameters, 3 required\\.$#"
-			count: 1
-			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
-
-		-
-			message: "#^Parameter \\#3 \\$dataRetriever of method App\\\\Air\\\\PollutionDataFactory\\\\PollutionDataFactory\\:\\:__construct\\(\\) expects App\\\\Air\\\\DataRetriever\\\\DataRetrieverInterface, App\\\\Pollution\\\\DataRetriever\\\\HistoryElasticDataRetriever given\\.$#"
-			count: 1
-			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
-
-		-
-			message: "#^Parameter \\$dataRetriever of method App\\\\Air\\\\PollutionDataFactory\\\\HistoryDataFactory\\:\\:__construct\\(\\) has invalid type App\\\\Pollution\\\\DataRetriever\\\\HistoryElasticDataRetriever\\.$#"
-			count: 1
-			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
-
-		-
-			message: "#^Parameter \\$strategy of method App\\\\Air\\\\PollutionDataFactory\\\\HistoryDataFactory\\:\\:__construct\\(\\) has invalid type App\\\\Air\\\\PollutantFactoryStrategy\\\\PollutantFactoryStrategyInterface\\.$#"
-			count: 1
-			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
-
-		-
 			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$dateTime \\(DateTime\\) is implicitly nullable via default value null\\.$#"
 			count: 1
 			path: src/Air/PollutionDataFactory/PollutionDataFactory.php
@@ -379,6 +359,21 @@ parameters:
 			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#2 \\$dateInterval \\(DateInterval\\) is implicitly nullable via default value null\\.$#"
 			count: 1
 			path: src/Air/PollutionDataFactory/PollutionDataFactoryInterface.php
+
+		-
+			message: "#^Call to method request\\(\\) on an unknown class Symfony\\\\Contracts\\\\HttpClient\\\\HttpClientInterface\\.$#"
+			count: 2
+			path: src/Air/Provider/OpenWeatherMapProvider/SourceFetcher/SourceFetcher.php
+
+		-
+			message: "#^Parameter \\$httpClient of method App\\\\Air\\\\Provider\\\\OpenWeatherMapProvider\\\\SourceFetcher\\\\SourceFetcher\\:\\:__construct\\(\\) has invalid type Symfony\\\\Contracts\\\\HttpClient\\\\HttpClientInterface\\.$#"
+			count: 1
+			path: src/Air/Provider/OpenWeatherMapProvider/SourceFetcher/SourceFetcher.php
+
+		-
+			message: "#^Property App\\\\Air\\\\Provider\\\\OpenWeatherMapProvider\\\\SourceFetcher\\\\SourceFetcher\\:\\:\\$httpClient has unknown class Symfony\\\\Contracts\\\\HttpClient\\\\HttpClientInterface as its type\\.$#"
+			count: 1
+			path: src/Air/Provider/OpenWeatherMapProvider/SourceFetcher/SourceFetcher.php
 
 		-
 			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:getReference\\(\\)\\.$#"
@@ -604,6 +599,151 @@ parameters:
 			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findActiveStations\\(\\)\\.$#"
 			count: 1
 			path: src/EventSubscriber/SitemapEventSubscriber.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20170201220829.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20171203181834.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20171203183800.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20171203184705.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20171204045930.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20171204051355.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20171205211311.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20171205231011.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20171213183201.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20171218172659.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20171220080717.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20171220181754.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20180103185206.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20180103223759.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20180112003845.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20180112005921.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20180112205316.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20180112234642.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20181016195747.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20181017044132.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20181017050432.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20181018053053.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20181102055105.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20181105082028.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20181105114545.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20181107190003.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20191025155546.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20191025162108.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:\\:getName\\(\\)\\.$#"
+			count: 2
+			path: src/Migrations/Version20201224112853.php
 
 		-
 			message: "#^Call to static method factory\\(\\) on an unknown class Cron\\\\CronExpression\\.$#"

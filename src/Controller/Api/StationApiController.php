@@ -31,7 +31,7 @@ class StationApiController extends AbstractApiController
     )]
     public function stationAction(Request $request, string $stationCode = null): Response
     {
-        $providerIdentifier = $request->get('provider');
+        $providerIdentifier = $request->query->get('provider');
 
         if ($stationCode) {
             $station = $this->managerRegistry->getRepository(Station::class)->findOneByStationCode($stationCode);
@@ -75,7 +75,7 @@ class StationApiController extends AbstractApiController
     )]
     public function listStationAction(Request $request): Response
     {
-        $providerIdentifier = $request->get('provider');
+        $providerIdentifier = $request->query->get('provider');
 
         if ($providerIdentifier) {
             $stationList = $this->managerRegistry->getRepository(Station::class)->findStationsByProvider($providerIdentifier);

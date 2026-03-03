@@ -65,6 +65,6 @@ class DisplayController extends AbstractController
     #[\Override]
     protected function findCityForName(string $cityName): ?City
     {
-        return $this->getDoctrine()->getRepository(City::class)->findOneByName($cityName);
+        return $this->managerRegistry->getRepository(City::class)->findOneByName($cityName);
     }
 }

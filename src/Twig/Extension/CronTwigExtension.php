@@ -26,10 +26,4 @@ class CronTwigExtension extends AbstractExtension
 
         return $cron->getPreviousRunDate()->format($dateFormat);
     }
-
-    public function getName(): string
-    {
-        return 'cron_extension';
-    }
 }
-

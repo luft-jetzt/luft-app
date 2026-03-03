@@ -25,7 +25,7 @@ class TemplateController extends AbstractController
     {
         return $this->render(
             'Template/city_list.html.twig', [
-                'cityList' => $this->getDoctrine()->getRepository(City::class)->findCitiesWithActiveStations(),
+                'cityList' => $this->managerRegistry->getRepository(City::class)->findCitiesWithActiveStations(),
             ]
         );
     }

@@ -56,6 +56,6 @@ services:
         class: Symfony\Component\Cache\Psr16Cache
         arguments: ['@app.cache.geocoding']
 
-    Jsor\Doctrine\PostGIS\Event\ORMSchemaEventSubscriber:
+    Jsor\Doctrine\PostGIS\Event\ORMSchemaEventListener:
         tags:
-            - { name: doctrine.event_subscriber, connection: default }
+            - { name: doctrine.event_listener, event: postGenerateSchemaTable, connection: default }
