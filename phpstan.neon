@@ -6,5 +6,5 @@ parameters:
     paths:
         - src/
     excludePaths:
-        - src/Consumer/
+        - src/Consumer/ (?)
     reportUnmatchedIgnoredErrors: false
