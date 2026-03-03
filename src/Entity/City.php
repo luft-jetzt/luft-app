@@ -33,6 +33,10 @@ class City implements \Stringable
     #[Ignore]
     protected Collection $stations;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    #[JMS\Expose]
+    protected ?int $openWeatherMapCityId = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -122,5 +126,17 @@ class City implements \Stringable
     public function __toString(): string
     {
         return $this->name ?: '';
+    }
+
+    public function getOpenWeatherMapCityId(): ?int
+    {
+        return $this->openWeatherMapCityId;
+    }
+
+    public function setOpenWeatherMapCityId(?int $openWeatherMapCityId): self
+    {
+        $this->openWeatherMapCityId = $openWeatherMapCityId;
+
+        return $this;
     }
 }
