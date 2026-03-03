@@ -1,646 +1,763 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$coord of static method App\\\\Air\\\\ViewModelFactory\\\\DistanceCalculator\\:\\:distance\\(\\) expects Caldera\\\\GeoBasic\\\\Coordinate\\\\CoordinateInterface, Caldera\\\\GeoBasic\\\\Coord\\\\CoordInterface given\\.$#"
+			message: '#^Variable \$slotList in PHPDoc tag @var does not match any variable in the foreach loop\: \$yearList, \$year, \$yearSlot$#'
+			identifier: varTag.differentVariable
 			count: 1
 			path: src/Air/Analysis/CoronaFireworksAnalysis/CoronaFireworksAnalysis.php
 
 		-
-			message: "#^Variable \\$slotList in PHPDoc tag @var does not match any variable in the foreach loop\\: \\$yearList, \\$year, \\$yearSlot$#"
-			count: 1
-			path: src/Air/Analysis/CoronaFireworksAnalysis/CoronaFireworksAnalysis.php
-
-		-
-			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$year \\(int\\) is implicitly nullable via default value null\\.$#"
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$year \(int\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
 			count: 1
 			path: src/Air/Analysis/CoronaFireworksAnalysis/StartDateTimeCalculator.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Data\\>\\:\\:findDataForCoronaFireworksAnalysis\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\Data\>\:\:findDataForCoronaFireworksAnalysis\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Air/Analysis/CoronaFireworksAnalysis/ValueFetcher.php
 
 		-
-			message: "#^Parameter \\$finder of method App\\\\Air\\\\Analysis\\\\FireworksAnalysis\\\\AbstractFireworksAnalysis\\:\\:__construct\\(\\) has invalid type App\\\\Pollution\\\\DataFinder\\\\FinderInterface\\.$#"
+			message: '#^Parameter \$finder of method App\\Air\\Analysis\\FireworksAnalysis\\AbstractFireworksAnalysis\:\:__construct\(\) has invalid type App\\Pollution\\DataFinder\\FinderInterface\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/FireworksAnalysis/AbstractFireworksAnalysis.php
 
 		-
-			message: "#^Property App\\\\Air\\\\Analysis\\\\FireworksAnalysis\\\\AbstractFireworksAnalysis\\:\\:\\$finder has unknown class App\\\\Pollution\\\\DataFinder\\\\FinderInterface as its type\\.$#"
+			message: '#^Property App\\Air\\Analysis\\FireworksAnalysis\\AbstractFireworksAnalysis\:\:\$finder has unknown class App\\Pollution\\DataFinder\\FinderInterface as its type\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/FireworksAnalysis/AbstractFireworksAnalysis.php
 
 		-
-			message: "#^Call to method addMust\\(\\) on an unknown class Elastica\\\\Query\\\\BoolQuery\\.$#"
+			message: '#^Call to method addMust\(\) on an unknown class Elastica\\Query\\BoolQuery\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
 
 		-
-			message: "#^Call to method addShould\\(\\) on an unknown class Elastica\\\\Query\\\\BoolQuery\\.$#"
+			message: '#^Call to method addShould\(\) on an unknown class Elastica\\Query\\BoolQuery\.$#'
+			identifier: class.notFound
 			count: 2
 			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
 
 		-
-			message: "#^Call to method addSort\\(\\) on an unknown class Elastica\\\\Query\\.$#"
+			message: '#^Call to method addSort\(\) on an unknown class Elastica\\Query\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
 
 		-
-			message: "#^Call to method find\\(\\) on an unknown class App\\\\Pollution\\\\DataFinder\\\\FinderInterface\\.$#"
+			message: '#^Call to method find\(\) on an unknown class App\\Pollution\\DataFinder\\FinderInterface\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
 
 		-
-			message: "#^Instantiated class Elastica\\\\Query not found\\.$#"
+			message: '#^Instantiated class Elastica\\Query not found\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
 
 		-
-			message: "#^Instantiated class Elastica\\\\Query\\\\BoolQuery not found\\.$#"
+			message: '#^Instantiated class Elastica\\Query\\BoolQuery not found\.$#'
+			identifier: class.notFound
 			count: 3
 			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
 
 		-
-			message: "#^Instantiated class Elastica\\\\Query\\\\Range not found\\.$#"
+			message: '#^Instantiated class Elastica\\Query\\Range not found\.$#'
+			identifier: class.notFound
 			count: 2
 			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
 
 		-
-			message: "#^Instantiated class Elastica\\\\Query\\\\Term not found\\.$#"
+			message: '#^Instantiated class Elastica\\Query\\Term not found\.$#'
+			identifier: class.notFound
 			count: 2
 			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
 
 		-
-			message: "#^Method App\\\\Air\\\\Analysis\\\\FireworksAnalysis\\\\FireworksAnalysis\\:\\:createDateTimeQuery\\(\\) has invalid return type Elastica\\\\Query\\\\BoolQuery\\.$#"
+			message: '#^Method App\\Air\\Analysis\\FireworksAnalysis\\FireworksAnalysis\:\:createDateTimeQuery\(\) has invalid return type Elastica\\Query\\BoolQuery\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
 
 		-
-			message: "#^Parameter \\$finder of method App\\\\Air\\\\Analysis\\\\KomfortofenAnalysis\\\\AbstractKomfortofenAnalysis\\:\\:__construct\\(\\) has invalid type App\\\\Pollution\\\\DataFinder\\\\FinderInterface\\.$#"
+			message: '#^Parameter \$finder of method App\\Air\\Analysis\\KomfortofenAnalysis\\AbstractKomfortofenAnalysis\:\:__construct\(\) has invalid type App\\Pollution\\DataFinder\\FinderInterface\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/AbstractKomfortofenAnalysis.php
 
 		-
-			message: "#^Property App\\\\Air\\\\Analysis\\\\KomfortofenAnalysis\\\\AbstractKomfortofenAnalysis\\:\\:\\$finder has unknown class App\\\\Pollution\\\\DataFinder\\\\FinderInterface as its type\\.$#"
+			message: '#^Property App\\Air\\Analysis\\KomfortofenAnalysis\\AbstractKomfortofenAnalysis\:\:\$finder has unknown class App\\Pollution\\DataFinder\\FinderInterface as its type\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/AbstractKomfortofenAnalysis.php
 
 		-
-			message: "#^Call to method addAggregation\\(\\) on an unknown class Elastica\\\\Aggregation\\\\DateHistogram\\.$#"
+			message: '#^Call to method addAggregation\(\) on an unknown class Elastica\\Aggregation\\DateHistogram\.$#'
+			identifier: class.notFound
 			count: 4
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Call to method addAggregation\\(\\) on an unknown class Elastica\\\\Aggregation\\\\Terms\\.$#"
+			message: '#^Call to method addAggregation\(\) on an unknown class Elastica\\Aggregation\\Terms\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Call to method addAggregation\\(\\) on an unknown class Elastica\\\\Query\\.$#"
+			message: '#^Call to method addAggregation\(\) on an unknown class Elastica\\Query\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Call to method addMust\\(\\) on an unknown class Elastica\\\\Query\\\\BoolQuery\\.$#"
+			message: '#^Call to method addMust\(\) on an unknown class Elastica\\Query\\BoolQuery\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Call to method findAggregations\\(\\) on an unknown class App\\\\Pollution\\\\DataFinder\\\\FinderInterface\\.$#"
+			message: '#^Call to method findAggregations\(\) on an unknown class App\\Pollution\\DataFinder\\FinderInterface\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Call to method setBucketsPath\\(\\) on an unknown class Elastica\\\\Aggregation\\\\BucketSelector\\.$#"
+			message: '#^Call to method setBucketsPath\(\) on an unknown class Elastica\\Aggregation\\BucketSelector\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Call to method setBucketsPath\\(\\) on an unknown class Elastica\\\\Aggregation\\\\Derivative\\.$#"
+			message: '#^Call to method setBucketsPath\(\) on an unknown class Elastica\\Aggregation\\Derivative\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Call to method setField\\(\\) on an unknown class Elastica\\\\Aggregation\\\\Max\\.$#"
+			message: '#^Call to method setField\(\) on an unknown class Elastica\\Aggregation\\Max\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Call to method setField\\(\\) on an unknown class Elastica\\\\Aggregation\\\\Terms\\.$#"
+			message: '#^Call to method setField\(\) on an unknown class Elastica\\Aggregation\\Terms\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Call to method setFormat\\(\\) on an unknown class Elastica\\\\Aggregation\\\\DateHistogram\\.$#"
+			message: '#^Call to method setFormat\(\) on an unknown class Elastica\\Aggregation\\DateHistogram\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Call to method setGapPolicy\\(\\) on an unknown class Elastica\\\\Aggregation\\\\BucketSelector\\.$#"
+			message: '#^Call to method setGapPolicy\(\) on an unknown class Elastica\\Aggregation\\BucketSelector\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Call to method setScript\\(\\) on an unknown class Elastica\\\\Aggregation\\\\BucketSelector\\.$#"
+			message: '#^Call to method setScript\(\) on an unknown class Elastica\\Aggregation\\BucketSelector\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Call to method setSize\\(\\) on an unknown class Elastica\\\\Aggregation\\\\TopHits\\.$#"
+			message: '#^Call to method setSize\(\) on an unknown class Elastica\\Aggregation\\TopHits\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Call to method setSort\\(\\) on an unknown class Elastica\\\\Aggregation\\\\TopHits\\.$#"
+			message: '#^Call to method setSort\(\) on an unknown class Elastica\\Aggregation\\TopHits\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Call to method setTimezone\\(\\) on an unknown class Elastica\\\\Aggregation\\\\DateHistogram\\.$#"
+			message: '#^Call to method setTimezone\(\) on an unknown class Elastica\\Aggregation\\DateHistogram\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Instantiated class Elastica\\\\Aggregation\\\\BucketSelector not found\\.$#"
+			message: '#^Instantiated class Elastica\\Aggregation\\BucketSelector not found\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Instantiated class Elastica\\\\Aggregation\\\\DateHistogram not found\\.$#"
+			message: '#^Instantiated class Elastica\\Aggregation\\DateHistogram not found\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Instantiated class Elastica\\\\Aggregation\\\\Derivative not found\\.$#"
+			message: '#^Instantiated class Elastica\\Aggregation\\Derivative not found\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Instantiated class Elastica\\\\Aggregation\\\\Max not found\\.$#"
+			message: '#^Instantiated class Elastica\\Aggregation\\Max not found\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Instantiated class Elastica\\\\Aggregation\\\\Terms not found\\.$#"
+			message: '#^Instantiated class Elastica\\Aggregation\\Terms not found\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Instantiated class Elastica\\\\Aggregation\\\\TopHits not found\\.$#"
+			message: '#^Instantiated class Elastica\\Aggregation\\TopHits not found\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Instantiated class Elastica\\\\Query not found\\.$#"
+			message: '#^Instantiated class Elastica\\Query not found\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Instantiated class Elastica\\\\Query\\\\BoolQuery not found\\.$#"
+			message: '#^Instantiated class Elastica\\Query\\BoolQuery not found\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Instantiated class Elastica\\\\Query\\\\Range not found\\.$#"
+			message: '#^Instantiated class Elastica\\Query\\Range not found\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Instantiated class Elastica\\\\Query\\\\Term not found\\.$#"
+			message: '#^Instantiated class Elastica\\Query\\Term not found\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenAnalysis.php
 
 		-
-			message: "#^Call to method convertArray\\(\\) on an unknown class App\\\\Pollution\\\\DataFinder\\\\DataConverterInterface\\.$#"
+			message: '#^Call to method convertArray\(\) on an unknown class App\\Pollution\\DataFinder\\DataConverterInterface\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenModelFactory.php
 
 		-
-			message: "#^Parameter \\$dataConverter of method App\\\\Air\\\\Analysis\\\\KomfortofenAnalysis\\\\KomfortofenModelFactory\\:\\:__construct\\(\\) has invalid type App\\\\Pollution\\\\DataFinder\\\\DataConverterInterface\\.$#"
+			message: '#^Parameter \$dataConverter of method App\\Air\\Analysis\\KomfortofenAnalysis\\KomfortofenModelFactory\:\:__construct\(\) has invalid type App\\Pollution\\DataFinder\\DataConverterInterface\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenModelFactory.php
 
 		-
-			message: "#^Property App\\\\Air\\\\Analysis\\\\KomfortofenAnalysis\\\\KomfortofenModelFactory\\:\\:\\$dataConverter has unknown class App\\\\Pollution\\\\DataFinder\\\\DataConverterInterface as its type\\.$#"
+			message: '#^Property App\\Air\\Analysis\\KomfortofenAnalysis\\KomfortofenModelFactory\:\:\$dataConverter has unknown class App\\Pollution\\DataFinder\\DataConverterInterface as its type\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/KomfortofenModelFactory.php
 
 		-
-			message: "#^Call to method addAggregation\\(\\) on an unknown class Elastica\\\\Aggregation\\\\DateHistogram\\.$#"
+			message: '#^Call to method addAggregation\(\) on an unknown class Elastica\\Aggregation\\DateHistogram\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
 
 		-
-			message: "#^Call to method addAggregation\\(\\) on an unknown class Elastica\\\\Query\\.$#"
+			message: '#^Call to method addAggregation\(\) on an unknown class Elastica\\Query\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
 
 		-
-			message: "#^Call to method addMust\\(\\) on an unknown class Elastica\\\\Query\\\\BoolQuery\\.$#"
+			message: '#^Call to method addMust\(\) on an unknown class Elastica\\Query\\BoolQuery\.$#'
+			identifier: class.notFound
 			count: 2
 			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
 
 		-
-			message: "#^Call to method findPaginated\\(\\) on an unknown class FOS\\\\ElasticaBundle\\\\Finder\\\\PaginatedFinderInterface\\.$#"
+			message: '#^Call to method findPaginated\(\) on an unknown class FOS\\ElasticaBundle\\Finder\\PaginatedFinderInterface\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
 
 		-
-			message: "#^Call to method setField\\(\\) on an unknown class Elastica\\\\Aggregation\\\\Max\\.$#"
+			message: '#^Call to method setField\(\) on an unknown class Elastica\\Aggregation\\Max\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
 
 		-
-			message: "#^Call to method setFormat\\(\\) on an unknown class Elastica\\\\Aggregation\\\\DateHistogram\\.$#"
+			message: '#^Call to method setFormat\(\) on an unknown class Elastica\\Aggregation\\DateHistogram\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
 
 		-
-			message: "#^Call to method setTimezone\\(\\) on an unknown class Elastica\\\\Aggregation\\\\DateHistogram\\.$#"
+			message: '#^Call to method setTimezone\(\) on an unknown class Elastica\\Aggregation\\DateHistogram\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
 
 		-
-			message: "#^Instantiated class Elastica\\\\Aggregation\\\\DateHistogram not found\\.$#"
+			message: '#^Instantiated class Elastica\\Aggregation\\DateHistogram not found\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
 
 		-
-			message: "#^Instantiated class Elastica\\\\Aggregation\\\\Max not found\\.$#"
+			message: '#^Instantiated class Elastica\\Aggregation\\Max not found\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
 
 		-
-			message: "#^Instantiated class Elastica\\\\Query not found\\.$#"
+			message: '#^Instantiated class Elastica\\Query not found\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
 
 		-
-			message: "#^Instantiated class Elastica\\\\Query\\\\BoolQuery not found\\.$#"
+			message: '#^Instantiated class Elastica\\Query\\BoolQuery not found\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
 
 		-
-			message: "#^Instantiated class Elastica\\\\Query\\\\Range not found\\.$#"
+			message: '#^Instantiated class Elastica\\Query\\Range not found\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
 
 		-
-			message: "#^Instantiated class Elastica\\\\Query\\\\Term not found\\.$#"
+			message: '#^Instantiated class Elastica\\Query\\Term not found\.$#'
+			identifier: class.notFound
 			count: 2
 			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
 
 		-
-			message: "#^Parameter \\$finder of method App\\\\Air\\\\Analysis\\\\LimitAnalysis\\\\LimitAnalysis\\:\\:__construct\\(\\) has invalid type FOS\\\\ElasticaBundle\\\\Finder\\\\PaginatedFinderInterface\\.$#"
+			message: '#^Parameter \$finder of method App\\Air\\Analysis\\LimitAnalysis\\LimitAnalysis\:\:__construct\(\) has invalid type FOS\\ElasticaBundle\\Finder\\PaginatedFinderInterface\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
 
 		-
-			message: "#^Property App\\\\Air\\\\Analysis\\\\LimitAnalysis\\\\LimitAnalysis\\:\\:\\$finder has unknown class FOS\\\\ElasticaBundle\\\\Finder\\\\PaginatedFinderInterface as its type\\.$#"
+			message: '#^Property App\\Air\\Analysis\\LimitAnalysis\\LimitAnalysis\:\:\$finder has unknown class FOS\\ElasticaBundle\\Finder\\PaginatedFinderInterface as its type\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/Analysis/LimitAnalysis/LimitAnalysis.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Data\\>\\:\\:findCurrentDataForCoord\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\Data\>\:\:findCurrentDataForCoord\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Air/DataRetriever/PostgisDataRetriever.php
 
 		-
-			message: "#^Method App\\\\Air\\\\Geocoding\\\\Geocoder\\\\Geocoder\\:\\:queryZip\\(\\) should return Geocoder\\\\Model\\\\AddressCollection but returns Geocoder\\\\Collection\\.$#"
+			message: '#^Method App\\Air\\Geocoding\\Geocoder\\Geocoder\:\:queryZip\(\) should return Geocoder\\Model\\AddressCollection but returns Geocoder\\Collection\.$#'
+			identifier: return.type
 			count: 1
 			path: src/Air/Geocoding/Geocoder/Geocoder.php
 
 		-
-			message: "#^Variable \\$addressCollection in PHPDoc tag @var does not exist\\.$#"
+			message: '#^Variable \$addressCollection in PHPDoc tag @var does not exist\.$#'
+			identifier: varTag.variableNotFound
 			count: 1
 			path: src/Air/Geocoding/Geocoder/Geocoder.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
 			count: 2
 			path: src/Air/Geocoding/Guesser/CityGuesser.php
 
 		-
-			message: "#^Result of \\|\\| is always false\\.$#"
+			message: '#^Result of \|\| is always false\.$#'
+			identifier: booleanOr.alwaysFalse
 			count: 1
 			path: src/Air/Geocoding/Guesser/CityGuesser.php
 
 		-
-			message: "#^Access to an undefined property App\\\\Air\\\\PollutionDataFactory\\\\HistoryDataFactory\\:\\:\\$dataList\\.$#"
+			message: '#^Access to an undefined property App\\Air\\PollutionDataFactory\\HistoryDataFactory\:\:\$dataList\.$#'
+			identifier: property.notFound
 			count: 3
 			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
 
 		-
-			message: "#^Call to static method getHourStartDateTime\\(\\) on an unknown class App\\\\Util\\\\DateTimeUtil\\.$#"
+			message: '#^Call to static method getHourStartDateTime\(\) on an unknown class App\\Util\\DateTimeUtil\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
 
 		-
-			message: "#^Method App\\\\Air\\\\DataRetriever\\\\DataRetrieverInterface\\:\\:retrieveDataForCoord\\(\\) invoked with 4 parameters, 1 required\\.$#"
+			message: '#^Method App\\Air\\DataRetriever\\DataRetrieverInterface\:\:retrieveDataForCoord\(\) invoked with 4 parameters, 1 required\.$#'
+			identifier: arguments.count
 			count: 1
 			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
 
 		-
-			message: "#^Method App\\\\Air\\\\PollutionDataFactory\\\\PollutionDataFactory\\:\\:__construct\\(\\) invoked with 4 parameters, 3 required\\.$#"
+			message: '#^Method App\\Air\\PollutionDataFactory\\PollutionDataFactory\:\:__construct\(\) invoked with 4 parameters, 3 required\.$#'
+			identifier: arguments.count
 			count: 1
 			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
 
 		-
-			message: "#^Parameter \\#3 \\$dataRetriever of method App\\\\Air\\\\PollutionDataFactory\\\\PollutionDataFactory\\:\\:__construct\\(\\) expects App\\\\Air\\\\DataRetriever\\\\DataRetrieverInterface, App\\\\Pollution\\\\DataRetriever\\\\HistoryElasticDataRetriever given\\.$#"
+			message: '#^Parameter \#3 \$dataRetriever of method App\\Air\\PollutionDataFactory\\PollutionDataFactory\:\:__construct\(\) expects App\\Air\\DataRetriever\\DataRetrieverInterface, App\\Pollution\\DataRetriever\\HistoryElasticDataRetriever given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
 
 		-
-			message: "#^Parameter \\$dataRetriever of method App\\\\Air\\\\PollutionDataFactory\\\\HistoryDataFactory\\:\\:__construct\\(\\) has invalid type App\\\\Pollution\\\\DataRetriever\\\\HistoryElasticDataRetriever\\.$#"
+			message: '#^Parameter \$dataRetriever of method App\\Air\\PollutionDataFactory\\HistoryDataFactory\:\:__construct\(\) has invalid type App\\Pollution\\DataRetriever\\HistoryElasticDataRetriever\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
 
 		-
-			message: "#^Parameter \\$strategy of method App\\\\Air\\\\PollutionDataFactory\\\\HistoryDataFactory\\:\\:__construct\\(\\) has invalid type App\\\\Air\\\\PollutantFactoryStrategy\\\\PollutantFactoryStrategyInterface\\.$#"
+			message: '#^Parameter \$strategy of method App\\Air\\PollutionDataFactory\\HistoryDataFactory\:\:__construct\(\) has invalid type App\\Air\\PollutantFactoryStrategy\\PollutantFactoryStrategyInterface\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
 
 		-
-			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$dateTime \\(DateTime\\) is implicitly nullable via default value null\\.$#"
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$dateTime \(DateTime\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
 			count: 1
 			path: src/Air/PollutionDataFactory/PollutionDataFactory.php
 
 		-
-			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#2 \\$dateInterval \\(DateInterval\\) is implicitly nullable via default value null\\.$#"
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$dateInterval \(DateInterval\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
 			count: 1
 			path: src/Air/PollutionDataFactory/PollutionDataFactory.php
 
 		-
-			message: "#^If condition is always true\\.$#"
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
 			count: 1
 			path: src/Air/PollutionDataFactory/PollutionDataFactory.php
 
 		-
-			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$dateTime \\(DateTime\\) is implicitly nullable via default value null\\.$#"
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$dateTime \(DateTime\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
 			count: 1
 			path: src/Air/PollutionDataFactory/PollutionDataFactoryInterface.php
 
 		-
-			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#2 \\$dateInterval \\(DateInterval\\) is implicitly nullable via default value null\\.$#"
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$dateInterval \(DateInterval\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
 			count: 1
 			path: src/Air/PollutionDataFactory/PollutionDataFactoryInterface.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:getReference\\(\\)\\.$#"
+			message: '#^Call to method request\(\) on an unknown class Symfony\\Contracts\\HttpClient\\HttpClientInterface\.$#'
+			identifier: class.notFound
+			count: 2
+			path: src/Air/Provider/OpenWeatherMapProvider/SourceFetcher/SourceFetcher.php
+
+		-
+			message: '#^Parameter \$httpClient of method App\\Air\\Provider\\OpenWeatherMapProvider\\SourceFetcher\\SourceFetcher\:\:__construct\(\) has invalid type Symfony\\Contracts\\HttpClient\\HttpClientInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Air/Provider/OpenWeatherMapProvider/SourceFetcher/SourceFetcher.php
+
+		-
+			message: '#^Property App\\Air\\Provider\\OpenWeatherMapProvider\\SourceFetcher\\SourceFetcher\:\:\$httpClient has unknown class Symfony\\Contracts\\HttpClient\\HttpClientInterface as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Air/Provider/OpenWeatherMapProvider/SourceFetcher/SourceFetcher.php
+
+		-
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectManager\:\:getReference\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Air/StationCache/StationCache.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findAllIndexed\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\Station\>\:\:findAllIndexed\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Air/StationCache/StationCache.php
 
 		-
-			message: "#^Instanceof between ReflectionAttribute\\<Symfony\\\\Component\\\\Serializer\\\\Attribute\\\\Ignore\\> and Symfony\\\\Component\\\\Serializer\\\\Attribute\\\\Ignore will always evaluate to false\\.$#"
+			message: '#^Instanceof between ReflectionAttribute\<Symfony\\Component\\Serializer\\Attribute\\Ignore\> and Symfony\\Component\\Serializer\\Attribute\\Ignore will always evaluate to false\.$#'
+			identifier: instanceof.alwaysFalse
 			count: 1
 			path: src/Air/Util/EntityMerger/EntityMerger.php
 
 		-
-			message: "#^Variable \\$reflectionClass in PHPDoc tag @var does not match any variable in the foreach loop\\: \\$reflectionProperty$#"
+			message: '#^Variable \$reflectionClass in PHPDoc tag @var does not match any variable in the foreach loop\: \$reflectionProperty$#'
+			identifier: varTag.differentVariable
 			count: 1
 			path: src/Air/Util/EntityMerger/EntityMerger.php
 
 		-
-			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#2 \\$station \\(App\\\\Entity\\\\Station\\) is implicitly nullable via default value null\\.$#"
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$station \(App\\Entity\\Station\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
 			count: 1
 			path: src/Air/ValueDataConverter/ValueDataConverter.php
 
 		-
-			message: "#^Call to an undefined method League\\\\Geotools\\\\Distance\\\\DistanceInterface\\:\\:haversine\\(\\)\\.$#"
-			count: 1
-			path: src/Air/ViewModelFactory/DistanceCalculator.php
-
-		-
-			message: "#^Parameter \\#1 \\$coord of static method App\\\\Air\\\\ViewModelFactory\\\\DistanceCalculator\\:\\:distance\\(\\) expects Caldera\\\\GeoBasic\\\\Coordinate\\\\CoordinateInterface, Caldera\\\\GeoBasic\\\\Coord\\\\CoordInterface given\\.$#"
+			message: '#^Variable \$boxArray in PHPDoc tag @var does not match any variable in the foreach loop\: \$pollutantViewModelList$#'
+			identifier: varTag.differentVariable
 			count: 1
 			path: src/Air/ViewModelFactory/PollutantViewModelFactory.php
 
 		-
-			message: "#^Variable \\$boxArray in PHPDoc tag @var does not match any variable in the foreach loop\\: \\$pollutantViewModelList$#"
-			count: 1
-			path: src/Air/ViewModelFactory/PollutantViewModelFactory.php
-
-		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\City\\>\\:\\:findOneByName\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\City\>\:\:findOneByName\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Command/AssignStationCommand.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findWithoutCity\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\Station\>\:\:findWithoutCity\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Command/AssignStationCommand.php
 
 		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Console\\\\Helper\\\\HelperInterface\\:\\:ask\\(\\)\\.$#"
+			message: '#^Call to an undefined method Symfony\\Component\\Console\\Helper\\HelperInterface\:\:ask\(\)\.$#'
+			identifier: method.notFound
 			count: 3
 			path: src/Command/AssignStationCommand.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Data\\>\\:\\:refreshMaterializedView\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\Data\>\:\:refreshMaterializedView\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Command/LuftRefreshCommand.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\City\\>\\:\\:findOneByName\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\City\>\:\:findOneByName\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Controller/AbstractController.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\City\\>\\:\\:findOneBySlug\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\City\>\:\:findOneBySlug\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Controller/AbstractController.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findActiveStationsForCity\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\Station\>\:\:findActiveStationsForCity\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Controller/AbstractController.php
 
 		-
-			message: "#^Call to an undefined method App\\\\Air\\\\Analysis\\\\CoronaFireworksAnalysis\\\\CoronaFireworksAnalysisInterface\\:\\:analyze\\(\\)\\.$#"
+			message: '#^Call to an undefined method App\\Air\\Analysis\\CoronaFireworksAnalysis\\CoronaFireworksAnalysisInterface\:\:analyze\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Controller/AnalysisController.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Data\\>\\:\\:findForAnalysis\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\Data\>\:\:findForAnalysis\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Controller/Api/AnalysisApiController.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findOneByStationCode\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\Station\>\:\:findOneByStationCode\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Controller/Api/AnalysisApiController.php
 
 		-
-			message: "#^Attribute class Sensio\\\\Bundle\\\\FrameworkExtraBundle\\\\Configuration\\\\Entity does not exist\\.$#"
+			message: '#^Attribute class Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\Entity does not exist\.$#'
+			identifier: attribute.notFound
 			count: 1
 			path: src/Controller/Api/CityApiController.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\City\\>\\:\\:findOneBySlug\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\City\>\:\:findOneBySlug\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Controller/Api/CityApiController.php
 
 		-
-			message: "#^Attribute class OpenApi\\\\Attributes\\\\Parameter is not repeatable but is already present above the method\\.$#"
-			count: 2
-			path: src/Controller/Api/DisplayApiController.php
-
-		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findOneByStationCode\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\Station\>\:\:findOneByStationCode\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Controller/Api/DisplayApiController.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findActiveStationsByProvider\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\Station\>\:\:findActiveStationsByProvider\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Controller/Api/StationApiController.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findOneByStationCode\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\Station\>\:\:findOneByStationCode\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Controller/Api/StationApiController.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findStationsByProvider\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\Station\>\:\:findStationsByProvider\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Controller/Api/StationApiController.php
 
 		-
-			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#2 \\$stationCode \\(string\\) is implicitly nullable via default value null\\.$#"
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$stationCode \(string\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
 			count: 1
 			path: src/Controller/Api/StationApiController.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\City\\>\\:\\:findOneByName\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\City\>\:\:findOneByName\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Controller/DisplayController.php
 
 		-
-			message: "#^Parameter \\#1 \\$coord of method App\\\\Air\\\\Geocoding\\\\Guesser\\\\CityGuesserInterface\\:\\:guess\\(\\) expects Caldera\\\\GeoBasic\\\\Coord\\\\Coord, Caldera\\\\GeoBasic\\\\Coordinate\\\\CoordinateInterface given\\.$#"
-			count: 1
-			path: src/Controller/DisplayController.php
-
-		-
-			message: "#^Call to an undefined method App\\\\Air\\\\PollutionDataFactory\\\\HistoryDataFactoryInterface\\:\\:setStation\\(\\)\\.$#"
+			message: '#^Call to an undefined method App\\Air\\PollutionDataFactory\\HistoryDataFactoryInterface\:\:setStation\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Controller/StationController.php
 
 		-
-			message: "#^Negated boolean expression is always false\\.$#"
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
 			count: 1
 			path: src/Controller/StationController.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\City\\>\\:\\:findCitiesWithActiveStations\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\City\>\:\:findCitiesWithActiveStations\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Controller/TemplateController.php
 
 		-
-			message: "#^Ternary operator condition is always true\\.$#"
+			message: '#^Ternary operator condition is always true\.$#'
+			identifier: ternary.alwaysTrue
 			count: 1
 			path: src/Controller/TemplateController.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findActiveStations\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\Station\>\:\:findActiveStations\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/Controller/TypeaheadController.php
 
 		-
-			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$description \\(string\\) is implicitly nullable via default value null\\.$#"
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$description \(string\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
 			count: 1
 			path: src/Entity/City.php
 
 		-
-			message: "#^Parameter \\$targetEntity of attribute class Doctrine\\\\ORM\\\\Mapping\\\\OneToMany constructor expects class\\-string\\|null, string given\\.$#"
+			message: '#^Parameter \$targetEntity of attribute class Doctrine\\ORM\\Mapping\\OneToMany constructor expects class\-string\|null, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/Entity/City.php
 
 		-
-			message: "#^Parameter \\$targetEntity of attribute class Doctrine\\\\ORM\\\\Mapping\\\\ManyToOne constructor expects class\\-string\\|null, string given\\.$#"
+			message: '#^Parameter \$targetEntity of attribute class Doctrine\\ORM\\Mapping\\ManyToOne constructor expects class\-string\|null, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/Entity/Data.php
 
 		-
-			message: "#^Property App\\\\Entity\\\\Data\\:\\:\\$dateTime \\(DateTime\\|null\\) does not accept DateTimeInterface\\.$#"
+			message: '#^Property App\\Entity\\Data\:\:\$dateTime \(DateTime\|null\) does not accept DateTimeInterface\.$#'
+			identifier: assign.propertyType
 			count: 1
 			path: src/Entity/Data.php
 
 		-
-			message: "#^Parameter \\$targetEntity of attribute class Doctrine\\\\ORM\\\\Mapping\\\\OneToMany constructor expects class\\-string\\|null, string given\\.$#"
+			message: '#^Parameter \$targetEntity of attribute class Doctrine\\ORM\\Mapping\\OneToMany constructor expects class\-string\|null, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/Entity/Network.php
 
 		-
-			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$areaType \\(string\\) is implicitly nullable via default value null\\.$#"
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$areaType \(string\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
 			count: 1
 			path: src/Entity/Station.php
 
 		-
-			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$city \\(App\\\\Entity\\\\City\\) is implicitly nullable via default value null\\.$#"
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$city \(App\\Entity\\City\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
 			count: 1
 			path: src/Entity/Station.php
 
 		-
-			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$fromDate \\(DateTime\\) is implicitly nullable via default value null\\.$#"
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$fromDate \(DateTime\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
 			count: 1
 			path: src/Entity/Station.php
 
 		-
-			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$stationType \\(string\\) is implicitly nullable via default value null\\.$#"
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$stationType \(string\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
 			count: 1
 			path: src/Entity/Station.php
 
 		-
-			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$title \\(string\\) is implicitly nullable via default value null\\.$#"
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$title \(string\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
 			count: 1
 			path: src/Entity/Station.php
 
 		-
-			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$untilDate \\(DateTime\\) is implicitly nullable via default value null\\.$#"
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$untilDate \(DateTime\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
 			count: 1
 			path: src/Entity/Station.php
 
 		-
-			message: "#^Parameter \\$targetEntity of attribute class Doctrine\\\\ORM\\\\Mapping\\\\ManyToOne constructor expects class\\-string\\|null, string given\\.$#"
+			message: '#^Parameter \$targetEntity of attribute class Doctrine\\ORM\\Mapping\\ManyToOne constructor expects class\-string\|null, string given\.$#'
+			identifier: argument.type
 			count: 2
 			path: src/Entity/Station.php
 
 		-
-			message: "#^Parameter \\$targetEntity of attribute class Doctrine\\\\ORM\\\\Mapping\\\\OneToMany constructor expects class\\-string\\|null, string given\\.$#"
+			message: '#^Parameter \$targetEntity of attribute class Doctrine\\ORM\\Mapping\\OneToMany constructor expects class\-string\|null, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/Entity/Station.php
 
 		-
-			message: "#^Call to an undefined method App\\\\Air\\\\PollutantList\\\\PollutantListInterface\\:\\:getIdentifier\\(\\)\\.$#"
+			message: '#^Call to an undefined method App\\Air\\PollutantList\\PollutantListInterface\:\:getIdentifier\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/EventSubscriber/SitemapEventSubscriber.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\City\\>\\:\\:findCitiesWithActiveStations\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\City\>\:\:findCitiesWithActiveStations\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/EventSubscriber/SitemapEventSubscriber.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findActiveStations\\(\\)\\.$#"
+			message: '#^Call to an undefined method Doctrine\\Persistence\\ObjectRepository\<App\\Entity\\Station\>\:\:findActiveStations\(\)\.$#'
+			identifier: method.notFound
 			count: 1
 			path: src/EventSubscriber/SitemapEventSubscriber.php
 
 		-
-			message: "#^Method App\\\\MessageHandler\\\\ValueMessageHandler\\:\\:process\\(\\) is unused\\.$#"
+			message: '#^Method App\\MessageHandler\\ValueMessageHandler\:\:process\(\) is unused\.$#'
+			identifier: method.unused
 			count: 1
 			path: src/MessageHandler/ValueMessageHandler.php
 
 		-
-			message: "#^Method App\\\\MessageHandler\\\\ValueMessageHandler\\:\\:shouldFlush\\(\\) is unused\\.$#"
+			message: '#^Method App\\MessageHandler\\ValueMessageHandler\:\:shouldFlush\(\) is unused\.$#'
+			identifier: method.unused
 			count: 1
 			path: src/MessageHandler/ValueMessageHandler.php
 
 		-
-			message: "#^Call to static method factory\\(\\) on an unknown class Cron\\\\CronExpression\\.$#"
+			message: '#^Call to static method factory\(\) on an unknown class Cron\\CronExpression\.$#'
+			identifier: class.notFound
 			count: 1
 			path: src/Twig/Extension/CronTwigExtension.php

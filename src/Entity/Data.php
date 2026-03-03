@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Ignore;
 
 #[ORM\Table(name: 'data')]
+#[ORM\UniqueConstraint(name: 'unique_station_pollutant_datetime', columns: ['station_id', 'pollutant', 'date_time'])]
 #[ORM\Entity(repositoryClass: \App\Repository\DataRepository::class)]
 class Data
 {
@@ -107,13 +108,12 @@ class Data
 
     public function getProvider(): ?string
     {
-        return $this->station->getProvider();
+        return $this->station?->getProvider();
     }
 
     public function isIndexable(): bool
     {
-        $dateTime = new \DateTimeImmutable();
-        $dateTime->sub(new \DateInterval('P1W'));
+        $dateTime = (new \DateTimeImmutable())->sub(new \DateInterval('P1W'));
 
         return $dateTime >= $this->dateTime;
     }

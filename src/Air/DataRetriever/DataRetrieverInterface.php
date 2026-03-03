@@ -2,7 +2,7 @@
 
 namespace App\Air\DataRetriever;
 
-use Caldera\GeoBasic\Coord\CoordInterface;
+use App\Geo\Coord\CoordInterface;
 
 interface DataRetrieverInterface
 {
