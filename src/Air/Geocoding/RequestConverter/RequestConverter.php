@@ -4,8 +4,8 @@ namespace App\Air\Geocoding\RequestConverter;
 
 use App\Air\Geocoding\Geocoder\GeocoderInterface;
 use App\Entity\Zip;
-use Caldera\GeoBasic\Coordinate\Coordinate;
-use Caldera\GeoBasic\Coordinate\CoordinateInterface;
+use App\Geo\Coordinate\Coordinate;
+use App\Geo\Coordinate\CoordinateInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Geocoder\Provider\Nominatim\Model\NominatimAddress;
 use Symfony\Component\HttpFoundation\Request;

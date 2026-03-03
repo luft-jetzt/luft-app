@@ -3,12 +3,25 @@
 namespace App\Air\ValueDataConverter;
 
 use App\Air\Pollutant\PollutantInterface;
-use Caldera\LuftModel\Model\Value;;
+use Caldera\LuftModel\Model\Value;
 use App\Entity\Data;
 use App\Entity\Station;
 
 class ValueDataConverter
 {
+    private const array POLLUTANT_MAP = [
+        'pm10' => PollutantInterface::POLLUTANT_PM10,
+        'pm25' => PollutantInterface::POLLUTANT_PM25,
+        'o3' => PollutantInterface::POLLUTANT_O3,
+        'no2' => PollutantInterface::POLLUTANT_NO2,
+        'so2' => PollutantInterface::POLLUTANT_SO2,
+        'co' => PollutantInterface::POLLUTANT_CO,
+        'co2' => PollutantInterface::POLLUTANT_CO2,
+        'uvindex' => PollutantInterface::POLLUTANT_UVINDEX,
+        'temperature' => PollutantInterface::POLLUTANT_TEMPERATURE,
+        'uvindexmax' => PollutantInterface::POLLUTANT_UVINDEXMAX,
+    ];
+
     private function __construct()
     {
 
@@ -40,18 +53,8 @@ class ValueDataConverter
 
     protected static function convertPollutant(string $pollutantIdentifier): ?int
     {
-        $reflectionClass = new \ReflectionClass(PollutantInterface::class);
+        $key = strtolower(str_replace('_', '', $pollutantIdentifier));
 
-        $pollutantIdentifier = str_replace('_', '', $pollutantIdentifier);
-
-        $expectedClassConstantName = sprintf('POLLUTANT_%s', strtoupper($pollutantIdentifier));
-
-        $classConstantList = $reflectionClass->getConstants();
-
-        if (array_key_exists($expectedClassConstantName, $classConstantList)) {
-            return $classConstantList[$expectedClassConstantName];
-        }
-
-        return null;
+        return self::POLLUTANT_MAP[$key] ?? null;
     }
 }
