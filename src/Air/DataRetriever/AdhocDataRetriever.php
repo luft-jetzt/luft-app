@@ -35,11 +35,14 @@ class AdhocDataRetriever implements DataRetrieverInterface
 
     protected function retrieveTemperatureForCoord(CoordInterface $coord): ?Data
     {
-        $jsonData = $this->owmSourceFetcher->queryTemperature($coord);
+        try {
+            $jsonData = $this->owmSourceFetcher->queryTemperature($coord);
+            $value = $this->owmJsonParser->parseTemperature($jsonData);
 
-        $value = $this->owmJsonParser->parseTemperature($jsonData);
-
-        $station = new Station($coord->getLatitude(), $coord->getLongitude());
-        return ValueDataConverter::convert($value, $station);
+            $station = new Station($coord->getLatitude(), $coord->getLongitude());
+            return ValueDataConverter::convert($value, $station);
+        } catch (\Throwable) {
+            return null;
+        }
     }
 }
