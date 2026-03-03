@@ -104,21 +104,26 @@ LIMIT 10';
             ->addFieldResult('s', 'provider', 'provider')
         ;
 
-        $sql = 'SELECT DISTINCT ON (date_trunc(\'hour\', date_time)) data_id, value, pollutant, date_time, station_id, title, latitude, longitude, station_code, station_type, provider
-        FROM silvester_data
-        WHERE station_id IN (SELECT id FROM station WHERE coord <-> ST_MakePoint(?, ?) < 2 ORDER BY coord <-> ST_MakePoint(?, ?) ASC)
-        AND pollutant = 1
+        $sql = 'WITH search_point AS (
+            SELECT ST_MakePoint(?, ?) AS point
+        ),
+        nearby_stations AS (
+            SELECT s.id, s.coord <-> (SELECT point FROM search_point) AS dist
+            FROM station s
+            WHERE s.coord <-> (SELECT point FROM search_point) < 2
+            ORDER BY dist ASC
+        )
+        SELECT DISTINCT ON (date_trunc(\'hour\', date_time)) data_id, value, pollutant, date_time, station_id, title, latitude, longitude, station_code, station_type, provider
+        FROM silvester_data sd
+        INNER JOIN nearby_stations ns ON ns.id = sd.station_id
+        WHERE pollutant = 1
         AND ((DATE_PART(\'day\', date_time) = 31 AND DATE_PART(\'hour\', date_time) >= 17) OR (DATE_PART(\'day\', date_time) = 1 AND DATE_PART(\'hour\', date_time) <= 7))
-        ORDER BY date_trunc(\'hour\', date_time), coord <-> ST_MakePoint(?, ?) ASC, value DESC';
+        ORDER BY date_trunc(\'hour\', date_time), ns.dist ASC, value DESC';
 
         $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
         $query
             ->setParameter(1, $coord->getLongitude())
             ->setParameter(2, $coord->getLatitude())
-            ->setParameter(3, $coord->getLongitude())
-            ->setParameter(4, $coord->getLatitude())
-            ->setParameter(5, $coord->getLongitude())
-            ->setParameter(6, $coord->getLatitude())
         ;
 
         return $query->getResult();
@@ -126,8 +131,6 @@ LIMIT 10';
 
     public function refreshMaterializedView(): void
     {
-        $sql = 'REFRESH MATERIALIZED VIEW data_view;';
-        $sql = 'REFRESH MATERIALIZED VIEW silvester_data;';
         $sql = 'REFRESH MATERIALIZED VIEW current_data;';
 
         $query = $this->getEntityManager()->createNativeQuery($sql, new ResultSetMapping());
