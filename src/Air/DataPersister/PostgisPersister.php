@@ -5,6 +5,7 @@ namespace App\Air\DataPersister;
 use App\Air\StationCache\StationCacheInterface;
 use App\Air\ValueDataConverter\ValueDataConverter;
 use Caldera\LuftModel\Model\Value;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\Persistence\ManagerRegistry;
 
 class PostgisPersister extends AbstractPersister
@@ -29,11 +30,17 @@ class PostgisPersister extends AbstractPersister
 
                 $data = ValueDataConverter::convert($value, $station);
 
-                $em->persist($data);
+                if ($data) {
+                    $em->persist($data);
+                }
             }
         }
 
-        $em->flush();
+        try {
+            $em->flush();
+        } catch (UniqueConstraintViolationException) {
+            // Duplicate data point already exists, skip silently
+        }
 
         return $this;
     }
