@@ -7,12 +7,10 @@ use App\Air\Pollutant\PollutantInterface;
 use App\Air\ViewModel\PollutantViewModel;
 use App\Air\ViewModelFactory\PollutantViewModelFactoryInterface;
 use App\Entity\Data;
-use Doctrine\Persistence\ManagerRegistry;
 
 class PollutionDataFactory extends AbstractPollutionDataFactory
 {
     public function __construct(
-        protected ManagerRegistry $managerRegistry,
         PollutantViewModelFactoryInterface $pollutantViewModelFactory,
         DataRetrieverInterface $dataRetriever,
     )
