@@ -3,7 +3,7 @@
 namespace App\Air\Analysis\CoronaFireworksAnalysis;
 
 use App\Entity\Data;
-use Caldera\GeoBasic\Coord\CoordInterface;
+use App\Geo\Coord\CoordInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 class ValueFetcher implements ValueFetcherInterface

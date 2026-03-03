@@ -5,7 +5,9 @@ namespace App\Controller\Api;
 use App\Air\Serializer\LuftSerializerInterface;
 use App\Controller\AbstractController;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractApiController extends AbstractController
 {
@@ -31,6 +33,10 @@ abstract class AbstractApiController extends AbstractController
     protected function deserializeRequestBodyToArray(Request $request, string $expectedFqcn): array
     {
         $body = $request->getContent();
+
+        if ('' === $body) {
+            throw new \InvalidArgumentException('Request body is empty');
+        }
 
         if ('[' === $body[0]) {
             $type = sprintf('%s[]', $expectedFqcn);

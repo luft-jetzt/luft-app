@@ -15,9 +15,7 @@ abstract class AbstractPollutionLevel implements PollutionLevelInterface
     #[\Override]
     public function getPollutionIdentifier(): string
     {
-        $reflection = new \ReflectionClass($this);
-
-        $className = $reflection->getShortName();
+        $className = substr(strrchr(static::class, '\\'), 1);
 
         return strtolower(substr($className, 0, -5));
     }

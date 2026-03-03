@@ -17,7 +17,7 @@ class UVIndexPollutionLevelTest extends TestCase
         $levels = [
             2,
             5,
-            7,
+            8,
             11,
         ];
 

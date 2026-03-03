@@ -42,7 +42,6 @@
         "fresh/doctrine-enum-bundle": "^12.0",
         "friendsofsymfony/jsrouting-bundle": "^3.6",
         "geocoder-php/nominatim-provider": "^5.2",
-        "http-interop/http-factory-guzzle": "*",
         "jsor/doctrine-postgis": "^2.1",
         "luft-jetzt/luft-model": "^0.5.1",
         "maltehuebner/impress-bundle": "dev-main",
@@ -76,6 +75,7 @@
         "willdurand/geocoder-bundle": "^6.0"
     },
     "require-dev": {
+        "phpstan/phpstan": "^1.12",
         "phpunit/phpunit": "^9.6",
         "rector/rector": "^1.2",
         "symfony/browser-kit": "^8.0",

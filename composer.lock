@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e99418a4b62adb63b7501d9112ddb2e",
+    "content-hash": "f1b8a2fa044af9d3f1202048d4a7b55c",
     "packages": [
         {
             "name": "calderacc/geobasic",
@@ -2161,64 +2161,6 @@
                 }
             ],
             "time": "2023-04-17T16:00:37+00:00"
-        },
-        {
-            "name": "http-interop/http-factory-guzzle",
-            "version": "1.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/http-interop/http-factory-guzzle.git",
-                "reference": "c2c859ceb05c3f42e710b60555f4c35b6a4a3995"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/http-interop/http-factory-guzzle/zipball/c2c859ceb05c3f42e710b60555f4c35b6a4a3995",
-                "reference": "c2c859ceb05c3f42e710b60555f4c35b6a4a3995",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/psr7": "^1.7||^2.0",
-                "php": ">=7.3",
-                "psr/http-factory": "^1.0"
-            },
-            "provide": {
-                "psr/http-factory-implementation": "^1.0"
-            },
-            "require-dev": {
-                "http-interop/http-factory-tests": "^0.9",
-                "phpunit/phpunit": "^9.5"
-            },
-            "suggest": {
-                "guzzlehttp/psr7": "Includes an HTTP factory starting in version 2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Http\\Factory\\Guzzle\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
-                }
-            ],
-            "description": "An HTTP Factory using Guzzle PSR7",
-            "keywords": [
-                "factory",
-                "http",
-                "psr-17",
-                "psr-7"
-            ],
-            "support": {
-                "issues": "https://github.com/http-interop/http-factory-guzzle/issues",
-                "source": "https://github.com/http-interop/http-factory-guzzle/tree/1.2.1"
-            },
-            "time": "2025-12-15T11:28:16+00:00"
         },
         {
             "name": "jsor/doctrine-postgis",
@@ -11612,11 +11554,11 @@
     "packages-dev": [
         {
             "name": "phpstan/phpstan",
-            "version": "1.12.32",
+            "version": "1.12.33",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/2770dcdf5078d0b0d53f94317e06affe88419aa8",
-                "reference": "2770dcdf5078d0b0d53f94317e06affe88419aa8",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/37982d6fc7cbb746dda7773530cda557cdf119e1",
+                "reference": "37982d6fc7cbb746dda7773530cda557cdf119e1",
                 "shasum": ""
             },
             "require": {
@@ -11661,7 +11603,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-09-30T10:16:31+00:00"
+            "time": "2026-02-28T20:30:03+00:00"
         },
         {
             "name": "rector/rector",

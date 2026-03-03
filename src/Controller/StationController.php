@@ -42,10 +42,6 @@ class StationController extends AbstractController
 
     public function limitsAction(#[MapEntity(expr: 'repository.findOneByStationCode(stationCode)')] Station $station, LimitAnalysisInterface $limitAnalysis): Response
     {
-        if (!$station) {
-            throw $this->createNotFoundException();
-        }
-
         $limitAnalysis
             ->setStation($station)
             ->setFromDateTime(Carbon::now()->startOfMonth())
@@ -53,7 +49,6 @@ class StationController extends AbstractController
 
         $exceedance = $limitAnalysis->analyze();
 
-        var_dump($exceedance);
         return $this->render('Station/limits.html.twig', [
             'exceedanceJson' => json_encode($exceedance, JSON_THROW_ON_ERROR),
         ]);

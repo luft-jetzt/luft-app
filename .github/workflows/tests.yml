@@ -1,0 +1,28 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  phpunit:
+    name: PHPUnit
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: iconv, json, simplexml, intl, pdo_pgsql
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction --no-scripts
+
+      - name: Run tests
+        run: vendor/bin/phpunit --testsuite="Project Test Suite"

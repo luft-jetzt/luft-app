@@ -14,8 +14,8 @@ use App\Air\Pollutant\SO2;
 use App\Air\Pollutant\Temperature;
 use App\Air\Pollutant\UVIndex;
 use App\Air\Pollutant\UVIndexMax;
-use Caldera\GeoBasic\Coord\CoordInterface;
-use Caldera\GeoBasic\Coordinate\CoordinateInterface;
+use App\Geo\Coord\CoordInterface;
+use App\Geo\Coordinate\CoordinateInterface;
 
 abstract class AbstractPollutantViewModelFactory implements PollutantViewModelFactoryInterface
 {
@@ -55,6 +55,8 @@ abstract class AbstractPollutantViewModelFactory implements PollutantViewModelFa
             case 9: return new Temperature();
             case 11: return new UVIndexMax();
         }
+
+        throw new \InvalidArgumentException(sprintf('Unknown pollutant id: %d', $pollutantId));
     }
 
     #[\Override]

@@ -1,96 +1,248 @@
-span.twitter-typeahead {
+// Algolia Autocomplete Styles (without theme)
+
+.autocomplete-container {
   width: 100%;
+  position: relative;
 
-  .tt-menu {
-    cursor: pointer;
+  .aa-Autocomplete {
     width: 100%;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    display: none;
-    float: left;
-    min-width: 100%;
-    padding: 5px 0;
-    margin: 2px 0 0;
-    font-size: 1rem;
-    color: var(--bs-body-color);
-    text-align: left;
-    list-style: none;
+  }
+
+  .aa-Form {
+    display: flex;
+    width: 100%;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.5rem;
     background-color: var(--bs-body-bg);
-    background-clip: padding-box;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 0.25rem;
-    z-index: 5000 !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
 
-    .tt-suggestion {
-      display: block;
-      width: 100%;
-      padding: 3px 20px;
-      clear: both;
-      font-weight: normal;
-      line-height: 1.5;
-      color: var(--bs-body-color);
-      text-align: inherit;
-      background: none;
-      border: 0;
+    &:focus-within {
+      border-color: var(--bs-primary);
+      box-shadow: 0 0 0 3px rgba(var(--bs-primary-rgb), 0.15);
+    }
+  }
 
-      &:focus,
-      &:hover {
-        color: var(--bs-emphasis-color);
-        text-decoration: none;
-        background-color: var(--bs-tertiary-bg);
-      }
+  .aa-InputWrapperPrefix,
+  .aa-InputWrapperSuffix {
+    display: none !important;
+  }
 
-      &.active,
-      &.active:focus,
-      &.active:hover,
-      &.tt-cursor,
-      &.tt-cursor:focus,
-      &.tt-cursor:hover {
-        color: #fff;
-        text-decoration: none;
-        background-color: var(--bs-primary);
-        outline: 0;
-      }
+  .aa-InputWrapper {
+    display: flex;
+    width: 100%;
+    order: 1;
+  }
 
-      &.disabled,
-      &.disabled:hover,
-      &.disabled:focus {
-        color: var(--bs-secondary-color);
-        text-decoration: none;
-        cursor: not-allowed;
-        background-color: transparent;
-        background-image: none;
-      }
+  .aa-Input {
+    appearance: none;
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    background: transparent;
+    color: var(--bs-body-color);
+
+    &::placeholder {
+      color: var(--bs-secondary-color);
+    }
+
+    &::-webkit-search-decoration,
+    &::-webkit-search-cancel-button,
+    &::-webkit-search-results-button,
+    &::-webkit-search-results-decoration {
+      appearance: none;
     }
   }
 }
 
-.input-group span.twitter-typeahead {
-  display: block !important;
+// Panel styles
+.aa-Panel {
+  z-index: 5000 !important;
+  background-color: var(--bs-body-bg);
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.75rem;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  // Override Algolia's inline positioning
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-top: 8px;
+  overflow: hidden;
+  animation: slideDown 0.15s ease-out;
 }
 
-.input-group span.twitter-typeahead .tt-menu {
-  top: 2.375rem !important;
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.input-group > .twitter-typeahead {
-  position: relative;
-  flex: 1 1 auto;
-  width: 1%;
-  margin-bottom: 0;
+.aa-PanelLayout {
+  padding: 0;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
-.input-group > .twitter-typeahead:not(:last-child) {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+.aa-Source {
+  padding: 0;
 }
 
-.input-group > .twitter-typeahead > .tt-input {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+// Hide empty sources
+.aa-Source:has(.aa-SourceNoResults),
+.aa-Source:not(:has(.aa-Item)) {
+  display: none;
 }
 
-.form-control.tt-input:focus {
-  z-index: 3
+.aa-SourceHeader {
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.5rem 0.75rem 0.25rem;
+  color: var(--bs-secondary-color);
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+
+  .fa {
+    font-size: 0.625rem;
+  }
+}
+
+.aa-List {
+  list-style: none;
+  padding: 0.25rem 0;
+  margin: 0;
+}
+
+.aa-Item {
+  cursor: pointer;
+  padding: 0;
+  margin: 0 0.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.1s ease;
+
+  &[aria-selected="true"],
+  &:hover {
+    background-color: var(--bs-primary);
+
+    .aa-ItemLink,
+    .aa-ItemContent,
+    .aa-ItemTitle,
+    .aa-ItemCode,
+    .aa-ItemCity,
+    .aa-ItemAddress {
+      color: #fff;
+    }
+  }
+
+  &:not([aria-selected="true"]):hover {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+
+    .aa-ItemLink,
+    .aa-ItemContent,
+    .aa-ItemTitle,
+    .aa-ItemCode,
+    .aa-ItemCity,
+    .aa-ItemAddress {
+      color: var(--bs-body-color);
+    }
+  }
+}
+
+.aa-ItemLink {
+  display: block;
+  padding: 0.625rem 0.75rem;
+  color: var(--bs-body-color);
+  text-decoration: none;
+  width: 100%;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.aa-ItemContent {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.aa-ItemDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.aa-ItemTitle {
+  font-weight: 500;
+  color: var(--bs-body-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.aa-ItemCode {
+  font-size: 0.8125rem;
+  color: var(--bs-secondary-color);
+  font-family: var(--bs-font-monospace);
+}
+
+.aa-ItemCity {
+  font-size: 0.8125rem;
+  color: var(--bs-secondary-color);
+}
+
+.aa-ItemAddress {
+  font-size: 0.8125rem;
+  color: var(--bs-secondary-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Input group integration
+.input-group {
+  .autocomplete-container {
+    position: relative;
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+
+    .aa-Form {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    .aa-Input {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+}
+
+// Large form control variant
+.autocomplete-container-lg {
+  .aa-Input {
+    padding: 0.5rem 1rem;
+    font-size: 1.25rem;
+  }
+
+  .aa-Form {
+    border-radius: 0.5rem;
+  }
 }

@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\DBAL\Types\AreaType;
 use App\DBAL\Types\StationType;
-use Caldera\GeoBasic\Coordinate\Coordinate;
+use App\Geo\Coordinate\Coordinate;
 use Doctrine\Common\Collections\ArrayCollection;
 use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
 use Doctrine\ORM\Mapping as ORM;
@@ -86,7 +86,7 @@ class Station extends Coordinate
     {
         $this->datas = new ArrayCollection();
 
-        $this->coord = sprintf('POINT(%f %f)', $latitude, $longitude);
+        $this->coord = sprintf('POINT(%f %f)', $longitude, $latitude);
 
         parent::__construct($latitude, $longitude);
     }

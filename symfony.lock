@@ -1,24 +1,19 @@
 {
-    "cache/adapter-common": {
-        "version": "1.1.0"
-    },
-    "cache/array-adapter": {
-        "version": "1.0.1"
-    },
-    "cache/hierarchical-cache": {
-        "version": "1.0.0"
-    },
-    "cache/tag-interop": {
-        "version": "1.0.0"
-    },
-    "calderacc/geobasic": {
-        "version": "0.2"
-    },
     "clue/stream-filter": {
         "version": "v1.4.0"
     },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.4"
+    },
+    "doctrine/annotations": {
+        "version": "1.13",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.10",
+            "ref": "64d8583af5ea57b7afa4aba4b159907f3a148b05"
+        },
+        "files": []
     },
     "doctrine/cache": {
         "version": "v1.7.1"
@@ -107,9 +102,6 @@
             "ref": "fab86661c13bc12e4f14f706c86af09912d55bfb"
         }
     },
-    "friendsofphp/proxy-manager-lts": {
-        "version": "v1.0.7"
-    },
     "friendsofsymfony/jsrouting-bundle": {
         "version": "2.8",
         "recipe": {
@@ -131,15 +123,6 @@
     "geocoder-php/plugin": {
         "version": "1.2.0"
     },
-    "guzzlehttp/guzzle": {
-        "version": "6.3.0"
-    },
-    "guzzlehttp/promises": {
-        "version": "v1.3.1"
-    },
-    "guzzlehttp/psr7": {
-        "version": "1.4.2"
-    },
     "jsor/doctrine-postgis": {
         "version": "2.1",
         "recipe": {
@@ -157,9 +140,6 @@
     },
     "knplabs/knp-menu-bundle": {
         "version": "v2.2.1"
-    },
-    "laminas/laminas-code": {
-        "version": "3.4.1"
     },
     "maltehuebner/impress-bundle": {
         "version": "0.1"
@@ -204,9 +184,6 @@
     "php-http/discovery": {
         "version": "1.4.0"
     },
-    "php-http/guzzle6-adapter": {
-        "version": "v1.1.1"
-    },
     "php-http/httplug": {
         "version": "v1.1.0"
     },
@@ -227,6 +204,9 @@
     },
     "php-http/message": {
         "version": "1.6.0"
+    },
+    "php-http/message-factory": {
+        "version": "v1.0.2"
     },
     "php-http/promise": {
         "version": "v1.0.0"
@@ -310,9 +290,6 @@
     },
     "psr/simple-cache": {
         "version": "1.0.1"
-    },
-    "ralouphie/getallheaders": {
-        "version": "2.0.5"
     },
     "rector/rector": {
         "version": "0.14.5"
@@ -540,18 +517,6 @@
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
     },
-    "symfony/messenger": {
-        "version": "7.1",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "6.0",
-            "ref": "ba1ac4e919baba5644d31b57a3284d6ba12d52ee"
-        },
-        "files": [
-            "config/packages/messenger.yaml"
-        ]
-    },
     "symfony/monolog-bridge": {
         "version": "v4.0.6"
     },
@@ -594,9 +559,6 @@
     "symfony/polyfill-intl-icu": {
         "version": "v1.25.0"
     },
-    "symfony/polyfill-intl-idn": {
-        "version": "v1.11.0"
-    },
     "symfony/polyfill-intl-normalizer": {
         "version": "v1.15.0"
     },
@@ -606,9 +568,6 @@
     "symfony/polyfill-php72": {
         "version": "v1.7.0"
     },
-    "symfony/polyfill-php73": {
-        "version": "v1.11.0"
-    },
     "symfony/polyfill-php80": {
         "version": "v1.18.1"
     },
@@ -617,9 +576,6 @@
     },
     "symfony/property-info": {
         "version": "v4.0.6"
-    },
-    "symfony/proxy-manager-bridge": {
-        "version": "v4.4.39"
     },
     "symfony/routing": {
         "version": "6.2",

@@ -1,120 +1,175 @@
-import 'corejs-typeahead';
-import Bloodhound from 'bloodhound-js';
-import Handlebars from 'handlebars/lib/handlebars';
+import { autocomplete } from '@algolia/autocomplete-js';
 
 export default class Search {
     constructor(element, options) {
         const defaults = {};
+        this.settings = { ...defaults, ...options };
+        this.element = element;
+        this.citiesData = [];
+        this.stationsData = [];
 
-        this.settings = {...defaults, ...options};
-
-        this.init(element);
+        this.init();
     }
-    init(element) {
-        const form = element.closest('form');
+
+    init() {
+        const form = this.element.closest('form');
         const actionUri = form.action;
+        const inputName = this.element.name;
+        const originalClasses = this.element.className.replace('typeahead', '').trim();
+        const isLarge = this.element.classList.contains('form-control-lg');
 
-        const prefetchedCities = new Bloodhound({
-            datumTokenizer: function (data) {
-                return Bloodhound.tokenizers.whitespace(data.value.name);
-            },
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            prefetch: Routing.generate('prefetch_cities'),
-            cache: false,
-            ttl: 60,
-        });
+        // Create container that replaces the original input
+        const container = document.createElement('div');
+        container.className = 'autocomplete-container' + (isLarge ? ' autocomplete-container-lg' : '');
+        this.element.parentNode.replaceChild(container, this.element);
 
-        const prefetchedStations = new Bloodhound({
-            datumTokenizer: function (data) {
-                return Bloodhound.tokenizers.whitespace(data.value.stationCode + data.value.title);
-            },
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            prefetch: Routing.generate('prefetch_stations'),
-            cache: false,
-            ttl: 60,
-        });
+        // Start prefetch in background (don't await)
+        this.prefetchData();
 
-        const remoteQueries = new Bloodhound({
-            datumTokenizer: function (data) {
-                return Bloodhound.tokenizers.whitespace(data.value);
-            },
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            cache: false,
-            ttl: 60,
-            remote: {
-                url: Routing.generate('search') + '?query=%QUERY',
-                wildcard: '%QUERY'
-            },
-        });
+        const self = this;
 
-        $('#' + element.id).typeahead({
-            hint: true,
-            highlight: true,
-            minLength: 2,
+        autocomplete({
+            container: container,
+            panelContainer: container,
+            placeholder: this.element.placeholder || 'Suchbegriff, Postleitzahl, Stadtname…',
+            openOnFocus: true,
+            detachedMediaQuery: 'none',
             classNames: {
-                dataset: 'tt-dataset tt-dataset-results container'
-            }
-        }, {
-            name: 'prefetchedCities',
-            source: prefetchedCities,
-            display: function(data) {
-                return data.value.name;
+                form: 'aa-Form',
+                input: 'aa-Input ' + originalClasses,
+                panel: 'aa-Panel',
+                list: 'aa-List',
+                item: 'aa-Item',
             },
-            templates: {
-                header: '<strong>Städte</strong>',
-                suggestion: renderCity,
-            }
-        }, {
-            name: 'prefetchedStations',
-            source: prefetchedStations,
-            display: function(data) {
-                return data.value.name;
+            onSubmit({ state }) {
+                // When user presses Enter without selecting, submit the form
+                if (state.query && state.query.length > 0) {
+                    // Create hidden input for form submission
+                    let hiddenInput = form.querySelector('input[name="' + inputName + '"][type="hidden"]');
+                    if (!hiddenInput) {
+                        hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.name = inputName;
+                        form.appendChild(hiddenInput);
+                    }
+                    hiddenInput.value = state.query;
+                    form.submit();
+                }
             },
-            templates: {
-                header: '<strong>Messstationen</strong>',
-                suggestion: renderStation,
-            }
-        }, {
-            name: 'remoteQueries',
-            source: remoteQueries,
-            display: function(data) {
-                return data.value.name;
+            getSources({ query }) {
+                if (!query || query.length < 2) {
+                    return [];
+                }
+
+                const queryLower = query.toLowerCase();
+
+                return [
+                    {
+                        sourceId: 'cities',
+                        getItems() {
+                            return self.citiesData.filter(item =>
+                                item.value.name.toLowerCase().includes(queryLower)
+                            ).slice(0, 5);
+                        },
+                        templates: {
+                            header({ items, html }) {
+                                if (items.length === 0) return null;
+                                return html`<div class="aa-SourceHeader"><i class="fa fa-university"></i> Städte</div>`;
+                            },
+                            item({ item, html }) {
+                                return html`
+                                    <a href="${item.value.url}" class="aa-ItemLink">
+                                        <div class="aa-ItemContent">
+                                            <span class="aa-ItemTitle">${item.value.name}</span>
+                                        </div>
+                                    </a>
+                                `;
+                            },
+                        },
+                        onSelect({ item }) {
+                            window.location = item.value.url;
+                        },
+                    },
+                    {
+                        sourceId: 'stations',
+                        getItems() {
+                            return self.stationsData.filter(item => {
+                                const searchStr = (item.value.stationCode + ' ' + (item.value.title || '')).toLowerCase();
+                                return searchStr.includes(queryLower);
+                            }).slice(0, 5);
+                        },
+                        templates: {
+                            header({ items, html }) {
+                                if (items.length === 0) return null;
+                                return html`<div class="aa-SourceHeader"><i class="fa fa-thermometer-half"></i> Messstationen</div>`;
+                            },
+                            item({ item, html }) {
+                                return html`
+                                    <a href="${item.value.url}" class="aa-ItemLink">
+                                        <div class="aa-ItemContent">
+                                            <div class="aa-ItemDetails">
+                                                ${item.value.title ? html`<span class="aa-ItemTitle">${item.value.title}</span>` : ''}
+                                                <span class="aa-ItemCode">${item.value.stationCode}</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                `;
+                            },
+                        },
+                        onSelect({ item }) {
+                            window.location = item.value.url;
+                        },
+                    },
+                    {
+                        sourceId: 'remote',
+                        getItems() {
+                            return fetch(Routing.generate('search') + '?query=' + encodeURIComponent(query))
+                                .then(response => response.json())
+                                .then(data => data.slice(0, 5))
+                                .catch(() => []);
+                        },
+                        templates: {
+                            header({ items, html }) {
+                                if (items.length === 0) return null;
+                                return html`<div class="aa-SourceHeader"><i class="fa fa-map-marker"></i> Orte</div>`;
+                            },
+                            item({ item, html }) {
+                                const url = actionUri + '?latitude=' + item.value.latitude + '&longitude=' + item.value.longitude;
+                                return html`
+                                    <a href="${url}" class="aa-ItemLink">
+                                        <div class="aa-ItemContent">
+                                            <div class="aa-ItemDetails">
+                                                ${item.value.name ? html`<span class="aa-ItemTitle">${item.value.name}</span>` : ''}
+                                                <span class="aa-ItemAddress">
+                                                    ${item.value.zipCode || ''} ${item.value.city || ''}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                `;
+                            },
+                        },
+                        onSelect({ item }) {
+                            const url = actionUri + '?latitude=' + item.value.latitude + '&longitude=' + item.value.longitude;
+                            window.location = url;
+                        },
+                    },
+                ];
             },
-            templates: {
-                header: '<strong>Suchergebnisse</strong>',
-                suggestion: renderQuery,
-            }
-        }).on('typeahead:selected', redirect);
+        });
+    }
 
-        function buildUri(data) {
-            return actionUri + '?latitude=' + data.value.latitude + '&longitude=' + data.value.longitude;
-        }
+    async prefetchData() {
+        try {
+            const [citiesResponse, stationsResponse] = await Promise.all([
+                fetch(Routing.generate('prefetch_cities')),
+                fetch(Routing.generate('prefetch_stations')),
+            ]);
 
-        function renderQuery(data) {
-            const source = document.getElementById('render-query-template').innerHTML;
-            const template = Handlebars.compile(source);
-
-            data.value.url = buildUri(data);
-
-            return template(data.value);
-        }
-
-        function renderCity(data) {
-            const source = document.getElementById('render-city-template').innerHTML;
-            const template = Handlebars.compile(source);
-
-            return template(data.value);
-        }
-
-        function renderStation(data) {
-            const source = document.getElementById('render-station-template').innerHTML;
-            const template = Handlebars.compile(source);
-
-            return template(data.value);
-        }
-
-        function redirect(event, datum) {
-            window.location = datum.value.url;
+            this.citiesData = await citiesResponse.json();
+            this.stationsData = await stationsResponse.json();
+        } catch (error) {
+            console.error('Failed to prefetch data:', error);
         }
     }
 }
@@ -125,6 +180,4 @@ document.addEventListener('DOMContentLoaded', () => {
     typeaheadInputList.forEach(function (typeaheadInput) {
         new Search(typeaheadInput);
     });
-
-
 });
