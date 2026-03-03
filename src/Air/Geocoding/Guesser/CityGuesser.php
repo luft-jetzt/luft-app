@@ -3,6 +3,7 @@
 namespace App\Air\Geocoding\Guesser;
 
 use App\Geo\Coord\Coord;
+use App\Geo\Coord\CoordInterface;
 use Geocoder\Exception\InvalidServerResponse;
 use Geocoder\Model\AddressCollection;
 use Geocoder\Query\ReverseQuery;
@@ -19,7 +20,7 @@ class CityGuesser extends AbstractGuesser implements CityGuesserInterface
     }
 
     #[\Override]
-    public function guess(Coord $coord): ?string
+    public function guess(CoordInterface $coord): ?string
     {
         $query = ReverseQuery::fromCoordinates($coord->getLatitude(), $coord->getLongitude());
 

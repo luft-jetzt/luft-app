@@ -112,8 +112,7 @@ class Data
 
     public function isIndexable(): bool
     {
-        $dateTime = new \DateTimeImmutable();
-        $dateTime->sub(new \DateInterval('P1W'));
+        $dateTime = (new \DateTimeImmutable())->sub(new \DateInterval('P1W'));
 
         return $dateTime >= $this->dateTime;
     }

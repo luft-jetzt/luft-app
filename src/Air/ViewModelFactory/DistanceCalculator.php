@@ -3,7 +3,7 @@
 namespace App\Air\ViewModelFactory;
 
 use App\Entity\Station;
-use App\Geo\Coordinate\CoordinateInterface;
+use App\Geo\Coord\CoordInterface;
 
 class DistanceCalculator
 {
@@ -17,7 +17,7 @@ class DistanceCalculator
     {
     }
 
-    public static function distance(CoordinateInterface $coord, Station $station): ?float
+    public static function distance(CoordInterface $coord, Station $station): ?float
     {
         $latA = deg2rad($coord->getLatitude());
         $lngA = deg2rad($coord->getLongitude());

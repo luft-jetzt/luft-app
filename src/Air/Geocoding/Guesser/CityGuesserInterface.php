@@ -2,10 +2,10 @@
 
 namespace App\Air\Geocoding\Guesser;
 
-use App\Geo\Coord\Coord;
+use App\Geo\Coord\CoordInterface;
 
 interface CityGuesserInterface
 {
     public function guessForLatLng(float $latitude, float $longitude): ?string;
-    public function guess(Coord $coord): ?string;
+    public function guess(CoordInterface $coord): ?string;
 }
