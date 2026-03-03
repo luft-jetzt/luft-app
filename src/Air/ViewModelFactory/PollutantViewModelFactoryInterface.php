@@ -2,7 +2,7 @@
 
 namespace App\Air\ViewModelFactory;
 
-use Caldera\GeoBasic\Coordinate\CoordinateInterface;
+use App\Geo\Coordinate\CoordinateInterface;
 
 interface PollutantViewModelFactoryInterface
 {

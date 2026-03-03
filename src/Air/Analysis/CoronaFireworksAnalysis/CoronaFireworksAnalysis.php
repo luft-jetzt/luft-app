@@ -9,7 +9,7 @@ use App\Air\ViewModel\PollutantViewModel;
 use App\Air\ViewModelFactory\DistanceCalculator;
 use App\Air\ViewModelFactory\PollutantViewModelFactoryInterface;
 use App\Entity\Data;
-use Caldera\GeoBasic\Coord\CoordInterface;
+use App\Geo\Coord\CoordInterface;
 use Carbon\Carbon;
 
 class CoronaFireworksAnalysis implements CoronaFireworksAnalysisInterface

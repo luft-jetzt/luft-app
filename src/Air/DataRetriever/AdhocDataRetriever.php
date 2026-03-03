@@ -7,7 +7,7 @@ use App\Air\Provider\OpenWeatherMapProvider\SourceFetcher\SourceFetcher as OwmSo
 use App\Air\ValueDataConverter\ValueDataConverter;
 use App\Entity\Data;
 use App\Entity\Station;
-use Caldera\GeoBasic\Coord\CoordInterface;
+use App\Geo\Coord\CoordInterface;
 
 class AdhocDataRetriever implements DataRetrieverInterface
 {

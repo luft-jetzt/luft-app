@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Data;
 use App\Entity\Station;
-use Caldera\GeoBasic\Coord\CoordInterface;
+use App\Geo\Coord\CoordInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 
