@@ -19,7 +19,6 @@ doctrine:
             geometry: 'Jsor\Doctrine\PostGIS\Types\GeometryType'
 
     orm:
-        auto_generate_proxy_classes: true
         auto_mapping: true
         mappings:
             App:
@@ -43,7 +42,6 @@ when@test:
 when@prod:
     doctrine:
         orm:
-            auto_generate_proxy_classes: false
             query_cache_driver:
                 type: pool
                 pool: doctrine.system_cache_pool
