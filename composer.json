@@ -29,7 +29,7 @@
         }
     ],
     "require": {
-        "php": "^8.4",
+        "php": "^8.5",
         "ext-iconv": "*",
         "ext-json": "*",
         "ext-simplexml": "*",
