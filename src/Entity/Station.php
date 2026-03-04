@@ -144,14 +144,14 @@ class Station extends Coordinate
         return $this->title;
     }
 
-    public function setTitle(string $title = null): Station
+    public function setTitle(?string $title = null): Station
     {
         $this->title = $title;
 
         return $this;
     }
 
-    public function setCity(City $city = null): Station
+    public function setCity(?City $city = null): Station
     {
         $this->city = $city;
 
@@ -168,7 +168,7 @@ class Station extends Coordinate
         return $this->fromDate;
     }
 
-    public function setFromDate(\DateTime $fromDate = null): Station
+    public function setFromDate(?\DateTime $fromDate = null): Station
     {
         $this->fromDate = $fromDate;
 
@@ -185,7 +185,7 @@ class Station extends Coordinate
         return $this->untilDate;
     }
 
-    public function setUntilDate(\DateTime $untilDate = null): Station
+    public function setUntilDate(?\DateTime $untilDate = null): Station
     {
         $this->untilDate = $untilDate;
 
@@ -214,7 +214,7 @@ class Station extends Coordinate
         return $this->stationType;
     }
 
-    public function setStationType(string $stationType = null): Station
+    public function setStationType(?string $stationType = null): Station
     {
         $this->stationType = $stationType;
 
@@ -226,7 +226,7 @@ class Station extends Coordinate
         return $this->areaType;
     }
 
-    public function setAreaType(string $areaType = null): Station
+    public function setAreaType(?string $areaType = null): Station
     {
         $this->areaType = $areaType;
 

@@ -29,7 +29,7 @@ class StationApiController extends AbstractApiController
         response: 200,
         description: "Returns details for specified station",
     )]
-    public function stationAction(Request $request, string $stationCode = null): Response
+    public function stationAction(Request $request, ?string $stationCode = null): Response
     {
         $providerIdentifier = $request->query->get('provider');
 

@@ -19,7 +19,7 @@ class PollutionDataFactory extends AbstractPollutionDataFactory
     }
 
     #[\Override]
-    public function createDecoratedPollutantList(\DateTime $dateTime = null, \DateInterval $dateInterval = null, int $workingSetSize = 20): array
+    public function createDecoratedPollutantList(?\DateTime $dateTime = null, ?\DateInterval $dateInterval = null, int $workingSetSize = 20): array
     {
         if (!$dateTime) {
             $dateTime = new \DateTime();

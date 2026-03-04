@@ -15,12 +15,8 @@ doctrine:
             datetime: App\DBAL\Types\UTCDateTimeType
             date: App\DBAL\Types\UTCDateType
             time: App\DBAL\Types\UTCTimeType
-            geography:
-                class: 'Jsor\Doctrine\PostGIS\Types\GeographyType'
-                commented: false
-            geometry:
-                class: 'Jsor\Doctrine\PostGIS\Types\GeometryType'
-                commented: false
+            geography: 'Jsor\Doctrine\PostGIS\Types\GeographyType'
+            geometry: 'Jsor\Doctrine\PostGIS\Types\GeometryType'
 
     orm:
         auto_generate_proxy_classes: true
