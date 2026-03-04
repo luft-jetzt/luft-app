@@ -11,7 +11,8 @@ class Network
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'network_id_seq', allocationSize: 1)]
     protected ?int $id = null;
 
     #[ORM\Column(type: 'string', nullable: true)]

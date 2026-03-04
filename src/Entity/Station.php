@@ -20,7 +20,8 @@ class Station extends Coordinate
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
+    #[ORM\SequenceGenerator(sequenceName: 'station_id_seq', allocationSize: 1)]
     #[Ignore]
     protected ?int $id = null;
 
