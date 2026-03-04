@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Luft.jetzt is a Symfony 7.1 (PHP 8.3) web application that aggregates and displays air quality / pollution data from multiple sources (German Umweltbundesamt, Luftdaten, OpenWeatherMap). It uses PostgreSQL with PostGIS for geospatial queries, Elasticsearch for search, Redis for caching, and RabbitMQ for async messaging.
+Luft.jetzt is a Symfony 8.0 (PHP 8.5) web application that aggregates and displays air quality / pollution data from multiple sources (German Umweltbundesamt, Luftdaten, OpenWeatherMap). It uses PostgreSQL with PostGIS for geospatial queries, Elasticsearch for search, and Redis for caching.
 
 ## Common Commands
 
@@ -68,15 +68,13 @@ Custom DBAL types in `src/DBAL/Types/`: `StationType`, `AreaType`, UTC datetime 
 
 ### API (`src/Controller/Api/`)
 
-REST API under `/api` with Swagger docs at `/api/doc`. Routes defined in XML files under `config/routing/` (numbered for load order: `1_static.xml` through `6_city.xml`).
+REST API under `/api` with Swagger docs at `/api/doc` and OpenAPI JSON at `/api/doc.json`. Routes defined in XML files under `config/routing/` (numbered for load order: `1_static.xml` through `6_city.xml`).
+
+**Note:** API mutation endpoints (PUT/POST) currently have no authentication. See Security section below.
 
 ### Frontend
 
 Webpack Encore with two JS entry points (`app.js`, `datatables.js`) and SCSS. Uses Bootstrap 5, Leaflet for maps, Chart.js, Typeahead/Bloodhound for search, and Handlebars templates.
-
-### Async Processing
-
-Symfony Messenger with RabbitMQ transport. `ValueMessageHandler` processes `Caldera\LuftModel\Model\Value` messages via the `luft_value` queue.
 
 ## Infrastructure
 
@@ -87,4 +85,16 @@ Symfony Messenger with RabbitMQ transport. `ValueMessageHandler` processes `Cald
 
 ## CI/CD
 
-GitHub Actions (`.github/workflows/`): PHPUnit and PHPStan run on push/PR to `main`. Both use PHP 8.3 with `--no-scripts` for composer install.
+GitHub Actions (`.github/workflows/`): PHPUnit and PHPStan run on push/PR to `main`. Both use PHP 8.5 with `--no-scripts` for composer install.
+
+## Known Security Considerations
+
+The following items are known and should be addressed when hardening for production:
+
+- **No API authentication**: PUT/POST endpoints (`/api/station`, `/api/city`, `/api/value`) are unauthenticated
+- **CSRF protection disabled**: `csrf_protection` is commented out in `config/packages/framework.yaml`
+- **No security headers**: CSP, HSTS, X-Frame-Options are not configured
+- **No rate limiting** on API endpoints
+- **Docker services** (Redis, Elasticsearch) run without authentication and with exposed ports
+- **EntityMerger** uses reflection to merge all non-`@Ignore` properties — ensure sensitive fields are properly annotated
+- **Twig `|raw` usage**: `unitHtml`, `shortNameHtml`, and `exceedanceJson` use `|raw` — these values must never contain user-controlled input
