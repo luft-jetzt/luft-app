@@ -2,10 +2,17 @@
 
 namespace App\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use App\Entity\City;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
-class CityRepository extends EntityRepository
+class CityRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, City::class);
+    }
+
     public function findCitiesWithActiveStations(): array
     {
         $qb = $this->createQueryBuilder('c');
@@ -20,4 +27,3 @@ class CityRepository extends EntityRepository
         return $query->getResult();
     }
 }
-
