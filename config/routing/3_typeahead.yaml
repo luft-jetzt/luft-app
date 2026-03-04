@@ -1,0 +1,20 @@
+prefetch_cities:
+    path: /search/prefetch-cities
+    defaults:
+        _controller: App\Controller\TypeaheadController::prefetchCitiesAction
+    options:
+        expose: true
+
+prefetch_stations:
+    path: /search/prefetch-stations
+    defaults:
+        _controller: App\Controller\TypeaheadController::prefetchStationsAction
+    options:
+        expose: true
+
+search:
+    path: /search/query
+    defaults:
+        _controller: App\Controller\TypeaheadController::searchAction
+    options:
+        expose: true

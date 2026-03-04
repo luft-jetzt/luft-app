@@ -1,0 +1,47 @@
+privacy:
+    path: /privacy
+    defaults:
+        _controller: App\Controller\TemplateController::staticAction
+        templateName: privacy
+
+impress:
+    path: /impress
+    defaults:
+        _controller: App\Controller\TemplateController::staticAction
+        templateName: impress
+
+limits:
+    path: /grenzwerte
+    defaults:
+        _controller: App\Controller\TemplateController::staticAction
+        templateName: limits
+
+pollutant_pm10:
+    path: /schadstoffe/feinstaub
+    defaults:
+        _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+        template: Static/Pollutant/feinstaub.html.twig
+
+pollutant_no2:
+    path: /schadstoffe/stickstoffdioxid
+    defaults:
+        _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+        template: Static/Pollutant/stickstoffdioxid.html.twig
+
+pollutant_so2:
+    path: /schadstoffe/schwefeldioxid
+    defaults:
+        _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+        template: Static/Pollutant/schwefeldioxid.html.twig
+
+pollutant_co:
+    path: /schadstoffe/kohlenmonoxid
+    defaults:
+        _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+        template: Static/Pollutant/kohlenmonoxid.html.twig
+
+pollutant_o3:
+    path: /schadstoffe/ozon
+    defaults:
+        _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+        template: Static/Pollutant/ozon.html.twig
