@@ -85,7 +85,7 @@ class City implements \Stringable
         return $this->description;
     }
 
-    public function setDescription(string $description = null): City
+    public function setDescription(?string $description = null): City
     {
         $this->description = $description;
 

@@ -1,0 +1,43 @@
+station:
+    path: /{stationCode}
+    defaults:
+        _controller: App\Controller\StationController::stationAction
+    options:
+        expose: true
+    requirements:
+        stationCode: '^([A-Z]{2,6})([A-Z0-9]{0,8})$'
+
+station_history:
+    path: /{stationCode}/history
+    defaults:
+        _controller: App\Controller\StationController::historyAction
+    options:
+        expose: true
+    requirements:
+        stationCode: '^([A-Z]{2,6})([A-Z0-9]{0,8})$'
+
+frontpage:
+    path: /
+    defaults:
+        _controller: App\Controller\FrontpageController::indexAction
+    options:
+        expose: true
+
+station_limits:
+    path: /{stationCode}/limits
+    defaults:
+        _controller: App\Controller\StationController::limitsAction
+    options:
+        expose: true
+    requirements:
+        stationCode: '^([A-Z]{4,6})([0-9]{1,5})$'
+
+display:
+    path: /display
+    defaults:
+        _controller: App\Controller\DisplayController::indexAction
+    options:
+        expose: true
+
+logout:
+    path: /logout

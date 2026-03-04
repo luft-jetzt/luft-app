@@ -1,0 +1,8 @@
+show_city:
+    path: /{citySlug}
+    defaults:
+        _controller: App\Controller\CityController::showAction
+    options:
+        expose: true
+    requirements:
+        citySlug: '^([A-Za-z-]+)$'

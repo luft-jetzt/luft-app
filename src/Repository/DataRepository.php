@@ -5,11 +5,17 @@ namespace App\Repository;
 use App\Entity\Data;
 use App\Entity\Station;
 use App\Geo\Coord\CoordInterface;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\Persistence\ManagerRegistry;
 
-class DataRepository extends EntityRepository
+class DataRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Data::class);
+    }
+
     public function findCurrentDataForCoord(CoordInterface $coord): array
     {
         $rsm = $this->createDataStationResultSetMapping('id');

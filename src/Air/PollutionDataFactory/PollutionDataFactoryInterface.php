@@ -8,7 +8,7 @@ use App\Geo\Coordinate\CoordinateInterface;
 
 interface PollutionDataFactoryInterface
 {
-    public function createDecoratedPollutantList(\DateTime $dateTime = null, \DateInterval $dateInterval = null, int $workingSetSize = 20): array;
+    public function createDecoratedPollutantList(?\DateTime $dateTime = null, ?\DateInterval $dateInterval = null, int $workingSetSize = 20): array;
     public function setCoord(CoordinateInterface $coord): PollutionDataFactoryInterface;
     public function setStation(Station $station): PollutionDataFactoryInterface;
 }

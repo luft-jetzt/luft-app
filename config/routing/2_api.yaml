@@ -1,0 +1,95 @@
+app.swagger_ui:
+    path: /api/doc
+    methods: GET
+    defaults:
+        _controller: nelmio_api_doc.controller.swagger_ui
+
+app.swagger_json:
+    path: /api/doc.json
+    methods: GET
+    defaults:
+        _controller: nelmio_api_doc.controller.swagger
+
+api_station_station:
+    path: /api/station/{stationCode}
+    methods: GET
+    defaults:
+        _controller: App\Controller\Api\StationApiController::stationAction
+    requirements:
+        stationCode: '^([A-Z]{4,6})([0-9]{0,8})$'
+
+api_station_post:
+    path: /api/station/{stationCode}
+    methods: POST
+    defaults:
+        _controller: App\Controller\Api\StationApiController::postStationAction
+    requirements:
+        stationCode: '^([A-Z]{4,6})([0-9]{0,8})$'
+
+api_station_all:
+    path: /api/station
+    methods: GET
+    defaults:
+        _controller: App\Controller\Api\StationApiController::listStationAction
+
+api_station_put:
+    path: /api/station
+    methods: PUT
+    defaults:
+        _controller: App\Controller\Api\StationApiController::putStationAction
+
+api_city_all:
+    path: /api/city
+    methods: GET
+    defaults:
+        _controller: App\Controller\Api\CityApiController::cityAction
+
+api_city_put:
+    path: /api/city
+    methods: PUT
+    defaults:
+        _controller: App\Controller\Api\CityApiController::putCityAction
+
+api_value_put:
+    path: /api/value
+    methods: PUT
+    defaults:
+        _controller: App\Controller\Api\ValueApiController::putValueAction
+
+api_city:
+    path: /api/{citySlug}
+    methods: GET
+    defaults:
+        _controller: App\Controller\Api\CityApiController::displayCityAction
+    requirements:
+        citySlug: '^([A-Za-z-]+)$'
+
+api_city_post:
+    path: /api/{citySlug}
+    methods: POST
+    defaults:
+        _controller: App\Controller\Api\CityApiController::postCityAction
+    requirements:
+        citySlug: '^([A-Za-z-]+)$'
+
+api_station:
+    path: /api/{stationCode}
+    methods: GET
+    defaults:
+        _controller: App\Controller\Api\DisplayApiController::displayStationAction
+    requirements:
+        stationCode: '^([A-Z]{2,6})([A-Z0-9]{0,8})$'
+
+api_station_analysis:
+    path: /api/{stationCode}/analysis
+    methods: GET
+    defaults:
+        _controller: App\Controller\Api\AnalysisApiController::stationAnalysisAction
+    requirements:
+        stationCode: '^([A-Z]{4,6})([0-9]{1,5})$'
+
+api_display:
+    path: /api
+    methods: GET
+    defaults:
+        _controller: App\Controller\Api\DisplayApiController::displayAction

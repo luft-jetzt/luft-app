@@ -12,7 +12,7 @@ class StartDateTimeCalculator
 
     }
 
-    public static function calculateStartDateTime(int $year = null): Carbon
+    public static function calculateStartDateTime(?int $year = null): Carbon
     {
         if (!$year) {
             $year = static::calculateStartYear();
