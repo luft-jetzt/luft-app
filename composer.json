@@ -5,6 +5,26 @@
         {
             "type": "package",
             "package": {
+                "name": "calderacc/geobasic",
+                "version": "0.5.1",
+                "source": {
+                    "url": "https://github.com/calderacc/geobasic.git",
+                    "type": "git",
+                    "reference": "e103fb61f7e2589666ee7ee5f4f056785a4d01e3"
+                },
+                "autoload": {
+                    "psr-4": {
+                        "Caldera\\GeoBasic\\": "src/"
+                    }
+                },
+                "require": {
+                    "php": "^8.0"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
                 "name": "mhujer/breadcrumbs-bundle",
                 "version": "1.5.10",
                 "type": "symfony-bundle",
@@ -34,7 +54,7 @@
         "ext-json": "*",
         "ext-simplexml": "*",
         "composer-plugin-api": "^2.2",
-        "calderacc/geobasic": "^0.5",
+        "calderacc/geobasic": "0.5.1",
         "doctrine/doctrine-bundle": "^3.0",
         "doctrine/doctrine-migrations-bundle": "^3.1",
         "doctrine/orm": "^3.2.0",
@@ -78,7 +98,7 @@
     },
     "require-dev": {
         "phpstan/phpstan": "^1.12",
-        "phpunit/phpunit": "^9.6",
+        "phpunit/phpunit": "^12.0",
         "rector/rector": "^1.2",
         "symfony/browser-kit": "^8.0",
         "symfony/css-selector": "^8.0",
