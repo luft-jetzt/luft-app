@@ -23,15 +23,6 @@ frontpage:
     options:
         expose: true
 
-station_limits:
-    path: /{stationCode}/limits
-    defaults:
-        _controller: App\Controller\StationController::limitsAction
-    options:
-        expose: true
-    requirements:
-        stationCode: '^([A-Z]{4,6})([0-9]{1,5})$'
-
 display:
     path: /display
     defaults:

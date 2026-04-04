@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Air\Analysis\LimitAnalysis\LimitAnalysisInterface;
 use App\Air\PollutionDataFactory\HistoryDataFactoryInterface;
 use App\Air\PollutionDataFactory\PollutionDataFactory;
 use App\Air\SeoPage\SeoPageInterface;
@@ -37,20 +36,6 @@ class StationController extends AbstractController
         return $this->render('Default/station.html.twig', [
             'station' => $station,
             'pollutantList' => $viewModelList,
-        ]);
-    }
-
-    public function limitsAction(#[MapEntity(expr: 'repository.findOneByStationCode(stationCode)')] Station $station, LimitAnalysisInterface $limitAnalysis): Response
-    {
-        $limitAnalysis
-            ->setStation($station)
-            ->setFromDateTime(Carbon::now()->startOfMonth())
-            ->setUntilDateTime(Carbon::now()->endOfMonth());
-
-        $exceedance = $limitAnalysis->analyze();
-
-        return $this->render('Station/limits.html.twig', [
-            'exceedanceJson' => json_encode($exceedance, JSON_THROW_ON_ERROR),
         ]);
     }
 
