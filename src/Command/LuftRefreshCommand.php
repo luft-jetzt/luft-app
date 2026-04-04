@@ -12,7 +12,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'luft:refresh',
-    description: 'Refresh all materialized views (data_view, silvester_data, current_data)',
+    description: 'Refresh all materialized views (current_data, silvester_data)',
 )]
 class LuftRefreshCommand extends Command
 {
