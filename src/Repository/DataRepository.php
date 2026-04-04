@@ -61,7 +61,6 @@ LIMIT 10';
         $connection = $this->getEntityManager()->getConnection();
 
         $connection->executeStatement('REFRESH MATERIALIZED VIEW current_data');
-        $connection->executeStatement('REFRESH MATERIALIZED VIEW silvester_data');
     }
 
     private function createDataStationResultSetMapping(string $dataIdColumn): ResultSetMapping
