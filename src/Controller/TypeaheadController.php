@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Air\Geocoding\Geocoder\GeocoderInterface;
 use App\Entity\City;
 use App\Entity\Station;
+use Geocoder\Exception\QuotaExceeded;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,7 +60,11 @@ class TypeaheadController extends AbstractController
 
     public function searchAction(Request $request, GeocoderInterface $geocoder): Response
     {
-        $result = $geocoder->query($request->query->get('query'));
+        try {
+            $result = $geocoder->query($request->query->get('query'));
+        } catch (QuotaExceeded) {
+            return new JsonResponse(['error' => 'Die Suche ist momentan überlastet. Bitte versuche es in einigen Sekunden erneut.'], Response::HTTP_TOO_MANY_REQUESTS);
+        }
 
         return new JsonResponse($result);
     }
