@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Air\Analysis\CoronaFireworksAnalysis\CoronaFireworksAnalysisInterface;
 use App\Air\Analysis\CoronaFireworksAnalysis\Slot\YearSlot;
-use App\Air\Analysis\FireworksAnalysis\FireworksAnalysisInterface;
 use App\Air\Analysis\KomfortofenAnalysis\KomfortofenAnalysisInterface;
 use App\Air\Geocoding\RequestConverter\RequestConverterInterface;
 use App\Air\SeoPage\SeoPageInterface;
@@ -40,25 +39,7 @@ class AnalysisController extends AbstractController
         ]);
     }
 
-    /**
-     * @Feature("analysis_fireworks")
-     */
-    public function fireworksAction(FireworksAnalysisInterface $fireworksAnalysis, SeoPageInterface $seoPage): Response
-    {
-        $seoPage
-            ->setTwitterPreviewPhoto('/img/share/silvester/twitter.jpg')
-            ->setOpenGraphPreviewPhoto('/img/share/silvester/facebook.jpg')
-            ->setTitle('Feinstaub aus Silvester-Feuerwerken')
-            ->setDescription('Finde erhöhte Feinstaub-Konzentrationen aus Silvester-Feuerwerken');
-
-        $fireworksAnalysis = $fireworksAnalysis->analyze();
-
-        return $this->render('Analysis/fireworks.html.twig', [
-            'fireworksList' => $fireworksAnalysis,
-        ]);
-    }
-
-    /**
+/**
      * @Feature("analysis_fireworks")
      */
     public function coronaFireworksAction(Request $request, RequestConverterInterface $requestConverter, CoronaFireworksAnalysisInterface $coronaFireworksAnalysis, SeoPageInterface $seoPage): Response

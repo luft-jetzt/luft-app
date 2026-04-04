@@ -5,16 +5,6 @@
     "composer/package-versions-deprecated": {
         "version": "1.11.99.4"
     },
-    "doctrine/annotations": {
-        "version": "1.13",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "1.10",
-            "ref": "64d8583af5ea57b7afa4aba4b159907f3a148b05"
-        },
-        "files": []
-    },
     "doctrine/cache": {
         "version": "v1.7.1"
     },
@@ -205,9 +195,6 @@
     "php-http/message": {
         "version": "1.6.0"
     },
-    "php-http/message-factory": {
-        "version": "v1.0.2"
-    },
     "php-http/promise": {
         "version": "v1.0.0"
     },
@@ -297,12 +284,6 @@
     "sebastian/cli-parser": {
         "version": "1.0.1"
     },
-    "sebastian/code-unit": {
-        "version": "1.0.8"
-    },
-    "sebastian/code-unit-reverse-lookup": {
-        "version": "1.0.1"
-    },
     "sebastian/comparator": {
         "version": "3.0.2"
     },
@@ -332,9 +313,6 @@
     },
     "sebastian/recursion-context": {
         "version": "3.0.0"
-    },
-    "sebastian/resource-operations": {
-        "version": "2.0.1"
     },
     "sebastian/type": {
         "version": "3.0.0"
@@ -516,6 +494,18 @@
             "version": "1.0",
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
+    },
+    "symfony/messenger": {
+        "version": "8.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.0",
+            "ref": "d8936e2e2230637ef97e5eecc0eea074eecae58b"
+        },
+        "files": [
+            "config/packages/messenger.yaml"
+        ]
     },
     "symfony/monolog-bridge": {
         "version": "v4.0.6"
