@@ -50,23 +50,6 @@
                     </ul>
                 </li>
 
-                {% if feature('analysis') %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Analyse
-                        </a>
-                        <ul class="dropdown-menu">
-                            {% if feature('analysis_komfortofen') %}
-                                <li>
-                                    <a class="dropdown-item" href="{{ path('analysis_komfortofen') }}">
-                                        Komfortofen-Finder <sup>beta</sup>
-                                    </a>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </li>
-                {% endif %}
-
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Über

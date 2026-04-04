@@ -1,8 +1,4 @@
 flagception:
     features:
-        analysis:
-            default: true
-        analysis_komfortofen:
-            default: false
         station_history:
             default: false
