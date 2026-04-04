@@ -61,21 +61,6 @@ parameters:
 			path: src/Air/PollutionDataFactory/PollutionDataFactoryInterface.php
 
 		-
-			message: "#^Call to method request\\(\\) on an unknown class Symfony\\\\Contracts\\\\HttpClient\\\\HttpClientInterface\\.$#"
-			count: 2
-			path: src/Air/Provider/OpenWeatherMapProvider/SourceFetcher/SourceFetcher.php
-
-		-
-			message: "#^Parameter \\$httpClient of method App\\\\Air\\\\Provider\\\\OpenWeatherMapProvider\\\\SourceFetcher\\\\SourceFetcher\\:\\:__construct\\(\\) has invalid type Symfony\\\\Contracts\\\\HttpClient\\\\HttpClientInterface\\.$#"
-			count: 1
-			path: src/Air/Provider/OpenWeatherMapProvider/SourceFetcher/SourceFetcher.php
-
-		-
-			message: "#^Property App\\\\Air\\\\Provider\\\\OpenWeatherMapProvider\\\\SourceFetcher\\\\SourceFetcher\\:\\:\\$httpClient has unknown class Symfony\\\\Contracts\\\\HttpClient\\\\HttpClientInterface as its type\\.$#"
-			count: 1
-			path: src/Air/Provider/OpenWeatherMapProvider/SourceFetcher/SourceFetcher.php
-
-		-
 			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:getReference\\(\\)\\.$#"
 			count: 1
 			path: src/Air/StationCache/StationCache.php
