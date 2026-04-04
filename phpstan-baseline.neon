@@ -1,26 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$key of method App\\\\Air\\\\Analysis\\\\CoronaFireworksAnalysis\\\\Slot\\\\YearSlot\\:\\:addSlot\\(\\) expects int, float given\\.$#"
-			count: 1
-			path: src/Air/Analysis/CoronaFireworksAnalysis/CoronaFireworksAnalysis.php
-
-		-
-			message: "#^Variable \\$slotList in PHPDoc tag @var does not match any variable in the foreach loop\\: \\$yearList, \\$year, \\$yearSlot$#"
-			count: 1
-			path: src/Air/Analysis/CoronaFireworksAnalysis/CoronaFireworksAnalysis.php
-
-		-
-			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$year \\(int\\) is implicitly nullable via default value null\\.$#"
-			count: 1
-			path: src/Air/Analysis/CoronaFireworksAnalysis/StartDateTimeCalculator.php
-
-		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Data\\>\\:\\:findDataForCoronaFireworksAnalysis\\(\\)\\.$#"
-			count: 1
-			path: src/Air/Analysis/CoronaFireworksAnalysis/ValueFetcher.php
-
-		-
 			message: "#^Parameter \\$finder of method App\\\\Air\\\\Analysis\\\\KomfortofenAnalysis\\\\AbstractKomfortofenAnalysis\\:\\:__construct\\(\\) has invalid type App\\\\Pollution\\\\DataFinder\\\\FinderInterface\\.$#"
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/AbstractKomfortofenAnalysis.php
@@ -384,11 +364,6 @@ parameters:
 			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findActiveStationsForCity\\(\\)\\.$#"
 			count: 1
 			path: src/Controller/AbstractController.php
-
-		-
-			message: "#^Call to an undefined method App\\\\Air\\\\Analysis\\\\CoronaFireworksAnalysis\\\\CoronaFireworksAnalysisInterface\\:\\:analyze\\(\\)\\.$#"
-			count: 1
-			path: src/Controller/AnalysisController.php
 
 		-
 			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Data\\>\\:\\:findForAnalysis\\(\\)\\.$#"

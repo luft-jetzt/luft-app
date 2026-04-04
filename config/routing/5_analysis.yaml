@@ -8,8 +8,3 @@ analysis_komfortofen:
     defaults:
         _controller: App\Controller\AnalysisController::komfortofenAction
 
-
-analysis_fireworks_corona:
-    path: /analysis/corona-silvester
-    defaults:
-        _controller: App\Controller\AnalysisController::coronaFireworksAction
