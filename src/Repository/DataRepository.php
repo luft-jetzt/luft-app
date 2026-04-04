@@ -56,36 +56,11 @@ LIMIT 10';
         return $query->getResult();
     }
 
-    public function findDataForCoronaFireworksAnalysis(CoordInterface $coord): array
-    {
-        $rsm = $this->createDataStationResultSetMapping('data_id');
-
-        $sql = 'SELECT DISTINCT ON (date_trunc(\'hour\', date_time)) data_id, value, pollutant, date_time, station_id, title, latitude, longitude, station_code, station_type, provider
-        FROM silvester_data
-        WHERE station_id IN (SELECT id FROM station WHERE coord <-> ST_MakePoint(?, ?) < 2 ORDER BY coord <-> ST_MakePoint(?, ?) ASC)
-        AND pollutant = 1
-        AND ((DATE_PART(\'day\', date_time) = 31 AND DATE_PART(\'hour\', date_time) >= 17) OR (DATE_PART(\'day\', date_time) = 1 AND DATE_PART(\'hour\', date_time) <= 7))
-        ORDER BY date_trunc(\'hour\', date_time), coord <-> ST_MakePoint(?, ?) ASC, value DESC';
-
-        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
-        $query
-            ->setParameter(1, $coord->getLongitude())
-            ->setParameter(2, $coord->getLatitude())
-            ->setParameter(3, $coord->getLongitude())
-            ->setParameter(4, $coord->getLatitude())
-            ->setParameter(5, $coord->getLongitude())
-            ->setParameter(6, $coord->getLatitude())
-        ;
-
-        return $query->getResult();
-    }
-
     public function refreshMaterializedView(): void
     {
         $connection = $this->getEntityManager()->getConnection();
 
         $connection->executeStatement('REFRESH MATERIALIZED VIEW current_data');
-        $connection->executeStatement('REFRESH MATERIALIZED VIEW silvester_data');
     }
 
     private function createDataStationResultSetMapping(string $dataIdColumn): ResultSetMapping

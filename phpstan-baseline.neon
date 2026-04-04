@@ -1,81 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$key of method App\\\\Air\\\\Analysis\\\\CoronaFireworksAnalysis\\\\Slot\\\\YearSlot\\:\\:addSlot\\(\\) expects int, float given\\.$#"
-			count: 1
-			path: src/Air/Analysis/CoronaFireworksAnalysis/CoronaFireworksAnalysis.php
-
-		-
-			message: "#^Variable \\$slotList in PHPDoc tag @var does not match any variable in the foreach loop\\: \\$yearList, \\$year, \\$yearSlot$#"
-			count: 1
-			path: src/Air/Analysis/CoronaFireworksAnalysis/CoronaFireworksAnalysis.php
-
-		-
-			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$year \\(int\\) is implicitly nullable via default value null\\.$#"
-			count: 1
-			path: src/Air/Analysis/CoronaFireworksAnalysis/StartDateTimeCalculator.php
-
-		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Data\\>\\:\\:findDataForCoronaFireworksAnalysis\\(\\)\\.$#"
-			count: 1
-			path: src/Air/Analysis/CoronaFireworksAnalysis/ValueFetcher.php
-
-		-
-			message: "#^Parameter \\$finder of method App\\\\Air\\\\Analysis\\\\FireworksAnalysis\\\\AbstractFireworksAnalysis\\:\\:__construct\\(\\) has invalid type App\\\\Pollution\\\\DataFinder\\\\FinderInterface\\.$#"
-			count: 1
-			path: src/Air/Analysis/FireworksAnalysis/AbstractFireworksAnalysis.php
-
-		-
-			message: "#^Property App\\\\Air\\\\Analysis\\\\FireworksAnalysis\\\\AbstractFireworksAnalysis\\:\\:\\$finder has unknown class App\\\\Pollution\\\\DataFinder\\\\FinderInterface as its type\\.$#"
-			count: 1
-			path: src/Air/Analysis/FireworksAnalysis/AbstractFireworksAnalysis.php
-
-		-
-			message: "#^Call to method addMust\\(\\) on an unknown class Elastica\\\\Query\\\\BoolQuery\\.$#"
-			count: 1
-			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
-
-		-
-			message: "#^Call to method addShould\\(\\) on an unknown class Elastica\\\\Query\\\\BoolQuery\\.$#"
-			count: 2
-			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
-
-		-
-			message: "#^Call to method addSort\\(\\) on an unknown class Elastica\\\\Query\\.$#"
-			count: 1
-			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
-
-		-
-			message: "#^Call to method find\\(\\) on an unknown class App\\\\Pollution\\\\DataFinder\\\\FinderInterface\\.$#"
-			count: 1
-			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
-
-		-
-			message: "#^Instantiated class Elastica\\\\Query not found\\.$#"
-			count: 1
-			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
-
-		-
-			message: "#^Instantiated class Elastica\\\\Query\\\\BoolQuery not found\\.$#"
-			count: 3
-			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
-
-		-
-			message: "#^Instantiated class Elastica\\\\Query\\\\Range not found\\.$#"
-			count: 2
-			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
-
-		-
-			message: "#^Instantiated class Elastica\\\\Query\\\\Term not found\\.$#"
-			count: 2
-			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
-
-		-
-			message: "#^Method App\\\\Air\\\\Analysis\\\\FireworksAnalysis\\\\FireworksAnalysis\\:\\:createDateTimeQuery\\(\\) has invalid return type Elastica\\\\Query\\\\BoolQuery\\.$#"
-			count: 1
-			path: src/Air/Analysis/FireworksAnalysis/FireworksAnalysis.php
-
-		-
 			message: "#^Parameter \\$finder of method App\\\\Air\\\\Analysis\\\\KomfortofenAnalysis\\\\AbstractKomfortofenAnalysis\\:\\:__construct\\(\\) has invalid type App\\\\Pollution\\\\DataFinder\\\\FinderInterface\\.$#"
 			count: 1
 			path: src/Air/Analysis/KomfortofenAnalysis/AbstractKomfortofenAnalysis.php
@@ -439,11 +364,6 @@ parameters:
 			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findActiveStationsForCity\\(\\)\\.$#"
 			count: 1
 			path: src/Controller/AbstractController.php
-
-		-
-			message: "#^Call to an undefined method App\\\\Air\\\\Analysis\\\\CoronaFireworksAnalysis\\\\CoronaFireworksAnalysisInterface\\:\\:analyze\\(\\)\\.$#"
-			count: 1
-			path: src/Controller/AnalysisController.php
 
 		-
 			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Data\\>\\:\\:findForAnalysis\\(\\)\\.$#"

@@ -77,7 +77,10 @@
       "Bash(vendor/bin/rector:*)",
       "Bash(gh pr:*)",
       "Bash(gh api:*)",
-      "Bash(gh label:*)"
+      "Bash(gh label:*)",
+      "Bash(rm -rf bin/.phpunit)",
+      "Bash(SYMFONY_PHPUNIT_VERSION=12.5 php bin/phpunit --testsuite \"Project Test Suite\")",
+      "Bash(gh issue:*)"
     ]
   }
 }
