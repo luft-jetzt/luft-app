@@ -120,6 +120,13 @@
   .fa {
     font-size: 0.625rem;
   }
+
+  &--error {
+    color: var(--bs-danger);
+    text-transform: none;
+    font-weight: normal;
+    font-size: 0.8125rem;
+  }
 }
 
 .aa-List {

@@ -7,6 +7,7 @@ use App\Entity\Zip;
 use App\Geo\Coordinate\Coordinate;
 use App\Geo\Coordinate\CoordinateInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Geocoder\Exception\QuotaExceeded;
 use Geocoder\Provider\Nominatim\Model\NominatimAddress;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -24,15 +25,19 @@ class RequestConverter implements RequestConverterInterface
         $query = $request->query->get('query');
         $zipCode = $request->query->get('zip');
 
-        if (($query && preg_match('/^([0-9]{5,5})$/', $query)) || $zipCode) {
-            $cityList = $this->geocoder->queryZip($query ?? $zipCode);
+        try {
+            if (($query && preg_match('/^([0-9]{5,5})$/', $query)) || $zipCode) {
+                $cityList = $this->geocoder->queryZip($query ?? $zipCode);
 
-            if (count($cityList) > 0) {
-                /** @var NominatimAddress $firstResult */
-                $firstResult = $cityList->first();
+                if (count($cityList) > 0) {
+                    /** @var NominatimAddress $firstResult */
+                    $firstResult = $cityList->first();
 
-                return new Coordinate($firstResult->getCoordinates()->getLatitude(), $firstResult->getCoordinates()->getLongitude());
+                    return new Coordinate($firstResult->getCoordinates()->getLatitude(), $firstResult->getCoordinates()->getLongitude());
+                }
             }
+        } catch (QuotaExceeded) {
+            return null;
         }
 
         if ($latitude && $longitude) {
@@ -44,16 +49,20 @@ class RequestConverter implements RequestConverterInterface
             return $coord;
         }
 
-        if ($query) {
-            $result = $this->geocoder->query($query);
+        try {
+            if ($query) {
+                $result = $this->geocoder->query($query);
 
-            $firstResult = array_pop($result);
+                $firstResult = array_pop($result);
 
-            if ($firstResult) {
-                $coord = new Coordinate($firstResult['value']['latitude'], $firstResult['value']['longitude']);
+                if ($firstResult) {
+                    $coord = new Coordinate($firstResult['value']['latitude'], $firstResult['value']['longitude']);
 
-                return $coord;
+                    return $coord;
+                }
             }
+        } catch (QuotaExceeded) {
+            return null;
         }
 
         return null;

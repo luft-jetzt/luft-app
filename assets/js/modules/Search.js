@@ -124,16 +124,29 @@ export default class Search {
                         sourceId: 'remote',
                         getItems() {
                             return fetch(Routing.generate('search') + '?query=' + encodeURIComponent(query))
-                                .then(response => response.json())
-                                .then(data => data.slice(0, 5))
+                                .then(response => {
+                                    if (response.status === 429) {
+                                        return response.json().then(data => [{ _error: data.error }]);
+                                    }
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    if (data.error) return [];
+                                    return data.slice(0, 5);
+                                })
                                 .catch(() => []);
                         },
                         templates: {
                             header({ items, html }) {
+                                const errorItem = items.find(item => item._error);
+                                if (errorItem) {
+                                    return html`<div class="aa-SourceHeader aa-SourceHeader--error"><i class="fa fa-exclamation-triangle"></i> ${errorItem._error}</div>`;
+                                }
                                 if (items.length === 0) return null;
                                 return html`<div class="aa-SourceHeader"><i class="fa fa-map-marker"></i> Orte</div>`;
                             },
                             item({ item, html }) {
+                                if (item._error) return html`<div style="display:none"></div>`;
                                 const url = actionUri + '?latitude=' + item.value.latitude + '&longitude=' + item.value.longitude;
                                 return html`
                                     <a href="${url}" class="aa-ItemLink">

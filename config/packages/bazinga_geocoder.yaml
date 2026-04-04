@@ -7,5 +7,5 @@ bazinga_geocoder:
         nominatim:
             factory: Bazinga\GeocoderBundle\ProviderFactory\NominatimFactory
             cache: 'app.geocoding_cache'
-            cache_lifetime: 3600
+            cache_lifetime: 86400
             cache_precision: 4
