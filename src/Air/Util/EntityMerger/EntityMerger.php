@@ -20,7 +20,7 @@ class EntityMerger implements EntityMergerInterface
                 try {
                     $newValue = $source->$getMethodName();
 
-                    if ($newValue) {
+                    if (null !== $newValue) {
                         $destination->$setMethodName($newValue);
                     }
                 } catch (\TypeError) {
@@ -38,15 +38,9 @@ class EntityMerger implements EntityMergerInterface
 
     protected function isPropertyExposed(\ReflectionProperty $reflectionProperty): bool
     {
-        $propertyAttributes = $reflectionProperty->getAttributes(Ignore::class);
-
-        foreach ($propertyAttributes as $propertyAttribute) {
-            if ($propertyAttribute instanceof Ignore) {
-                return false;
-            }
-        }
-
-        return true;
+        // getAttributes() liefert ReflectionAttribute-Objekte (nie Ignore-Instanzen);
+        // gefiltert auf Ignore::class bedeutet ein nicht-leeres Array also: Property ist mit #[Ignore] markiert.
+        return [] === $reflectionProperty->getAttributes(Ignore::class);
     }
 
     protected function generateSetMethodName(\ReflectionProperty $reflectionProperty): string
