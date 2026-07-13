@@ -2,7 +2,7 @@
 
 namespace App\Air\Util\EntityMerger;
 
-use Symfony\Component\Serializer\Attribute\Ignore;
+use App\Air\Util\EntityMerger\Attribute\Mergeable;
 
 class EntityMerger implements EntityMergerInterface
 {
@@ -11,42 +11,45 @@ class EntityMerger implements EntityMergerInterface
     {
         $reflectionClass = new \ReflectionClass($source);
 
-        /** @var \ReflectionClass $reflectionClass */
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
-            if ($this->isPropertyExposed($reflectionProperty)) {
-                $setMethodName = $this->generateSetMethodName($reflectionProperty);
-                $getMethodName = $this->generateGetMethodName($reflectionProperty, $reflectionClass);
+            if (!$this->isPropertyMergeable($reflectionProperty)) {
+                continue;
+            }
 
-                try {
-                    $newValue = $source->$getMethodName();
+            // Deserialized entities may have uninitialized typed properties, because the serializer
+            // does not call the entity constructor. Reading such a property would throw an Error,
+            // so we skip anything that is not initialized on the source. See
+            // https://stackoverflow.com/questions/31948118/jms-serializer-why-are-new-objects-not-being-instantiated-through-constructor
+            if (!$reflectionProperty->isInitialized($source)) {
+                continue;
+            }
 
-                    if ($newValue) {
-                        $destination->$setMethodName($newValue);
-                    }
-                } catch (\TypeError) {
-                    // deserialized entities passed to this entity merger may not be fully stuffed with properties as
-                    // the serializer does not call the entity's constructor as described here:
-                    // https://stackoverflow.com/questions/31948118/jms-serializer-why-are-new-objects-not-being-instantiated-through-constructor
-                    //
-                    // to avoid these problems, we just skipped empty or null properties and act like we just don't care.
-                }
+            $getMethodName = $this->generateGetMethodName($reflectionProperty, $reflectionClass);
+            $setMethodName = $this->generateSetMethodName($reflectionProperty);
+
+            if (null === $getMethodName || !$reflectionClass->hasMethod($setMethodName)) {
+                continue;
+            }
+
+            $newValue = $source->$getMethodName();
+
+            // Only null is treated as "not provided". Falsy-but-valid values such as 0, 0.0,
+            // '' or false are intentionally allowed so a field can be corrected to them.
+            if (null !== $newValue) {
+                $destination->$setMethodName($newValue);
             }
         }
 
         return $destination;
     }
 
-    protected function isPropertyExposed(\ReflectionProperty $reflectionProperty): bool
+    /**
+     * Allowlist: a property is only merged when it explicitly carries the #[Mergeable] attribute.
+     * Identity keys and system fields are therefore protected by default.
+     */
+    protected function isPropertyMergeable(\ReflectionProperty $reflectionProperty): bool
     {
-        $propertyAttributes = $reflectionProperty->getAttributes(Ignore::class);
-
-        foreach ($propertyAttributes as $propertyAttribute) {
-            if ($propertyAttribute instanceof Ignore) {
-                return false;
-            }
-        }
-
-        return true;
+        return count($reflectionProperty->getAttributes(Mergeable::class)) > 0;
     }
 
     protected function generateSetMethodName(\ReflectionProperty $reflectionProperty): string
