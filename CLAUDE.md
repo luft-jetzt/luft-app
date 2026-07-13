@@ -70,7 +70,7 @@ Custom DBAL types in `src/DBAL/Types/`: `StationType`, `AreaType`, UTC datetime 
 
 REST API under `/api` with Swagger docs at `/api/doc` and OpenAPI JSON at `/api/doc.json`. Routes defined in XML files under `config/routing/` (numbered for load order: `1_static.xml` through `6_city.xml`).
 
-**Note:** API mutation endpoints (PUT/POST) currently have no authentication. See Security section below.
+**Note:** API mutation endpoints (PUT/POST/PATCH/DELETE below `/api`) require a shared bearer token, sent as `Authorization: Bearer <token>` and configured via the `API_WRITE_TOKEN` environment variable. Enforced centrally by `App\EventSubscriber\ApiWriteAuthenticationSubscriber` (fails closed when unset). Read endpoints stay public.
 
 ### Frontend
 
@@ -91,7 +91,7 @@ GitHub Actions (`.github/workflows/`): PHPUnit and PHPStan run on push/PR to `ma
 
 The following items are known and should be addressed when hardening for production:
 
-- **No API authentication**: PUT/POST endpoints (`/api/station`, `/api/city`, `/api/value`) are unauthenticated
+- **API write authentication**: PUT/POST/PATCH/DELETE endpoints below `/api` require a shared bearer token (`API_WRITE_TOKEN`, enforced by `ApiWriteAuthenticationSubscriber`). A per-client token/full firewall is still worth considering.
 - **CSRF protection disabled**: `csrf_protection` is commented out in `config/packages/framework.yaml`
 - **No security headers**: CSP, HSTS, X-Frame-Options are not configured
 - **No rate limiting** on API endpoints
