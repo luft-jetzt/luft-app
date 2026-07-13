@@ -7,15 +7,6 @@ station:
     requirements:
         stationCode: '^([A-Z]{2,6})([A-Z0-9]{0,8})$'
 
-station_history:
-    path: /{stationCode}/history
-    defaults:
-        _controller: App\Controller\StationController::historyAction
-    options:
-        expose: true
-    requirements:
-        stationCode: '^([A-Z]{2,6})([A-Z0-9]{0,8})$'
-
 frontpage:
     path: /
     defaults:

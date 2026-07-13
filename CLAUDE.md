@@ -4,13 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Luft.jetzt is a Symfony 8.0 (PHP 8.5) web application that aggregates and displays air quality / pollution data from multiple sources (German Umweltbundesamt, Luftdaten, OpenWeatherMap). It uses PostgreSQL with PostGIS for geospatial queries, Elasticsearch for search, and Redis for caching.
+Luft.jetzt is a Symfony 8.0 (PHP 8.5) web application that aggregates and displays air quality / pollution data from multiple sources (German Umweltbundesamt, Luftdaten, OpenWeatherMap). It uses PostgreSQL with PostGIS for geospatial queries and Redis for caching.
 
 ## Common Commands
 
 ### Development Setup
 ```bash
-docker-compose up -d              # Start PostgreSQL/PostGIS, Redis, Elasticsearch
+docker-compose up -d              # Start PostgreSQL/PostGIS and Redis
 composer install                  # Install PHP dependencies (runs cache:clear + assets:install)
 npm install && npm run dev        # Install JS deps and build frontend assets
 php bin/console doctrine:migrations:migrate  # Run database migrations
@@ -79,7 +79,6 @@ Webpack Encore with two JS entry points (`app.js`, `datatables.js`) and SCSS. Us
 ## Infrastructure
 
 - **Database**: PostgreSQL 15 + PostGIS 3.3 (port 25432 via Docker, DB: `gis`, user: `docker`)
-- **Search**: Elasticsearch 7.17.2 (port 9200)
 - **Cache**: Redis (port 6379)
 - **Locale**: German (`de`), host: `luft.jetzt`
 
@@ -95,6 +94,6 @@ The following items are known and should be addressed when hardening for product
 - **CSRF protection disabled**: `csrf_protection` is commented out in `config/packages/framework.yaml`
 - **No security headers**: CSP, HSTS, X-Frame-Options are not configured
 - **No rate limiting** on API endpoints
-- **Docker services** (Redis, Elasticsearch) run without authentication and with exposed ports
+- **Docker services** (Redis) run without authentication and with exposed ports
 - **EntityMerger** uses reflection to merge all non-`@Ignore` properties — ensure sensitive fields are properly annotated
 - **Twig `|raw` usage**: `unitHtml`, `shortNameHtml`, and `exceedanceJson` use `|raw` — these values must never contain user-controlled input

@@ -1,4 +1,2 @@
 flagception:
-    features:
-        station_history:
-            default: false
+    features: {}
