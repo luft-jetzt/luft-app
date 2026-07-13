@@ -13,6 +13,9 @@ use Symfony\Component\Routing\RouterInterface;
 
 class TypeaheadController extends AbstractController
 {
+    private const int MIN_QUERY_LENGTH = 2;
+    private const int MAX_QUERY_LENGTH = 128;
+
     public function prefetchCitiesAction(RouterInterface $router): Response
     {
         $cityList = $this->managerRegistry->getRepository(City::class)->findAll();
@@ -60,8 +63,17 @@ class TypeaheadController extends AbstractController
 
     public function searchAction(Request $request, GeocoderInterface $geocoder): Response
     {
+        $queryString = trim((string) $request->query->get('query', ''));
+
+        if (mb_strlen($queryString) < self::MIN_QUERY_LENGTH || mb_strlen($queryString) > self::MAX_QUERY_LENGTH) {
+            return new JsonResponse(
+                ['error' => sprintf('Die Suchanfrage muss zwischen %d und %d Zeichen lang sein.', self::MIN_QUERY_LENGTH, self::MAX_QUERY_LENGTH)],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
         try {
-            $result = $geocoder->query($request->query->get('query'));
+            $result = $geocoder->query($queryString);
         } catch (QuotaExceeded) {
             return new JsonResponse(['error' => 'Die Suche ist momentan überlastet. Bitte versuche es in einigen Sekunden erneut.'], Response::HTTP_TOO_MANY_REQUESTS);
         }
