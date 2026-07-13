@@ -3,18 +3,21 @@ privacy:
     defaults:
         _controller: App\Controller\TemplateController::staticAction
         templateName: privacy
+        title: 'Datenschutzerklärung'
 
 impress:
     path: /impress
     defaults:
         _controller: App\Controller\TemplateController::staticAction
         templateName: impress
+        title: 'Impressum'
 
 limits:
     path: /grenzwerte
     defaults:
         _controller: App\Controller\TemplateController::staticAction
         templateName: limits
+        title: 'Übersicht über Schadstoffe und Grenzwerte'
 
 pollutant_pm10:
     path: /schadstoffe/feinstaub
