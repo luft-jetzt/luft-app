@@ -5,7 +5,7 @@ sonata_seo:
         default:          sonata.seo.page.default
         metas:
             name:
-                keywords:             Luft, Stickstoffdioxid, NO2, Schwefeldioxid, SO2, Kohlemnonooxid, CO, Ozon, O3, Feinstaub, PM10
+                keywords:             Luft, Stickstoffdioxid, NO2, Schwefeldioxid, SO2, Kohlenmonoxid, CO, Ozon, O3, Feinstaub, PM10
                 description:          Aktuelle Luftmesswerte aus deiner Umgebung
                 robots:               index, follow
                 'twitter:site':       '@calderacc'

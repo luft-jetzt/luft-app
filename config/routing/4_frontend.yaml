@@ -29,6 +29,3 @@ display:
         _controller: App\Controller\DisplayController::indexAction
     options:
         expose: true
-
-logout:
-    path: /logout

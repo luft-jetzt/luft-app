@@ -3,7 +3,6 @@
 namespace App\Air\Geocoding\RequestConverter;
 
 use App\Air\Geocoding\Geocoder\GeocoderInterface;
-use App\Entity\Zip;
 use App\Geo\Coordinate\Coordinate;
 use App\Geo\Coordinate\CoordinateInterface;
 use Doctrine\Persistence\ManagerRegistry;
