@@ -15,7 +15,7 @@ class PollutantViewModelTest extends TestCase
         $data = new Data();
         $viewModel = new PollutantViewModel($data);
 
-        $this->assertEquals($data, $viewModel->getData());
+        $this->assertSame($data, $viewModel->getData());
     }
 
     public function testDataOverwritten(): void
@@ -28,8 +28,8 @@ class PollutantViewModelTest extends TestCase
         $newData->setValue(20);
         $viewModel->setData($newData);
 
-        $this->assertEquals($newData, $viewModel->getData());
-        $this->assertNotEquals($data, $viewModel->getData());
+        $this->assertSame($newData, $viewModel->getData());
+        $this->assertNotSame($data, $viewModel->getData());
     }
 
     public function testCaption(): void
@@ -37,9 +37,9 @@ class PollutantViewModelTest extends TestCase
         $data = new Data();
         $viewModel = new PollutantViewModel($data);
 
-        $viewModel->setCaption("Testcaption");
+        $viewModel->setCaption('Testcaption');
 
-        $this->assertEquals("Testcaption", $viewModel->getCaption());
+        $this->assertSame('Testcaption', $viewModel->getCaption());
     }
 
     public function testDistance(): void
@@ -48,7 +48,8 @@ class PollutantViewModelTest extends TestCase
         $viewModel = new PollutantViewModel($data);
 
         $viewModel->setDistance(42.3);
-        $this->assertEquals(42.3, $viewModel->getDistance());
+
+        $this->assertSame(42.3, $viewModel->getDistance());
     }
 
     public function testStation(): void
@@ -59,7 +60,7 @@ class PollutantViewModelTest extends TestCase
         $station = new Station(57.4, 10.3);
         $viewModel->setStation($station);
 
-        $this->assertEquals($station, $viewModel->getStation());
+        $this->assertSame($station, $viewModel->getStation());
     }
 
     public function testPollutant(): void
@@ -70,6 +71,16 @@ class PollutantViewModelTest extends TestCase
         $pollutant = new CO();
         $viewModel->setPollutant($pollutant);
 
-        $this->assertEquals($pollutant, $viewModel->getPollutant());
+        $this->assertSame($pollutant, $viewModel->getPollutant());
+    }
+
+    public function testPollutionLevel(): void
+    {
+        $data = new Data();
+        $viewModel = new PollutantViewModel($data);
+
+        $viewModel->setPollutionLevel(2);
+
+        $this->assertSame(2, $viewModel->getPollutionLevel());
     }
 }
