@@ -60,6 +60,15 @@
 
         </p>
         {% if stationLink %}</a>{% endif %}
+
+        {% if view_model.pollutant.identifier == 'uvindex' %}
+            {% set bfsUrl = bfs_uv_station_url(view_model.station.stationCode) %}
+            <p class="card-text mb-0"><small>
+                UV-Messwerte:
+                <a href="https://www.bfs.de/DE/themen/opt/uv/uv-index/" class="text-white text-decoration-underline" target="_blank" rel="noopener">Bundesamt für Strahlenschutz</a>{% if bfsUrl %}
+                &middot; <a href="{{ bfsUrl }}" class="text-white text-decoration-underline" target="_blank" rel="noopener" title="Tagesverlauf dieser Station beim BfS">Tagesverlauf&nbsp;<i class="fa fa-external-link"></i></a>{% endif %}
+            </small></p>
+        {% endif %}
     </div>
 
     {% if not combined %}
