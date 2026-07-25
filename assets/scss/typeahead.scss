@@ -76,18 +76,10 @@
   max-width: 100% !important;
   margin-top: 8px;
   overflow: hidden;
-  animation: slideDown 0.15s ease-out;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  // Kein Einblend-Animation (slideDown): autocomplete-js baut den Panel bei JEDEM Render neu
+  // (jeder Tastendruck + das asynchrone Nachladen der "Orte"-Quelle). Eine CSS-Entry-Animation
+  // feuerte dadurch bei jeder Eingabe erneut und ließ den Panel dauerhaft flackern/durchscheinen
+  // (opacity 0 -> 1 pro Render). Ohne Animation erscheint das Dropdown sofort deckend.
 }
 
 .aa-PanelLayout {
