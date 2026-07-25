@@ -176,6 +176,21 @@ async function initMaps() {
     });
 }
 
-function init() { initGeolocation(); initSearch(); initMaps(); }
+function initTimeAgo() {
+    const fmt = (ts) => {
+        const diff = Math.floor(Date.now() / 1000 - ts);
+        if (diff < 0) return 'gerade eben';
+        if (diff < 90) return 'gerade eben';
+        if (diff < 3600) return 'vor ' + Math.floor(diff / 60) + ' Min';
+        if (diff < 86400) return 'vor ' + Math.round(diff / 3600) + ' Std';
+        return 'vor ' + Math.round(diff / 86400) + ' Tg';
+    };
+    document.querySelectorAll('[data-time-ago-timestamp]').forEach((el) => {
+        const ts = parseInt(el.dataset.timeAgoTimestamp, 10);
+        if (ts) { el.textContent = fmt(ts); el.title = el.dataset.timeAgoTitle || el.title; }
+    });
+}
+
+function init() { initGeolocation(); initSearch(); initMaps(); initTimeAgo(); }
 if (document.readyState !== 'loading') init();
 else document.addEventListener('DOMContentLoaded', init);
