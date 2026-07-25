@@ -11,7 +11,7 @@
         <a class="at-backbtn" href="{% if station.city %}{{ path('show_city', { citySlug: station.city.slug }) }}{% else %}{{ path('display') }}{% endif %}" aria-label="Zurück">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg>
         </a>
-        <div class="at-title">Messstation {{ station.title ?: station.stationCode }}</div>
+        <div class="at-title">Messstation {{ (station.title ?: station.stationCode)|replace({'Messstation ': ''}) }}</div>
     </div>
 
     <div class="at-mini-hero">
@@ -51,7 +51,7 @@
     </div>
 
     {% if station.latitude and station.longitude %}
-        {% set mapStations = [{ lat: station.latitude, lon: station.longitude, level: sky, name: 'Messstation ' ~ (station.title ?: station.stationCode), code: station.stationCode }] %}
+        {% set mapStations = [{ lat: station.latitude, lon: station.longitude, level: sky, name: 'Messstation ' ~ (station.title ?: station.stationCode)|replace({'Messstation ': ''}), code: station.stationCode }] %}
         <div class="at-section-label">Standort</div>
         <div class="at-map" data-at-map data-at-stations="{{ mapStations|json_encode|e('html_attr') }}"></div>
     {% endif %}

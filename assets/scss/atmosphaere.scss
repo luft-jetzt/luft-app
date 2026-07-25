@@ -238,3 +238,18 @@
 }
 .at-map .leaflet-bar a { background: rgba(20, 28, 42, 0.85); color: #fff; border-color: rgba(255,255,255,.15); }
 .at-map .leaflet-popup-content-wrapper, .at-map .leaflet-popup-tip { background: #1a2740; color: #fff; }
+
+// ---------- Tageszeit-Überblendung (Tag/Nacht-Himmel) -----------------------
+// Legt sich als ruhiger Schleier über den (luftgüte-abhängigen) Himmel: morgens
+// kühl-klar, tagsüber neutral, abends warm, nachts tief. Der Inhalt liegt darüber,
+// die Karte ebenfalls — beide bleiben unberührt.
+.at-shell { position: relative; z-index: 1; }
+.at-timewash {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background: transparent; opacity: 1; transition: background 0.9s ease;
+}
+.at-time-day   .at-timewash { background: rgba(255, 250, 240, 0.04); }
+.at-time-dawn  .at-timewash { background: linear-gradient(180deg, rgba(120,132,180,0.22), rgba(240,180,150,0.14)); }
+.at-time-dusk  .at-timewash { background: linear-gradient(180deg, rgba(60,48,80,0.28), rgba(228,140,80,0.20)); }
+.at-time-night .at-timewash { background: linear-gradient(180deg, rgba(6,10,30,0.62), rgba(14,20,46,0.5)); }
+@media (prefers-reduced-motion: reduce) { .at-timewash { transition: none; } }

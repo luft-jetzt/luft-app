@@ -16,6 +16,7 @@
     {% block stylesheets %}{{ encore_entry_link_tags('css/atmosphaere') }}{% endblock %}
 </head>
 <body class="at-page at-sky {% block sky_class %}at-idle{% endblock %}">
+    <div class="at-timewash" aria-hidden="true"></div>
     <div class="at-shell">
         {% block topbar %}
         <header class="at-topbar">

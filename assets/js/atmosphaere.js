@@ -191,6 +191,15 @@ function initTimeAgo() {
     });
 }
 
-function init() { initGeolocation(); initSearch(); initMaps(); initTimeAgo(); }
+function initTimeOfDay() {
+    const h = new Date().getHours();
+    let bucket = 'day';
+    if (h >= 21 || h < 5) bucket = 'night';
+    else if (h < 8) bucket = 'dawn';
+    else if (h >= 18) bucket = 'dusk';
+    document.body.classList.add('at-time-' + bucket);
+}
+
+function init() { initTimeOfDay(); initGeolocation(); initSearch(); initMaps(); initTimeAgo(); }
 if (document.readyState !== 'loading') init();
 else document.addEventListener('DOMContentLoaded', init);
