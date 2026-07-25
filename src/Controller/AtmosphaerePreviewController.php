@@ -5,13 +5,10 @@ namespace App\Controller;
 use App\Air\Geocoding\Guesser\CityGuesserInterface;
 use App\Air\Geocoding\RequestConverter\RequestConverterInterface;
 use App\Air\PollutionDataFactory\PollutionDataFactory;
-use App\Air\PollutionDataFactory\PollutionDataFactoryInterface;
 use App\Entity\City;
 use App\Entity\Station;
-use Doctrine\Persistence\ManagerRegistry;
 use Sonata\SeoBundle\Seo\SeoPageInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -50,14 +47,29 @@ final class AtmosphaerePreviewController extends AbstractController
         ]));
     }
 
+    #[Route('/vorschau/city/{citySlug}', name: 'atmosphaere_preview_city', methods: ['GET'])]
+    public function city(
+        #[MapEntity(expr: 'repository.findOneBySlug(citySlug)')] City $city,
+        PollutionDataFactory $pollutionDataFactory,
+        SeoPageInterface $seoPage,
+    ): Response {
+        $stationList = $this->getStationListForCity($city);
+        $seoPage->setTitle(sprintf('Luftqualität in %s — luft.jetzt', $city->getName()));
+
+        return $this->noindex($this->render('Atmosphaere/city.html.twig', [
+            'city' => $city,
+            'stationList' => $stationList,
+            'stationBoxList' => $this->createViewModelListForStationList($pollutionDataFactory, $stationList),
+        ]));
+    }
+
     #[Route('/vorschau/result', name: 'atmosphaere_preview_result', methods: ['GET'])]
     public function result(
         Request $request,
         RequestConverterInterface $requestConverter,
-        PollutionDataFactoryInterface $pollutionDataFactory,
+        PollutionDataFactory $pollutionDataFactory,
         CityGuesserInterface $cityGuesser,
         SeoPageInterface $seoPage,
-        ManagerRegistry $doctrine,
     ): Response {
         $coord = $requestConverter->getCoordByRequest($request);
         if (!$coord) {
@@ -66,7 +78,7 @@ final class AtmosphaerePreviewController extends AbstractController
 
         $viewModelList = $pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();
         $cityName = $cityGuesser->guess($coord);
-        $city = $cityName ? $doctrine->getRepository(City::class)->findOneByName($cityName) : null;
+        $city = $cityName ? $this->findCityForName($cityName) : null;
         $seoPage->setTitle('Aktuelle Luftmesswerte aus deiner Umgebung — luft.jetzt');
 
         return $this->noindex($this->render('Atmosphaere/result.html.twig', [

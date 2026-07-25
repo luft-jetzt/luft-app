@@ -50,6 +50,12 @@
         {% endfor %}
     </div>
 
+    {% if station.latitude and station.longitude %}
+        {% set mapStations = [{ lat: station.latitude, lon: station.longitude, level: sky, name: 'Messstation ' ~ (station.title ?: station.stationCode), code: station.stationCode }] %}
+        <div class="at-section-label">Standort</div>
+        <div class="at-map" data-at-map data-at-stations="{{ mapStations|json_encode|e('html_attr') }}"></div>
+    {% endif %}
+
     <div class="at-actions">
         {% if station.city %}
             <a class="at-action" href="{{ path('show_city', { citySlug: station.city.slug }) }}">

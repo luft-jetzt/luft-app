@@ -46,6 +46,19 @@
         {% endfor %}
     </div>
 
+    {% set mapStations = [] %}
+    {% set seenMap = [] %}
+    {% for group in pollutantList %}{% for vm in group %}
+        {% if vm.station.stationCode not in seenMap and vm.station.latitude %}
+            {% set seenMap = seenMap|merge([vm.station.stationCode]) %}
+            {% set mapStations = mapStations|merge([{ lat: vm.station.latitude, lon: vm.station.longitude, level: at_sky_level(vm.pollutionLevel), name: vm.station.title ?: vm.station.stationCode, code: vm.station.stationCode, url: path('station', { stationCode: vm.station.stationCode }) }]) %}
+        {% endif %}
+    {% endfor %}{% endfor %}
+    {% if mapStations is not empty %}
+        <div class="at-section-label">Karte</div>
+        <div class="at-map" data-at-map data-at-stations="{{ mapStations|json_encode|e('html_attr') }}" data-at-me="{{ { lat: coord.latitude, lon: coord.longitude }|json_encode|e('html_attr') }}"></div>
+    {% endif %}
+
     {% if city %}
         <div class="at-actions">
             <a class="at-action" href="{{ path('show_city', { citySlug: city.slug }) }}">

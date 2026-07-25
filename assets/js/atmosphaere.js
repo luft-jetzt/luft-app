@@ -1,5 +1,8 @@
-// luft.jetzt · Atmosphäre — schlanker JS-Layer für Start/Ergebnis.
+// luft.jetzt · Atmosphäre — schlanker JS-Layer für Start/Ergebnis/Karte.
 // Geolocation + Autocomplete auf den bestehenden Endpunkten, ohne Bootstrap/Algolia.
+// Leaflet wird nur bei Bedarf (Kartenseite) dynamisch nachgeladen.
+
+const AQI = { 1: '#1fb3a6', 2: '#74c247', 3: '#f2c33c', 4: '#e8683c', 5: '#a83d6b' };
 
 const PREFETCH_CITIES = '/search/prefetch-cities';
 const PREFETCH_STATIONS = '/search/prefetch-stations';
@@ -135,6 +138,44 @@ function initSearch() {
     document.addEventListener('click', (e) => { if (!panel.contains(e.target) && e.target !== input) close(); });
 }
 
-function init() { initGeolocation(); initSearch(); }
+async function initMaps() {
+    const containers = document.querySelectorAll('[data-at-map]');
+    if (!containers.length) return;
+
+    const { default: L } = await import('leaflet');
+
+    containers.forEach((el) => {
+        let stations = [], me = null;
+        try { stations = JSON.parse(el.dataset.atStations || '[]'); } catch (e) { /* noop */ }
+        try { me = el.dataset.atMe ? JSON.parse(el.dataset.atMe) : null; } catch (e) { /* noop */ }
+        if (!stations.length && !me) return;
+
+        const map = L.map(el, { scrollWheelZoom: false, attributionControl: true });
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap', maxZoom: 19,
+        }).addTo(map);
+
+        const pts = [];
+        stations.forEach((s) => {
+            if (typeof s.lat !== 'number' || typeof s.lon !== 'number') return;
+            const marker = L.circleMarker([s.lat, s.lon], {
+                radius: 8, color: '#fff', weight: 2, opacity: 0.9,
+                fillColor: AQI[s.level] || 'rgba(255,255,255,.6)', fillOpacity: 1,
+            }).addTo(map);
+            if (s.name) marker.bindPopup(s.name + (s.code ? ' · ' + s.code : ''));
+            if (s.url) marker.on('click', () => { window.location = s.url; });
+            pts.push([s.lat, s.lon]);
+        });
+        if (me && typeof me.lat === 'number') {
+            L.circleMarker([me.lat, me.lon], { radius: 7, color: '#fff', weight: 3, fillColor: '#4a86c5', fillOpacity: 1 })
+                .addTo(map).bindPopup('Dein Standort');
+            pts.push([me.lat, me.lon]);
+        }
+        if (pts.length === 1) map.setView(pts[0], 12);
+        else if (pts.length) map.fitBounds(pts, { padding: [28, 28], maxZoom: 13 });
+    });
+}
+
+function init() { initGeolocation(); initSearch(); initMaps(); }
 if (document.readyState !== 'loading') init();
 else document.addEventListener('DOMContentLoaded', init);

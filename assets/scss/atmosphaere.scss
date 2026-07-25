@@ -218,3 +218,23 @@
 @keyframes at-spin { to { transform: rotate(360deg); } }
 .at-geo-error { margin-top: 10px; font-size: 12.5px; color: #ffd9d0; }
 @media (prefers-reduced-motion: reduce) { .at-cta.is-loading::after { animation: none; } }
+
+// ---------- Karte (Leaflet, in die Atmosphäre eingepasst) -------------------
+@import "~leaflet/dist/leaflet.css";
+
+.at-map {
+  height: 240px; width: 100%; border-radius: var(--at-r-lg); overflow: hidden;
+  border: 1px solid var(--at-glass-brd); background: #12203a; z-index: 0;
+}
+// OSM-Kacheln in einen dunklen, entsättigten Look bringen (passt zum Himmel,
+// bleibt bei OSM als bereits im Datenschutz genanntem Dienst).
+.at-map .leaflet-tile {
+  filter: grayscale(0.55) invert(0.93) contrast(0.9) hue-rotate(180deg) saturate(0.85) brightness(0.95);
+}
+.at-map .leaflet-container { background: #12203a; font-family: var(--at-sans); }
+.at-map .leaflet-control-attribution {
+  background: rgba(10, 16, 26, 0.6); color: rgba(255, 255, 255, 0.6); backdrop-filter: blur(4px);
+  a { color: rgba(255, 255, 255, 0.75); }
+}
+.at-map .leaflet-bar a { background: rgba(20, 28, 42, 0.85); color: #fff; border-color: rgba(255,255,255,.15); }
+.at-map .leaflet-popup-content-wrapper, .at-map .leaflet-popup-tip { background: #1a2740; color: #fff; }
