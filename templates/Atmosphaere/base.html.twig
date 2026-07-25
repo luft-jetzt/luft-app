@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html {{ sonata_seo_html_attributes() }}>
+<head {{ sonata_seo_head_attributes() }}>
+    {{ sonata_seo_title() }}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="{% block theme_color %}#173a63{% endblock %}">
+
+    {{ sonata_seo_metadatas() }}
+    {{ sonata_seo_link_canonical() }}
+    {{ sonata_seo_lang_alternates() }}
+
+    {% block stylesheets %}{{ encore_entry_link_tags('css/atmosphaere') }}{% endblock %}
+</head>
+<body class="at-page at-sky {% block sky_class %}at-idle{% endblock %}">
+    <div class="at-shell">
+        <header class="at-topbar">
+            <a class="at-brand" href="{{ path('display') }}">luft<span>.jetzt</span></a>
+            <div class="at-topbar__actions">
+                <a class="at-iconbtn" href="{{ path('display') }}" aria-label="Ort suchen">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+                </a>
+            </div>
+        </header>
+
+        {% block content %}{% endblock %}
+
+        <footer class="at-foot" style="text-align:left; margin-top:auto; padding-top:34px;">
+            {% block attribution %}
+                Amtliche Messwerte des <a href="https://www.umweltbundesamt.de/">Umweltbundesamts</a>,
+                ergänzt von <a href="https://sensor.community/">Sensor.Community</a>.
+            {% endblock %}
+            <div style="margin-top:10px; opacity:.85;">
+                <a href="{{ path('impress') }}">Impressum</a> ·
+                <a href="{{ path('privacy') }}">Datenschutz</a> ·
+                <a href="{{ path('display') }}">Startseite</a>
+            </div>
+        </footer>
+    </div>
+
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

@@ -33,7 +33,9 @@ class StationController extends AbstractController
             $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s', $station->getStationCode()));
         }
 
-        return $this->render('Default/station.html.twig', [
+        // Neugestaltung „Atmosphäre": Stationsseite im neuen Look (verifiziert über
+        // /vorschau/station/… vor der Umstellung). Alte Bootstrap-Ansicht: Default/station.html.twig.
+        return $this->render('Atmosphaere/station.html.twig', [
             'station' => $station,
             'pollutantList' => $viewModelList,
         ]);

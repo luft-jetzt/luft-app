@@ -153,3 +153,40 @@
 @media (prefers-reduced-motion: reduce) {
   .at-sky, .at-scale b { transition: none; }
 }
+
+// ---------- Vollseiten-Layout (echte Seiten) --------------------------------
+// Der Himmel füllt den ganzen Viewport; der Inhalt sitzt in einer app-artigen
+// Spalte, damit es auf dem Desktop wie eine App wirkt statt breitzulaufen.
+.at-page { min-height: 100dvh; display: flex; flex-direction: column; }
+.at-shell { width: min(540px, 100%); margin-inline: auto; padding: 20px 20px 44px; flex: 1; display: flex; flex-direction: column; color: #fff; }
+
+.at-topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.at-brand { color: #fff; font-weight: 600; text-decoration: none; font-size: 17px; letter-spacing: -.01em; }
+.at-brand span { opacity: .68; font-weight: 400; }
+.at-topbar__actions { display: flex; gap: 8px; }
+
+// Kompakter Header für Detailseiten (Station)
+.at-detailhead { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+.at-detailhead .at-title { font-weight: 600; font-size: 15px; }
+.at-mini-hero { margin: 20px 0 8px; }
+.at-mini-hero .at-word { font-size: 40px; font-weight: 300; letter-spacing: -.02em; line-height: 1; }
+.at-mini-hero .at-meta { font-size: 12.5px; opacity: .85; margin-top: 8px; }
+.at-mini-hero .at-scale { max-width: 320px; margin-inline: 0; }
+
+.at-section-label { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; opacity: .75; margin: 26px 0 4px; }
+
+// Zurück-Link/Buttons in Glas
+.at-backbtn { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; color: #fff;
+  background: var(--at-glass-bg); border: 1px solid var(--at-glass-brd); text-decoration: none; flex: 0 0 auto; }
+
+// Sekundär-Aktionen unten
+.at-actions { margin-top: 22px; display: flex; flex-direction: column; gap: 10px; }
+.at-action { display: flex; align-items: center; gap: 10px; padding: 13px 15px; border-radius: var(--at-r-md); color: #fff; text-decoration: none;
+  background: var(--at-glass-bg); border: 1px solid var(--at-glass-brd); backdrop-filter: blur(10px); font-size: 14px; font-weight: 500; }
+.at-action:hover { background: rgba(255,255,255,.22); }
+
+// Desktop: die App-Spalte bekommt einen weichen Rahmen, der Himmel bleibt Vollbild dahinter
+@media (min-width: 620px) {
+  .at-page::before { content:""; position: fixed; inset: 0; pointer-events: none;
+    box-shadow: inset 0 0 140px rgba(0,0,0,.28); }
+}
