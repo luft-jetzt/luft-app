@@ -17,6 +17,7 @@
 </head>
 <body class="at-page at-sky {% block sky_class %}at-idle{% endblock %}">
     <div class="at-shell">
+        {% block topbar %}
         <header class="at-topbar">
             <a class="at-brand" href="{{ path('display') }}">luft<span>.jetzt</span></a>
             <div class="at-topbar__actions">
@@ -25,6 +26,7 @@
                 </a>
             </div>
         </header>
+        {% endblock %}
 
         {% block content %}{% endblock %}
 
@@ -41,6 +43,6 @@
         </footer>
     </div>
 
-    {% block javascripts %}{% endblock %}
+    {% block javascripts %}{{ encore_entry_script_tags('js/atmosphaere') }}{% endblock %}
 </body>
 </html>

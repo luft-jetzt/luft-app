@@ -2,18 +2,24 @@
 
 namespace App\Controller;
 
+use App\Air\Geocoding\Guesser\CityGuesserInterface;
+use App\Air\Geocoding\RequestConverter\RequestConverterInterface;
 use App\Air\PollutionDataFactory\PollutionDataFactory;
+use App\Air\PollutionDataFactory\PollutionDataFactoryInterface;
+use App\Entity\City;
 use App\Entity\Station;
+use Doctrine\Persistence\ManagerRegistry;
 use Sonata\SeoBundle\Seo\SeoPageInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * Nicht-öffentliche Design-Vorschau für die Neugestaltung „Atmosphäre" (Prototyp 01).
- * Rendert die neuen Screens im echten Asset-Build, ohne die Live-Seiten zu verändern.
- * Bewusst noindex; wird nach Abschluss der Migration entfernt.
+ * Rendert die neuen Screens im echten Asset-Build mit echten Daten — zur Verifikation vor
+ * der Live-Umstellung. Bewusst noindex; wird nach Abschluss der Migration entfernt.
  */
 final class AtmosphaerePreviewController extends AbstractController
 {
@@ -23,9 +29,12 @@ final class AtmosphaerePreviewController extends AbstractController
         return $this->noindex($this->render('Atmosphaere/preview.html.twig'));
     }
 
-    /**
-     * Neue Stationsseite mit ECHTEN Daten — zur Verifikation vor der Live-Umstellung.
-     */
+    #[Route('/vorschau/start', name: 'atmosphaere_preview_start', methods: ['GET'])]
+    public function start(): Response
+    {
+        return $this->noindex($this->render('Atmosphaere/start.html.twig'));
+    }
+
     #[Route('/vorschau/station/{stationCode}', name: 'atmosphaere_preview_station', methods: ['GET'])]
     public function station(
         #[MapEntity(expr: 'repository.findOneByStationCode(stationCode)')] Station $station,
@@ -38,6 +47,33 @@ final class AtmosphaerePreviewController extends AbstractController
         return $this->noindex($this->render('Atmosphaere/station.html.twig', [
             'station' => $station,
             'pollutantList' => $viewModelList,
+        ]));
+    }
+
+    #[Route('/vorschau/result', name: 'atmosphaere_preview_result', methods: ['GET'])]
+    public function result(
+        Request $request,
+        RequestConverterInterface $requestConverter,
+        PollutionDataFactoryInterface $pollutionDataFactory,
+        CityGuesserInterface $cityGuesser,
+        SeoPageInterface $seoPage,
+        ManagerRegistry $doctrine,
+    ): Response {
+        $coord = $requestConverter->getCoordByRequest($request);
+        if (!$coord) {
+            return $this->noindex($this->render('Atmosphaere/start.html.twig'));
+        }
+
+        $viewModelList = $pollutionDataFactory->setCoord($coord)->createDecoratedPollutantList();
+        $cityName = $cityGuesser->guess($coord);
+        $city = $cityName ? $doctrine->getRepository(City::class)->findOneByName($cityName) : null;
+        $seoPage->setTitle('Aktuelle Luftmesswerte aus deiner Umgebung — luft.jetzt');
+
+        return $this->noindex($this->render('Atmosphaere/result.html.twig', [
+            'pollutantList' => $viewModelList,
+            'cityName' => $cityName,
+            'coord' => $coord,
+            'city' => $city,
         ]));
     }
 

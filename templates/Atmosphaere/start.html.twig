@@ -1,0 +1,26 @@
+{% extends 'Atmosphaere/base.html.twig' %}
+
+{% block sky_class %}at-idle{% endblock %}
+{% block theme_color %}#1c2145{% endblock %}
+
+{% block topbar %}
+    <header class="at-topbar"><a class="at-brand" href="{{ path('display') }}">luft<span>.jetzt</span></a></header>
+{% endblock %}
+
+{% block content %}
+    <div class="at-start__big" style="margin-top:52px;">Wie ist die Luft<br>gerade bei&nbsp;dir?</div>
+
+    <div class="at-searchbox" style="margin-top:22px;">
+        <div class="at-search at-glass">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" opacity=".8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+            <input type="search" data-at-search autocomplete="off" placeholder="Ort, Postleitzahl oder Station"
+                   aria-label="Ort, Postleitzahl oder Station suchen">
+        </div>
+        <div class="at-results" data-at-results hidden></div>
+    </div>
+
+    <button type="button" class="at-cta" data-at-geolocate style="margin-top:12px;">
+        <span aria-hidden="true">📍</span>&nbsp; Meinen Standort verwenden
+    </button>
+    <p class="at-geo-error" data-at-geo-error hidden></p>
+{% endblock %}

@@ -190,3 +190,31 @@
   .at-page::before { content:""; position: fixed; inset: 0; pointer-events: none;
     box-shadow: inset 0 0 140px rgba(0,0,0,.28); }
 }
+
+// ---------- Autocomplete-Dropdown (Start) -----------------------------------
+.at-searchbox { position: relative; }
+.at-results {
+  position: absolute; z-index: 30; inset-inline: 0; top: calc(100% + 8px);
+  background: rgba(20, 28, 42, 0.72); border: 1px solid var(--at-glass-brd);
+  border-radius: var(--at-r-md); overflow: hidden; padding: 6px;
+  backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: 0 24px 60px -24px rgba(0,0,0,.6); max-height: 60vh; overflow-y: auto;
+}
+.at-results__group { font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; opacity: .6; padding: 8px 10px 4px; }
+.at-results__item {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+  padding: 10px 10px; border-radius: 10px; color: #fff; text-decoration: none; font-size: 14px;
+  &:hover, &.is-active { background: rgba(255,255,255,.14); }
+  small { opacity: .6; font-family: var(--at-mono); font-size: 11px; }
+}
+
+// Geolocation-Button Ladezustand
+.at-cta.is-loading { color: transparent; position: relative; pointer-events: none; }
+.at-cta.is-loading::after {
+  content: ""; position: absolute; inset: 0; margin: auto; width: 18px; height: 18px;
+  border: 2px solid rgba(15,32,56,.35); border-top-color: #0f2038; border-radius: 50%;
+  animation: at-spin .7s linear infinite;
+}
+@keyframes at-spin { to { transform: rotate(360deg); } }
+.at-geo-error { margin-top: 10px; font-size: 12.5px; color: #ffd9d0; }
+@media (prefers-reduced-motion: reduce) { .at-cta.is-loading::after { animation: none; } }
