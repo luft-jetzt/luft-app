@@ -1,0 +1,51 @@
+{% extends 'Atmosphaere/base.html.twig' %}
+
+{% set cityMax = 0 %}
+{% for station in stationList %}
+    {% if stationBoxList[station.stationCode] is defined and stationBoxList[station.stationCode]|length > 0 %}
+        {% set cityMax = max(cityMax, max_pollution_level(stationBoxList[station.stationCode])) %}
+    {% endif %}
+{% endfor %}
+{% set sky = at_sky_level(cityMax) %}
+
+{% block sky_class %}at-lv{{ sky > 0 ? sky : 2 }}{% if sky == 0 %} at-idle{% endif %}{% endblock %}
+{% block theme_color %}{{ { 1:'#0e2f5a', 2:'#173a63', 3:'#2c3a54', 4:'#3a2d38', 5:'#241f2b' }[sky] ?? '#1c2145' }}{% endblock %}
+
+{% block content %}
+    <div class="at-hero" style="margin-top:18px;">
+        <div class="at-hero__idx">Luft in {{ city.name }}</div>
+        <div class="at-hero__verdict">{{ at_verdict(sky) }}</div>
+        <div class="at-hero__sub">{{ at_subtitle(sky) }}</div>
+        {% if sky > 0 %}<div class="at-scale"><b style="left:{{ at_scale_position(sky) }}%"></b></div>{% endif %}
+    </div>
+
+    {% set mapStations = [] %}
+    <div class="at-section-label">Messstationen in {{ city.name }}</div>
+    <div class="at-list">
+        {% for station in stationList %}
+            {% if stationBoxList[station.stationCode] is defined and stationBoxList[station.stationCode]|length > 0 %}
+                {% set sLevel = at_sky_level(max_pollution_level(stationBoxList[station.stationCode])) %}
+                {% if station.latitude %}
+                    {% set mapStations = mapStations|merge([{ lat: station.latitude, lon: station.longitude, level: sLevel, name: station.title ?: station.stationCode, code: station.stationCode, url: path('station', { stationCode: station.stationCode }) }]) %}
+                {% endif %}
+                <a class="at-row" href="{{ path('station', { stationCode: station.stationCode }) }}" style="text-decoration:none; color:#fff; grid-template-columns:1fr auto auto;">
+                    <span class="at-row__nm"><i style="background: {{ sLevel > 0 ? 'var(--aqi-' ~ sLevel ~ ')' : 'rgba(255,255,255,.45)' }}"></i>{{ station.title ?: station.stationCode }}</span>
+                    <span class="at-row__v" style="font-weight:400; opacity:.85; font-size:12.5px;">{{ at_verdict(sLevel) }}</span>
+                    <span style="opacity:.6;">›</span>
+                </a>
+            {% endif %}
+        {% else %}
+            <p style="opacity:.85; padding:14px 0;">Für {{ city.name }} liegen gerade keine aktuellen Messwerte vor.</p>
+        {% endfor %}
+    </div>
+
+    {% if mapStations is not empty %}
+        <div class="at-section-label">Karte</div>
+        <div class="at-map" data-at-map data-at-stations="{{ mapStations|json_encode|e('html_attr') }}"></div>
+    {% endif %}
+
+    {% if city.description %}
+        <div class="at-section-label">Über {{ city.name }}</div>
+        <p style="opacity:.9; font-size:14px; line-height:1.6;">{{ city.description|nl2br }}</p>
+    {% endif %}
+{% endblock %}

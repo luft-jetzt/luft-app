@@ -25,7 +25,7 @@ class CityController extends AbstractController
         $stationList = $this->getStationListForCity($city);
         $stationViewModelList = $this->createViewModelListForStationList($pollutionDataFactory, $stationList);
 
-        return $this->render('City/show.html.twig', [
+        return $this->render('Atmosphaere/city.html.twig', [
             'city' => $city,
             'stationList' => $stationList,
             'stationBoxList' => $stationViewModelList,

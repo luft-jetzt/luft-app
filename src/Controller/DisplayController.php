@@ -49,7 +49,7 @@ class DisplayController extends AbstractController
             $city = null;
         }
 
-        return $this->render('Default/display.html.twig', [
+        return $this->render('Atmosphaere/result.html.twig', [
             'pollutantList' => $viewModelList,
             'cityName' => $cityName,
             'coord' => $coord,

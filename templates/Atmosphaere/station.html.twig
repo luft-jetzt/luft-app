@@ -1,0 +1,78 @@
+{% extends 'Atmosphaere/base.html.twig' %}
+
+{% set maxLevel = max_pollution_level(pollutantList) %}
+{% set sky = at_sky_level(maxLevel) %}
+
+{% block sky_class %}at-lv{{ sky > 0 ? sky : 2 }}{% if sky == 0 %} at-idle{% endif %}{% endblock %}
+{% block theme_color %}{{ { 1:'#0e2f5a', 2:'#173a63', 3:'#2c3a54', 4:'#3a2d38', 5:'#241f2b' }[sky] ?? '#1c2145' }}{% endblock %}
+
+{% block content %}
+    <div class="at-detailhead">
+        <a class="at-backbtn" href="{% if station.city %}{{ path('show_city', { citySlug: station.city.slug }) }}{% else %}{{ path('display') }}{% endif %}" aria-label="Zurück">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg>
+        </a>
+        <div class="at-title">Messstation {{ station.title ?: station.stationCode }}</div>
+    </div>
+
+    <div class="at-mini-hero">
+        <div class="at-word">{{ at_verdict(sky) }}</div>
+        <div class="at-meta">
+            {% if sky > 0 %}Index {{ sky }}/5 · {% endif %}
+            Station {{ station.stationCode }}{% if station.network %} · {{ station.network.name }}{% endif %}
+        </div>
+        {% if sky > 0 %}<div class="at-scale"><b style="left:{{ at_scale_position(sky) }}%"></b></div>{% endif %}
+        <p class="at-hero__sub" style="margin:12px 0 0; max-width:34ch;">{{ at_subtitle(sky) }}</p>
+    </div>
+
+    <div class="at-section-label">Messwerte</div>
+    <div class="at-list">
+        {% for group in pollutantList %}
+            {% for vm in group %}
+                {% set dl = at_sky_level(vm.pollutionLevel) %}
+                <div class="at-row">
+                    <span class="at-row__nm">
+                        <i style="background: {{ dl > 0 ? 'var(--aqi-' ~ dl ~ ')' : 'rgba(255,255,255,.45)' }}"></i>{{ vm.pollutant.name }}
+                    </span>
+                    <span class="at-row__v">{{ vm.data.value|number_format(vm.pollutant.decimals, ',', '.') }} <small>{{ vm.pollutant.unitHtml|raw }}</small></span>
+                    <span style="font-size:10.5px; opacity:.7; text-align:right;">
+                        <time data-time-ago-timestamp="{{ vm.data.dateTime|date('U') }}">{{ vm.data.dateTime|date('H:i', 'Europe/Berlin') }}</time>
+                    </span>
+                </div>
+                {% if vm.pollutant.identifier == 'uvindex' %}
+                    {% set bfsUrl = bfs_uv_station_url(station.stationCode) %}
+                    <div style="grid-column:1/-1; font-size:11px; opacity:.8; margin:-4px 0 2px 16px;">
+                        UV vom <a href="https://www.bfs.de/DE/themen/opt/uv/uv-index/" target="_blank" rel="noopener">Bundesamt für Strahlenschutz</a>{% if bfsUrl %} · <a href="{{ bfsUrl }}" target="_blank" rel="noopener">Tagesverlauf&nbsp;↗</a>{% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p style="opacity:.85; padding:14px 0;">Für diese Station liegen gerade keine aktuellen Messwerte vor.</p>
+        {% endfor %}
+    </div>
+
+    {% if station.latitude and station.longitude %}
+        {% set mapStations = [{ lat: station.latitude, lon: station.longitude, level: sky, name: 'Messstation ' ~ (station.title ?: station.stationCode), code: station.stationCode }] %}
+        <div class="at-section-label">Standort</div>
+        <div class="at-map" data-at-map data-at-stations="{{ mapStations|json_encode|e('html_attr') }}"></div>
+    {% endif %}
+
+    <div class="at-actions">
+        {% if station.city %}
+            <a class="at-action" href="{{ path('show_city', { citySlug: station.city.slug }) }}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 21h18M6 21V9l6-4 6 4v12"/></svg>
+                Weitere Messwerte aus {{ station.city.name }}
+            </a>
+        {% endif %}
+        {% if feature('station_history') %}
+            <a class="at-action" href="{{ path('station_history', { stationCode: station.stationCode }) }}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 3v18h18M7 14l4-4 3 3 5-6"/></svg>
+                Frühere Messwerte dieser Station
+            </a>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block attribution %}
+    Messwerte des <a href="https://www.umweltbundesamt.de/">Umweltbundesamts</a>, ergänzt von
+    <a href="https://sensor.community/">Sensor.Community</a>{% if station.provider == 'ld' %} (Station via Sensor.Community){% endif %}.
+{% endblock %}

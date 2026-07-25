@@ -1,0 +1,70 @@
+{% extends 'Atmosphaere/base.html.twig' %}
+
+{% set maxLevel = max_pollution_level(pollutantList) %}
+{% set sky = at_sky_level(maxLevel) %}
+
+{% block sky_class %}at-lv{{ sky > 0 ? sky : 2 }}{% if sky == 0 %} at-idle{% endif %}{% endblock %}
+{% block theme_color %}{{ { 1:'#0e2f5a', 2:'#173a63', 3:'#2c3a54', 4:'#3a2d38', 5:'#241f2b' }[sky] ?? '#1c2145' }}{% endblock %}
+
+{% block content %}
+    <div class="at-hero" style="margin-top:20px;">
+        <div class="at-hero__idx">Luftqualität{% if city %} · {{ city.name }}{% elseif cityName %} · {{ cityName }}{% else %} in deiner Umgebung{% endif %}</div>
+        <div class="at-hero__verdict">{{ at_verdict(sky) }}</div>
+        <div class="at-hero__sub">{{ at_subtitle(sky) }}</div>
+        {% if sky > 0 %}<div class="at-scale"><b style="left:{{ at_scale_position(sky) }}%"></b></div>{% endif %}
+    </div>
+
+    <div class="at-chips">
+        {% for group in pollutantList %}
+            {% for vm in group %}
+                {% set dl = at_sky_level(vm.pollutionLevel) %}
+                <a class="at-chip at-glass" href="{{ path('station', { stationCode: vm.station.stationCode }) }}"
+                   style="text-decoration:none; color:#fff;"
+                   title="{{ vm.pollutant.name }} · Station {{ vm.station.title ?: vm.station.stationCode }}">
+                    <div class="at-chip__k">{{ (vm.pollutant.shortNameHtml ?: vm.pollutant.name)|raw }}</div>
+                    <div class="at-chip__v"><span class="at-dot" style="background: {{ dl > 0 ? 'var(--aqi-' ~ dl ~ ')' : 'rgba(255,255,255,.45)' }}"></span>{{ vm.data.value|number_format(vm.pollutant.decimals, ',', '.') }}<small> {{ vm.pollutant.unitHtml|raw }}</small></div>
+                </a>
+            {% endfor %}
+        {% else %}
+            <p style="opacity:.85;">In deiner Umgebung wurden keine aktuellen Messwerte gefunden.</p>
+        {% endfor %}
+    </div>
+
+    <div class="at-section-label">Messstationen in der Nähe</div>
+    <div class="at-list">
+        {% set seen = [] %}
+        {% for group in pollutantList %}
+            {% for vm in group %}
+                {% if vm.station.stationCode not in seen %}
+                    {% set seen = seen|merge([vm.station.stationCode]) %}
+                    <a class="at-row" href="{{ path('station', { stationCode: vm.station.stationCode }) }}" style="text-decoration:none; color:#fff; grid-template-columns:1fr auto;">
+                        <span class="at-row__nm">{{ vm.station.title ?: vm.station.stationCode }}</span>
+                        <span class="at-row__v" style="font-weight:400; opacity:.75; font-size:12px;">{{ vm.distance|number_format(1, ',', '.') }} km&nbsp;›</span>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+    {% set mapStations = [] %}
+    {% set seenMap = [] %}
+    {% for group in pollutantList %}{% for vm in group %}
+        {% if vm.station.stationCode not in seenMap and vm.station.latitude %}
+            {% set seenMap = seenMap|merge([vm.station.stationCode]) %}
+            {% set mapStations = mapStations|merge([{ lat: vm.station.latitude, lon: vm.station.longitude, level: at_sky_level(vm.pollutionLevel), name: vm.station.title ?: vm.station.stationCode, code: vm.station.stationCode, url: path('station', { stationCode: vm.station.stationCode }) }]) %}
+        {% endif %}
+    {% endfor %}{% endfor %}
+    {% if mapStations is not empty %}
+        <div class="at-section-label">Karte</div>
+        <div class="at-map" data-at-map data-at-stations="{{ mapStations|json_encode|e('html_attr') }}" data-at-me="{{ { lat: coord.latitude, lon: coord.longitude }|json_encode|e('html_attr') }}"></div>
+    {% endif %}
+
+    {% if city %}
+        <div class="at-actions">
+            <a class="at-action" href="{{ path('show_city', { citySlug: city.slug }) }}">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 21h18M6 21V9l6-4 6 4v12"/></svg>
+                Alle Messwerte aus {{ city.name }}
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}

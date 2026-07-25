@@ -16,6 +16,8 @@ Encore
     .addEntry('js/app', './assets/js/app.js')
     .addEntry('js/datatables', './assets/js/datatables.js')
     .addStyleEntry('css/app', './assets/scss/app.scss')
+    .addStyleEntry('css/atmosphaere', './assets/scss/atmosphaere.scss')
+    .addEntry('js/atmosphaere', './assets/js/atmosphaere.js')
     .enableSassLoader()
     .autoProvidejQuery()
     .copyFiles({
