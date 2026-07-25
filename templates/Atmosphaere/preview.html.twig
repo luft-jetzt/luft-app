@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>luft.jetzt · Atmosphäre — Live-Vorschau</title>
+    {{ encore_entry_link_tags('css/atmosphaere') }}
+    <style>
+        :root { color-scheme: dark; }
+        body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+               background: radial-gradient(120% 70% at 80% -10%, #17314f, #0b131d 60%); color: #dfe8f0; min-height: 100vh; }
+        .pv-wrap { width: min(1080px, 92vw); margin-inline: auto; padding: 48px 0 90px; }
+        .pv-head .ey { font-size: 12.5px; letter-spacing: .16em; text-transform: uppercase; color: #6fd7cc; font-weight: 600; }
+        .pv-head h1 { font-weight: 600; font-size: clamp(26px, 4vw, 40px); margin: 12px 0 0; letter-spacing: -.01em; }
+        .pv-head p { color: #9fb2c4; max-width: 62ch; font-size: 15.5px; }
+        .pv-note { font-size: 12.5px; color: #7e93a6; margin-top: 8px; }
+
+        .pv-switch { display: flex; flex-wrap: wrap; gap: 8px; margin: 26px 0 8px; }
+        .pv-switch button { font: inherit; font-size: 13px; font-weight: 600; color: #cfe0ee; cursor: pointer;
+            background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); border-radius: 999px; padding: 8px 15px; display: inline-flex; align-items: center; gap: 8px; transition: .2s; }
+        .pv-switch button:hover { background: rgba(255,255,255,.12); }
+        .pv-switch button[aria-pressed="true"] { border-color: #fff; background: rgba(255,255,255,.16); color: #fff; }
+        .pv-switch button i { width: 11px; height: 11px; border-radius: 50%; }
+
+        .pv-stage { display: flex; flex-wrap: wrap; gap: 30px; align-items: flex-start; margin-top: 26px; }
+        .pv-phone { width: 320px; max-width: 100%; }
+        .pv-phone .pv-screen { height: 592px; border-radius: 40px; overflow: hidden;
+            box-shadow: 0 44px 90px -40px rgba(0,0,0,.7), 0 0 0 9px rgba(255,255,255,.06), 0 0 0 10px rgba(0,0,0,.22); }
+        .pv-phone .pv-tag { text-align: center; font-size: 13px; color: #b9c8d8; margin-top: 13px; font-weight: 600; }
+        .pv-phone .pv-tag span { display: block; font-weight: 400; color: #7e93a6; font-size: 11.5px; margin-top: 2px; }
+
+        .pv-foot { margin-top: 44px; border-top: 1px solid rgba(255,255,255,.1); padding-top: 22px; color: #9fb2c4; font-size: 14px; }
+        .pv-foot code { font-family: var(--at-mono); font-size: .9em; color: #b9c8d8; }
+        a { color: #6fd7cc; }
+    </style>
+</head>
+<body>
+<div class="pv-wrap">
+    <div class="pv-head">
+        <div class="ey">luft.jetzt · Neugestaltung „Atmosphäre"</div>
+        <h1>Live-Vorschau — der Himmel liest die Luft</h1>
+        <p>Der neue Ergebnis-Screen im echten Asset-Build. Wähle eine Stufe und sieh, wie sich der ganze
+            Himmel verschiebt. Diese Seite ist isoliert (eigener Encore-Entry, <code style="font-family:var(--at-mono)">noindex</code>) und
+            verändert die bestehenden Seiten nicht.</p>
+        <p class="pv-note">Beispiel: Lüneburg · Beispieldaten je Stufe illustrativ.</p>
+    </div>
+
+    <div class="pv-switch" role="group" aria-label="Luftqualitäts-Stufe wählen">
+        <button data-lv="1"><i style="background:var(--aqi-1)"></i>Sehr gut</button>
+        <button data-lv="2" aria-pressed="true"><i style="background:var(--aqi-2)"></i>Gut</button>
+        <button data-lv="3"><i style="background:var(--aqi-3)"></i>Mäßig</button>
+        <button data-lv="4"><i style="background:var(--aqi-4)"></i>Schlecht</button>
+        <button data-lv="5"><i style="background:var(--aqi-5)"></i>Sehr schlecht</button>
+    </div>
+
+    <div class="pv-stage">
+        <!-- interaktiver Ergebnis-Screen -->
+        <div class="pv-phone">
+            <div class="pv-screen">
+                <div class="at-sky at-lv2" id="resultSky">
+                    <div class="at-screen"><div class="at-body">
+                        <div class="at-head">
+                            <div class="at-loc">Lüneburg<small>Messstation · 1,2 km · vor 8 Min</small></div>
+                            <div class="at-iconbtn" aria-hidden="true">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+                            </div>
+                        </div>
+                        <div class="at-hero">
+                            <div class="at-hero__idx">Luftqualität</div>
+                            <div class="at-hero__verdict" id="rVerdict">Gut</div>
+                            <div class="at-hero__sub" id="rSub">Unbedenklich — nur Ozon ist am Nachmittag leicht erhöht.</div>
+                            <div class="at-scale"><b id="rMarker" style="left:32%"></b></div>
+                        </div>
+                        <div class="at-chips" id="rChips"></div>
+                        <div class="at-foot">Umweltbundesamt · Sensor.Community · BfS</div>
+                    </div></div>
+                </div>
+            </div>
+            <div class="pv-tag">Ergebnis <span>interaktiv — Himmel folgt dem Gesamtindex</span></div>
+        </div>
+
+        <!-- Station-Detail (statisch, Stufe „gut") -->
+        <div class="pv-phone">
+            <div class="pv-screen">
+                <div class="at-sky at-lv2">
+                    <div class="at-screen"><div class="at-body">
+                        <div class="at-head" style="gap:12px; justify-content:flex-start">
+                            <div class="at-iconbtn" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></div>
+                            <div class="at-loc">Messstation Lüneburg</div>
+                        </div>
+                        <div style="margin:18px 0 6px; display:flex; align-items:baseline; gap:12px">
+                            <div style="font-size:34px; font-weight:300">Gut</div>
+                            <div style="font-size:12px; opacity:.85">Index 2/5 · 1,2 km · Umweltbundesamt</div>
+                        </div>
+                        <div class="at-list" style="font-variant-numeric:tabular-nums">
+                            <div class="at-row"><span class="at-row__nm"><i style="background:var(--aqi-1)"></i>Feinstaub PM<sub>2,5</sub></span><span class="at-row__v">8<small> µg/m³</small></span><svg viewBox="0 0 56 20" preserveAspectRatio="none"><polyline fill="none" stroke="rgba(255,255,255,.85)" stroke-width="1.6" points="0,13 11,11 22,14 33,10 44,12 56,11"/></svg></div>
+                            <div class="at-row"><span class="at-row__nm"><i style="background:var(--aqi-1)"></i>Feinstaub PM<sub>10</sub></span><span class="at-row__v">14<small> µg/m³</small></span><svg viewBox="0 0 56 20" preserveAspectRatio="none"><polyline fill="none" stroke="rgba(255,255,255,.85)" stroke-width="1.6" points="0,12 11,14 22,10 33,13 44,9 56,12"/></svg></div>
+                            <div class="at-row"><span class="at-row__nm"><i style="background:var(--aqi-2)"></i>Stickstoffdioxid</span><span class="at-row__v">21<small> µg/m³</small></span><svg viewBox="0 0 56 20" preserveAspectRatio="none"><polyline fill="none" stroke="rgba(255,255,255,.85)" stroke-width="1.6" points="0,9 11,12 22,8 33,13 44,11 56,12"/></svg></div>
+                            <div class="at-row"><span class="at-row__nm"><i style="background:var(--aqi-3)"></i>Ozon</span><span class="at-row__v">128<small> µg/m³</small></span><svg viewBox="0 0 56 20" preserveAspectRatio="none"><polyline fill="none" stroke="rgba(255,255,255,.9)" stroke-width="1.6" points="0,17 11,14 22,11 33,7 44,6 56,5"/></svg></div>
+                            <div class="at-row"><span class="at-row__nm"><i style="background:var(--aqi-3)"></i>UV-Index</span><span class="at-row__v">5<small> mäßig</small></span><svg viewBox="0 0 56 20" preserveAspectRatio="none"><polyline fill="none" stroke="rgba(255,255,255,.85)" stroke-width="1.6" points="0,18 11,12 22,7 33,6 44,10 56,16"/></svg></div>
+                        </div>
+                        <div class="at-foot" style="text-align:left; margin-top:16px; line-height:1.55">UV-Messwerte: <a href="#">Bundesamt für Strahlenschutz</a> · <a href="#">Tagesverlauf&nbsp;↗</a><br>Luftschadstoffe: Umweltbundesamt &amp; Sensor.Community</div>
+                    </div></div>
+                </div>
+            </div>
+            <div class="pv-tag">Station im Detail <span>Werte, 24-h-Verlauf, Quellen inkl. BfS</span></div>
+        </div>
+
+        <!-- Start / Standort (statisch, Idle) -->
+        <div class="pv-phone">
+            <div class="pv-screen">
+                <div class="at-sky at-idle">
+                    <div class="at-screen"><div class="at-body">
+                        <div class="at-head"><div class="at-loc">luft<span style="opacity:.7">.jetzt</span></div>
+                            <div class="at-iconbtn" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></div></div>
+                        <div class="at-start__big">Wie ist die Luft<br>gerade bei&nbsp;dir?</div>
+                        <div class="at-search at-glass" style="margin-top:22px">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" opacity=".8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+                            <input placeholder="Ort, Postleitzahl oder Station" readonly>
+                        </div>
+                        <button class="at-cta" style="margin-top:12px"><span aria-hidden="true">📍</span>&nbsp; Meinen Standort verwenden</button>
+                        <div class="at-start__hint">Amtliche Messwerte des Umweltbundesamts, ergänzt von Sensor.Community.</div>
+                    </div></div>
+                </div>
+            </div>
+            <div class="pv-tag">Start &amp; Standort <span>ruhiger Dämmerungshimmel als Idle</span></div>
+        </div>
+    </div>
+
+    <div class="pv-foot">
+        Nächste Etappe (M2): dieselben Bausteine in die echten Seiten (Start → Stadt → Station → Karte),
+        Ableitung des Himmel-Zustands aus dem Gesamtindex, Ablösung des Bootstrap-Layouts.
+        Design-System: <code>assets/scss/atmosphaere.scss</code>.
+    </div>
+</div>
+
+<script>
+    (function () {
+        var data = {
+            1: { verdict: "Sehr gut", sub: "Beste Luft — unbeschwert draußen.", marker: 10,
+                 chips: [["PM₂,₅","4","µg/m³",1],["PM₁₀","7","µg/m³",1],["NO₂","9","µg/m³",1],["Ozon","48","",1]] },
+            2: { verdict: "Gut", sub: "Unbedenklich — nur Ozon ist am Nachmittag leicht erhöht.", marker: 32,
+                 chips: [["PM₂,₅","8","µg/m³",1],["PM₁₀","14","µg/m³",1],["NO₂","21","µg/m³",2],["Ozon","128","",3]] },
+            3: { verdict: "Mäßig", sub: "Empfindliche sollten Anstrengung im Freien reduzieren.", marker: 52,
+                 chips: [["PM₂,₅","18","µg/m³",2],["PM₁₀","32","µg/m³",2],["NO₂","64","µg/m³",3],["Ozon","168","",3]] },
+            4: { verdict: "Schlecht", sub: "Anstrengende Aktivitäten im Freien besser meiden.", marker: 72,
+                 chips: [["PM₂,₅","42","µg/m³",4],["PM₁₀","78","µg/m³",4],["NO₂","110","µg/m³",3],["Ozon","210","",4]] },
+            5: { verdict: "Sehr schlecht", sub: "Draußen möglichst meiden, Fenster geschlossen halten.", marker: 92,
+                 chips: [["PM₂,₅","120","µg/m³",5],["PM₁₀","210","µg/m³",5],["NO₂","150","µg/m³",4],["Ozon","240","",5]] }
+        };
+        var sky = document.getElementById('resultSky');
+        var verdict = document.getElementById('rVerdict');
+        var sub = document.getElementById('rSub');
+        var marker = document.getElementById('rMarker');
+        var chips = document.getElementById('rChips');
+        var buttons = document.querySelectorAll('.pv-switch button');
+
+        function render(lv) {
+            var d = data[lv];
+            sky.className = 'at-sky at-lv' + lv;
+            verdict.textContent = d.verdict;
+            sub.textContent = d.sub;
+            marker.style.left = d.marker + '%';
+            chips.innerHTML = d.chips.map(function (c) {
+                var unit = c[2] ? '<small> ' + c[2] + '</small>' : '';
+                return '<div class="at-chip at-glass"><div class="at-chip__k">' + c[0] + '</div>' +
+                       '<div class="at-chip__v"><span class="at-dot" style="background:var(--aqi-' + c[3] + ')"></span>' + c[1] + unit + '</div></div>';
+            }).join('');
+            buttons.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.lv === String(lv) ? 'true' : 'false'); });
+        }
+        buttons.forEach(function (b) { b.addEventListener('click', function () { render(b.dataset.lv); }); });
+        render(2);
+    })();
+</script>
+</body>
+</html>
