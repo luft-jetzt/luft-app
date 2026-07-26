@@ -132,6 +132,9 @@
 .at-list .at-row__v small { font-weight: 400; opacity: 0.75; font-size: 10.5px; }
 .at-list .at-row svg { width: 56px; height: 20px; display: block; }
 
+.at-src { grid-column: 1 / -1; font-size: 11.5px; opacity: 0.9; margin: -4px 0 2px 16px; }
+.at-src a { color: #fff; text-decoration: underline; text-underline-offset: 2px; }
+
 .at-foot { margin-top: 16px; font-size: 11.5px; opacity: 0.82; text-align: center; }
 .at-foot a { color: #fff; }
 

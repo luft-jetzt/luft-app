@@ -40,7 +40,7 @@
                 </div>
                 {% if vm.pollutant.identifier == 'uvindex' %}
                     {% set bfsUrl = bfs_uv_station_url(station.stationCode) %}
-                    <div style="grid-column:1/-1; font-size:11px; opacity:.8; margin:-4px 0 2px 16px;">
+                    <div class="at-src">
                         UV vom <a href="https://www.bfs.de/DE/themen/opt/uv/uv-index/" target="_blank" rel="noopener">Bundesamt für Strahlenschutz</a>{% if bfsUrl %} · <a href="{{ bfsUrl }}" target="_blank" rel="noopener">Tagesverlauf&nbsp;↗</a>{% endif %}
                     </div>
                 {% endif %}
