@@ -107,4 +107,49 @@ class StationRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * Fallback für Städte ohne verknüpfte Stationen: die nächstgelegenen aktiven
+     * Stationen im Umkreis um eine Koordinate (nach Entfernung sortiert).
+     *
+     * @return Station[]
+     */
+    public function findActiveStationsNearCoord(float $latitude, float $longitude, int $limit = 6, int $radiusMeters = 12000): array
+    {
+        $limit = max(1, min(50, $limit));
+        $radiusMeters = max(1, min(100000, $radiusMeters));
+
+        // Nur IDs per Scalar-Query (coord ist eine PostGIS-Geometry-Spalte – ORM-Hydration umgehen).
+        $sql = sprintf(
+            'WITH p AS (SELECT ST_SetSRID(ST_MakePoint(:lon, :lat), 4326) AS geom)
+             SELECT s.id
+             FROM station s, p
+             WHERE s.until_date IS NULL
+               AND ST_DWithin(s.coord::geography, p.geom::geography, %d)
+             ORDER BY s.coord::geography <-> p.geom::geography ASC
+             LIMIT %d',
+            $radiusMeters,
+            $limit,
+        );
+
+        $ids = $this->getEntityManager()->getConnection()
+            ->executeQuery($sql, ['lon' => $longitude, 'lat' => $latitude])
+            ->fetchFirstColumn();
+
+        if (!$ids) {
+            return [];
+        }
+
+        $stations = $this->createQueryBuilder('s')
+            ->where('s.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->getResult();
+
+        // Reihenfolge nach Entfernung (aus dem Scalar-Query) wiederherstellen.
+        $order = array_flip(array_map('intval', $ids));
+        usort($stations, fn (Station $a, Station $b) => $order[$a->getId()] <=> $order[$b->getId()]);
+
+        return $stations;
+    }
 }
