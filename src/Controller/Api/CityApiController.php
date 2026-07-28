@@ -4,7 +4,7 @@ namespace App\Controller\Api;
 
 use App\Air\Util\EntityMerger\EntityMergerInterface;
 use App\Entity\City;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -89,8 +89,7 @@ class CityApiController extends AbstractApiController
         response: 200,
         description: "Returns the updated city",
     )]
-    #[Entity('city', expr: 'repository.findOneBySlug(citySlug)')]
-    public function postCityAction(Request $request, City $city, EntityMergerInterface $entityMerger): Response
+    public function postCityAction(Request $request, #[MapEntity(expr: 'repository.findOneBySlug(citySlug)')] City $city, EntityMergerInterface $entityMerger): Response
     {
         $requestBody = $request->getContent();
 

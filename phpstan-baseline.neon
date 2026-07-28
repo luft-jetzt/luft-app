@@ -21,21 +21,6 @@ parameters:
 			path: src/Air/Geocoding/Guesser/CityGuesser.php
 
 		-
-			message: "#^Access to an undefined property App\\\\Air\\\\PollutionDataFactory\\\\HistoryDataFactory\\:\\:\\$dataList\\.$#"
-			count: 3
-			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
-
-		-
-			message: "#^Call to static method getHourStartDateTime\\(\\) on an unknown class App\\\\Util\\\\DateTimeUtil\\.$#"
-			count: 1
-			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
-
-		-
-			message: "#^Method App\\\\Air\\\\DataRetriever\\\\DataRetrieverInterface\\:\\:retrieveDataForCoord\\(\\) invoked with 4 parameters, 1 required\\.$#"
-			count: 1
-			path: src/Air/PollutionDataFactory/HistoryDataFactory.php
-
-		-
 			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#1 \\$dateTime \\(DateTime\\) is implicitly nullable via default value null\\.$#"
 			count: 1
 			path: src/Air/PollutionDataFactory/PollutionDataFactory.php
@@ -136,11 +121,6 @@ parameters:
 			path: src/Controller/Api/AnalysisApiController.php
 
 		-
-			message: "#^Attribute class Sensio\\\\Bundle\\\\FrameworkExtraBundle\\\\Configuration\\\\Entity does not exist\\.$#"
-			count: 1
-			path: src/Controller/Api/CityApiController.php
-
-		-
 			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\City\\>\\:\\:findOneBySlug\\(\\)\\.$#"
 			count: 1
 			path: src/Controller/Api/CityApiController.php
@@ -179,11 +159,6 @@ parameters:
 			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\City\\>\\:\\:findOneByName\\(\\)\\.$#"
 			count: 1
 			path: src/Controller/DisplayController.php
-
-		-
-			message: "#^Call to an undefined method App\\\\Air\\\\PollutionDataFactory\\\\HistoryDataFactoryInterface\\:\\:setStation\\(\\)\\.$#"
-			count: 1
-			path: src/Controller/StationController.php
 
 		-
 			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\City\\>\\:\\:findCitiesWithActiveStations\\(\\)\\.$#"

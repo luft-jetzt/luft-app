@@ -30,13 +30,6 @@
                     </a>
                     {% endif %}
 
-                    {% if feature('station_history') %}
-                        <a href="{{ path('station_history', { stationCode: station.stationCode }) }}" class="btn btn-secondary" title="Frühere Messwerte dieser Station">
-                            <i class="fa fa-line-chart"></i>
-                            frühere Messwerte dieser Station
-                        </a>
-                    {% endif %}
-
                     {% if station.provider == 'ld' %}
                         <a href="http://maps.sensor.community/#15/{{ station.latitude }}/{{ station.longitude }}" class="btn btn-secondary" title="Diese Station auf Sensor.Community anzeigen">
                             <i class="fa fa-map-marker"></i>
