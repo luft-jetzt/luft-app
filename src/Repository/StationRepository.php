@@ -34,18 +34,6 @@ class StationRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findIndexedByProvider(string $providerIdentifier, string $indexedField = 'stationCode'): array
-    {
-        $qb = $this->createQueryBuilder('s');
-
-        $qb
-            ->indexBy('s', sprintf('s.%s', $indexedField))
-            ->where($qb->expr()->eq('s.provider', ':provider'))
-            ->setParameter('provider', $providerIdentifier);
-
-        return $qb->getQuery()->getResult();
-    }
-
     public function findWithoutCity(): array
     {
         $qb = $this->createQueryBuilder('s');
