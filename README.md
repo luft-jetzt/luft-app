@@ -8,7 +8,7 @@ Dazu werden unterschiedliche Datenquellen angezapft, etwa die öffentlich zugän
 
 Luft.jetzt ist eine Symfony-4-Anwendung und benötigt den üblichen LAMP-Stack mit PHP 7.1.
 
-Die Daten werden grundsätzlich in einer SQL-Datenbank gespeichert, werden aber zur Beschleunigung des Suchvorganges mit Elasticsearch indiziert; momentan ist mindestens Elasticsearch 6.3 notwendig.
+Die Daten werden in einer PostgreSQL-Datenbank mit PostGIS-Erweiterung gespeichert; Redis dient als Cache. Die Suche/Autovervollständigung im Frontend läuft über `@algolia/autocomplete-js` gegen Prefetch-Endpunkte sowie Nominatim-Geocoding — eine Elasticsearch-Integration existiert im Anwendungscode nicht.
 
 ## Installation
 
