@@ -174,7 +174,8 @@ class MapStationFactory
     protected function resolveProvider(string $stationCode, ?string $provider): ?string
     {
         // BfS-Stationen (UV-Index) haben keinen provider-Wert, sind aber am Präfix erkennbar
-        if (!$provider && str_starts_with($stationCode, 'BFS')) {
+        // (Präfix-Liste identisch zum officialOnly-Filter in DataRepository::findCurrentDataForMap)
+        if (!$provider && preg_match('/^(BFS|UBA|GAAHI|DWD|TROPOS|IFA|BAUA)/', $stationCode)) {
             return 'bfs';
         }
 
