@@ -1,5 +1,12 @@
 import { autocomplete } from '@algolia/autocomplete-js';
 
+// Suchbegriff als Matomo-Website-Suche loggen (sendBeacon, überlebt die Navigation).
+const trackSiteSearch = (query) => {
+    if (window._paq && query && query.trim()) {
+        window._paq.push(['trackSiteSearch', query.trim(), false]);
+    }
+};
+
 export default class Search {
     constructor(element, options) {
         const defaults = {};
@@ -86,7 +93,8 @@ export default class Search {
                                 `;
                             },
                         },
-                        onSelect({ item }) {
+                        onSelect({ item, state }) {
+                            trackSiteSearch(state.query);
                             window.location = item.value.url;
                         },
                     },
@@ -116,7 +124,8 @@ export default class Search {
                                 `;
                             },
                         },
-                        onSelect({ item }) {
+                        onSelect({ item, state }) {
+                            trackSiteSearch(state.query);
                             window.location = item.value.url;
                         },
                     },
@@ -162,7 +171,8 @@ export default class Search {
                                 `;
                             },
                         },
-                        onSelect({ item }) {
+                        onSelect({ item, state }) {
+                            trackSiteSearch(state.query);
                             const url = actionUri + '?latitude=' + item.value.latitude + '&longitude=' + item.value.longitude;
                             window.location = url;
                         },

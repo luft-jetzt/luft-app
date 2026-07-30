@@ -100,6 +100,9 @@ function initSearch() {
     };
 
     const go = (item) => {
+        // Suchbegriff als Matomo-Website-Suche loggen (sendBeacon, überlebt die Navigation).
+        const q = input.value.trim();
+        if (window._paq && q) { window._paq.push(['trackSiteSearch', q, false, options.length]); }
         if (item.url) { window.location = item.url; return; }
         if (item.latitude != null) { window.location = '/display?latitude=' + encodeURIComponent(item.latitude) + '&longitude=' + encodeURIComponent(item.longitude); }
     };
