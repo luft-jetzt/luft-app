@@ -1,0 +1,54 @@
+{% extends 'Atmosphaere/base.html.twig' %}
+
+{% block sky_class %}at-idle{% endblock %}
+{% block theme_color %}#1c2145{% endblock %}
+
+{% block structured_data %}
+    {# json_encode escapt Slashes (\/) — dadurch kann kein </script> in den Inhalt gelangen. #}
+    <script type="application/ld+json">{{ {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+            { '@type': 'ListItem', 'position': 1, 'name': 'luft.jetzt', 'item': url('frontpage') },
+            { '@type': 'ListItem', 'position': 2, 'name': 'Luftqualitäts-Karte Deutschland', 'item': url('map') },
+        ],
+    }|json_encode|raw }}</script>
+{% endblock %}
+
+{% block content %}
+    <div class="at-detailhead">
+        <a class="at-backbtn" href="{{ path('display') }}" aria-label="Zurück">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg>
+        </a>
+        <h1 class="at-title">Luftqualitäts-Karte Deutschland</h1>
+    </div>
+
+    <div class="at-mapchips" data-at-map-chips role="group" aria-label="Schadstoff wählen">
+        {% for pollutant in pollutants %}
+            <button type="button"
+                    class="at-mapchip{% if loop.first %} is-active{% endif %}"
+                    data-at-pollutant="{{ pollutant.identifier }}"
+                    {% if loop.first %}aria-pressed="true"{% else %}aria-pressed="false"{% endif %}>{{ pollutant.label }}</button>
+        {% endfor %}
+    </div>
+
+    <div class="at-mapwrap">
+        <div class="at-map at-map--full" data-at-map-overview data-at-map-url="{{ path('api_map_stations') }}"></div>
+
+        <button type="button" class="at-map-locate" data-at-map-locate>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="8"/></svg>
+            Zu mir
+        </button>
+
+        <p class="at-map-error" data-at-map-error hidden></p>
+
+        <div class="at-map-legend" aria-label="Legende">
+            {% for level in legendLevels %}
+                <span class="at-map-legend__item"><i style="background: var(--aqi-{{ level }})"></i>{{ at_verdict(level) }}</span>
+            {% endfor %}
+            <span class="at-map-legend__item"><i class="at-map-legend__none"></i>Keine Daten</span>
+        </div>
+    </div>
+
+    <p class="at-map-note">Amtliche Stationen sind immer sichtbar; ab Zoomstufe 9 erscheinen zusätzlich Sensor.Community-Messpunkte für den Kartenausschnitt.</p>
+{% endblock %}

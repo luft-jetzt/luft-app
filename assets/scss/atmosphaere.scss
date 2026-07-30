@@ -246,6 +246,67 @@ h1.at-hero__idx { margin: 0; font-weight: 400; }
 }
 .at-map .leaflet-bar a { background: rgba(20, 28, 42, 0.85); color: #fff; border-color: rgba(255,255,255,.15); }
 .at-map .leaflet-popup-content-wrapper, .at-map .leaflet-popup-tip { background: #1a2740; color: #fff; }
+.at-map .leaflet-popup-content a { color: #9fc6ef; }
+
+// ---------- Übersichtskarte (/karte) ----------------------------------------
+// Schadstoff-Chips als Glas-Pillen über der Karte, Legende + „Zu mir" als
+// Overlays auf der Karte. .at-map hat z-index: 0 (eigener Stacking-Context),
+// daher liegen die Geschwister-Overlays mit z-index > 0 sicher über allen
+// Leaflet-Panes.
+.at-mapchips { display: flex; gap: 8px; overflow-x: auto; padding: 14px 2px 4px; scrollbar-width: none; }
+.at-mapchips::-webkit-scrollbar { display: none; }
+.at-mapchip {
+  flex: 0 0 auto; padding: 8px 14px; border-radius: 999px;
+  font-family: var(--at-sans); font-size: 12.5px; font-weight: 500; color: #fff; cursor: pointer;
+  background: var(--at-glass-bg); border: 1px solid var(--at-glass-brd);
+  backdrop-filter: blur(var(--at-glass-blur)); -webkit-backdrop-filter: blur(var(--at-glass-blur));
+  &:hover { background: rgba(255, 255, 255, 0.22); }
+  &.is-active { background: rgba(255, 255, 255, 0.92); color: #0f2038; border-color: transparent; font-weight: 600; }
+}
+
+.at-mapwrap { position: relative; margin-top: 10px; flex: 1; display: flex; flex-direction: column; }
+.at-map--full {
+  // 100dvh abzüglich Topbar/Titel/Chips (Shell-Padding + Kopfzeile + Chip-Leiste).
+  height: calc(100dvh - 236px);
+  min-height: 420px;
+  flex: 1;
+}
+
+.at-map-locate {
+  position: absolute; top: 10px; right: 10px; z-index: 30;
+  display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border-radius: 999px;
+  font-family: var(--at-sans); font-size: 12.5px; font-weight: 600; color: #fff; cursor: pointer;
+  background: rgba(20, 28, 42, 0.72); border: 1px solid var(--at-glass-brd);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  &:disabled { opacity: 0.6; pointer-events: none; }
+}
+
+.at-map-legend {
+  position: absolute; left: 10px; right: auto; bottom: 10px; z-index: 30;
+  display: flex; flex-wrap: wrap; gap: 5px 12px; padding: 9px 12px; border-radius: var(--at-r-sm);
+  max-width: calc(100% - 20px); font-size: 11px; line-height: 1.4; color: #fff;
+  background: rgba(20, 28, 42, 0.72); border: 1px solid var(--at-glass-brd);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.at-map-legend__item { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.at-map-legend__item i { width: 9px; height: 9px; border-radius: 50%; flex: 0 0 auto; }
+.at-map-legend__none { background: rgba(255, 255, 255, 0.35); border: 1px solid rgba(255, 255, 255, 0.55); }
+
+.at-map-error {
+  position: absolute; top: 10px; left: 10px; z-index: 31;
+  margin: 0; padding: 8px 14px; border-radius: 999px;
+  max-width: calc(100% - 120px); font-size: 12px; color: #ffd9d0;
+  background: rgba(20, 28, 42, 0.85); border: 1px solid rgba(255, 130, 105, 0.45);
+}
+
+.at-map-note { margin: 10px 0 0; font-size: 11.5px; opacity: 0.78; }
+
+// Mobile: Karte randlos (volle Breite, kein Radius); die Overlays wandern mit,
+// weil der negative Rand am Wrapper sitzt. Legende bricht dank flex-wrap um.
+@media (max-width: 619px) {
+  .at-mapwrap { margin-inline: -20px; }
+  .at-map--full { border-radius: 0; border-inline: none; }
+}
 
 // ---------- Tageszeit-Überblendung (Tag/Nacht-Himmel) -----------------------
 // Legt sich als ruhiger Schleier über den (luftgüte-abhängigen) Himmel: morgens

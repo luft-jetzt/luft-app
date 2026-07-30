@@ -39,7 +39,7 @@ class SitemapEventSubscriber implements EventSubscriberInterface
     {
         // Die Schadstoffseiten werden bereits über registerPollutantUrls() in der
         // Section „pollutant" registriert — hier nur Startseite und Grenzwerte.
-        $routeNames = ['frontpage', 'limits'];
+        $routeNames = ['frontpage', 'limits', 'map'];
 
         foreach ($routeNames as $routeName) {
             $url = $this->urlGenerator->generate($routeName, [], UrlGeneratorInterface::ABSOLUTE_URL);

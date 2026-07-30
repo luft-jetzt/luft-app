@@ -56,6 +56,12 @@ api_value_put:
     defaults:
         _controller: App\Controller\Api\ValueApiController::putValueAction
 
+api_map_stations:
+    path: /api/map/stations.geojson
+    methods: GET
+    defaults:
+        _controller: App\Controller\Api\MapApiController::stationsAction
+
 api_city:
     path: /api/{citySlug}
     methods: GET

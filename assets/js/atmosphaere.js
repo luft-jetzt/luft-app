@@ -179,18 +179,146 @@ async function initMaps() {
     });
 }
 
-function initTimeAgo() {
-    const fmt = (ts) => {
-        const diff = Math.floor(Date.now() / 1000 - ts);
-        if (diff < 0) return 'gerade eben';
-        if (diff < 90) return 'gerade eben';
-        if (diff < 3600) return 'vor ' + Math.floor(diff / 60) + ' Min';
-        if (diff < 86400) return 'vor ' + Math.round(diff / 3600) + ' Std';
-        return 'vor ' + Math.round(diff / 86400) + ' Tg';
+// Deutschland-Übersichtskarte (/karte): amtliche Stationen immer, Sensor.Community
+// ab Zoom ≥ 9 per bbox nachgeladen. Datenquelle: /api/map/stations.geojson.
+const SENSOR_MIN_ZOOM = 9;
+
+async function initOverviewMap() {
+    const el = document.querySelector('[data-at-map-overview]');
+    if (!el) return;
+
+    const { default: L } = await import('leaflet');
+
+    const apiUrl = el.dataset.atMapUrl || '/api/map/stations.geojson';
+    const errorEl = document.querySelector('[data-at-map-error]');
+
+    const map = L.map(el, { preferCanvas: true, scrollWheelZoom: true });
+    map.setView([51.3, 10.4], 6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap', maxZoom: 19,
+    }).addTo(map);
+
+    const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const fill = (level) => AQI[level] || 'rgba(255,255,255,.35)';
+
+    const popupHtml = (p) => {
+        let html = '<strong>' + esc(p.n || p.c || 'Messstation') + '</strong>';
+        if (p.v !== null && p.v !== undefined) {
+            const value = typeof p.v === 'number' ? p.v.toLocaleString('de-DE') : esc(p.v);
+            html += '<br>' + value + (p.un ? '&nbsp;' + esc(p.un) : '') + (p.p ? ' · ' + esc(p.p) : '');
+        }
+        if (p.t) html += '<br><small>' + esc(timeAgo(p.t)) + '</small>';
+        if (p.u) html += '<br><a href="' + esc(p.u) + '">Zur Station</a>';
+        return html;
     };
+
+    const layerOptions = (radius) => ({
+        pointToLayer: (feature, latlng) => L.circleMarker(latlng, {
+            radius, color: '#fff', weight: 1.5, opacity: 0.9,
+            fillColor: fill((feature.properties || {}).l), fillOpacity: 1,
+        }),
+        onEachFeature: (feature, layer) => layer.bindPopup(popupHtml(feature.properties || {})),
+    });
+
+    // Sensor-Layer zuerst anlegen: amtliche Marker zeichnen dann darüber.
+    const sensorLayer = L.geoJSON(null, layerOptions(5)).addTo(map);
+    const officialLayer = L.geoJSON(null, layerOptions(7)).addTo(map);
+
+    const showError = (msg) => { if (errorEl) { errorEl.textContent = msg; errorEl.hidden = false; } };
+    const clearError = () => { if (errorEl) errorEl.hidden = true; };
+
+    let pollutant = 'all';
+    let officialCtrl = null, sensorCtrl = null, sensorTracked = false, moveTimer = null;
+
+    const loadOfficial = () => {
+        if (officialCtrl) officialCtrl.abort();
+        officialCtrl = new AbortController();
+        fetch(apiUrl + '?pollutant=' + encodeURIComponent(pollutant) + '&scope=official', { signal: officialCtrl.signal })
+            .then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+            .then((geo) => {
+                clearError();
+                officialLayer.clearLayers();
+                officialLayer.addData(geo);
+            })
+            .catch((e) => { if (e.name !== 'AbortError') showError('Die Stationsdaten konnten gerade nicht geladen werden.'); });
+    };
+
+    const loadSensors = () => {
+        if (sensorCtrl) sensorCtrl.abort();
+        if (map.getZoom() < SENSOR_MIN_ZOOM) { sensorLayer.clearLayers(); return; }
+
+        if (!sensorTracked) {
+            sensorTracked = true;
+            if (window._paq) window._paq.push(['trackEvent', 'Karte', 'Quelle', 'sensor-community']);
+        }
+
+        sensorCtrl = new AbortController();
+        const b = map.getBounds();
+        const bbox = [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()].map((n) => n.toFixed(4)).join(',');
+        fetch(apiUrl + '?pollutant=' + encodeURIComponent(pollutant) + '&scope=all&bbox=' + bbox, { signal: sensorCtrl.signal })
+            .then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+            .then((geo) => {
+                // scope=all liefert amtliche Stationen mit — die zeichnet bereits der
+                // Official-Layer, hier nur die Sensor.Community-Punkte (Provider „ld").
+                const features = ((geo && geo.features) || []).filter((f) => f.properties && f.properties.pr === 'ld');
+                sensorLayer.clearLayers();
+                sensorLayer.addData({ type: 'FeatureCollection', features });
+            })
+            .catch((e) => { if (e.name !== 'AbortError') showError('Die Sensor-Daten konnten gerade nicht geladen werden.'); });
+    };
+
+    map.on('moveend', () => {
+        window.clearTimeout(moveTimer);
+        moveTimer = window.setTimeout(loadSensors, 300);
+    });
+
+    document.querySelectorAll('[data-at-pollutant]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const id = btn.dataset.atPollutant;
+            if (!id || id === pollutant) return;
+            pollutant = id;
+            document.querySelectorAll('[data-at-pollutant]').forEach((b) => {
+                const active = b === btn;
+                b.classList.toggle('is-active', active);
+                b.setAttribute('aria-pressed', active ? 'true' : 'false');
+            });
+            if (window._paq) window._paq.push(['trackEvent', 'Karte', 'Schadstoff', id]);
+            loadOfficial();
+            loadSensors();
+        });
+    });
+
+    const locateBtn = document.querySelector('[data-at-map-locate]');
+    if (locateBtn) {
+        locateBtn.addEventListener('click', () => {
+            if (!navigator.geolocation) { showError('Standort wird von diesem Browser nicht unterstützt.'); return; }
+            locateBtn.disabled = true;
+            // Nur clientseitig zentrieren — die Koordinaten verlassen den Browser nicht.
+            navigator.geolocation.getCurrentPosition(
+                (pos) => { locateBtn.disabled = false; clearError(); map.setView([pos.coords.latitude, pos.coords.longitude], 11); },
+                () => { locateBtn.disabled = false; showError('Dein Standort konnte nicht ermittelt werden.'); },
+                { enableHighAccuracy: false, timeout: 15000, maximumAge: 300000 }
+            );
+        });
+    }
+
+    loadOfficial();
+}
+
+// Relative Zeitangabe („vor X Min") — genutzt von initTimeAgo() und den Karten-Popups.
+function timeAgo(ts) {
+    const diff = Math.floor(Date.now() / 1000 - ts);
+    if (diff < 0) return 'gerade eben';
+    if (diff < 90) return 'gerade eben';
+    if (diff < 3600) return 'vor ' + Math.floor(diff / 60) + ' Min';
+    if (diff < 86400) return 'vor ' + Math.round(diff / 3600) + ' Std';
+    return 'vor ' + Math.round(diff / 86400) + ' Tg';
+}
+
+function initTimeAgo() {
     document.querySelectorAll('[data-time-ago-timestamp]').forEach((el) => {
         const ts = parseInt(el.dataset.timeAgoTimestamp, 10);
-        if (ts) { el.textContent = fmt(ts); el.title = el.dataset.timeAgoTitle || el.title; }
+        if (ts) { el.textContent = timeAgo(ts); el.title = el.dataset.timeAgoTitle || el.title; }
     });
 }
 
@@ -203,6 +331,6 @@ function initTimeOfDay() {
     document.body.classList.add('at-time-' + bucket);
 }
 
-function init() { initTimeOfDay(); initGeolocation(); initSearch(); initMaps(); initTimeAgo(); }
+function init() { initTimeOfDay(); initGeolocation(); initSearch(); initMaps(); initOverviewMap(); initTimeAgo(); }
 if (document.readyState !== 'loading') init();
 else document.addEventListener('DOMContentLoaded', init);

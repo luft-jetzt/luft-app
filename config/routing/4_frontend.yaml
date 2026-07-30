@@ -1,3 +1,13 @@
+# /karte MUSS hier (4_frontend) definiert sein: Attribut-Routen laden erst nach den
+# YAML-Directory-Routen, dann würde 6_city.yaml (/{citySlug}) den Pfad verschlucken.
+map:
+    path: /karte
+    methods: [GET]
+    defaults:
+        _controller: App\Controller\MapController::indexAction
+    options:
+        expose: true
+
 station:
     path: /{stationCode}
     defaults:
