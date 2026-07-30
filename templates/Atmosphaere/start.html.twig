@@ -3,6 +3,16 @@
 {% block sky_class %}at-idle{% endblock %}
 {% block theme_color %}#1c2145{% endblock %}
 
+{% block structured_data %}
+    {# json_encode escapt Slashes (\/) — dadurch kann kein </script> in den Inhalt gelangen. #}
+    <script type="application/ld+json">{{ {
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        'name': 'luft.jetzt',
+        'url': url('frontpage'),
+    }|json_encode|raw }}</script>
+{% endblock %}
+
 {% block topbar %}
     <header class="at-topbar"><a class="at-brand" href="{{ path('display') }}">luft<span>.jetzt</span></a></header>
 {% endblock %}

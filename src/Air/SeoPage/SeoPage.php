@@ -28,8 +28,8 @@ class SeoPage extends AbstractSeoPage
     public function setStandardPreviewPhoto(): SeoPageInterface
     {
         $this->sonataSeoPage
-            ->addMeta('property', 'og:image', $this->asset('/img/share/opengraph.jpeg'))
-            ->addMeta('name', 'twitter:image', $this->asset('/img/share/twitter.jpeg'))
+            ->addMeta('property', 'og:image', $this->asset('/build/images/share/opengraph.jpeg'))
+            ->addMeta('name', 'twitter:image', $this->asset('/build/images/share/twitter.jpeg'))
             ->addMeta('name', 'twitter:card', 'summary_large_image');
 
         return $this;

@@ -37,7 +37,9 @@ class KernelEventSubscriber implements EventSubscriberInterface
     /* @todo this is the most stupid way to setup canonical, but it should do for now */
     protected function generateCanonicalUrl(Request $request): string
     {
-        $canonical = $request->getUri();
+        // Query-String bewusst weglassen: /display?lat=…&lng=… u. ä. würden sonst
+        // als eigenständige URLs indexiert (Duplicate Content).
+        $canonical = sprintf('%s%s', $request->getSchemeAndHttpHost(), $request->getPathInfo());
 
         $canonical = str_replace([
             'http://',

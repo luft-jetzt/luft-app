@@ -5,3 +5,8 @@ User-agent: *
 
 Disallow: /impress
 Disallow: /privacy
+Disallow: /vorschau/
+Disallow: /api/
+Disallow: /search/
+
+Sitemap: https://luft.jetzt/sitemap.xml

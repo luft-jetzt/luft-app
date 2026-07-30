@@ -30,8 +30,12 @@ class DisplayController extends AbstractController
 
         $cityName = $cityGuesser->guess($coord);
 
+        $seoPage->setStandardPreviewPhoto();
+
         if ($cityName) {
-            $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus %s', $cityName));
+            $seoPage
+                ->setTitle(sprintf('Aktuelle Luftmesswerte aus %s', $cityName))
+                ->setDescription(sprintf('Aktuelle Luftmesswerte an deinem Standort in %s: Feinstaub, Stickstoffdioxid und Ozon mit Bewertung nach Umweltbundesamt-Grenzwerten.', $cityName));
             $city = $this->findCityForName($cityName);
 
             if ($city) {
@@ -45,7 +49,9 @@ class DisplayController extends AbstractController
                 ->addItem('Luft')
                 ->addItem('Dein Standort');
 
-            $seoPage->setTitle(sprintf('Aktuelle Luftmesswerte aus deiner Umgebung'));
+            $seoPage
+                ->setTitle(sprintf('Aktuelle Luftmesswerte aus deiner Umgebung'))
+                ->setDescription('Aktuelle Luftmesswerte aus deiner Umgebung: Feinstaub, Stickstoffdioxid und Ozon mit Bewertung nach Umweltbundesamt-Grenzwerten.');
             $city = null;
         }
 

@@ -22,15 +22,23 @@ class StationController extends AbstractController
             ->setStation($station)
             ->createDecoratedPollutantList();
 
+        $stationName = str_replace('Messstation ', '', $station->getTitle() ?: $station->getStationCode());
+
         if ($station->getCity()) {
-            $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s — Feinstaub, Stickstoffdioxid und Ozon in %s', $station->getStationCode(), $station->getCity()->getName()));
+            $seoPage
+                ->setTitle(sprintf('Luftmesswerte für die Station %s — Feinstaub, Stickstoffdioxid und Ozon in %s', $station->getStationCode(), $station->getCity()->getName()))
+                ->setDescription(sprintf('Aktuelle Luftqualität an der Messstation %s in %s: Feinstaub, Stickstoffdioxid und Ozon mit Bewertung nach Umweltbundesamt-Grenzwerten.', $stationName, $station->getCity()->getName()))
+                ->setStandardPreviewPhoto();
 
             $breadcrumbs
                 ->addItem('Luft', $router->generate('display'))
                 ->addItem($station->getCity()->getName(), $router->generate('show_city', ['citySlug' => $station->getCity()->getSlug()]))
                 ->addItem($station->getStationCode(), $router->generate('station', ['stationCode' => $station->getStationCode()]));
         } else {
-            $seoPage->setTitle(sprintf('Luftmesswerte für die Station %s', $station->getStationCode()));
+            $seoPage
+                ->setTitle(sprintf('Luftmesswerte für die Station %s', $station->getStationCode()))
+                ->setDescription(sprintf('Aktuelle Luftqualität an der Messstation %s: Feinstaub, Stickstoffdioxid und Ozon mit Bewertung nach Umweltbundesamt-Grenzwerten.', $stationName))
+                ->setStandardPreviewPhoto();
         }
 
         // Neugestaltung „Atmosphäre": Stationsseite im neuen Look (verifiziert über
@@ -68,10 +76,18 @@ class StationController extends AbstractController
             $fromDateTime->sub(new \DateInterval('P3D'));
         }
 
+        $stationName = str_replace('Messstation ', '', $station->getTitle() ?: $station->getStationCode());
+
         if ($station->getCity()) {
-            $seoPage->setTitle(sprintf('Frühere Luftmesswerte für die Station %s — Feinstaub, Stickstoffdioxid und Ozon in %s', $station->getStationCode(), $station->getCity()->getName()));
+            $seoPage
+                ->setTitle(sprintf('Frühere Luftmesswerte für die Station %s — Feinstaub, Stickstoffdioxid und Ozon in %s', $station->getStationCode(), $station->getCity()->getName()))
+                ->setDescription(sprintf('Frühere Luftmesswerte der Station %s in %s: Feinstaub, Stickstoffdioxid und Ozon im zeitlichen Verlauf.', $stationName, $station->getCity()->getName()))
+                ->setStandardPreviewPhoto();
         } else {
-            $seoPage->setTitle(sprintf('Frühere Luftmesswerte für die Station %s', $station->getStationCode()));
+            $seoPage
+                ->setTitle(sprintf('Frühere Luftmesswerte für die Station %s', $station->getStationCode()))
+                ->setDescription(sprintf('Frühere Luftmesswerte der Station %s: Feinstaub, Stickstoffdioxid und Ozon im zeitlichen Verlauf.', $stationName))
+                ->setStandardPreviewPhoto();
         }
 
         $dataLists = $historyDataFactory

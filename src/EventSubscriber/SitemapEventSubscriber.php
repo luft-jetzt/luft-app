@@ -29,9 +29,23 @@ class SitemapEventSubscriber implements EventSubscriberInterface
 
     public function populate(SitemapPopulateEvent $event): void
     {
+        $this->registerStaticUrls($event->getUrlContainer());
         $this->registerStationUrls($event->getUrlContainer());
         $this->registerCityUrls($event->getUrlContainer());
         $this->registerPollutantUrls($event->getUrlContainer());
+    }
+
+    public function registerStaticUrls(UrlContainerInterface $urlContainer): void
+    {
+        // Die Schadstoffseiten werden bereits über registerPollutantUrls() in der
+        // Section „pollutant" registriert — hier nur Startseite und Grenzwerte.
+        $routeNames = ['frontpage', 'limits'];
+
+        foreach ($routeNames as $routeName) {
+            $url = $this->urlGenerator->generate($routeName, [], UrlGeneratorInterface::ABSOLUTE_URL);
+
+            $urlContainer->addUrl(new UrlConcrete($url), 'static');
+        }
     }
 
     public function registerStationUrls(UrlContainerInterface $urlContainer): void

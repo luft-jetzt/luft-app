@@ -11,9 +11,21 @@
 {% block sky_class %}at-lv{{ sky > 0 ? sky : 2 }}{% if sky == 0 %} at-idle{% endif %}{% endblock %}
 {% block theme_color %}{{ { 1:'#0e2f5a', 2:'#173a63', 3:'#2c3a54', 4:'#3a2d38', 5:'#241f2b' }[sky] ?? '#1c2145' }}{% endblock %}
 
+{% block structured_data %}
+    {# json_encode escapt Slashes (\/) — dadurch kann kein </script> in den Inhalt gelangen. #}
+    <script type="application/ld+json">{{ {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+            { '@type': 'ListItem', 'position': 1, 'name': 'luft.jetzt', 'item': url('frontpage') },
+            { '@type': 'ListItem', 'position': 2, 'name': city.name, 'item': url('show_city', { citySlug: city.slug }) },
+        ],
+    }|json_encode|raw }}</script>
+{% endblock %}
+
 {% block content %}
     <div class="at-hero" style="margin-top:18px;">
-        <div class="at-hero__idx">Luft in {{ city.name }}</div>
+        <h1 class="at-hero__idx">Luft in {{ city.name }}</h1>
         <div class="at-hero__verdict">{{ at_verdict(sky) }}</div>
         <div class="at-hero__sub">{{ at_subtitle(sky) }}</div>
         {% if sky > 0 %}<div class="at-scale"><b style="left:{{ at_scale_position(sky) }}%"></b></div>{% endif %}

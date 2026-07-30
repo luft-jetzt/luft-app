@@ -19,29 +19,34 @@ limits:
 pollutant_pm10:
     path: /schadstoffe/feinstaub
     defaults:
-        _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
-        template: Static/Pollutant/feinstaub.html.twig
+        _controller: App\Controller\TemplateController::staticAction
+        templateName: Pollutant/feinstaub
+        description: 'Was ist Feinstaub (PM10)? Entstehung, Gesundheitsfolgen und Grenzwerte — und aktuelle Messwerte aus deiner Umgebung.'
 
 pollutant_no2:
     path: /schadstoffe/stickstoffdioxid
     defaults:
-        _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
-        template: Static/Pollutant/stickstoffdioxid.html.twig
+        _controller: App\Controller\TemplateController::staticAction
+        templateName: Pollutant/stickstoffdioxid
+        description: 'Was ist Stickstoffdioxid (NO2)? Entstehung, Gesundheitsfolgen und Grenzwerte — und aktuelle Messwerte aus deiner Umgebung.'
 
 pollutant_so2:
     path: /schadstoffe/schwefeldioxid
     defaults:
-        _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
-        template: Static/Pollutant/schwefeldioxid.html.twig
+        _controller: App\Controller\TemplateController::staticAction
+        templateName: Pollutant/schwefeldioxid
+        description: 'Was ist Schwefeldioxid (SO2)? Entstehung, Gesundheitsfolgen und Grenzwerte — und aktuelle Messwerte aus deiner Umgebung.'
 
 pollutant_co:
     path: /schadstoffe/kohlenmonoxid
     defaults:
-        _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
-        template: Static/Pollutant/kohlenmonoxid.html.twig
+        _controller: App\Controller\TemplateController::staticAction
+        templateName: Pollutant/kohlenmonoxid
+        description: 'Was ist Kohlenmonoxid (CO)? Entstehung, Gesundheitsfolgen und Grenzwerte — und aktuelle Messwerte aus deiner Umgebung.'
 
 pollutant_o3:
     path: /schadstoffe/ozon
     defaults:
-        _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
-        template: Static/Pollutant/ozon.html.twig
+        _controller: App\Controller\TemplateController::staticAction
+        templateName: Pollutant/ozon
+        description: 'Was ist Ozon (O3)? Entstehung, Gesundheitsfolgen und Grenzwerte — und aktuelle Messwerte aus deiner Umgebung.'

@@ -18,6 +18,7 @@ class CityRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('c');
 
         $qb
+            ->distinct()
             ->join('c.stations', 's')
             ->where($qb->expr()->isNull('s.untilDate'))
             ->orderBy('c.name', 'ASC');

@@ -29,7 +29,8 @@ class CityController extends AbstractController
     {
         $seoPage
             ->setTitle(sprintf('Luftmesswerte aus %s: Stickstoffdioxid, Feinstaub und Ozon', $city->getName()))
-            ->setDescription(sprintf('Aktuelle Schadstoffwerte aus Luftmessstationen in %s: Stickstoffdioxid, Feinstaub und Ozon', $city->getName()));
+            ->setDescription(sprintf('Aktuelle Schadstoffwerte aus Luftmessstationen in %s: Stickstoffdioxid, Feinstaub und Ozon', $city->getName()))
+            ->setStandardPreviewPhoto();
 
         $breadcrumbs
             ->addItem('Luft', $router->generate('display'))

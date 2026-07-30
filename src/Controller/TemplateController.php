@@ -30,13 +30,17 @@ class TemplateController extends AbstractController
         );
     }
 
-    public function staticAction(string $templateName, Breadcrumbs $breadcrumbs, RouterInterface $router, SeoPage $seoPage): Response
+    public function staticAction(string $templateName, Breadcrumbs $breadcrumbs, RouterInterface $router, SeoPage $seoPage, ?string $description = null): Response
     {
         $title = $this->readH2Tag($templateName);
 
         $templateFilename = sprintf('Static/%s.html.twig', $templateName);
 
         $seoPage->setTitle($title);
+
+        if ($description) {
+            $seoPage->setDescription($description);
+        }
 
         $breadcrumbs
             ->addItem('Luft', $router->generate('display'))
