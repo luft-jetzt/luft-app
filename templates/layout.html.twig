@@ -23,6 +23,8 @@
         {% block stylesheets %}
             {{ encore_entry_link_tags('css/app') }}
         {% endblock %}
+
+        {{ include('Includes/matomo.html.twig') }}
     </head>
     <body>
         {% include 'Includes/menu.html.twig' %}

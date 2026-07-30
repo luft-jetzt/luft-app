@@ -16,6 +16,8 @@
     {% block structured_data %}{% endblock %}
 
     {% block stylesheets %}{{ encore_entry_link_tags('css/atmosphaere') }}{% endblock %}
+
+    {{ include('Includes/matomo.html.twig') }}
 </head>
 <body class="at-page at-sky {% block sky_class %}at-idle{% endblock %}">
     <div class="at-timewash" aria-hidden="true"></div>
