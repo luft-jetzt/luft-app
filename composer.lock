@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "63e7d80f4e3abb3468d3287aea7006c7",
+    "content-hash": "81a9649298a5af7baa099a59503201c6",
     "packages": [
         {
             "name": "calderacc/geobasic",
@@ -607,37 +607,44 @@
         },
         {
             "name": "doctrine/doctrine-migrations-bundle",
-            "version": "3.7.0",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineMigrationsBundle.git",
-                "reference": "1e380c6dd8ac8488217f39cff6b77e367f1a644b"
+                "reference": "20505da78735744fb4a42a3bb9a416b345ad6f7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineMigrationsBundle/zipball/1e380c6dd8ac8488217f39cff6b77e367f1a644b",
-                "reference": "1e380c6dd8ac8488217f39cff6b77e367f1a644b",
+                "url": "https://api.github.com/repos/doctrine/DoctrineMigrationsBundle/zipball/20505da78735744fb4a42a3bb9a416b345ad6f7c",
+                "reference": "20505da78735744fb4a42a3bb9a416b345ad6f7c",
                 "shasum": ""
             },
             "require": {
-                "doctrine/doctrine-bundle": "^2.4 || ^3.0",
+                "doctrine/dbal": "^4",
+                "doctrine/doctrine-bundle": "^3",
                 "doctrine/migrations": "^3.2",
-                "php": "^7.2 || ^8.0",
-                "symfony/deprecation-contracts": "^2.1 || ^3",
-                "symfony/framework-bundle": "^5.4 || ^6.0 || ^7.0 || ^8.0"
+                "php": "^8.4",
+                "psr/log": "^3",
+                "symfony/config": "^6.4 || ^7.0 || ^8.0",
+                "symfony/console": "^6.4 || ^7.0 || ^8.0",
+                "symfony/dependency-injection": "^6.4 || ^7.0 || ^8.0",
+                "symfony/deprecation-contracts": "^3",
+                "symfony/framework-bundle": "^6.4 || ^7.0 || ^8.0",
+                "symfony/http-foundation": "^6.4 || ^7.0 || ^8.0",
+                "symfony/http-kernel": "^6.4 || ^7.0 || ^8.0",
+                "symfony/service-contracts": "^3.0"
             },
             "require-dev": {
                 "composer/semver": "^3.0",
-                "doctrine/coding-standard": "^12 || ^14",
-                "doctrine/orm": "^2.6 || ^3",
-                "phpstan/phpstan": "^1.4 || ^2",
-                "phpstan/phpstan-deprecation-rules": "^1 || ^2",
-                "phpstan/phpstan-phpunit": "^1 || ^2",
-                "phpstan/phpstan-strict-rules": "^1.1 || ^2",
-                "phpstan/phpstan-symfony": "^1.3 || ^2",
-                "phpunit/phpunit": "^8.5 || ^9.5",
-                "symfony/phpunit-bridge": "^6.3 || ^7 || ^8",
-                "symfony/var-exporter": "^5.4 || ^6 || ^7 || ^8"
+                "doctrine/coding-standard": "^14",
+                "doctrine/orm": "^3",
+                "phpstan/phpstan": "^2",
+                "phpstan/phpstan-deprecation-rules": "^2",
+                "phpstan/phpstan-phpunit": "^2",
+                "phpstan/phpstan-strict-rules": "^2",
+                "phpstan/phpstan-symfony": "^2",
+                "phpunit/phpunit": "^12.5",
+                "symfony/var-exporter": "^6.4 || ^7 || ^8"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -672,7 +679,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/DoctrineMigrationsBundle/issues",
-                "source": "https://github.com/doctrine/DoctrineMigrationsBundle/tree/3.7.0"
+                "source": "https://github.com/doctrine/DoctrineMigrationsBundle/tree/4.0.0"
             },
             "funding": [
                 {
@@ -688,7 +695,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-11-15T19:02:59+00:00"
+            "time": "2025-12-05T08:14:38+00:00"
         },
         {
             "name": "doctrine/event-manager",
@@ -3581,26 +3588,27 @@
         },
         {
             "name": "predis/predis",
-            "version": "v2.4.1",
+            "version": "v3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/predis/predis.git",
-                "reference": "07105e050622ed80bd60808367ced9e379f31530"
+                "reference": "5c996db191ee2d9bafe651f454b1fca16754271b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/predis/predis/zipball/07105e050622ed80bd60808367ced9e379f31530",
-                "reference": "07105e050622ed80bd60808367ced9e379f31530",
+                "url": "https://api.github.com/repos/predis/predis/zipball/5c996db191ee2d9bafe651f454b1fca16754271b",
+                "reference": "5c996db191ee2d9bafe651f454b1fca16754271b",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2 || ^8.0"
+                "php": "^7.2 || ^8.0",
+                "psr/http-message": "^1.0|^2.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.3",
                 "phpstan/phpstan": "^1.9",
                 "phpunit/phpcov": "^6.0 || ^8.0",
-                "phpunit/phpunit": "^8.0 || ^9.4"
+                "phpunit/phpunit": "^8.0 || ~9.4.4"
             },
             "suggest": {
                 "ext-relay": "Faster connection with in-memory caching (>=0.6.2)"
@@ -3631,7 +3639,7 @@
             ],
             "support": {
                 "issues": "https://github.com/predis/predis/issues",
-                "source": "https://github.com/predis/predis/tree/v2.4.1"
+                "source": "https://github.com/predis/predis/tree/v3.5.1"
             },
             "funding": [
                 {
@@ -3639,7 +3647,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-11-12T18:00:11+00:00"
+            "time": "2026-06-11T16:56:53+00:00"
         },
         {
             "name": "presta/sitemap-bundle",
@@ -6683,33 +6691,32 @@
         },
         {
             "name": "symfony/monolog-bundle",
-            "version": "v3.11.1",
+            "version": "v4.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/monolog-bundle.git",
-                "reference": "0e675a6e08f791ef960dc9c7e392787111a3f0c1"
+                "reference": "c012c6aba13129eb02aa7dd61e66e720911d8598"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/0e675a6e08f791ef960dc9c7e392787111a3f0c1",
-                "reference": "0e675a6e08f791ef960dc9c7e392787111a3f0c1",
+                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/c012c6aba13129eb02aa7dd61e66e720911d8598",
+                "reference": "c012c6aba13129eb02aa7dd61e66e720911d8598",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.0",
-                "monolog/monolog": "^1.25.1 || ^2.0 || ^3.0",
-                "php": ">=8.1",
-                "symfony/config": "^6.4 || ^7.0",
-                "symfony/dependency-injection": "^6.4 || ^7.0",
-                "symfony/deprecation-contracts": "^2.5 || ^3.0",
-                "symfony/http-kernel": "^6.4 || ^7.0",
-                "symfony/monolog-bridge": "^6.4 || ^7.0",
+                "monolog/monolog": "^3.5",
+                "php": ">=8.2",
+                "symfony/config": "^7.3 || ^8.0",
+                "symfony/dependency-injection": "^7.3 || ^8.0",
+                "symfony/http-kernel": "^7.3 || ^8.0",
+                "symfony/monolog-bridge": "^7.3 || ^8.0",
                 "symfony/polyfill-php84": "^1.30"
             },
             "require-dev": {
-                "symfony/console": "^6.4 || ^7.0",
-                "symfony/phpunit-bridge": "^7.3.3",
-                "symfony/yaml": "^6.4 || ^7.0"
+                "phpunit/phpunit": "^11.5.41 || ^12.3",
+                "symfony/console": "^7.3 || ^8.0",
+                "symfony/yaml": "^7.3 || ^8.0"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -6739,7 +6746,7 @@
             ],
             "support": {
                 "issues": "https://github.com/symfony/monolog-bundle/issues",
-                "source": "https://github.com/symfony/monolog-bundle/tree/v3.11.1"
+                "source": "https://github.com/symfony/monolog-bundle/tree/v4.0.2"
             },
             "funding": [
                 {
@@ -6759,7 +6766,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-08T07:58:26+00:00"
+            "time": "2026-04-02T18:27:21+00:00"
         },
         {
             "name": "symfony/options-resolver",
@@ -10060,15 +10067,15 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.12.33",
+            "version": "2.2.5",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/37982d6fc7cbb746dda7773530cda557cdf119e1",
-                "reference": "37982d6fc7cbb746dda7773530cda557cdf119e1",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/909c1e5fef7989ac0d0c1c5c42e32a5c4f6198a0",
+                "reference": "909c1e5fef7989ac0d0c1c5c42e32a5c4f6198a0",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2|^8.0"
+                "php": "^7.4|^8.0"
             },
             "conflict": {
                 "phpstan/phpstan-shim": "*"
@@ -10086,6 +10093,17 @@
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ondřej Mirtes"
+                },
+                {
+                    "name": "Markus Staab"
+                },
+                {
+                    "name": "Vincent Langlet"
+                }
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
             "keywords": [
@@ -10109,7 +10127,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-28T20:30:03+00:00"
+            "time": "2026-07-05T06:31:06+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -10549,21 +10567,21 @@
         },
         {
             "name": "rector/rector",
-            "version": "1.2.10",
+            "version": "2.5.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "40f9cf38c05296bd32f444121336a521a293fa61"
+                "reference": "c329e210d17f86d70424f2688e1294495f44c670"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/40f9cf38c05296bd32f444121336a521a293fa61",
-                "reference": "40f9cf38c05296bd32f444121336a521a293fa61",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/c329e210d17f86d70424f2688e1294495f44c670",
+                "reference": "c329e210d17f86d70424f2688e1294495f44c670",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2|^8.0",
-                "phpstan/phpstan": "^1.12.5"
+                "php": "^7.4|^8.0",
+                "phpstan/phpstan": "^2.2.2"
             },
             "conflict": {
                 "rector/rector-doctrine": "*",
@@ -10588,6 +10606,7 @@
                 "MIT"
             ],
             "description": "Instant Upgrade and Automated Refactoring of any PHP code",
+            "homepage": "https://getrector.com/",
             "keywords": [
                 "automation",
                 "dev",
@@ -10596,7 +10615,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/1.2.10"
+                "source": "https://github.com/rectorphp/rector/tree/2.5.6"
             },
             "funding": [
                 {
@@ -10604,7 +10623,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-11-08T13:59:10+00:00"
+            "time": "2026-07-12T10:21:06+00:00"
         },
         {
             "name": "sebastian/cli-parser",
