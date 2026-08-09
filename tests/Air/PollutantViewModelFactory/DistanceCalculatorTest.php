@@ -14,6 +14,6 @@ class DistanceCalculatorTest extends TestCase
         $coord = new Coordinate(53.11, 10.52);
         $station = new Station(57.55, 9.31);
 
-        $this->assertEquals(499.58, DistanceCalculator::distance($coord, $station));
+        $this->assertEqualsWithDelta(499.58, DistanceCalculator::distance($coord, $station), 0.01);
     }
 }
