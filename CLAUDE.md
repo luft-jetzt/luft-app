@@ -96,5 +96,5 @@ The following items are known and should be addressed when hardening for product
 - **No security headers**: CSP, HSTS, X-Frame-Options are not configured
 - **No rate limiting** on API endpoints
 - **Docker services** (Redis, Elasticsearch) run without authentication and with exposed ports
-- **EntityMerger** uses reflection to merge all non-`@Ignore` properties — ensure sensitive fields are properly annotated
+- **EntityMerger** uses a reflection allowlist: only properties annotated `#[App\Air\Util\EntityMerger\Attribute\Mergeable]` are merged from request bodies. Identity keys (`Station::$stationCode`, `Station::$provider`, `City::$slug`) and system fields are excluded by default — do not annotate them.
 - **Twig `|raw` usage**: `unitHtml`, `shortNameHtml`, and `exceedanceJson` use `|raw` — these values must never contain user-controlled input
