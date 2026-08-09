@@ -86,14 +86,6 @@ api_station:
     requirements:
         stationCode: '^([A-Z]{2,6})([A-Z0-9]{0,8})$'
 
-api_station_analysis:
-    path: /api/{stationCode}/analysis
-    methods: GET
-    defaults:
-        _controller: App\Controller\Api\AnalysisApiController::stationAnalysisAction
-    requirements:
-        stationCode: '^([A-Z]{4,6})([0-9]{1,5})$'
-
 api_display:
     path: /api
     methods: GET
