@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Luft.jetzt is a Symfony 8.0 (PHP 8.5) web application that aggregates and displays air quality / pollution data from multiple sources (German Umweltbundesamt, Luftdaten, OpenWeatherMap). It uses PostgreSQL with PostGIS for geospatial queries, Elasticsearch for search, and Redis for caching.
+Luft.jetzt is a Symfony 8.0 (PHP 8.5) web application that aggregates and displays air quality / pollution data from multiple sources (German Umweltbundesamt, Luftdaten, OpenWeatherMap). It uses PostgreSQL with PostGIS for geospatial queries and Redis for caching. Search/autocomplete is handled client-side by `@algolia/autocomplete-js` against prefetch endpoints plus Nominatim geocoding — there is no Elasticsearch integration in the application code.
 
 ## Common Commands
 
@@ -74,12 +74,12 @@ REST API under `/api` with Swagger docs at `/api/doc` and OpenAPI JSON at `/api/
 
 ### Frontend
 
-Webpack Encore with two JS entry points (`app.js`, `datatables.js`) and SCSS. Uses Bootstrap 5, Leaflet for maps, Chart.js, Typeahead/Bloodhound for search, and Handlebars templates.
+Webpack Encore with two JS entry points (`app.js`, `datatables.js`) and SCSS. Uses Bootstrap 5, Leaflet for maps, Chart.js, `@algolia/autocomplete-js` for search/autocomplete, and Handlebars templates.
 
 ## Infrastructure
 
 - **Database**: PostgreSQL 15 + PostGIS 3.3 (port 25432 via Docker, DB: `gis`, user: `docker`)
-- **Search**: Elasticsearch 7.17.2 (port 9200)
+- **Search/autocomplete**: `@algolia/autocomplete-js` (frontend) against prefetch endpoints + Nominatim geocoding; no Elasticsearch integration in the app (the `elasticsearch` service in `docker-compose.yml` is a legacy remnant)
 - **Cache**: Redis (port 6379)
 - **Locale**: German (`de`), host: `luft.jetzt`
 
