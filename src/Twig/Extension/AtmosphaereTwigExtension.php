@@ -49,7 +49,7 @@ class AtmosphaereTwigExtension extends AbstractExtension
     /** Interne Stufe 0–6 → Himmel-Zustand 0–5. */
     public function skyLevel(int $pollutionLevel): int
     {
-        return self::SKY_LEVEL[max(0, min(6, $pollutionLevel))] ?? 0;
+        return self::SKY_LEVEL[max(0, min(6, $pollutionLevel))];
     }
 
     /** Urteil aus dem Himmel-Zustand (0–5). */
