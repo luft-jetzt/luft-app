@@ -78,7 +78,15 @@ Webpack Encore with two JS entry points (`app.js`, `datatables.js`) and SCSS. Us
 
 ## Infrastructure
 
-- **Database**: PostgreSQL 15 + PostGIS 3.3 (port 25432 via Docker, DB: `gis`, user: `docker`)
+- **Database (local dev)**: PostgreSQL 15 + PostGIS 3.3 (port 25432 via Docker, DB: `gis`, user: `docker`)
+- **Database (production, server2)**: the *native* PostgreSQL 17 cluster on `127.0.0.1:5432`,
+  PostGIS 3.6.4 — DB `luft_jetzt_postgis`, role `luft_jetzt`, registered in Plesk under the
+  luft.jetzt subscription. Note that `.env.local` also carries a MySQL `DATABASE_URL`
+  (`luft_jetzt2`); the `DATABASE_*` variables are the PostGIS ones.
+  **Since 08.09.2026 this cluster is shared**: `hitze_jetzt_postgis` and
+  `waldbrand_jetzt_postgis` were moved into it out of their own Docker containers. So a restart,
+  `pg_upgrade` or config change on that cluster now takes down hitze.jetzt and waldbrand.jetzt
+  too, not just luft.jetzt. (Also in there: maps.jetzt, dronemaps, criticalmass, wahlatlas.)
 - **Search**: Elasticsearch 7.17.2 (port 9200)
 - **Cache**: Redis (port 6379)
 - **Locale**: German (`de`), host: `luft.jetzt`
