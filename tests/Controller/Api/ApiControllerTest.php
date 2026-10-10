@@ -8,10 +8,10 @@ class ApiControllerTest extends WebTestCase
 {
     public function testApiDocVisible(): void
     {
-        $client = $client = static::createClient();
+        $client = static::createClient();
 
         $client->request('GET', '/api/doc');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertSame(200, $client->getResponse()->getStatusCode());
     }
 }
