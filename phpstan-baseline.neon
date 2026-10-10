@@ -126,16 +126,6 @@ parameters:
 			path: src/Controller/AbstractController.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Data\\>\\:\\:findForAnalysis\\(\\)\\.$#"
-			count: 1
-			path: src/Controller/Api/AnalysisApiController.php
-
-		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<App\\\\Entity\\\\Station\\>\\:\\:findOneByStationCode\\(\\)\\.$#"
-			count: 1
-			path: src/Controller/Api/AnalysisApiController.php
-
-		-
 			message: "#^Attribute class Sensio\\\\Bundle\\\\FrameworkExtraBundle\\\\Configuration\\\\Entity does not exist\\.$#"
 			count: 1
 			path: src/Controller/Api/CityApiController.php
