@@ -16,6 +16,7 @@ services:
         bind:
             $graphCacheDirectory: '%env(GRAPH_CACHE_DIRECTORY)%'
             $redisHost: 'redis://%env(REDIS_HOST)%'
+            $apiToken: '%env(LUFT_API_TOKEN)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
