@@ -1,0 +1,45 @@
+name: Security Audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  composer-audit:
+    name: Composer Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: iconv, json, simplexml, intl, pdo_pgsql
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction --no-scripts
+
+      - name: Run composer audit
+        run: composer audit --no-interaction
+
+  npm-audit:
+    name: NPM Audit (production dependencies)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Only production (browser-shipped) dependencies are gated. Remaining advisories
+      # live exclusively in the webpack build tool chain (devDependencies).
+      - name: Run npm audit
+        run: npm audit --omit=dev --package-lock-only
