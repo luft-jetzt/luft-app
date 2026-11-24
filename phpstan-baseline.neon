@@ -71,16 +71,6 @@ parameters:
 			path: src/Air/StationCache/StationCache.php
 
 		-
-			message: "#^Instanceof between ReflectionAttribute\\<Symfony\\\\Component\\\\Serializer\\\\Attribute\\\\Ignore\\> and Symfony\\\\Component\\\\Serializer\\\\Attribute\\\\Ignore will always evaluate to false\\.$#"
-			count: 1
-			path: src/Air/Util/EntityMerger/EntityMerger.php
-
-		-
-			message: "#^Variable \\$reflectionClass in PHPDoc tag @var does not match any variable in the foreach loop\\: \\$reflectionProperty$#"
-			count: 1
-			path: src/Air/Util/EntityMerger/EntityMerger.php
-
-		-
 			message: "#^Deprecated in PHP 8\\.4\\: Parameter \\#2 \\$station \\(App\\\\Entity\\\\Station\\) is implicitly nullable via default value null\\.$#"
 			count: 1
 			path: src/Air/ValueDataConverter/ValueDataConverter.php

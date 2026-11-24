@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Air\Util\EntityMerger\Attribute\Mergeable;
 use App\DBAL\Types\AreaType;
 use App\DBAL\Types\StationType;
 use App\Geo\Coordinate\Coordinate;
@@ -29,15 +30,19 @@ class Station extends Coordinate
     protected ?string $stationCode = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
+    #[Mergeable]
     protected ?int $ubaStationId = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
+    #[Mergeable]
     protected ?string $title = null;
 
     #[ORM\Column(type: 'float', nullable: false)]
+    #[Mergeable]
     protected ?float $latitude = null;
 
     #[ORM\Column(type: 'float', nullable: false)]
+    #[Mergeable]
     protected ?float $longitude = null;
 
     #[ORM\Column(
@@ -53,12 +58,15 @@ class Station extends Coordinate
     protected ?City $city = null;
 
     #[ORM\Column(type: 'date', nullable: true)]
+    #[Mergeable]
     protected ?\DateTime $fromDate = null;
 
     #[ORM\Column(type: 'date', nullable: true)]
+    #[Mergeable]
     protected ?\DateTime $untilDate = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
+    #[Mergeable]
     protected ?int $altitude = null;
 
     #[DoctrineAssert\EnumType(entity: StationType::class)]

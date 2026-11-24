@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Air\Util\EntityMerger\Attribute\Mergeable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,12 +23,14 @@ class City implements \Stringable
     protected ?\DateTime $createdAt = null;
 
     #[ORM\Column(type: 'string', nullable: false)]
+    #[Mergeable]
     protected ?string $name = null;
 
     #[ORM\Column(type: 'string', nullable: false)]
     protected ?string $slug = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
+    #[Mergeable]
     protected ?string $description = null;
 
     #[ORM\OneToMany(targetEntity: 'Station', mappedBy: 'city')]
