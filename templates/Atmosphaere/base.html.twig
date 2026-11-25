@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html {{ sonata_seo_html_attributes() }}>
 <head {{ sonata_seo_head_attributes() }}>
-    {{ sonata_seo_title() }}
+    {% block title %}{{ sonata_seo_title() }}{% endblock %}
 
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
