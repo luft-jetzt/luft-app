@@ -21,12 +21,24 @@
   --at-glass-bg: rgba(255, 255, 255, 0.14);
   --at-glass-brd: rgba(255, 255, 255, 0.22);
   --at-glass-blur: 14px;
+  // Dunkles Glas für Text im hellen unteren Himmelsdrittel (Footer, Sekundär-Aktionen):
+  // weißer Text bleibt darauf auch über dem hellsten Verlaufsende lesbar.
+  --at-glass-dark-bg: rgba(15, 25, 45, 0.62);
+  --at-glass-dark-brd: rgba(255, 255, 255, 0.16);
 
   // Radien
   --at-r-lg: 24px;
   --at-r-md: 16px;
   --at-r-sm: 12px;
 }
+
+// ---------- Reset -----------------------------------------------------------
+// Ohne border-box rechnet die Spalte Padding auf 100 % obendrauf und ragt auf dem
+// Handy über den Bildschirm; der Browser-Standardrand am body verschiebt zusätzlich
+// alles um 8 px. Die html-Farbe verhindert einen weißen Rand beim Überscrollen.
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+html { background: #1c2145; }
 
 // ---------- Himmel-Zustände (der Kern) --------------------------------------
 // Jede Stufe setzt drei Verlaufsstopps + Dunst-Intensität + Akzentpunkt.
@@ -88,7 +100,7 @@
 .at-head .at-loc { font-weight: 600; }
 .at-head .at-loc small { display: block; font-weight: 400; opacity: 0.75; font-size: 11.5px; }
 .at-iconbtn {
-  width: 34px; height: 34px; border-radius: 50%;
+  width: 36px; height: 36px; border-radius: 50%;
   display: grid; place-items: center; color: #fff;
   background: var(--at-glass-bg); border: 1px solid var(--at-glass-brd);
   backdrop-filter: blur(6px);
@@ -114,7 +126,7 @@
 .at-chips { display: flex; gap: 10px; overflow-x: auto; padding: 20px 2px 4px; scrollbar-width: none; }
 .at-chips::-webkit-scrollbar { display: none; }
 .at-chip {
-  flex: 0 0 auto; min-width: 90px; padding: 13px 14px; border-radius: 18px;
+  flex: 0 0 auto; min-width: 120px; padding: 13px 14px; border-radius: 18px;
   .at-chip__k { font-size: 11px; opacity: 0.8; }
   .at-chip__v { font-size: 22px; font-weight: 600; margin-top: 3px; font-variant-numeric: tabular-nums; }
   .at-chip__v small { font-size: 11px; font-weight: 400; opacity: 0.8; }
@@ -137,6 +149,23 @@
 
 .at-foot { margin-top: 16px; font-size: 11.5px; opacity: 0.82; text-align: center; }
 .at-foot a { color: #fff; }
+// Seiten-Footer: steht immer am hellen Ende des Verlaufs, daher auf dunklem Glas.
+.at-foot--page { margin-top: auto; padding-top: 34px; opacity: 1; text-align: left; font-size: 13px; line-height: 1.5; }
+.at-foot__panel {
+  padding: 14px 16px 6px; border-radius: var(--at-r-md);
+  background: var(--at-glass-dark-bg); border: 1px solid var(--at-glass-dark-brd);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.at-foot__links { margin-top: 2px; }
+.at-foot__links a { display: inline-block; padding: 10px 0; }
+// Schwester-Sites: eigene Zeile, durch eine feine Linie von den Pflichtlinks abgesetzt.
+.at-foot__sisters { margin-top: 0; border-top: 1px solid var(--at-glass-dark-brd); }
+// Sehr schmale Handys (320 px): etwas weniger Innenrand und Schrift, damit die drei
+// Schwester-Links in einer Zeile bleiben und kein Trennpunkt am Zeilenende hängt.
+@media (max-width: 359px) {
+  .at-foot__panel { padding-inline: 12px; }
+  .at-foot__sisters { font-size: 12px; }
+}
 
 // ---------- Start / Standort ------------------------------------------------
 .at-start__big { margin-top: 60px; font-size: 30px; font-weight: 300; line-height: 1.16; letter-spacing: -0.01em; }
@@ -151,6 +180,8 @@
   border: none; width: 100%; cursor: pointer;
   &--ghost { background: transparent; color: #fff; border: 1px solid rgba(255, 255, 255, 0.4); font-weight: 500; }
 }
+// Fehlerseiten (404/500): erklärender Satz unter der Überschrift
+.at-error__text { margin: 14px 0 0; font-size: 14px; line-height: 1.5; opacity: 0.9; }
 .at-start__hint { margin-top: auto; padding-top: 40px; font-size: 11.5px; opacity: 0.78; text-align: center; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -161,7 +192,7 @@
 // Der Himmel füllt den ganzen Viewport; der Inhalt sitzt in einer app-artigen
 // Spalte, damit es auf dem Desktop wie eine App wirkt statt breitzulaufen.
 .at-page { min-height: 100dvh; display: flex; flex-direction: column; }
-.at-shell { width: min(540px, 100%); margin-inline: auto; padding: 20px 20px 44px; flex: 1; display: flex; flex-direction: column; color: #fff; }
+.at-shell { width: min(580px, 100%); margin-inline: auto; padding: 20px 20px 44px; flex: 1; display: flex; flex-direction: column; color: #fff; }
 
 .at-topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .at-brand { color: #fff; font-weight: 600; text-decoration: none; font-size: 17px; letter-spacing: -.01em; }
@@ -184,14 +215,14 @@ h1.at-hero__idx { margin: 0; font-weight: 400; }
 .at-section-label { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; opacity: .75; margin: 26px 0 4px; }
 
 // Zurück-Link/Buttons in Glas
-.at-backbtn { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; color: #fff;
+.at-backbtn { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: #fff;
   background: var(--at-glass-bg); border: 1px solid var(--at-glass-brd); text-decoration: none; flex: 0 0 auto; }
 
 // Sekundär-Aktionen unten
 .at-actions { margin-top: 22px; display: flex; flex-direction: column; gap: 10px; }
 .at-action { display: flex; align-items: center; gap: 10px; padding: 13px 15px; border-radius: var(--at-r-md); color: #fff; text-decoration: none;
-  background: var(--at-glass-bg); border: 1px solid var(--at-glass-brd); backdrop-filter: blur(10px); font-size: 14px; font-weight: 500; }
-.at-action:hover { background: rgba(255,255,255,.22); }
+  background: var(--at-glass-dark-bg); border: 1px solid var(--at-glass-dark-brd); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); font-size: 14px; font-weight: 500; }
+.at-action:hover { background: rgba(15, 25, 45, 0.78); }
 
 // Desktop: die App-Spalte bekommt einen weichen Rahmen, der Himmel bleibt Vollbild dahinter
 @media (min-width: 620px) {
@@ -219,7 +250,7 @@ h1.at-hero__idx { margin: 0; font-weight: 400; }
 // Geolocation-Button Ladezustand
 .at-cta.is-loading { color: transparent; position: relative; pointer-events: none; }
 .at-cta.is-loading::after {
-  content: ""; position: absolute; inset: 0; margin: auto; width: 18px; height: 18px;
+  content: ""; position: absolute; inset: 0; margin: auto; width: 22px; height: 22px;
   border: 2px solid rgba(15,32,56,.35); border-top-color: #0f2038; border-radius: 50%;
   animation: at-spin .7s linear infinite;
 }

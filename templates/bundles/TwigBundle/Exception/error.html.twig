@@ -1,0 +1,37 @@
+{# Fehlerseite im Atmosphäre-Design (ersetzt die rohe Symfony-Seite im prod-Modus).
+   error404.html.twig erbt von hier und überschreibt nur die Texte. #}
+{% extends 'Atmosphaere/base.html.twig' %}
+
+{# 4xx (z. B. 403/405) sind kein Serverfehler – dafür ein neutraler Text statt „liegt an uns". #}
+{% set client_error = status_code|default(500) < 500 %}
+
+{% block sky_class %}at-idle{% endblock %}
+{% block theme_color %}#1c2145{% endblock %}
+
+{# Fehlerseiten gehören nicht in den Index; Canonical/Beschreibung der Standardseite entfallen. #}
+{% block seo_meta %}<meta name="robots" content="noindex">{% endblock %}
+
+{% block title %}<title>{% block error_title %}Fehler{% endblock %} – luft.jetzt</title>{% endblock %}
+
+{% block topbar %}
+    <header class="at-topbar"><a class="at-brand" href="{{ path('display') }}">luft<span>.jetzt</span></a></header>
+{% endblock %}
+
+{% block content %}
+    <h1 class="at-start__big" style="margin:52px 0 0;">{% block error_headline %}{{ client_error ? 'Das hat nicht geklappt.' : 'Da ist etwas schiefgegangen.' }}{% endblock %}</h1>
+    <p class="at-error__text">{% block error_text %}{% if client_error %}Diese Anfrage konnten wir so nicht verarbeiten. Such einfach nach deinem Ort:{% else %}Das liegt an uns, nicht an dir. Versuch es gleich noch einmal – oder such direkt nach deinem Ort:{% endif %}{% endblock %}</p>
+
+    <div class="at-searchbox" style="margin-top:22px;">
+        <div class="at-search at-glass">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" opacity=".8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+            <input type="search" data-at-search autocomplete="off" placeholder="Ort, Postleitzahl oder Station"
+                   aria-label="Ort, Postleitzahl oder Station suchen">
+        </div>
+        <div class="at-results" data-at-results hidden></div>
+    </div>
+
+    <a class="at-cta" href="{{ path('display') }}" style="display:block; margin-top:12px; text-decoration:none;">Zur Startseite</a>
+    <a class="at-cta at-cta--ghost" href="{{ path('map') }}" style="display:block; margin-top:10px; text-decoration:none;">
+        <span aria-hidden="true">🗺️</span>&nbsp; Zur Deutschland-Karte
+    </a>
+{% endblock %}

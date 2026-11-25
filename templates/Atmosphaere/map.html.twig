@@ -15,6 +15,9 @@
     }|json_encode|raw }}</script>
 {% endblock %}
 
+{# Auf der Karte selbst führt der Footer-Link zurück zur Startseite statt auf die eigene Seite. #}
+{% block foot_nav %}<a href="{{ path('display') }}">Startseite</a>{% endblock %}
+
 {% block content %}
     <div class="at-detailhead">
         <a class="at-backbtn" href="{{ path('display') }}" aria-label="Zurück">
