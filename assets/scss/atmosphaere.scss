@@ -158,6 +158,8 @@ html { background: #1c2145; }
 }
 .at-foot__links { margin-top: 2px; }
 .at-foot__links a { display: inline-block; padding: 10px 0; }
+// Schwester-Sites: eigene Zeile, durch eine feine Linie von den Pflichtlinks abgesetzt.
+.at-foot__sisters { margin-top: 0; border-top: 1px solid var(--at-glass-dark-brd); }
 
 // ---------- Start / Standort ------------------------------------------------
 .at-start__big { margin-top: 60px; font-size: 30px; font-weight: 300; line-height: 1.16; letter-spacing: -0.01em; }
