@@ -160,6 +160,12 @@ html { background: #1c2145; }
 .at-foot__links a { display: inline-block; padding: 10px 0; }
 // Schwester-Sites: eigene Zeile, durch eine feine Linie von den Pflichtlinks abgesetzt.
 .at-foot__sisters { margin-top: 0; border-top: 1px solid var(--at-glass-dark-brd); }
+// Sehr schmale Handys (320 px): etwas weniger Innenrand und Schrift, damit die drei
+// Schwester-Links in einer Zeile bleiben und kein Trennpunkt am Zeilenende hängt.
+@media (max-width: 359px) {
+  .at-foot__panel { padding-inline: 12px; }
+  .at-foot__sisters { font-size: 12px; }
+}
 
 // ---------- Start / Standort ------------------------------------------------
 .at-start__big { margin-top: 60px; font-size: 30px; font-weight: 300; line-height: 1.16; letter-spacing: -0.01em; }
