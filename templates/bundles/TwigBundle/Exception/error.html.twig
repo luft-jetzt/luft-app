@@ -2,8 +2,14 @@
    error404.html.twig erbt von hier und überschreibt nur die Texte. #}
 {% extends 'Atmosphaere/base.html.twig' %}
 
+{# 4xx (z. B. 403/405) sind kein Serverfehler – dafür ein neutraler Text statt „liegt an uns". #}
+{% set client_error = status_code|default(500) < 500 %}
+
 {% block sky_class %}at-idle{% endblock %}
 {% block theme_color %}#1c2145{% endblock %}
+
+{# Fehlerseiten gehören nicht in den Index; Canonical/Beschreibung der Standardseite entfallen. #}
+{% block seo_meta %}<meta name="robots" content="noindex">{% endblock %}
 
 {% block title %}<title>{% block error_title %}Fehler{% endblock %} – luft.jetzt</title>{% endblock %}
 
@@ -12,8 +18,8 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="at-start__big" style="margin:52px 0 0;">{% block error_headline %}Da ist etwas schiefgegangen.{% endblock %}</h1>
-    <p class="at-error__text">{% block error_text %}Das liegt an uns, nicht an dir. Versuch es gleich noch einmal – oder such direkt nach deinem Ort:{% endblock %}</p>
+    <h1 class="at-start__big" style="margin:52px 0 0;">{% block error_headline %}{{ client_error ? 'Das hat nicht geklappt.' : 'Da ist etwas schiefgegangen.' }}{% endblock %}</h1>
+    <p class="at-error__text">{% block error_text %}{% if client_error %}Diese Anfrage konnten wir so nicht verarbeiten. Such einfach nach deinem Ort:{% else %}Das liegt an uns, nicht an dir. Versuch es gleich noch einmal – oder such direkt nach deinem Ort:{% endif %}{% endblock %}</p>
 
     <div class="at-searchbox" style="margin-top:22px;">
         <div class="at-search at-glass">

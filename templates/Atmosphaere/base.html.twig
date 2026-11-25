@@ -9,9 +9,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="{% block theme_color %}#173a63{% endblock %}">
 
+    {% block seo_meta %}
     {{ sonata_seo_metadatas() }}
     {{ sonata_seo_link_canonical() }}
     {{ sonata_seo_lang_alternates() }}
+    {% endblock %}
 
     {% block structured_data %}{% endblock %}
 
@@ -44,7 +46,7 @@
                 <div class="at-foot__links">
                     <a href="{{ path('impress') }}">Impressum</a> ·
                     <a href="{{ path('privacy') }}">Datenschutz</a> ·
-                    <a href="{{ path('map') }}">Karte</a>
+                    {% block foot_nav %}<a href="{{ path('map') }}">Karte</a>{% endblock %}
                 </div>
                 <div class="at-foot__links at-foot__sisters">
                     <a href="https://hitze.jetzt">hitze.jetzt</a> ·
