@@ -28,6 +28,14 @@
   --at-r-sm: 12px;
 }
 
+// ---------- Reset -----------------------------------------------------------
+// Ohne border-box rechnet die Spalte Padding auf 100 % obendrauf und ragt auf dem
+// Handy über den Bildschirm; der Browser-Standardrand am body verschiebt zusätzlich
+// alles um 8 px. Die html-Farbe verhindert einen weißen Rand beim Überscrollen.
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+html { background: #1c2145; }
+
 // ---------- Himmel-Zustände (der Kern) --------------------------------------
 // Jede Stufe setzt drei Verlaufsstopps + Dunst-Intensität + Akzentpunkt.
 .at-sky {
@@ -88,7 +96,7 @@
 .at-head .at-loc { font-weight: 600; }
 .at-head .at-loc small { display: block; font-weight: 400; opacity: 0.75; font-size: 11.5px; }
 .at-iconbtn {
-  width: 34px; height: 34px; border-radius: 50%;
+  width: 36px; height: 36px; border-radius: 50%;
   display: grid; place-items: center; color: #fff;
   background: var(--at-glass-bg); border: 1px solid var(--at-glass-brd);
   backdrop-filter: blur(6px);
@@ -114,7 +122,7 @@
 .at-chips { display: flex; gap: 10px; overflow-x: auto; padding: 20px 2px 4px; scrollbar-width: none; }
 .at-chips::-webkit-scrollbar { display: none; }
 .at-chip {
-  flex: 0 0 auto; min-width: 90px; padding: 13px 14px; border-radius: 18px;
+  flex: 0 0 auto; min-width: 120px; padding: 13px 14px; border-radius: 18px;
   .at-chip__k { font-size: 11px; opacity: 0.8; }
   .at-chip__v { font-size: 22px; font-weight: 600; margin-top: 3px; font-variant-numeric: tabular-nums; }
   .at-chip__v small { font-size: 11px; font-weight: 400; opacity: 0.8; }
@@ -161,7 +169,7 @@
 // Der Himmel füllt den ganzen Viewport; der Inhalt sitzt in einer app-artigen
 // Spalte, damit es auf dem Desktop wie eine App wirkt statt breitzulaufen.
 .at-page { min-height: 100dvh; display: flex; flex-direction: column; }
-.at-shell { width: min(540px, 100%); margin-inline: auto; padding: 20px 20px 44px; flex: 1; display: flex; flex-direction: column; color: #fff; }
+.at-shell { width: min(580px, 100%); margin-inline: auto; padding: 20px 20px 44px; flex: 1; display: flex; flex-direction: column; color: #fff; }
 
 .at-topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .at-brand { color: #fff; font-weight: 600; text-decoration: none; font-size: 17px; letter-spacing: -.01em; }
@@ -184,7 +192,7 @@ h1.at-hero__idx { margin: 0; font-weight: 400; }
 .at-section-label { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; opacity: .75; margin: 26px 0 4px; }
 
 // Zurück-Link/Buttons in Glas
-.at-backbtn { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; color: #fff;
+.at-backbtn { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: #fff;
   background: var(--at-glass-bg); border: 1px solid var(--at-glass-brd); text-decoration: none; flex: 0 0 auto; }
 
 // Sekundär-Aktionen unten
@@ -219,7 +227,7 @@ h1.at-hero__idx { margin: 0; font-weight: 400; }
 // Geolocation-Button Ladezustand
 .at-cta.is-loading { color: transparent; position: relative; pointer-events: none; }
 .at-cta.is-loading::after {
-  content: ""; position: absolute; inset: 0; margin: auto; width: 18px; height: 18px;
+  content: ""; position: absolute; inset: 0; margin: auto; width: 22px; height: 22px;
   border: 2px solid rgba(15,32,56,.35); border-top-color: #0f2038; border-radius: 50%;
   animation: at-spin .7s linear infinite;
 }
