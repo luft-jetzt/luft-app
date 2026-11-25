@@ -35,15 +35,17 @@
 
         {% block content %}{% endblock %}
 
-        <footer class="at-foot" style="text-align:left; margin-top:auto; padding-top:34px;">
-            {% block attribution %}
-                Amtliche Messwerte des <a href="https://www.umweltbundesamt.de/">Umweltbundesamts</a>,
-                ergänzt von <a href="https://sensor.community/">Sensor.Community</a>.
-            {% endblock %}
-            <div style="margin-top:10px; opacity:.85;">
-                <a href="{{ path('impress') }}">Impressum</a> ·
-                <a href="{{ path('privacy') }}">Datenschutz</a> ·
-                <a href="{{ path('display') }}">Startseite</a>
+        <footer class="at-foot at-foot--page">
+            <div class="at-foot__panel">
+                {% block attribution %}
+                    Amtliche Messwerte des <a href="https://www.umweltbundesamt.de/">Umweltbundesamts</a>,
+                    ergänzt von <a href="https://sensor.community/">Sensor.Community</a>.
+                {% endblock %}
+                <div class="at-foot__links">
+                    <a href="{{ path('impress') }}">Impressum</a> ·
+                    <a href="{{ path('privacy') }}">Datenschutz</a> ·
+                    <a href="{{ path('map') }}">Karte</a>
+                </div>
             </div>
         </footer>
     </div>
